@@ -27,10 +27,18 @@
 			<comments>A business-friendly OSS license</comments>
 		</license>
 	</licenses>
-	
+
 	<properties>
 		<package.name>org.openyu.mix.core</package.name>
 	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.openyu.commons</groupId>
+			<artifactId>openyu-commons-core</artifactId>
+			<version>1.0.0</version>
+		</dependency>
+	</dependencies>
 
 	<build>
 		<pluginManagement>
