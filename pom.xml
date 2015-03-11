@@ -1,0 +1,37 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.openyu.mix</groupId>
+		<artifactId>openyu-mix-parent</artifactId>
+		<version>1</version>
+		<relativePath>pom/mix-parent/pom.xml</relativePath>
+	</parent>
+
+	<artifactId>openyu-mix</artifactId>
+	<version>1.0.0</version>
+	<packaging>pom</packaging>
+
+	<name>OpenYu Mix 1.x</name>
+	<description>OpenYu Mix 1.x</description>
+	<url>http://mix.openyu.org</url>
+	<organization>
+		<name>OpenYu</name>
+		<url>http://www.openyu.org</url>
+	</organization>
+
+	<licenses>
+		<license>
+			<name>Apache 2</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+			<distribution>repo</distribution>
+			<comments>A business-friendly OSS license</comments>
+		</license>
+	</licenses>
+
+	<!--  
+	<modules>
+		<module>openyu-mix-core.j</module>
+	</modules>
+	-->
+</project>

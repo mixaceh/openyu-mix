@@ -1,2 +1,1 @@
-# openyu-mix-core
-
+# OpenYu Mix Java

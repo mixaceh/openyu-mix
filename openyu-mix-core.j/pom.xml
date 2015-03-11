@@ -1,0 +1,82 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.openyu.mix</groupId>
+		<artifactId>openyu-mix</artifactId>
+		<version>1.0.0</version>
+		<relativePath>../</relativePath>
+	</parent>
+
+	<artifactId>openyu-mix-core</artifactId>
+	<packaging>jar</packaging>
+
+	<name>OpenYu Mix Core</name>
+	<description>OpenYu Mix Core</description>
+	<url>http://mix.openyu.org</url>
+	<organization>
+		<name>OpenYu</name>
+		<url>http://www.openyu.org</url>
+	</organization>
+
+	<licenses>
+		<license>
+			<name>Apache 2</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+			<distribution>repo</distribution>
+			<comments>A business-friendly OSS license</comments>
+		</license>
+	</licenses>
+	
+	<properties>
+		<package.name>org.openyu.mix.core</package.name>
+	</properties>
+
+	<build>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-surefire-plugin</artifactId>
+					<version>2.18.1</version>
+					<configuration>
+						<testFailureIgnore>true</testFailureIgnore>
+						<includes>
+						</includes>
+					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>cobertura-maven-plugin</artifactId>
+					<version>2.6</version>
+					<configuration>
+						<check>
+							<haltOnFailure>false</haltOnFailure>
+							<branchRate>85</branchRate>
+							<lineRate>85</lineRate>
+						</check>
+						<instrumentation>
+							<includes>
+							</includes>
+						</instrumentation>
+						<formats>
+							<format>html</format>
+							<format>xml</format>
+						</formats>
+					</configuration>
+					<executions>
+						<execution>
+							<phase>package</phase>
+							<goals>
+								<goal>clean</goal>
+								<goal>cobertura</goal>
+								<goal>check</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
+
+</project>
