@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<mailCollector>
+    <id>org.openyu.mix.mail.vo.MailCollector</id>
+    <mailTypes key="SYSTEM">1</mailTypes>
+    <mailTypes key="GENERAL">2</mailTypes>
+    <expiredDay>14</expiredDay>
+    <spendGold>1000</spendGold>
+</mailCollector>

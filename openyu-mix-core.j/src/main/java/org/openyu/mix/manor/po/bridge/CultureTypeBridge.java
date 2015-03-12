@@ -1,0 +1,23 @@
+package org.openyu.mix.manor.po.bridge;
+
+import org.openyu.mix.manor.po.userType.CultureTypeUserType;
+import org.openyu.commons.hibernate.search.bridge.supporter.BaseStringBridgeSupporter;
+
+//--------------------------------------------------
+//reslove: Hibernate search
+//--------------------------------------------------
+public class CultureTypeBridge extends BaseStringBridgeSupporter
+{
+
+	private CultureTypeUserType userType = new CultureTypeUserType();
+
+	public CultureTypeBridge()
+	{
+
+	}
+
+	public String objectToString(Object value)
+	{
+		return userType.marshal(value, null);
+	}
+}

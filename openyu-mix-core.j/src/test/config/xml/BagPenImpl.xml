@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<bagPen>
+    <tabs>
+        <entry key="0">
+            <value>
+                <id>0</id>
+                <locked>false</locked>
+                <items/>
+            </value>
+        </entry>
+        <entry key="1">
+            <value>
+                <id>1</id>
+                <locked>true</locked>
+                <items/>
+            </value>
+        </entry>
+        <entry key="2">
+            <value>
+                <id>2</id>
+                <locked>true</locked>
+                <items/>
+            </value>
+        </entry>
+        <entry key="10">
+            <value>
+                <id>10</id>
+                <locked>false</locked>
+                <items/>
+            </value>
+        </entry>
+    </tabs>
+</bagPen>

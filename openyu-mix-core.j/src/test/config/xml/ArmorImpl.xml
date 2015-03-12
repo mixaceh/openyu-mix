@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<armor>
+    <id>
+        <id>A_MARS_BODY_HEAD_E001</id>
+        <only>false</only>
+    </id>
+    <names>
+        <entry key="zh_TW">E 級頭盔</entry>
+    </names>
+    <descriptions/>
+    <itemType>ARMOR</itemType>
+    <maxAmount>0</maxAmount>
+    <price>0</price>
+    <coin>0</coin>
+    <tied>false</tied>
+    <levelType>E</levelType>
+    <positionType>BODY_HEAD</positionType>
+    <seriesType>MARS</seriesType>
+    <attributeGroup>
+        <attributes>
+            <entry key="PHYSICAL_DEFENCE">
+                <value>
+                    <id>PHYSICAL_DEFENCE</id>
+                    <point>5</point>
+                    <addPoint>0</addPoint>
+                    <addRate>0</addRate>
+                </value>
+            </entry>
+            <entry key="PHYSICAL_DODGE_RATE">
+                <value>
+                    <id>PHYSICAL_DODGE_RATE</id>
+                    <point>100</point>
+                    <addPoint>0</addPoint>
+                    <addRate>0</addRate>
+                </value>
+            </entry>
+        </attributes>
+    </attributeGroup>
+</armor>

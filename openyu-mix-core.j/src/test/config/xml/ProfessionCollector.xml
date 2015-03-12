@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<professionCollector>
+	<id>org.openyu.mix.profession.vo.ProfessionCollector</id>
+    <professionTypes key="WARRIOR">1</professionTypes>
+    <professionTypes key="ARCHER">2</professionTypes>
+    <professionTypes key="WIZARD">3</professionTypes>
+    <professionTypes key="PRIEST">4</professionTypes>
+    <professionTypes key="AIDER">5</professionTypes>
+    <professionTypes key="SUMMONER">6</professionTypes>
+    <attributeTypes key="HEALTH">1</attributeTypes>
+    <attributeTypes key="MAX_HEALTH">2</attributeTypes>
+    <attributeTypes key="MANA">3</attributeTypes>
+    <attributeTypes key="MAX_MANA">4</attributeTypes>
+    <attributeTypes key="STRENGTH">5</attributeTypes>
+    <attributeTypes key="INTELLIGENCE">6</attributeTypes>
+    <attributeTypes key="AGILITY">7</attributeTypes>
+    <attributeTypes key="CONSTITUTION">8</attributeTypes>
+    <attributeTypes key="SPIRIT">9</attributeTypes>
+    <attributeTypes key="PHYSICAL_ATTACK">10</attributeTypes>
+    <attributeTypes key="PHYSICAL_DEFENCE">11</attributeTypes>
+    <attributeTypes key="MAGIC_ATTACK">12</attributeTypes>
+    <attributeTypes key="MAGIC_DEFENCE">13</attributeTypes>
+    <professions>
+        <entry key="WARRIOR">
+            <value>
+                <professionType>WARRIOR</professionType>
+                <attributes>
+                    <entry key="MAX_HEALTH">
+                        <value>
+                            <attributeType>MAX_HEALTH</attributeType>
+                            <base>400.0</base>
+                            <numAdded>4.0</numAdded>
+                            <percentAdded>0.0</percentAdded>
+                        </value>
+                    </entry>
+                    <entry key="MAX_MANA">
+                        <value>
+                            <attributeType>MAX_MANA</attributeType>
+                            <base>200.0</base>
+                            <numAdded>2.0</numAdded>
+                            <percentAdded>0.0</percentAdded>
+                        </value>
+                    </entry>
+                </attributes>
+            </value>
+        </entry>
+        <entry key="ARCHER">
+            <value>
+                <professionType>ARCHER</professionType>
+                <attributes>
+                    <entry key="MAX_HEALTH">
+                        <value>
+                            <attributeType>MAX_HEALTH</attributeType>
+                            <base>300.0</base>
+                            <numAdded>3.0</numAdded>
+                            <percentAdded>0.0</percentAdded>
+                        </value>
+                    </entry>
+                    <entry key="MAX_MANA">
+                        <value>
+                            <attributeType>MAX_MANA</attributeType>
+                            <base>600.0</base>
+                            <numAdded>6.0</numAdded>
+                            <percentAdded>0.0</percentAdded>
+                        </value>
+                    </entry>
+                </attributes>
+            </value>
+        </entry>
+    </professions>
+</professionCollector>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<validBeanCollector>
+    <id>org.openyu.commons.bean.ValidBeanCollector</id>
+    <valids>
+        <valid key="true">
+            <value>
+                <valid>true</valid>
+                <names>
+                    <entry key="zh_TW">啟用</entry>
+                    <entry key="en_US">valid</entry>
+                </names>
+            </value>
+        </valid>
+        <valid key="false">
+            <value>
+                <valid>false</valid>
+                <names>
+                    <entry key="zh_TW">停用</entry>
+                    <entry key="en_US">invalid</entry>
+                </names>
+            </value>
+        </valid>
+    </valids>
+</validBeanCollector>

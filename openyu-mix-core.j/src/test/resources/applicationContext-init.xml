@@ -1,24 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:context="http://www.springframework.org/schema/context"
-	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:p="http://www.springframework.org/schema/p"
 	xsi:schemaLocation="
              http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
-             http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
-             http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd">
+             http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd">
 
-	<!-- configHelper 
+	<!-- configHelper -->
 	<bean id="configHelper" class="org.openyu.commons.util.ConfigHelper">
 		<property name="configLocation">
 			<value>file:src/test/config/etc/config.xml</value>
 		</property>
-		-->
 		<!--  
 		<property name="log4jConfigLocation">
 			<value>classpath:log4j.properties</value>
 		</property>
 		-->
-	<!--  
 		<property name="jsonDirLocation">
 			<value>file:src/test/config/json</value>
 		</property>
@@ -44,31 +40,13 @@
 			<value>file:custom/upload</value>
 		</property>
 	</bean>
-	-->
 
 	<bean id="propertyPlaceholderConfigurer"
 		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-		<property name="order" value="1" />
-		<property name="ignoreUnresolvablePlaceholders" value="true" />
 		<property name="locations">
 			<list>
 				<value>file:src/test/config/etc/database.properties</value>
 				<value>file:src/test/config/etc/database-log.properties</value>
-				
-				<!-- hbase zookeeper -->
-				<value>file:src/test/config/etc/hbase-zookeeper.properties</value>
-				
-				<!-- hbase thrift -->
-				<value>file:src/test/config/etc/hbase-thrift.properties</value>
-
-				<!-- cassandra thrift -->
-				<value>file:src/test/config/etc/cassandra-thrift.properties</value>
-
-				<!-- commons net ftp -->
-				<value>file:src/test/config/etc/commons-net-ftp.properties</value>
-
-				<!--  rabbit mq -->
-				<value>file:src/test/config/etc/rabbitmq.properties</value>
 			</list>
 		</property>
 	</bean>
@@ -80,46 +58,19 @@
 		<property name="locations">
 			<list>
 				<value>file:src/test/config/etc/authKeyService.properties</value>
+				<value>file:src/test/config/etc/protocolService.properties</value>
+				<value>file:src/test/config/etc/acceptorService.properties</value>
 			</list>
 		</property>
 	</bean>
 
-	<!-- must be beanName.property=value   -->
 	<bean id="propertyOverrideConfigurer"
 		class="org.springframework.beans.factory.config.PropertyOverrideConfigurer">
 		<property name="locations">
 			<list>
 			</list>
 		</property>
-	</bean>  	
-
-    <!--  
-	<bean id="cacheProvider" class="org.openyu.commons.hibernate.EhCacheProvider">
-		<property name="cacheManagerName">
-			<value>cacheProvider</value>
-		</property>
-		<property name="configLocation">
-			<value>classpath:ehcache.xml</value>
-		</property>
-		<property name="diskStoreLocation">
-			<value>file:ehcache</value>
-		</property>
-	</bean>
-	-->
-
-	<!--  
-	<bean id="logCacheProvider" class="org.openyu.commons.hibernate.EhCacheProvider">
-		<property name="cacheManagerName">
-			<value>logCacheProvider</value>
-		</property>
-		<property name="configLocation">
-			<value>classpath:ehcache-log.xml</value>
-		</property>
-		<property name="diskStoreLocation">
-			<value>file:ehcache-log</value>
-		</property>
-	</bean>
-	-->
+	</bean>  		
 
 	<!-- velocity -->
 	<bean id="velocityEngine" class="org.springframework.ui.velocity.VelocityEngineFactoryBean">
@@ -127,14 +78,14 @@
 		<property name="configLocation" value="file:src/test/config/etc/velocity.properties" />
 	</bean>
 
-	<!-- freemarker -->
+	<!-- freeMarker -->
 	<bean id="freeMarkerConfiguration"
 		class="org.springframework.ui.freemarker.FreeMarkerConfigurationFactoryBean">
 		<property name="templateLoaderPath" value="file:custom/template/ftl" />
 		<property name="configLocation" value="file:src/test/config/etc/freemarker.properties" />
 	</bean>
-
-	<!-- annotation -->
+	
+	<!-- autowired -->
 	<bean
 		class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor" />
 

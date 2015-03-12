@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding='UTF-8'?>
+<config>
+
+	<!-- 代理 -->
+	<agentHelper>
+		<hotfixDir>hotfix</hotfixDir>
+		<interval>5000</interval>
+	</agentHelper>
+
+</config>

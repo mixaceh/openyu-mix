@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<race>
+    <id>RONG</id>
+    <attributeGroup>
+        <attributes>
+            <entry key="MAX_HEALTH">
+                <value>
+                    <id>MAX_HEALTH</id>
+                    <point>800</point>
+                    <addPoint>4</addPoint>
+                    <addRate>10</addRate>
+                </value>
+            </entry>
+            <entry key="MAX_MANA">
+                <value>
+                    <id>MAX_MANA</id>
+                    <point>500</point>
+                    <addPoint>2</addPoint>
+                    <addRate>10</addRate>
+                </value>
+            </entry>
+        </attributes>
+    </attributeGroup>
+</race>

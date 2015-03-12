@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<wuxingCollector>
+    <id>org.openyu.mix.wuxing.vo.WuxingCollector</id>
+    <wuxingTypes key="METAL">1</wuxingTypes>
+    <wuxingTypes key="WOOD">2</wuxingTypes>
+    <wuxingTypes key="EARTH">3</wuxingTypes>
+    <wuxingTypes key="WATER">4</wuxingTypes>
+    <wuxingTypes key="FIRE">5</wuxingTypes>
+    <descriptions>
+        <entry key="zh_TW">金木水火土,相生相剋時,有機會獲得祝福的強化防具捲</entry>
+        <entry key="zh_CN">金木水火土,相生相克时,有机会获得祝福的强化防具卷</entry>
+    </descriptions>
+    <levelLimit>25</levelLimit>
+    <playGold>3500000</playGold>
+    <dailyTimes>10</dailyTimes>
+    <playItem>T_WUXING_PLAY_G001</playItem>
+    <playCoin>70</playCoin>
+    <finalPrizes>
+        <entry key="5">
+            <value>
+                <id>5</id>
+                <level>1</level>
+                <awards>
+                    <entry>
+                        <key>T_ENHANCE_ARMOR_A_B001</key>
+                        <value>1</value>
+                    </entry>
+                </awards>
+                <famous>true</famous>
+            </value>
+        </entry>
+        <entry key="4">
+            <value>
+                <id>4</id>
+                <level>2</level>
+                <awards>
+                    <entry>
+                        <key>T_ENHANCE_ARMOR_B_B001</key>
+                        <value>1</value>
+                    </entry>
+                </awards>
+                <famous>true</famous>
+            </value>
+        </entry>
+        <entry key="3">
+            <value>
+                <id>3</id>
+                <level>3</level>
+                <awards>
+                    <entry>
+                        <key>T_ENHANCE_ARMOR_D_G001</key>
+                        <value>1</value>
+                    </entry>
+                </awards>
+                <famous>false</famous>
+            </value>
+        </entry>
+        <entry key="2">
+            <value>
+                <id>2</id>
+                <level>4</level>
+                <awards>
+                    <entry>
+                        <key>T_ENHANCE_ARMOR_E_G001</key>
+                        <value>1</value>
+                    </entry>
+                </awards>
+                <famous>false</famous>
+            </value>
+        </entry>
+        <entry key="1">
+            <value>
+                <id>1</id>
+                <level>5</level>
+                <awards>
+                    <entry>
+                        <key>T_ROLE_SP_G001</key>
+                        <value>1</value>
+                    </entry>
+                </awards>
+                <famous>false</famous>
+            </value>
+        </entry>
+        <entry key="0">
+            <value>
+                <id>0</id>
+                <level>6</level>
+                <awards>
+                    <entry>
+                        <key>T_ROLE_SP_G001</key>
+                        <value>1</value>
+                    </entry>
+                </awards>
+                <famous>false</famous>
+            </value>
+        </entry>
+    </finalPrizes>
+    <birthPrizes>
+        <entry key="5">
+            <value>
+                <id>5</id>
+                <level>1</level>
+                <awards>
+                    <entry>
+                        <key>T_ENHANCE_ARMOR_A_G001</key>
+                        <value>1</value>
+                    </entry>
+                </awards>
+                <famous>true</famous>
+            </value>
+        </entry>
+        <entry key="4">
+            <value>
+                <id>4</id>
+                <level>2</level>
+                <awards>
+                    <entry>
+                        <key>T_ENHANCE_ARMOR_B_G001</key>
+                        <value>1</value>
+                    </entry>
+                </awards>
+                <famous>true</famous>
+            </value>
+        </entry>
+        <entry key="3">
+            <value>
+                <id>3</id>
+                <level>3</level>
+                <awards>
+                    <entry>
+                        <key>T_ENHANCE_ARMOR_C_G001</key>
+                        <value>1</value>
+                    </entry>
+                </awards>
+                <famous>false</famous>
+            </value>
+        </entry>
+    </birthPrizes>
+    <tiePrizes>
+        <entry key="5">
+            <value>
+                <id>5</id>
+                <level>1</level>
+                <awards>
+                    <entry>
+                        <key>T_ROLE_SP_G003</key>
+                        <value>1</value>
+                    </entry>
+                </awards>
+                <famous>true</famous>
+            </value>
+        </entry>
+        <entry key="4">
+            <value>
+                <id>4</id>
+                <level>2</level>
+                <awards>
+                    <entry>
+                        <key>T_ROLE_SP_G002</key>
+                        <value>1</value>
+                    </entry>
+                </awards>
+                <famous>false</famous>
+            </value>
+        </entry>
+        <entry key="3">
+            <value>
+                <id>3</id>
+                <level>3</level>
+                <awards>
+                    <entry>
+                        <key>T_ROLE_SP_G001</key>
+                        <value>1</value>
+                    </entry>
+                </awards>
+                <famous>false</famous>
+            </value>
+        </entry>
+    </tiePrizes>
+</wuxingCollector>

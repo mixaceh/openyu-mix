@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:jaxws="http://cxf.apache.org/jaxws"
+	xsi:schemaLocation="
+             http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+             http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd
+             http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd
+             http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd">
+
+	<!-- 每天 0時0分0秒 執行 -->
+	<bean id="coreDay0000Job" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+		<property name="jobClass">
+			<value>org.openyu.mix.core.service.impl.CoreServiceImpl.Day0000Job
+			</value>
+		</property>
+		<property name="jobDataAsMap">
+			<map>
+				<entry key="disable" value="false" />
+				<entry key="logEnable" value="true" />
+				<entry key="coreService">
+					<ref bean="coreService" />
+				</entry>
+			</map>
+		</property>
+	</bean>
+
+	<bean id="coreDay0000Trigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail">
+			<ref bean="coreDay0000Job" />
+		</property>
+		<property name="cronExpression">
+			<value>0 0 0 * * ? *</value>
+		</property>
+	</bean>
+
+	<!-- 每天 3時0分0秒 執行 -->
+	<bean id="coreDay0003Job" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+		<property name="jobClass">
+			<value>org.openyu.mix.core.service.impl.CoreServiceImpl.Day0003Job
+			</value>
+		</property>
+		<property name="jobDataAsMap">
+			<map>
+				<entry key="disable" value="false" />
+				<entry key="logEnable" value="true" />
+				<entry key="coreService">
+					<ref bean="coreService" />
+				</entry>
+			</map>
+		</property>
+	</bean>
+
+	<bean id="coreDay0003Trigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail">
+			<ref bean="coreDay0003Job" />
+		</property>
+		<property name="cronExpression">
+			<value>0 0 3 * * ? *</value>
+		</property>
+	</bean>
+
+	<!-- 每天 7時0分0秒 執行 -->
+	<bean id="coreDay0007Job" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+		<property name="jobClass">
+			<value>org.openyu.mix.core.service.impl.CoreServiceImpl.Day0007Job
+			</value>
+		</property>
+		<property name="jobDataAsMap">
+			<map>
+				<entry key="disable" value="false" />
+				<entry key="logEnable" value="true" />
+				<entry key="coreService">
+					<ref bean="coreService" />
+				</entry>
+			</map>
+		</property>
+	</bean>
+
+	<bean id="coreDay0007Trigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail">
+			<ref bean="coreDay0007Job" />
+		</property>
+		<property name="cronExpression">
+			<value>0 0 7 * * ? *</value>
+		</property>
+	</bean>
+	
+	<!-- schedule -->
+	<bean id="stdScheduler"
+		class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<property name="triggers">
+			<list>
+				<ref bean="coreDay0000Trigger" />
+				<ref bean="coreDay0003Trigger" />
+				<ref bean="coreDay0007Trigger" />
+			</list>
+		</property>
+	</bean>
+	
+</beans>

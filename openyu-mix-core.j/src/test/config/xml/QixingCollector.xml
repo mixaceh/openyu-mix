@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<qixingCollector>
+    <id>org.openyu.mix.qixing.vo.QixingCollector</id>
+    <qixingTypes key="TIANSHU">1</qixingTypes>
+    <qixingTypes key="TIANXUAN">2</qixingTypes>
+    <qixingTypes key="TIANCHI">3</qixingTypes>
+    <qixingTypes key="TIANQUAN">4</qixingTypes>
+    <qixingTypes key="YUHENG">5</qixingTypes>
+    <qixingTypes key="KAIYANG">6</qixingTypes>
+    <qixingTypes key="YAOQUANG">7</qixingTypes>
+    <descriptions>
+        <entry key="zh_TW">在夜空下出現閃亮的七星時，許下三個願望，有機會獲得憧憬技魂之力。</entry>
+        <entry key="zh_CN">在夜空下出现闪亮的七星时，许下三个愿望，有机会获得憧憬技魂之力。</entry>
+    </descriptions>
+    <levelLimit>25</levelLimit>
+    <playGold>2000000</playGold>
+    <dailyTimes>10</dailyTimes>
+    <playItem>T_QIXING_PLAY_G001</playItem>
+    <playCoin>40</playCoin>
+    <prizes>
+        <entry key="3">
+            <value>
+                <id>3</id>
+                <only>false</only>
+                <level>3</level>
+                <famous>false</famous>
+                <awards>
+                    <entry>
+                        <key>T_ROLE_SP_G003</key>
+                        <value>1</value>
+                    </entry>
+                </awards>
+            </value>
+        </entry>
+        <entry key="2">
+            <value>
+                <id>2</id>
+                <only>false</only>
+                <level>4</level>
+                <famous>false</famous>
+                <awards>
+                    <entry>
+                        <key>T_ROLE_SP_G001</key>
+                        <value>1</value>
+                    </entry>
+                </awards>
+            </value>
+        </entry>
+        <entry key="1">
+            <value>
+                <id>1</id>
+                <only>false</only>
+                <level>5</level>
+                <famous>false</famous>
+                <awards>
+                    <entry>
+                        <key>T_ROLE_EXP_G001</key>
+                        <value>1</value>
+                    </entry>
+                </awards>
+            </value>
+        </entry>
+        <entry key="0">
+            <value>
+                <id>0</id>
+                <only>false</only>
+                <level>6</level>
+                <famous>false</famous>
+                <awards>
+                    <entry>
+                        <key>T_ROLE_SP_G002</key>
+                        <value>1</value>
+                    </entry>
+                </awards>
+            </value>
+        </entry>
+    </prizes>
+</qixingCollector>

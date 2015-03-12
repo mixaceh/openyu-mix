@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<equipmentCollector>
+    <id>org.openyu.mix.item.vo.EquipmentCollector</id>
+    <levelTypes key="V">181,201</levelTypes>
+    <levelTypes key="W">161,181</levelTypes>
+    <levelTypes key="X">141,161</levelTypes>
+    <levelTypes key="Y">121,141</levelTypes>
+    <levelTypes key="Z">101,121</levelTypes>
+    <levelTypes key="A">81,101</levelTypes>
+    <levelTypes key="B">61,81</levelTypes>
+    <levelTypes key="C">41,61</levelTypes>
+    <levelTypes key="D">21,41</levelTypes>
+    <levelTypes key="E">1,21</levelTypes>
+    <positionTypes key="LEFT_HAND">1</positionTypes>
+    <positionTypes key="RIGHT_HAND">2</positionTypes>
+    <positionTypes key="PAIR_HAND">3</positionTypes>
+    <positionTypes key="BODY_HEAD">11</positionTypes>
+    <positionTypes key="BODY_HAND">12</positionTypes>
+    <positionTypes key="BODY_FOOT">13</positionTypes>
+    <positionTypes key="BODY_UPPER">14</positionTypes>
+    <positionTypes key="BODY_LOWER">15</positionTypes>
+    <positionTypes key="BODY_CLOAK">16</positionTypes>
+    <positionTypes key="FITTING_HEAD_JEWELRY">21</positionTypes>
+    <positionTypes key="FITTING_BRACELET">22</positionTypes>
+    <positionTypes key="FITTING_FOOT_JEWELRY">23</positionTypes>
+    <positionTypes key="FITTING_SHAWL">24</positionTypes>
+    <positionTypes key="FITTING_BELT">25</positionTypes>
+    <positionTypes key="ACCESSORIES_NECKLACE">31</positionTypes>
+    <positionTypes key="ACCESSORIES_EARRING">32</positionTypes>
+    <positionTypes key="ACCESSORIES_RING">33</positionTypes>
+    <seriesTypes key="MARS">4</seriesTypes>
+</equipmentCollector>

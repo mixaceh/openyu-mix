@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<weapon>
+    <id>
+        <id>W_MARS_SWORD_E001</id>
+        <only>false</only>
+    </id>
+    <names>
+        <entry key="zh_TW">E 級單手劍</entry>
+    </names>
+    <descriptions/>
+    <itemType>WEAPON</itemType>
+    <maxAmount>0</maxAmount>
+    <price>0</price>
+    <coin>0</coin>
+    <tied>false</tied>
+    <levelType>E</levelType>
+    <positionType>RIGHT_HAND</positionType>
+    <seriesType>MARS</seriesType>
+    <attributeGroup>
+        <attributes>
+            <entry key="PHYSICAL_ATTACK">
+                <value>
+                    <id>PHYSICAL_ATTACK</id>
+                    <point>50</point>
+                    <addPoint>0</addPoint>
+                    <addRate>0</addRate>
+                </value>
+            </entry>
+            <entry key="PHYSICAL_CRITICAL_RATE">
+                <value>
+                    <id>PHYSICAL_CRITICAL_RATE</id>
+                    <point>5000</point>
+                    <addPoint>0</addPoint>
+                    <addRate>0</addRate>
+                </value>
+            </entry>
+            <entry key="PHYSICAL_CRITICAL_DAMAGE_RATE">
+                <value>
+                    <id>PHYSICAL_CRITICAL_DAMAGE_RATE</id>
+                    <point>5000</point>
+                    <addPoint>0</addPoint>
+                    <addRate>0</addRate>
+                </value>
+            </entry>
+            <entry key="PHYSICAL_HIT_RATE">
+                <value>
+                    <id>PHYSICAL_HIT_RATE</id>
+                    <point>8000</point>
+                    <addPoint>0</addPoint>
+                    <addRate>0</addRate>
+                </value>
+            </entry>
+            <entry key="PHYSICAL_ATTACK_SPEED">
+                <value>
+                    <id>PHYSICAL_ATTACK_SPEED</id>
+                    <point>50</point>
+                    <addPoint>0</addPoint>
+                    <addRate>0</addRate>
+                </value>
+            </entry>
+        </attributes>
+    </attributeGroup>
+    <weaponType>SWORD</weaponType>
+</weapon>

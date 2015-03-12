@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<account>
+    <id>TEST_ACCOUNT</id>
+    <names>
+        <entry key="zh_TW">測試帳號</entry>
+        <entry key="zh_CN">测试帐号</entry>
+        <entry key="en_US">Test Account</entry>
+    </names>
+    <valid>false</valid>
+    <coin>100</coin>
+    <accuCoin>12345</accuCoin>
+</account>

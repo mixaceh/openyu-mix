@@ -8,7 +8,7 @@
              http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd">
 
 	<!-- configHelper
-	<bean id="configHelper" class="org.openyu.sfc.util.ConfigHelper">
+	<bean id="configHelper" class="org.openyu.commons.util.ConfigHelper">
 		<property name="configLocation">
 			<value>file:../etc/config.xml</value>
 		</property>
@@ -90,7 +90,7 @@
 	</bean>  	
 
     <!--  
-	<bean id="cacheProvider" class="org.openyu.sfc.hibernate.EhCacheProvider">
+	<bean id="cacheProvider" class="org.openyu.commons.hibernate.EhCacheProvider">
 		<property name="cacheManagerName">
 			<value>cacheProvider</value>
 		</property>
@@ -104,7 +104,7 @@
 	-->
 
 	<!--  
-	<bean id="logCacheProvider" class="org.openyu.sfc.hibernate.EhCacheProvider">
+	<bean id="logCacheProvider" class="org.openyu.commons.hibernate.EhCacheProvider">
 		<property name="cacheManagerName">
 			<value>logCacheProvider</value>
 		</property>

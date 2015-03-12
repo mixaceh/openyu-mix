@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<attributeGroup>
+    <attributes>
+        <entry key="MAX_HEALTH">
+            <value>
+                <id>MAX_HEALTH</id>
+                <point>410</point>
+                <addPoint>4</addPoint>
+                <addRate>10</addRate>
+            </value>
+        </entry>
+        <entry key="MAX_MANA">
+            <value>
+                <id>MAX_MANA</id>
+                <point>210</point>
+                <addPoint>2</addPoint>
+                <addRate>5</addRate>
+            </value>
+        </entry>
+    </attributes>
+</attributeGroup>

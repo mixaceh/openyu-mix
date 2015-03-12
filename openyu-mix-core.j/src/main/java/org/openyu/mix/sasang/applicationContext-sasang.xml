@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:jaxws="http://cxf.apache.org/jaxws"
+	xsi:schemaLocation="
+             http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+             http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+             http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+             http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd">
+
+
+	<!-- service -->
+	<!-- 四象機 -->
+	<bean id="sasangMachine" class="org.openyu.mix.sasang.service.impl.SasangMachineImpl"
+		parent="baseServiceSupporter">
+	</bean>
+
+	<!-- 四象服務 -->
+	<bean id="sasangService" class="org.openyu.mix.sasang.service.impl.SasangServiceImpl"
+		parent="appServiceSupporter">
+	</bean>
+
+	<!-- advisor -->
+	<!-- 四象玩 -->
+	<bean id="sasangPlayAdvice" class="org.openyu.mix.sasang.service.aop.SasangPlayInterceptor"
+		parent="appMethodInterceptorSupporter">
+	</bean>
+	<aop:config>
+		<aop:pointcut id="sasangPlayPointcut"
+			expression="execution(* org.openyu.mix.sasang.service.impl.SasangServiceImpl.play*(..))" />
+		<aop:advisor id="sasangPlayAdvisor" advice-ref="sasangPlayAdvice"
+			pointcut-ref="sasangPlayPointcut" />
+	</aop:config>
+
+	<!-- 四象單擊獎勵放入包包 -->
+	<bean id="sasangPutOneAdvice"
+		class="org.openyu.mix.sasang.service.aop.SasangPutOneInterceptor"
+		parent="appMethodInterceptorSupporter">
+	</bean>
+	<aop:config>
+		<aop:pointcut id="sasangPutOnePointcut"
+			expression="execution(* org.openyu.mix.sasang.service.impl.SasangServiceImpl.putOne*(..))" />
+		<aop:advisor id="sasangPutOneAdvisor" advice-ref="sasangPutOneAdvice"
+			pointcut-ref="sasangPutOnePointcut" />
+	</aop:config>
+
+	<!-- 四象所有中獎區獎勵放入包包 -->
+	<bean id="sasangPutAllAdvice"
+		class="org.openyu.mix.sasang.service.aop.SasangPutAllInterceptor"
+		parent="appMethodInterceptorSupporter">
+	</bean>
+	<aop:config>
+		<aop:pointcut id="sasangPutAllPointcut"
+			expression="execution(* org.openyu.mix.sasang.service.impl.SasangServiceImpl.putAll*(..))" />
+		<aop:advisor id="sasangPutAllAdvisor" advice-ref="sasangPutAllAdvice"
+			pointcut-ref="sasangPutAllPointcut" />
+	</aop:config>
+
+	<!-- dao -->
+	<bean id="sasangLogDao" class="org.openyu.mix.sasang.dao.impl.SasangLogDaoImpl"
+		parent="appLogDaoSupporter" />
+
+	<!-- service -->
+	<!-- 四象日誌服務 -->
+	<bean id="sasangLogService" class="org.openyu.mix.sasang.service.impl.SasangLogServiceImpl"
+		parent="appLogServiceSupporter">
+	</bean>
+
+	<!-- advisor -->
+	<aop:config>
+		<aop:pointcut id="sasangLogServiceTxPointcut" expression="bean(sasangLogService)" />
+		<aop:advisor id="sasangLogServiceTxAdvisor" advice-ref="logTxAdvice"
+			pointcut-ref="sasangLogServiceTxPointcut" />
+	</aop:config>
+
+	<!-- socklet -->
+	<bean id="sasangSocklet" class="org.openyu.mix.sasang.service.socklet.SasangSocklet"
+		parent="slaveSockletServiceSupporter">
+		<property name="id" value="SASANG" />
+	</bean>
+
+	<!-- adapter -->
+	<bean id="sasangChangeAdapter"
+		class="org.openyu.mix.sasang.service.adapter.SasangChangeAdapter">
+	</bean>
+
+</beans>

@@ -1,0 +1,132 @@
+<ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="http://ehcache.org/ehcache.xsd"
+	updateCheck="false" name="logCacheManager">
+
+	<!-- Sets the path to the directory where cache .data files are created. 
+		If the path is a Java System Property it is replaced by its value in the 
+		running VM. The following properties are translated: user.home - User's home 
+		directory user.dir - User's current working directory java.io.tmpdir - Default 
+		temp file path -->
+	<!-- <diskStore path="java.io.tmpdir" /> <diskStore path="user.dir/ehcache-log"/> -->
+	<diskStore path="../ehcache-log" />
+
+	<!--Default Cache configuration. These will applied to caches programmatically 
+		created through the CacheManager. The following attributes are required for 
+		defaultCache: maxInMemory - Sets the maximum number of objects that will 
+		be created in memory eternal - Sets whether elements are eternal. If eternal, 
+		timeouts are ignored and the element is never expired. timeToIdleSeconds 
+		- Sets the time to idle for an element before it expires. Is only used if 
+		the element is not eternal. Idle time is now - last accessed time timeToLiveSeconds 
+		- Sets the time to live for an element before it expires. Is only used if 
+		the element is not eternal. TTL is now - creation time overflowToDisk - Sets 
+		whether elements can overflow to disk when the in-memory cache has reached 
+		the maxInMemory limit. -->
+	<defaultCache maxElementsInMemory="10000" eternal="false"
+		timeToIdleSeconds="120" timeToLiveSeconds="120" overflowToDisk="true" />
+
+	<!--Predefined caches. Add your cache configuration settings here. If you 
+		do not have a configuration for your cache a WARNING will be issued when 
+		the CacheManager starts The following attributes are required for defaultCache: 
+		name - Sets the name of the cache. This is used to identify the cache. It 
+		must be unique. maxInMemory - Sets the maximum number of objects that will 
+		be created in memory eternal - Sets whether elements are eternal. If eternal, 
+		timeouts are ignored and the element is never expired. timeToIdleSeconds 
+		- Sets the time to idle for an element before it expires. Is only used if 
+		the element is not eternal. Idle time is now - last accessed time timeToLiveSeconds 
+		- Sets the time to live for an element before it expires. Is only used if 
+		the element is not eternal. TTL is now - creation time overflowToDisk - Sets 
+		whether elements can overflow to disk when the in-memory cache has reached 
+		the maxInMemory limit. -->
+
+
+	<!-- Place configuration for your caches following -->
+	<cache name="org.hibernate.cache.spi.UpdateTimestampsCache"
+		maxElementsInMemory="5000" eternal="false" timeToIdleSeconds="300"
+		timeToLiveSeconds="3600" overflowToDisk="true" />
+
+	<cache name="org.hibernate.cache.internal.StandardQueryCache"
+		maxElementsInMemory="10000" eternal="false" timeToIdleSeconds="300"
+		timeToLiveSeconds="3600" overflowToDisk="true" />
+
+	<!-- mix log -->
+	<cache name="org.openyu.mix.core.log.impl.CoreConnectLogImpl"
+		maxElementsInMemory="100" eternal="false" timeToIdleSeconds="180"
+		timeToLiveSeconds="600" overflowToDisk="true" diskPersistent="false" />
+
+	<cache name="org.openyu.mix.account.log.impl.AccountCoinLogImpl"
+		maxElementsInMemory="100" eternal="false" timeToIdleSeconds="180"
+		timeToLiveSeconds="600" overflowToDisk="true" diskPersistent="false" />
+
+	<cache name="org.openyu.mix.role.log.impl.RoleLevelLogImpl"
+		maxElementsInMemory="100" eternal="false" timeToIdleSeconds="180"
+		timeToLiveSeconds="600" overflowToDisk="true" diskPersistent="false" />
+
+	<cache name="org.openyu.mix.role.log.impl.RoleGoldLogImpl"
+		maxElementsInMemory="100" eternal="false" timeToIdleSeconds="180"
+		timeToLiveSeconds="600" overflowToDisk="true" diskPersistent="false" />
+
+	<cache name="org.openyu.mix.role.log.impl.RoleFameLogImpl"
+		maxElementsInMemory="100" eternal="false" timeToIdleSeconds="180"
+		timeToLiveSeconds="600" overflowToDisk="true" diskPersistent="false" />
+
+	<cache name="org.openyu.mix.item.log.impl.ItemIncreaseLogImpl"
+		maxElementsInMemory="100" eternal="false" timeToIdleSeconds="180"
+		timeToLiveSeconds="600" overflowToDisk="true" diskPersistent="false" />
+
+	<cache name="org.openyu.mix.item.log.impl.ItemDecreaseLogImpl"
+		maxElementsInMemory="100" eternal="false" timeToIdleSeconds="180"
+		timeToLiveSeconds="600" overflowToDisk="true" diskPersistent="false" />
+
+	<cache name="org.openyu.mix.item.log.impl.ItemEnhanceLogImpl"
+		maxElementsInMemory="100" eternal="false" timeToIdleSeconds="180"
+		timeToLiveSeconds="600" overflowToDisk="true" diskPersistent="false" />
+
+	<!-- 四象 -->
+	<cache name="org.openyu.mix.sasang.log.impl.SasangPlayLogImpl"
+		maxElementsInMemory="100" eternal="false" timeToIdleSeconds="180"
+		timeToLiveSeconds="600" overflowToDisk="true" diskPersistent="false" />
+
+	<cache name="org.openyu.mix.sasang.log.impl.SasangPutLogImpl"
+		maxElementsInMemory="100" eternal="false" timeToIdleSeconds="180"
+		timeToLiveSeconds="600" overflowToDisk="true" diskPersistent="false" />
+
+	<cache name="org.openyu.mix.sasang.log.impl.SasangFamousLogImpl"
+		maxElementsInMemory="100" eternal="false" timeToIdleSeconds="180"
+		timeToLiveSeconds="600" overflowToDisk="true" diskPersistent="false" />
+
+	<!-- 莊園 -->
+	<cache name="org.openyu.mix.manor.log.impl.ManorLandLogImpl"
+		maxElementsInMemory="100" eternal="false" timeToIdleSeconds="180"
+		timeToLiveSeconds="600" overflowToDisk="true" diskPersistent="false" />
+
+	<cache name="org.openyu.mix.manor.log.impl.ManorSeedLogImpl"
+		maxElementsInMemory="100" eternal="false" timeToIdleSeconds="180"
+		timeToLiveSeconds="600" overflowToDisk="true" diskPersistent="false" />
+
+	<!-- 祕寶 -->
+	<cache name="org.openyu.mix.treasure.log.impl.TreasureRefreshLogImpl"
+		maxElementsInMemory="100" eternal="false" timeToIdleSeconds="180"
+		timeToLiveSeconds="600" overflowToDisk="true" diskPersistent="false" />
+
+	<cache name="org.openyu.mix.treasure.log.impl.TreasureBuyLogImpl"
+		maxElementsInMemory="100" eternal="false" timeToIdleSeconds="180"
+		timeToLiveSeconds="600" overflowToDisk="true" diskPersistent="false" />
+
+	<!-- 訓練 -->
+	<cache name="org.openyu.mix.train.log.impl.TrainLogImpl"
+		maxElementsInMemory="100" eternal="false" timeToIdleSeconds="180"
+		timeToLiveSeconds="600" overflowToDisk="true" diskPersistent="false" />
+
+	<!-- 五行 -->
+	<cache name="org.openyu.mix.wuxing.log.impl.WuxingPlayLogImpl"
+		maxElementsInMemory="100" eternal="false" timeToIdleSeconds="180"
+		timeToLiveSeconds="600" overflowToDisk="true" diskPersistent="false" />
+
+	<cache name="org.openyu.mix.wuxing.log.impl.WuxingPutLogImpl"
+		maxElementsInMemory="100" eternal="false" timeToIdleSeconds="180"
+		timeToLiveSeconds="600" overflowToDisk="true" diskPersistent="false" />
+
+	<cache name="org.openyu.mix.wuxing.log.impl.WuxingFamousLogImpl"
+		maxElementsInMemory="100" eternal="false" timeToIdleSeconds="180"
+		timeToLiveSeconds="600" overflowToDisk="true" diskPersistent="false" />
+</ehcache>

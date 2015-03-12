@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans
+	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="
+             http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+             http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+             http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd">
+
+	<!-- service -->
+	<!-- 核心服務 -->
+	<bean
+		id="coreService"
+		class="org.openyu.mix.core.service.impl.CoreServiceImpl"
+		parent="appServiceSupporter" />
+
+	<!-- advisor -->
+	<!-- 角色連線 -->
+	<bean
+		id="coreRoleConnectAdvice"
+		class="org.openyu.mix.core.service.aop.CoreRoleConnectInterceptor"
+		parent="appMethodInterceptorSupporter" />
+
+	<aop:config>
+		<aop:pointcut
+			id="coreRoleConnectPointcut"
+			expression="execution(public * org.openyu.mix.core.service.impl.CoreServiceImpl.roleConnect*(..))" />
+		<aop:advisor
+			id="coreRoleConnectAdvisor"
+			advice-ref="coreRoleConnectAdvice"
+			pointcut-ref="coreRoleConnectPointcut" />
+	</aop:config>
+
+	<!-- 角色斷線 -->
+	<bean
+		id="coreRoleDisconnectAdvice"
+		class="org.openyu.mix.core.service.aop.CoreRoleDisconnectInterceptor"
+		parent="appMethodInterceptorSupporter" />
+
+	<aop:config>
+		<aop:pointcut
+			id="coreRoleDisconnectPointcut"
+			expression="execution(public * org.openyu.mix.core.service.impl.CoreServiceImpl.roleDisconnect*(..))" />
+		<aop:advisor
+			id="coreRoleDisconnectAdvisor"
+			advice-ref="coreRoleDisconnectAdvice"
+			pointcut-ref="coreRoleDisconnectPointcut" />
+	</aop:config>
+	
+	<!-- listener -->
+	<!-- 核心本文轉接器 -->
+	<bean
+		id="coreContextAdapter"
+		class="org.openyu.mix.core.service.adapter.CoreContextAdapter"
+		parent="systemContextAdapter" />
+	
+	<!-- 核心關連轉接器 -->
+	<bean
+		id="coreRelationAdapter"
+		class="org.openyu.mix.core.service.adapter.CoreRelationAdapter"
+		parent="systemRelationAdapter" />
+
+	<!-- 核心會話轉接器 -->
+	<bean
+		id="coreSessionAdapter"
+		class="org.openyu.mix.core.service.adapter.CoreSessionAdapter"
+		parent="systemSlaveSessionAdapter" />
+
+	<!-- dao -->
+	<bean
+		id="coreLogDao"
+		class="org.openyu.mix.core.dao.impl.CoreLogDaoImpl"
+		parent="appLogDaoSupporter" />
+
+	<!-- service -->
+	<!-- 核心日誌服務 -->
+	<bean
+		id="coreLogService"
+		class="org.openyu.mix.core.service.impl.CoreLogServiceImpl"
+		parent="appLogServiceSupporter">
+	</bean>
+	
+	<!-- socklet -->
+	<bean
+		id="coreSocklet"
+		class="org.openyu.mix.core.service.socklet.CoreSocklet"
+		parent="systemSlaveSockletServiceSupporter"
+		p:id="CORE" />
+
+</beans>

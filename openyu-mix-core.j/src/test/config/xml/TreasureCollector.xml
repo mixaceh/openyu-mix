@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<treasureCollector>
+    <id>org.openyu.mix.treasure.vo.TreasureCollector</id>
+    <descriptions>
+        <entry key="zh_TW">每隔一段時間就會隨機刷新寶物庫，出現各種不同的祕寶，有提升經驗，技魂，金幣，聲望等提昇實力道具。</entry>
+        <entry key="zh_CN">每隔一段时间就会随机刷新宝物库，出现各种不同的秘宝，有提升经验，技魂，金币，声望等提升实力道具。</entry>
+    </descriptions>
+    <levelLimit>20</levelLimit>
+    <refreshItem>T_TREASURE_REFRESH_G001</refreshItem>
+    <refreshCoin>50</refreshCoin>
+    <refreshMills>21600000</refreshMills>
+    <stocks>
+        <entry key="ROLE_EXP_001">
+            <stock>
+                <id>ROLE_EXP_001</id>
+                <only>false</only>
+                <treasures>
+                    <entry key="T_ROLE_EXP_G001">
+                        <treasure>
+                            <id>T_ROLE_EXP_G001</id>
+                            <only>false</only>
+                            <amount>3</amount>
+                            <famous>false</famous>
+                            <weight>4</weight>
+                        </treasure>
+                    </entry>
+                    <entry key="T_ROLE_EXP_G002">
+                        <treasure>
+                            <id>T_ROLE_EXP_G002</id>
+                            <only>false</only>
+                            <amount>2</amount>
+                            <famous>false</famous>
+                            <weight>2</weight>
+                        </treasure>
+                    </entry>
+                    <entry key="T_ROLE_EXP_G003">
+                        <treasure>
+                            <id>T_ROLE_EXP_G003</id>
+                            <only>false</only>
+                            <amount>1</amount>
+                            <famous>true</famous>
+                            <weight>1</weight>
+                        </treasure>
+                    </entry>
+                </treasures>
+            </stock>
+        </entry>
+        <entry key="ROLE_GOLD_001">
+            <stock>
+                <id>ROLE_GOLD_001</id>
+                <only>false</only>
+                <treasures>
+                    <entry key="T_ROLE_GOLD_G001">
+                        <treasure>
+                            <id>T_ROLE_GOLD_G001</id>
+                            <only>false</only>
+                            <amount>3</amount>
+                            <famous>false</famous>
+                            <weight>4</weight>
+                        </treasure>
+                    </entry>
+                    <entry key="T_ROLE_GOLD_G002">
+                        <treasure>
+                            <id>T_ROLE_GOLD_G002</id>
+                            <only>false</only>
+                            <amount>2</amount>
+                            <famous>false</famous>
+                            <weight>2</weight>
+                        </treasure>
+                    </entry>
+                    <entry key="T_ROLE_GOLD_G003">
+                        <treasure>
+                            <id>T_ROLE_GOLD_G003</id>
+                            <only>false</only>
+                            <amount>1</amount>
+                            <famous>true</famous>
+                            <weight>1</weight>
+                        </treasure>
+                    </entry>
+                </treasures>
+            </stock>
+        </entry>
+        <entry key="ROLE_FAME_001">
+            <stock>
+                <id>ROLE_FAME_001</id>
+                <only>false</only>
+                <treasures>
+                    <entry key="T_ROLE_FAME_G001">
+                        <treasure>
+                            <id>T_ROLE_FAME_G001</id>
+                            <only>false</only>
+                            <amount>3</amount>
+                            <famous>false</famous>
+                            <weight>4</weight>
+                        </treasure>
+                    </entry>
+                    <entry key="T_ROLE_FAME_G002">
+                        <treasure>
+                            <id>T_ROLE_FAME_G002</id>
+                            <only>false</only>
+                            <amount>2</amount>
+                            <famous>false</famous>
+                            <weight>2</weight>
+                        </treasure>
+                    </entry>
+                    <entry key="T_ROLE_FAME_G003">
+                        <treasure>
+                            <id>T_ROLE_FAME_G003</id>
+                            <only>false</only>
+                            <amount>1</amount>
+                            <famous>true</famous>
+                            <weight>1</weight>
+                        </treasure>
+                    </entry>
+                </treasures>
+            </stock>
+        </entry>
+        <entry key="ROLE_SP_001">
+            <stock>
+                <id>ROLE_SP_001</id>
+                <only>false</only>
+                <treasures>
+                    <entry key="T_ROLE_SP_G001">
+                        <treasure>
+                            <id>T_ROLE_SP_G001</id>
+                            <only>false</only>
+                            <amount>3</amount>
+                            <famous>false</famous>
+                            <weight>4</weight>
+                        </treasure>
+                    </entry>
+                    <entry key="T_ROLE_SP_G002">
+                        <treasure>
+                            <id>T_ROLE_SP_G002</id>
+                            <only>false</only>
+                            <amount>2</amount>
+                            <famous>false</famous>
+                            <weight>2</weight>
+                        </treasure>
+                    </entry>
+                    <entry key="T_ROLE_SP_G003">
+                        <treasure>
+                            <id>T_ROLE_SP_G003</id>
+                            <only>false</only>
+                            <amount>1</amount>
+                            <famous>true</famous>
+                            <weight>1</weight>
+                        </treasure>
+                    </entry>
+                </treasures>
+            </stock>
+        </entry>
+    </stocks>
+    <products>
+        <entry>
+            <key>0</key>
+            <value>ROLE_EXP_001</value>
+        </entry>
+        <entry>
+            <key>1</key>
+            <value>ROLE_GOLD_001</value>
+        </entry>
+        <entry>
+            <key>2</key>
+            <value>ROLE_FAME_001</value>
+        </entry>
+        <entry>
+            <key>3</key>
+            <value>ROLE_SP_001</value>
+        </entry>
+    </products>
+</treasureCollector>

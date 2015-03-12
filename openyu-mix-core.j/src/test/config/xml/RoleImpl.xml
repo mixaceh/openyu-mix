@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<role>
+    <id>TEST_ROLE</id>
+    <names>
+        <entry key="zh_TW">測試角色</entry>
+    </names>
+    <power>0</power>
+    <pixelX>0</pixelX>
+    <pixelY>0</pixelY>
+    <exp>100</exp>
+    <level>10</level>
+    <sp>0</sp>
+    <gold>50000</gold>
+    <fame>0</fame>
+    <attributeGroup>
+        <attributes/>
+    </attributeGroup>
+    <valid>false</valid>
+    <accountId>TEST_ACCOUNT</accountId>
+    <enterTime>1412647455078</enterTime>
+    <leaveTime>1412647455078</leaveTime>
+    <vipType>_0</vipType>
+    <equipmentGroup>
+        <attributes/>
+    </equipmentGroup>
+    <bagPen>
+        <tabs>
+            <entry key="0">
+                <value>
+                    <id>0</id>
+                    <locked>false</locked>
+                    <items/>
+                </value>
+            </entry>
+            <entry key="1">
+                <value>
+                    <id>1</id>
+                    <locked>true</locked>
+                    <items/>
+                </value>
+            </entry>
+            <entry key="2">
+                <value>
+                    <id>2</id>
+                    <locked>true</locked>
+                    <items/>
+                </value>
+            </entry>
+            <entry key="10">
+                <value>
+                    <id>10</id>
+                    <locked>false</locked>
+                    <items/>
+                </value>
+            </entry>
+        </tabs>
+    </bagPen>
+    <equipmentPen>
+        <armors/>
+        <weapons/>
+    </equipmentPen>
+    <sasangPen>
+        <playTime>0</playTime>
+        <dailyTimes>0</dailyTimes>
+        <accuTimes>0</accuTimes>
+        <outcome xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="idBeanSupporter">
+            <only>false</only>
+        </outcome>
+        <awards/>
+    </sasangPen>
+    <manorPen>
+        <farms>
+            <entry key="0">
+                <value>
+                    <id>0</id>
+                    <locked>false</locked>
+                    <seeds/>
+                </value>
+            </entry>
+            <entry key="1">
+                <value>
+                    <id>1</id>
+                    <locked>true</locked>
+                    <seeds/>
+                </value>
+            </entry>
+            <entry key="2">
+                <value>
+                    <id>2</id>
+                    <locked>true</locked>
+                    <seeds/>
+                </value>
+            </entry>
+        </farms>
+    </manorPen>
+    <treasurePen>
+        <refreshTime>0</refreshTime>
+        <treasures/>
+    </treasurePen>
+    <trainPen>
+        <joinTime>0</joinTime>
+        <quitTime>0</quitTime>
+        <dailyMills>0</dailyMills>
+        <accuMills>0</accuMills>
+        <inspireTime>0</inspireTime>
+    </trainPen>
+    <wuxingPen>
+        <playTime>0</playTime>
+        <dailyTimes>0</dailyTimes>
+        <accuTimes>0</accuTimes>
+        <outcome xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="idBeanSupporter">
+            <only>false</only>
+        </outcome>
+        <awards/>
+    </wuxingPen>
+</role>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<client>
+	<id>TEST_ROLE_SYSTEM</id>
+	<ip>127.0.0.1</ip>
+	<!-- system -->
+	<port>4090</port>
+
+	<moduleTypeName>org.openyu.mix.core.service.CoreModuleType
+	</moduleTypeName>
+	<messageTypeName>org.openyu.mix.core.service.CoreMessageType
+	</messageTypeName>
+</client>

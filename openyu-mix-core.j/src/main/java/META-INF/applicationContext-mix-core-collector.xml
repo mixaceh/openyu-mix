@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+             http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd">
+
+	<bean id="mixCollectorStarter" class="org.openyu.commons.bean.impl.CollectorStarterImpl">
+		<property name="names">
+			<list>
+				<value>org.openyu.mix.flutter.vo.RaceCollector</value>
+				<value>org.openyu.mix.flutter.vo.CareerCollector</value>
+				<!-- 行業 -->
+				<value>org.openyu.mix.flutter.vo.IndustryCollector</value>
+				<!-- vip -->
+				<value>org.openyu.mix.vip.vo.VipCollector</value>
+				<!-- 角色 -->
+				<value>org.openyu.mix.role.vo.RoleCollector</value>
+				<!-- 聊天 -->
+				<value>org.openyu.mix.chat.vo.ChatCollector</value>
+
+				<!-- 道具 -->
+				<value>org.openyu.mix.item.vo.ThingCollector</value>
+				<value>org.openyu.mix.item.vo.MaterialCollector</value>
+				<value>org.openyu.mix.item.vo.ArmorCollector</value>
+				<value>org.openyu.mix.item.vo.WeaponCollector</value>
+
+				<!-- 郵件 -->
+				<value>org.openyu.mix.mail.vo.MailCollector</value>
+				<!-- 活動 -->
+				<value>org.openyu.mix.activity.vo.ActivityCollector</value>
+
+				<!-- 四象 -->
+				<value>org.openyu.mix.sasang.vo.SasangCollector</value>
+				<!-- 莊園 -->
+				<value>org.openyu.mix.manor.vo.ManorCollector</value>
+				<!-- 祕寶 -->
+				<value>org.openyu.mix.treasure.vo.TreasureCollector</value>
+				<!-- 訓練 -->
+				<value>org.openyu.mix.train.vo.TrainCollector</value>
+				<!-- 五行 -->
+				<value>org.openyu.mix.wuxing.vo.WuxingCollector</value>
+				<!-- 七星 -->
+				<value>org.openyu.mix.qixing.vo.QixingCollector</value>
+			</list>
+		</property>
+	</bean>
+</beans>

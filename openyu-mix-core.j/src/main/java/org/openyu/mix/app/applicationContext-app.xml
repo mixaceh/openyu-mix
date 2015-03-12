@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:jaxws="http://cxf.apache.org/jaxws"
+	xsi:schemaLocation="
+             http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+             http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+             http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+             http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd">
+
+	<!-- supporter -->
+	<bean id="appMethodInterceptorSupporter"
+		class="org.openyu.mix.app.service.aop.supporter.AppMethodInterceptorSupporter"
+		parent="baseMethodInterceptorSupporter" abstract="true">
+	</bean>
+
+	<bean id="appSockletServiceSupporter"
+		class="org.openyu.mix.app.service.socklet.supporter.AppSockletServiceSupporter"
+		parent="sockletServiceSupporter" abstract="true">
+	</bean>
+
+	<!-- account -->
+	<bean id="accountSockletServiceSupporter"
+		class="org.openyu.mix.app.service.socklet.supporter.AppSockletServiceSupporter"
+		parent="appSockletServiceSupporter" abstract="true">
+		<property name="acceptors">
+			<set>
+				<value>account</value>
+			</set>
+		</property>
+	</bean>
+
+	<!-- login -->
+	<bean id="loginSockletServiceSupporter"
+		class="org.openyu.mix.app.service.socklet.supporter.AppSockletServiceSupporter"
+		parent="sockletServiceSupporter" abstract="true">
+		<property name="acceptors">
+			<set>
+				<value>login</value>
+			</set>
+		</property>
+	</bean>
+
+	<!-- system -->
+	<bean id="systemSockletServiceSupporter"
+		class="org.openyu.mix.app.service.socklet.supporter.AppSockletServiceSupporter"
+		parent="sockletServiceSupporter" abstract="true">
+		<property name="acceptors">
+			<set>
+				<value>system</value>
+			</set>
+		</property>
+	</bean>
+
+	<!-- system, slave -->
+	<bean id="systemSlaveSockletServiceSupporter"
+		class="org.openyu.mix.app.service.socklet.supporter.AppSockletServiceSupporter"
+		parent="sockletServiceSupporter" abstract="true">
+		<property name="acceptors">
+			<set>
+				<value>system</value>
+				<value>slave1</value>
+				<value>slave2</value>
+				<value>slave3</value>
+				<value>slave4</value>
+				<value>slave5</value>
+				<value>slave6</value>
+				<value>slave7</value>
+				<value>slave8</value>
+				<value>slave9</value>
+				<value>slave10</value>
+			</set>
+		</property>
+	</bean>
+
+	<!-- master -->
+	<bean id="masterSockletServiceSupporter"
+		class="org.openyu.mix.app.service.socklet.supporter.AppSockletServiceSupporter"
+		parent="sockletServiceSupporter" abstract="true">
+		<property name="acceptors">
+			<set>
+				<value>master</value>
+			</set>
+		</property>
+	</bean>
+
+	<!-- slave -->
+	<bean id="slaveSockletServiceSupporter"
+		class="org.openyu.mix.app.service.socklet.supporter.AppSockletServiceSupporter"
+		parent="sockletServiceSupporter" abstract="true">
+		<property name="acceptors">
+			<set>
+				<value>slave1</value>
+				<value>slave2</value>
+				<value>slave3</value>
+				<value>slave4</value>
+				<value>slave5</value>
+				<value>slave6</value>
+				<value>slave7</value>
+				<value>slave8</value>
+				<value>slave9</value>
+				<value>slave10</value>
+			</set>
+		</property>
+	</bean>
+
+	<!-- master, slave -->
+	<bean id="masterSlaveSockletServiceSupporter"
+		class="org.openyu.mix.app.service.socklet.supporter.AppSockletServiceSupporter"
+		parent="sockletServiceSupporter" abstract="true">
+		<property name="acceptors">
+			<set>
+				<value>master</value>
+				<value>slave1</value>
+				<value>slave2</value>
+				<value>slave3</value>
+				<value>slave4</value>
+				<value>slave5</value>
+				<value>slave6</value>
+				<value>slave7</value>
+				<value>slave8</value>
+				<value>slave9</value>
+				<value>slave10</value>
+			</set>
+		</property>
+	</bean>
+
+	<!-- service -->
+	<!-- 伺服器關連集合服務 -->
+	<bean id="relationSetService"
+		class="org.openyu.mix.system.service.impl.RelationSetServiceImpl"
+		parent="appServiceSupporter" />
+
+	<!-- 角色集合服務 -->
+	<bean id="roleSetService" class="org.openyu.mix.role.service.impl.RoleSetServiceImpl"
+		parent="appServiceSupporter" />
+
+	<!-- 聊天角色集合服務 -->
+	<bean id="chatSetService" class="org.openyu.mix.chat.service.impl.ChatSetServiceImpl"
+		parent="appServiceSupporter" />
+
+	<!-- 訓練角色集合服務 -->
+	<bean id="trainSetService" class="org.openyu.mix.train.service.impl.TrainSetServiceImpl"
+		parent="appServiceSupporter" />
+</beans>

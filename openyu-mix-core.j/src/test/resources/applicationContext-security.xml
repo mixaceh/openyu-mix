@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- - Sample namespace-based configuration - -->
+
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+	xmlns:beans="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:sec="http://www.springframework.org/schema/security"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+                        http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.0.xsd">
+
+	<sec:global-method-security
+		secured-annotations="enabled" pre-post-annotations="enabled" />
+
+	<sec:http auto-config="true">
+		<sec:intercept-url pattern="/pub/adm/**" access="ROLE_ADMIN" />
+		<sec:form-login login-page="/pub/login"
+			default-target-url="/pub/adm" />
+		<sec:logout logout-success-url="/pub/login" />
+		<sec:remember-me />
+	</sec:http>
+
+	<sec:authentication-manager>
+		<sec:authentication-provider
+			user-service-ref="userDetailsService">
+			<sec:password-encoder hash="md5" />
+		</sec:authentication-provider>
+	</sec:authentication-manager>
+
+	<beans:bean id="userDetailsService"
+		class="org.openyu.adm.login.service.impl.UserDetailsServiceImpl">
+		<beans:property name="userService" ref="userService"></beans:property>
+	</beans:bean>
+
+	<!-- struts2 -->
+	<beans:bean id="loginAction" class="org.openyu.adm.login.web.struts2.LoginAction"
+		parent="baseActionSupporter" scope="prototype">
+	</beans:bean>
+
+
+</beans:beans>

@@ -1,0 +1,390 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<armorCollector>
+    <id>org.openyu.mix.item.vo.ArmorCollector</id>
+    <levelTypes key="V">181,201</levelTypes>
+    <levelTypes key="W">161,181</levelTypes>
+    <levelTypes key="X">141,161</levelTypes>
+    <levelTypes key="Y">121,141</levelTypes>
+    <levelTypes key="Z">101,121</levelTypes>
+    <levelTypes key="A">81,101</levelTypes>
+    <levelTypes key="B">61,81</levelTypes>
+    <levelTypes key="C">41,61</levelTypes>
+    <levelTypes key="D">21,41</levelTypes>
+    <levelTypes key="E">1,21</levelTypes>
+    <positionTypes key="LEFT_HAND">1</positionTypes>
+    <positionTypes key="RIGHT_HAND">2</positionTypes>
+    <positionTypes key="PAIR_HAND">3</positionTypes>
+    <positionTypes key="BODY_HEAD">11</positionTypes>
+    <positionTypes key="BODY_HAND">12</positionTypes>
+    <positionTypes key="BODY_FOOT">13</positionTypes>
+    <positionTypes key="BODY_UPPER">14</positionTypes>
+    <positionTypes key="BODY_LOWER">15</positionTypes>
+    <positionTypes key="BODY_CLOAK">16</positionTypes>
+    <positionTypes key="FITTING_HEAD_JEWELRY">21</positionTypes>
+    <positionTypes key="FITTING_BRACELET">22</positionTypes>
+    <positionTypes key="FITTING_FOOT_JEWELRY">23</positionTypes>
+    <positionTypes key="FITTING_SHAWL">24</positionTypes>
+    <positionTypes key="FITTING_BELT">25</positionTypes>
+    <positionTypes key="ACCESSORIES_NECKLACE">31</positionTypes>
+    <positionTypes key="ACCESSORIES_EARRING">32</positionTypes>
+    <positionTypes key="ACCESSORIES_RING">33</positionTypes>
+    <seriesTypes key="MARS">4</seriesTypes>
+    <enhanceLevels key="_0">0</enhanceLevels>
+    <enhanceLevels key="_1">1</enhanceLevels>
+    <enhanceLevels key="_2">2</enhanceLevels>
+    <enhanceLevels key="_3">3</enhanceLevels>
+    <enhanceLevels key="_4">4</enhanceLevels>
+    <enhanceLevels key="_5">5</enhanceLevels>
+    <enhanceLevels key="_6">6</enhanceLevels>
+    <enhanceLevels key="_7">7</enhanceLevels>
+    <enhanceLevels key="_8">8</enhanceLevels>
+    <enhanceLevels key="_9">9</enhanceLevels>
+    <enhanceLevels key="_10">10</enhanceLevels>
+    <enhanceLevels key="_11">11</enhanceLevels>
+    <enhanceLevels key="_12">12</enhanceLevels>
+    <enhanceLevels key="_13">13</enhanceLevels>
+    <enhanceLevels key="_14">14</enhanceLevels>
+    <enhanceLevels key="_15">15</enhanceLevels>
+    <enhanceLevels key="_16">16</enhanceLevels>
+    <enhanceLevels key="_17">17</enhanceLevels>
+    <enhanceLevels key="_18">18</enhanceLevels>
+    <enhanceLevels key="_19">19</enhanceLevels>
+    <enhanceLevels key="_20">20</enhanceLevels>
+    <enhanceLevels key="_21">21</enhanceLevels>
+    <enhanceLevels key="_22">22</enhanceLevels>
+    <enhanceLevels key="_23">23</enhanceLevels>
+    <enhanceLevels key="_24">24</enhanceLevels>
+    <enhanceLevels key="_25">25</enhanceLevels>
+    <enhanceLevels key="_26">26</enhanceLevels>
+    <enhanceLevels key="_27">27</enhanceLevels>
+    <enhanceLevels key="_28">28</enhanceLevels>
+    <enhanceLevels key="_29">29</enhanceLevels>
+    <enhanceLevels key="_30">30</enhanceLevels>
+    <armors>
+        <entry key="A_MARS_BODY_HEAD_E001">
+            <value>
+                <id>
+                    <id>A_MARS_BODY_HEAD_E001</id>
+                    <only>false</only>
+                </id>
+                <names>
+                    <entry key="zh_TW">E 級頭盔</entry>
+                </names>
+                <descriptions/>
+                <itemType>ARMOR</itemType>
+                <maxAmount>0</maxAmount>
+                <price>0</price>
+                <coin>0</coin>
+                <tied>false</tied>
+                <levelType>E</levelType>
+                <positionType>BODY_HEAD</positionType>
+                <seriesType>MARS</seriesType>
+                <attributeGroup>
+                    <attributes>
+                        <entry key="PHYSICAL_DEFENCE">
+                            <value>
+<id>PHYSICAL_DEFENCE</id>
+<point>5</point>
+<addPoint>0</addPoint>
+<addRate>0</addRate>
+                            </value>
+                        </entry>
+                        <entry key="PHYSICAL_DODGE_RATE">
+                            <value>
+<id>PHYSICAL_DODGE_RATE</id>
+<point>100</point>
+<addPoint>0</addPoint>
+<addRate>0</addRate>
+                            </value>
+                        </entry>
+                    </attributes>
+                </attributeGroup>
+            </value>
+        </entry>
+        <entry key="A_MARS_BODY_HAND_E001">
+            <value>
+                <id>
+                    <id>A_MARS_BODY_HAND_E001</id>
+                    <only>false</only>
+                </id>
+                <names>
+                    <entry key="zh_TW">E 級護手</entry>
+                </names>
+                <descriptions/>
+                <itemType>ARMOR</itemType>
+                <maxAmount>0</maxAmount>
+                <price>0</price>
+                <coin>0</coin>
+                <tied>false</tied>
+                <levelType>E</levelType>
+                <positionType>BODY_HAND</positionType>
+                <seriesType>MARS</seriesType>
+                <attributeGroup>
+                    <attributes>
+                        <entry key="PHYSICAL_DEFENCE">
+                            <value>
+<id>PHYSICAL_DEFENCE</id>
+<point>5</point>
+<addPoint>0</addPoint>
+<addRate>0</addRate>
+                            </value>
+                        </entry>
+                        <entry key="PHYSICAL_DODGE_RATE">
+                            <value>
+<id>PHYSICAL_DODGE_RATE</id>
+<point>100</point>
+<addPoint>0</addPoint>
+<addRate>0</addRate>
+                            </value>
+                        </entry>
+                    </attributes>
+                </attributeGroup>
+            </value>
+        </entry>
+        <entry key="A_MARS_BODY_FOOT_E001">
+            <value>
+                <id>
+                    <id>A_MARS_BODY_FOOT_E001</id>
+                    <only>false</only>
+                </id>
+                <names>
+                    <entry key="zh_TW">E 級靴子</entry>
+                </names>
+                <descriptions/>
+                <itemType>ARMOR</itemType>
+                <maxAmount>0</maxAmount>
+                <price>0</price>
+                <coin>0</coin>
+                <tied>false</tied>
+                <levelType>E</levelType>
+                <positionType>BODY_FOOT</positionType>
+                <seriesType>MARS</seriesType>
+                <attributeGroup>
+                    <attributes>
+                        <entry key="PHYSICAL_DEFENCE">
+                            <value>
+<id>PHYSICAL_DEFENCE</id>
+<point>5</point>
+<addPoint>0</addPoint>
+<addRate>0</addRate>
+                            </value>
+                        </entry>
+                        <entry key="PHYSICAL_DODGE_RATE">
+                            <value>
+<id>PHYSICAL_DODGE_RATE</id>
+<point>100</point>
+<addPoint>0</addPoint>
+<addRate>0</addRate>
+                            </value>
+                        </entry>
+                    </attributes>
+                </attributeGroup>
+            </value>
+        </entry>
+        <entry key="A_MARS_BODY_UPPER_E001">
+            <value>
+                <id>
+                    <id>A_MARS_BODY_UPPER_E001</id>
+                    <only>false</only>
+                </id>
+                <names>
+                    <entry key="zh_TW">E 級胸甲</entry>
+                </names>
+                <descriptions/>
+                <itemType>ARMOR</itemType>
+                <maxAmount>0</maxAmount>
+                <price>0</price>
+                <coin>0</coin>
+                <tied>false</tied>
+                <levelType>E</levelType>
+                <positionType>BODY_UPPER</positionType>
+                <seriesType>MARS</seriesType>
+                <attributeGroup>
+                    <attributes>
+                        <entry key="PHYSICAL_DEFENCE">
+                            <value>
+<id>PHYSICAL_DEFENCE</id>
+<point>10</point>
+<addPoint>0</addPoint>
+<addRate>0</addRate>
+                            </value>
+                        </entry>
+                        <entry key="PHYSICAL_DODGE_RATE">
+                            <value>
+<id>PHYSICAL_DODGE_RATE</id>
+<point>200</point>
+<addPoint>0</addPoint>
+<addRate>0</addRate>
+                            </value>
+                        </entry>
+                    </attributes>
+                </attributeGroup>
+            </value>
+        </entry>
+        <entry key="A_MARS_BODY_LOWER_E001">
+            <value>
+                <id>
+                    <id>A_MARS_BODY_LOWER_E001</id>
+                    <only>false</only>
+                </id>
+                <names>
+                    <entry key="zh_TW">E 級脛甲</entry>
+                </names>
+                <descriptions/>
+                <itemType>ARMOR</itemType>
+                <maxAmount>0</maxAmount>
+                <price>0</price>
+                <coin>0</coin>
+                <tied>false</tied>
+                <levelType>E</levelType>
+                <positionType>BODY_LOWER</positionType>
+                <seriesType>MARS</seriesType>
+                <attributeGroup>
+                    <attributes>
+                        <entry key="PHYSICAL_DEFENCE">
+                            <value>
+<id>PHYSICAL_DEFENCE</id>
+<point>10</point>
+<addPoint>0</addPoint>
+<addRate>0</addRate>
+                            </value>
+                        </entry>
+                        <entry key="PHYSICAL_DODGE_RATE">
+                            <value>
+<id>PHYSICAL_DODGE_RATE</id>
+<point>200</point>
+<addPoint>0</addPoint>
+<addRate>0</addRate>
+                            </value>
+                        </entry>
+                    </attributes>
+                </attributeGroup>
+            </value>
+        </entry>
+    </armors>
+    <enhanceFactors>
+        <entry key="_1">
+            <value>
+                <point>3</point>
+                <rate>12</rate>
+                <probability>10000</probability>
+                <id>_1</id>
+            </value>
+        </entry>
+        <entry key="_2">
+            <value>
+                <point>4</point>
+                <rate>22</rate>
+                <probability>10000</probability>
+                <id>_2</id>
+            </value>
+        </entry>
+        <entry key="_3">
+            <value>
+                <point>5</point>
+                <rate>32</rate>
+                <probability>10000</probability>
+                <id>_3</id>
+            </value>
+        </entry>
+        <entry key="_4">
+            <value>
+                <point>6</point>
+                <rate>42</rate>
+                <probability>3400</probability>
+                <id>_4</id>
+            </value>
+        </entry>
+        <entry key="_5">
+            <value>
+                <point>7</point>
+                <rate>52</rate>
+                <probability>3250</probability>
+                <id>_5</id>
+            </value>
+        </entry>
+        <entry key="_6">
+            <value>
+                <point>8</point>
+                <rate>62</rate>
+                <probability>3100</probability>
+                <id>_6</id>
+            </value>
+        </entry>
+        <entry key="_7">
+            <value>
+                <point>9</point>
+                <rate>72</rate>
+                <probability>2950</probability>
+                <id>_7</id>
+            </value>
+        </entry>
+        <entry key="_8">
+            <value>
+                <point>10</point>
+                <rate>82</rate>
+                <probability>2800</probability>
+                <id>_8</id>
+            </value>
+        </entry>
+        <entry key="_9">
+            <value>
+                <point>11</point>
+                <rate>92</rate>
+                <probability>2650</probability>
+                <id>_9</id>
+            </value>
+        </entry>
+        <entry key="_10">
+            <value>
+                <point>12</point>
+                <rate>102</rate>
+                <probability>2500</probability>
+                <id>_10</id>
+            </value>
+        </entry>
+        <entry key="_11">
+            <value>
+                <point>13</point>
+                <rate>112</rate>
+                <probability>2350</probability>
+                <id>_11</id>
+            </value>
+        </entry>
+        <entry key="_12">
+            <value>
+                <point>14</point>
+                <rate>122</rate>
+                <probability>2200</probability>
+                <id>_12</id>
+            </value>
+        </entry>
+        <entry key="_13">
+            <value>
+                <point>15</point>
+                <rate>132</rate>
+                <probability>2050</probability>
+                <id>_13</id>
+            </value>
+        </entry>
+        <entry key="_14">
+            <value>
+                <point>16</point>
+                <rate>142</rate>
+                <probability>1900</probability>
+                <id>_14</id>
+            </value>
+        </entry>
+        <entry key="_15">
+            <value>
+                <point>17</point>
+                <rate>152</rate>
+                <probability>1750</probability>
+                <id>_15</id>
+            </value>
+        </entry>
+    </enhanceFactors>
+    <maxEnhanceLevel>_15</maxEnhanceLevel>
+    <safeEnhanceLevel>_3</safeEnhanceLevel>
+    <fantasyEnhanceLevel>_9</fantasyEnhanceLevel>
+</armorCollector>

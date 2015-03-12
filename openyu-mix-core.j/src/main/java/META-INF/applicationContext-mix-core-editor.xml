@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+             http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd">
+
+	<bean id="mixEditorStarter" class="org.openyu.commons.bean.impl.EditorStarterImpl">
+		<property name="names">
+			<list>
+				<!-- 四象 -->
+				<value>org.openyu.mix.sasang.vo.SasangEditor</value>
+				<!-- 莊園, 尚未完成實作, 2014/10/08
+				<value>org.openyu.mix.manor.vo.ManorEditor</value>
+				-->
+				<!-- 祕寶 -->
+				<value>org.openyu.mix.treasure.vo.TreasureEditor</value>
+				<!-- 訓練 -->
+				<value>org.openyu.mix.train.vo.TrainEditor</value>
+				<!-- 五行 -->
+				<value>org.openyu.mix.wuxing.vo.WuxingEditor</value>
+				<!-- 七星, 尚未完成實作, 2014/10/08 
+				<value>org.openyu.mix.qixing.vo.QixingEditor</value>
+				-->
+			</list>
+		</property>
+	</bean>
+</beans>

@@ -1,0 +1,333 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<raceCollector>
+    <id>org.openyu.mix.flutter.vo.RaceCollector</id>
+    <raceTypes key="YUAN">1</raceTypes>
+    <raceTypes key="RONG">2</raceTypes>
+    <raceTypes key="YI">3</raceTypes>
+    <raceTypes key="DI">4</raceTypes>
+    <raceTypes key="MAN">5</raceTypes>
+    <attributeTypes key="STRENGTH">1</attributeTypes>
+    <attributeTypes key="AGILITY">2</attributeTypes>
+    <attributeTypes key="INTELLIGENCE">3</attributeTypes>
+    <attributeTypes key="SPIRIT">4</attributeTypes>
+    <attributeTypes key="CONSTITUTION">5</attributeTypes>
+    <attributeTypes key="HEALTH">11</attributeTypes>
+    <attributeTypes key="MAX_HEALTH">12</attributeTypes>
+    <attributeTypes key="MANA">13</attributeTypes>
+    <attributeTypes key="MAX_MANA">14</attributeTypes>
+    <attributeTypes key="ENERGY">15</attributeTypes>
+    <attributeTypes key="MAX_ENERGY">16</attributeTypes>
+    <attributeTypes key="PK">17</attributeTypes>
+    <attributeTypes key="MAX_PK">18</attributeTypes>
+    <attributeTypes key="PHYSICAL_ATTACK">21</attributeTypes>
+    <attributeTypes key="PHYSICAL_CRITICAL_RATE">22</attributeTypes>
+    <attributeTypes key="PHYSICAL_CRITICAL_DAMAGE_RATE">23</attributeTypes>
+    <attributeTypes key="PHYSICAL_HIT_RATE">24</attributeTypes>
+    <attributeTypes key="PHYSICAL_ATTACK_SPEED">25</attributeTypes>
+    <attributeTypes key="PHYSICAL_DEFENCE">31</attributeTypes>
+    <attributeTypes key="PHYSICAL_DODGE_RATE">32</attributeTypes>
+    <attributeTypes key="MAGIC_ATTACK">41</attributeTypes>
+    <attributeTypes key="MAGIC_CRITICAL_RATE">42</attributeTypes>
+    <attributeTypes key="MAGIC_CRITICAL_DAMAGE_RATE">43</attributeTypes>
+    <attributeTypes key="MAGIC_HIT_RATE">44</attributeTypes>
+    <attributeTypes key="MAGIC_ATTACK_SPEED">45</attributeTypes>
+    <attributeTypes key="MAGIC_DEFENCE">51</attributeTypes>
+    <attributeTypes key="MAGIC_DODGE_RATE">52</attributeTypes>
+    <attributeTypes key="MOVE_SPEED">61</attributeTypes>
+    <attributeTypes key="MANOR_OUTPUT">201</attributeTypes>
+    <attributeTypes key="MANOR_CRITICAL_RATE">202</attributeTypes>
+    <attributeTypes key="MANOR_CRITICAL_OUTPUT_RATE">203</attributeTypes>
+    <attributeTypes key="MANOR_SPEED_RATE">204</attributeTypes>
+    <races>
+        <entry key="RONG">
+            <value>
+                <id>RONG</id>
+                <attributeGroup>
+                    <attributes>
+                        <entry key="STRENGTH">
+                            <value>
+<id>STRENGTH</id>
+<point>60</point>
+<addPoint>6</addPoint>
+<addRate>0</addRate>
+                            </value>
+                        </entry>
+                        <entry key="AGILITY">
+                            <value>
+<id>AGILITY</id>
+<point>30</point>
+<addPoint>3</addPoint>
+<addRate>0</addRate>
+                            </value>
+                        </entry>
+                        <entry key="INTELLIGENCE">
+                            <value>
+<id>INTELLIGENCE</id>
+<point>10</point>
+<addPoint>1</addPoint>
+<addRate>0</addRate>
+                            </value>
+                        </entry>
+                        <entry key="SPIRIT">
+                            <value>
+<id>SPIRIT</id>
+<point>5</point>
+<addPoint>1</addPoint>
+<addRate>0</addRate>
+                            </value>
+                        </entry>
+                        <entry key="CONSTITUTION">
+                            <value>
+<id>CONSTITUTION</id>
+<point>10</point>
+<addPoint>1</addPoint>
+<addRate>0</addRate>
+                            </value>
+                        </entry>
+                        <entry key="PHYSICAL_ATTACK">
+                            <value>
+<id>PHYSICAL_ATTACK</id>
+<point>10</point>
+<addPoint>1</addPoint>
+<addRate>0</addRate>
+                            </value>
+                        </entry>
+                        <entry key="PHYSICAL_CRITICAL_RATE">
+                            <value>
+<id>PHYSICAL_CRITICAL_RATE</id>
+<point>100</point>
+<addPoint>10</addPoint>
+<addRate>0</addRate>
+                            </value>
+                        </entry>
+                        <entry key="PHYSICAL_CRITICAL_DAMAGE_RATE">
+                            <value>
+<id>PHYSICAL_CRITICAL_DAMAGE_RATE</id>
+<point>1000</point>
+<addPoint>100</addPoint>
+<addRate>0</addRate>
+                            </value>
+                        </entry>
+                        <entry key="PHYSICAL_DEFENCE">
+                            <value>
+<id>PHYSICAL_DEFENCE</id>
+<point>20</point>
+<addPoint>2</addPoint>
+<addRate>0</addRate>
+                            </value>
+                        </entry>
+                        <entry key="PHYSICAL_DODGE_RATE">
+                            <value>
+<id>PHYSICAL_DODGE_RATE</id>
+<point>20</point>
+<addPoint>2</addPoint>
+<addRate>0</addRate>
+                            </value>
+                        </entry>
+                        <entry key="MAGIC_ATTACK">
+                            <value>
+<id>MAGIC_ATTACK</id>
+<point>5</point>
+<addPoint>1</addPoint>
+<addRate>0</addRate>
+                            </value>
+                        </entry>
+                        <entry key="MAGIC_CRITICAL_RATE">
+                            <value>
+<id>MAGIC_CRITICAL_RATE</id>
+<point>10</point>
+<addPoint>1</addPoint>
+<addRate>0</addRate>
+                            </value>
+                        </entry>
+                        <entry key="MAGIC_CRITICAL_DAMAGE_RATE">
+                            <value>
+<id>MAGIC_CRITICAL_DAMAGE_RATE</id>
+<point>100</point>
+<addPoint>10</addPoint>
+<addRate>0</addRate>
+                            </value>
+                        </entry>
+                        <entry key="MAGIC_DEFENCE">
+                            <value>
+<id>MAGIC_DEFENCE</id>
+<point>10</point>
+<addPoint>1</addPoint>
+<addRate>0</addRate>
+                            </value>
+                        </entry>
+                        <entry key="MAGIC_DODGE_RATE">
+                            <value>
+<id>MAGIC_DODGE_RATE</id>
+<point>10</point>
+<addPoint>1</addPoint>
+<addRate>0</addRate>
+                            </value>
+                        </entry>
+                        <entry key="MAX_HEALTH">
+                            <value>
+<id>MAX_HEALTH</id>
+<point>600</point>
+<addPoint>60</addPoint>
+<addRate>0</addRate>
+                            </value>
+                        </entry>
+                        <entry key="MAX_MANA">
+                            <value>
+<id>MAX_MANA</id>
+<point>300</point>
+<addPoint>30</addPoint>
+<addRate>0</addRate>
+                            </value>
+                        </entry>
+                    </attributes>
+                </attributeGroup>
+            </value>
+        </entry>
+        <entry key="YI">
+            <value>
+                <id>YI</id>
+                <attributeGroup>
+                    <attributes>
+                        <entry key="STRENGTH">
+                            <value>
+<id>STRENGTH</id>
+<point>42</point>
+<addPoint>4</addPoint>
+<addRate>0</addRate>
+                            </value>
+                        </entry>
+                        <entry key="AGILITY">
+                            <value>
+<id>AGILITY</id>
+<point>84</point>
+<addPoint>8</addPoint>
+<addRate>0</addRate>
+                            </value>
+                        </entry>
+                        <entry key="INTELLIGENCE">
+                            <value>
+<id>INTELLIGENCE</id>
+<point>10</point>
+<addPoint>1</addPoint>
+<addRate>0</addRate>
+                            </value>
+                        </entry>
+                        <entry key="SPIRIT">
+                            <value>
+<id>SPIRIT</id>
+<point>5</point>
+<addPoint>1</addPoint>
+<addRate>0</addRate>
+                            </value>
+                        </entry>
+                        <entry key="CONSTITUTION">
+                            <value>
+<id>CONSTITUTION</id>
+<point>10</point>
+<addPoint>1</addPoint>
+<addRate>0</addRate>
+                            </value>
+                        </entry>
+                        <entry key="PHYSICAL_ATTACK">
+                            <value>
+<id>PHYSICAL_ATTACK</id>
+<point>40</point>
+<addPoint>4</addPoint>
+<addRate>0</addRate>
+                            </value>
+                        </entry>
+                        <entry key="PHYSICAL_CRITICAL_RATE">
+                            <value>
+<id>PHYSICAL_CRITICAL_RATE</id>
+<point>200</point>
+<addPoint>20</addPoint>
+<addRate>0</addRate>
+                            </value>
+                        </entry>
+                        <entry key="PHYSICAL_CRITICAL_DAMAGE_RATE">
+                            <value>
+<id>PHYSICAL_CRITICAL_DAMAGE_RATE</id>
+<point>2000</point>
+<addPoint>200</addPoint>
+<addRate>0</addRate>
+                            </value>
+                        </entry>
+                        <entry key="PHYSICAL_DEFENCE">
+                            <value>
+<id>PHYSICAL_DEFENCE</id>
+<point>20</point>
+<addPoint>2</addPoint>
+<addRate>0</addRate>
+                            </value>
+                        </entry>
+                        <entry key="PHYSICAL_DODGE_RATE">
+                            <value>
+<id>PHYSICAL_DODGE_RATE</id>
+<point>20</point>
+<addPoint>2</addPoint>
+<addRate>0</addRate>
+                            </value>
+                        </entry>
+                        <entry key="MAGIC_ATTACK">
+                            <value>
+<id>MAGIC_ATTACK</id>
+<point>5</point>
+<addPoint>1</addPoint>
+<addRate>0</addRate>
+                            </value>
+                        </entry>
+                        <entry key="MAGIC_CRITICAL_RATE">
+                            <value>
+<id>MAGIC_CRITICAL_RATE</id>
+<point>10</point>
+<addPoint>1</addPoint>
+<addRate>0</addRate>
+                            </value>
+                        </entry>
+                        <entry key="MAGIC_CRITICAL_DAMAGE_RATE">
+                            <value>
+<id>MAGIC_CRITICAL_DAMAGE_RATE</id>
+<point>100</point>
+<addPoint>10</addPoint>
+<addRate>0</addRate>
+                            </value>
+                        </entry>
+                        <entry key="MAGIC_DEFENCE">
+                            <value>
+<id>MAGIC_DEFENCE</id>
+<point>10</point>
+<addPoint>1</addPoint>
+<addRate>0</addRate>
+                            </value>
+                        </entry>
+                        <entry key="MAGIC_DODGE_RATE">
+                            <value>
+<id>MAGIC_DODGE_RATE</id>
+<point>10</point>
+<addPoint>1</addPoint>
+<addRate>0</addRate>
+                            </value>
+                        </entry>
+                        <entry key="MAX_HEALTH">
+                            <value>
+<id>MAX_HEALTH</id>
+<point>420</point>
+<addPoint>42</addPoint>
+<addRate>0</addRate>
+                            </value>
+                        </entry>
+                        <entry key="MAX_MANA">
+                            <value>
+<id>MAX_MANA</id>
+<point>510</point>
+<addPoint>51</addPoint>
+<addRate>0</addRate>
+                            </value>
+                        </entry>
+                    </attributes>
+                </attributeGroup>
+            </value>
+        </entry>
+    </races>
+</raceCollector>

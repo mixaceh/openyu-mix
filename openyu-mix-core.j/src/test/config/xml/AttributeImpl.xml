@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<attribute>
+    <id>MAX_HEALTH</id>
+    <point>400</point>
+    <addPoint>4</addPoint>
+    <addRate>10</addRate>
+</attribute>

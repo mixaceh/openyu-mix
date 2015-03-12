@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:jaxws="http://cxf.apache.org/jaxws"
+	xsi:schemaLocation="
+             http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+             http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+             http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+             http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd">
+
+	<!-- service -->
+	<!-- 訓練服務 -->
+	<bean id="trainService" class="org.openyu.mix.train.service.impl.TrainServiceImpl"
+		parent="appServiceSupporter" />
+
+	<!-- advisor -->
+	<!-- 訓練鼓舞 -->
+	<bean id="trainInspireAdvice"
+		class="org.openyu.mix.train.service.aop.TrainInspireInterceptor"
+		parent="appMethodInterceptorSupporter" />
+	<aop:config>
+		<aop:pointcut id="trainInspirePointcut"
+			expression="execution(* org.openyu.mix.train.service.impl.TrainServiceImpl.inspire*(..))" />
+		<aop:advisor id="trainInspireAdvisor" advice-ref="trainInspireAdvice"
+			pointcut-ref="trainInspirePointcut" />
+	</aop:config>
+
+	<!-- dao -->
+	<bean id="trainLogDao" class="org.openyu.mix.train.dao.impl.TrainLogDaoImpl"
+		parent="appLogDaoSupporter" />
+
+	<!-- service -->
+	<!-- 訓練日誌服務 -->
+	<bean id="trainLogService" class="org.openyu.mix.train.service.impl.TrainLogServiceImpl"
+		parent="appLogServiceSupporter" />
+
+	<!-- advisor -->
+	<aop:config>
+		<aop:pointcut id="trainLogServiceTxPointcut" expression="bean(trainLogService)" />
+		<aop:advisor id="trainLogServiceTxAdvisor" advice-ref="logTxAdvice"
+			pointcut-ref="trainLogServiceTxPointcut" />
+	</aop:config>
+
+	<!-- socklet -->
+	<bean id="trainSocklet" class="org.openyu.mix.train.service.socklet.TrainSocklet"
+		parent="slaveSockletServiceSupporter">
+		<property name="id" value="TRAIN" />
+	</bean>
+
+	<!-- adapter -->
+	<bean id="trainChangeAdapter" class="org.openyu.mix.train.service.adapter.TrainChangeAdapter" />
+
+</beans>

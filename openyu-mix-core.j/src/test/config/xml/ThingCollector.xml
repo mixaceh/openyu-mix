@@ -1,0 +1,1407 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<thingCollector>
+    <id>org.openyu.mix.item.vo.ThingCollector</id>
+    <thingTypes key="POTION_HP">1</thingTypes>
+    <thingTypes key="POTION_INSTANT_HP">2</thingTypes>
+    <thingTypes key="POTION_MP">6</thingTypes>
+    <thingTypes key="POTION_INSTANT_MP">7</thingTypes>
+    <thingTypes key="BACK_TOWN">11</thingTypes>
+    <thingTypes key="BACK_INSTANT_TOWN">12</thingTypes>
+    <thingTypes key="ENHANCE_ARMOR">101</thingTypes>
+    <thingTypes key="ENHANCE_WEAPON">106</thingTypes>
+    <thingTypes key="ENHANCE_LAND">111</thingTypes>
+    <thingTypes key="ROLE_EXP">201</thingTypes>
+    <thingTypes key="ROLE_SP">202</thingTypes>
+    <thingTypes key="ROLE_GOLD">203</thingTypes>
+    <thingTypes key="ROLE_FAME">204</thingTypes>
+    <things>
+        <entry key="T_POTION_HP_G001">
+            <potionHpThing>
+                <id>
+                    <id>T_POTION_HP_G001</id>
+                    <only>false</only>
+                </id>
+                <names>
+                    <entry key="zh_TW">治癒藥水</entry>
+                </names>
+                <descriptions>
+                    <entry key="zh_TW">可少量恢復體力</entry>
+                </descriptions>
+                <itemType>THING</itemType>
+                <maxAmount>0</maxAmount>
+                <price>1000</price>
+                <coin>1</coin>
+                <tied>false</tied>
+                <thingType>POTION_HP</thingType>
+                <rate>100</rate>
+                <second>10</second>
+            </potionHpThing>
+        </entry>
+        <entry key="T_POTION_HP_G002">
+            <potionHpThing>
+                <id>
+                    <id>T_POTION_HP_G002</id>
+                    <only>false</only>
+                </id>
+                <names>
+                    <entry key="zh_TW">強力治癒藥水</entry>
+                </names>
+                <descriptions>
+                    <entry key="zh_TW">可強力恢復體力</entry>
+                </descriptions>
+                <itemType>THING</itemType>
+                <maxAmount>0</maxAmount>
+                <price>2000</price>
+                <coin>1</coin>
+                <tied>false</tied>
+                <thingType>POTION_HP</thingType>
+                <rate>200</rate>
+                <second>10</second>
+            </potionHpThing>
+        </entry>
+        <entry key="T_POTION_HP_G003">
+            <potionHpThing>
+                <id>
+                    <id>T_POTION_HP_G003</id>
+                    <only>false</only>
+                </id>
+                <names>
+                    <entry key="zh_TW">終極治癒藥水</entry>
+                </names>
+                <descriptions>
+                    <entry key="zh_TW">可大量恢復體力</entry>
+                </descriptions>
+                <itemType>THING</itemType>
+                <maxAmount>0</maxAmount>
+                <price>3000</price>
+                <coin>1</coin>
+                <tied>false</tied>
+                <thingType>POTION_HP</thingType>
+                <rate>300</rate>
+                <second>10</second>
+            </potionHpThing>
+        </entry>
+        <entry key="T_POTION_MP_G001">
+            <potionMpThing>
+                <id>
+                    <id>T_POTION_MP_G001</id>
+                    <only>false</only>
+                </id>
+                <names>
+                    <entry key="zh_TW">魔法藥水</entry>
+                </names>
+                <descriptions>
+                    <entry key="zh_TW">可少量恢復魔力</entry>
+                </descriptions>
+                <itemType>THING</itemType>
+                <maxAmount>0</maxAmount>
+                <price>1000</price>
+                <coin>1</coin>
+                <tied>false</tied>
+                <thingType>POTION_MP</thingType>
+                <rate>50</rate>
+                <second>10</second>
+            </potionMpThing>
+        </entry>
+        <entry key="T_POTION_MP_G002">
+            <potionMpThing>
+                <id>
+                    <id>T_POTION_MP_G002</id>
+                    <only>false</only>
+                </id>
+                <names>
+                    <entry key="zh_TW">強力魔法藥水</entry>
+                </names>
+                <descriptions>
+                    <entry key="zh_TW">可強力恢復魔力</entry>
+                </descriptions>
+                <itemType>THING</itemType>
+                <maxAmount>0</maxAmount>
+                <price>2000</price>
+                <coin>1</coin>
+                <tied>false</tied>
+                <thingType>POTION_MP</thingType>
+                <rate>100</rate>
+                <second>10</second>
+            </potionMpThing>
+        </entry>
+        <entry key="T_POTION_MP_G003">
+            <potionMpThing>
+                <id>
+                    <id>T_POTION_MP_G003</id>
+                    <only>false</only>
+                </id>
+                <names>
+                    <entry key="zh_TW">終極魔法藥水</entry>
+                </names>
+                <descriptions>
+                    <entry key="zh_TW">可大量恢復魔力</entry>
+                </descriptions>
+                <itemType>THING</itemType>
+                <maxAmount>0</maxAmount>
+                <price>3000</price>
+                <coin>1</coin>
+                <tied>false</tied>
+                <thingType>POTION_MP</thingType>
+                <rate>150</rate>
+                <second>10</second>
+            </potionMpThing>
+        </entry>
+        <entry key="T_POTION_INSTANT_HP_G001">
+            <potionInstantHpThing>
+                <id>
+                    <id>T_POTION_INSTANT_HP_G001</id>
+                    <only>false</only>
+                </id>
+                <names>
+                    <entry key="zh_TW">立即治癒藥水</entry>
+                </names>
+                <descriptions/>
+                <itemType>THING</itemType>
+                <maxAmount>0</maxAmount>
+                <price>50000</price>
+                <coin>1</coin>
+                <tied>false</tied>
+                <thingType>POTION_INSTANT_HP</thingType>
+                <rate>1000</rate>
+            </potionInstantHpThing>
+        </entry>
+        <entry key="T_POTION_INSTANT_HP_G002">
+            <potionInstantHpThing>
+                <id>
+                    <id>T_POTION_INSTANT_HP_G002</id>
+                    <only>false</only>
+                </id>
+                <names>
+                    <entry key="zh_TW">立即強力治癒藥水</entry>
+                </names>
+                <descriptions/>
+                <itemType>THING</itemType>
+                <maxAmount>0</maxAmount>
+                <price>100000</price>
+                <coin>2</coin>
+                <tied>false</tied>
+                <thingType>POTION_INSTANT_HP</thingType>
+                <rate>2000</rate>
+            </potionInstantHpThing>
+        </entry>
+        <entry key="T_POTION_INSTANT_HP_G003">
+            <potionInstantHpThing>
+                <id>
+                    <id>T_POTION_INSTANT_HP_G003</id>
+                    <only>false</only>
+                </id>
+                <names>
+                    <entry key="zh_TW">立即終極治癒藥水</entry>
+                </names>
+                <descriptions/>
+                <itemType>THING</itemType>
+                <maxAmount>0</maxAmount>
+                <price>300000</price>
+                <coin>6</coin>
+                <tied>false</tied>
+                <thingType>POTION_INSTANT_HP</thingType>
+                <rate>3000</rate>
+            </potionInstantHpThing>
+        </entry>
+        <entry key="T_POTION_INSTANT_MP_G001">
+            <potionInstantMpThing>
+                <id>
+                    <id>T_POTION_INSTANT_MP_G001</id>
+                    <only>false</only>
+                </id>
+                <names>
+                    <entry key="zh_TW">立即魔法藥水</entry>
+                </names>
+                <descriptions/>
+                <itemType>THING</itemType>
+                <maxAmount>0</maxAmount>
+                <price>50000</price>
+                <coin>1</coin>
+                <tied>false</tied>
+                <thingType>POTION_INSTANT_MP</thingType>
+                <rate>1000</rate>
+            </potionInstantMpThing>
+        </entry>
+        <entry key="T_POTION_INSTANT_MP_G002">
+            <potionInstantMpThing>
+                <id>
+                    <id>T_POTION_INSTANT_MP_G002</id>
+                    <only>false</only>
+                </id>
+                <names>
+                    <entry key="zh_TW">立即強力魔法藥水</entry>
+                </names>
+                <descriptions/>
+                <itemType>THING</itemType>
+                <maxAmount>0</maxAmount>
+                <price>100000</price>
+                <coin>2</coin>
+                <tied>false</tied>
+                <thingType>POTION_INSTANT_MP</thingType>
+                <rate>2000</rate>
+            </potionInstantMpThing>
+        </entry>
+        <entry key="T_POTION_INSTANT_MP_G003">
+            <potionInstantMpThing>
+                <id>
+                    <id>T_POTION_INSTANT_MP_G003</id>
+                    <only>false</only>
+                </id>
+                <names>
+                    <entry key="zh_TW">立即終極魔法藥水</entry>
+                </names>
+                <descriptions/>
+                <itemType>THING</itemType>
+                <maxAmount>0</maxAmount>
+                <price>300000</price>
+                <coin>6</coin>
+                <tied>false</tied>
+                <thingType>POTION_INSTANT_MP</thingType>
+                <rate>3000</rate>
+            </potionInstantMpThing>
+        </entry>
+        <entry key="T_BACK_TOWN_G001">
+            <backTownThing>
+                <id>
+                    <id>T_BACK_TOWN_G001</id>
+                    <only>false</only>
+                </id>
+                <names>
+                    <entry key="zh_TW">返回城鎮捲</entry>
+                </names>
+                <descriptions/>
+                <itemType>THING</itemType>
+                <maxAmount>0</maxAmount>
+                <price>1000</price>
+                <coin>1</coin>
+                <tied>false</tied>
+                <thingType>BACK_TOWN</thingType>
+                <second>10</second>
+            </backTownThing>
+        </entry>
+        <entry key="T_BACK_TOWN_G002">
+            <backTownThing>
+                <id>
+                    <id>T_BACK_TOWN_G002</id>
+                    <only>false</only>
+                </id>
+                <names>
+                    <entry key="zh_TW">返回盟屋捲</entry>
+                </names>
+                <descriptions/>
+                <itemType>THING</itemType>
+                <maxAmount>0</maxAmount>
+                <price>1000</price>
+                <coin>1</coin>
+                <tied>false</tied>
+                <thingType>BACK_TOWN</thingType>
+                <second>10</second>
+            </backTownThing>
+        </entry>
+        <entry key="T_BACK_INSTANT_TOWN_G001">
+            <backInstantTownThing>
+                <id>
+                    <id>T_BACK_INSTANT_TOWN_G001</id>
+                    <only>false</only>
+                </id>
+                <names>
+                    <entry key="zh_TW">立即返回城鎮捲</entry>
+                </names>
+                <descriptions/>
+                <itemType>THING</itemType>
+                <maxAmount>0</maxAmount>
+                <price>300000</price>
+                <coin>6</coin>
+                <tied>false</tied>
+                <thingType>BACK_INSTANT_TOWN</thingType>
+            </backInstantTownThing>
+        </entry>
+        <entry key="T_BACK_INSTANT_TOWN_G002">
+            <backInstantTownThing>
+                <id>
+                    <id>T_BACK_INSTANT_TOWN_G002</id>
+                    <only>false</only>
+                </id>
+                <names>
+                    <entry key="zh_TW">立即返回盟屋捲</entry>
+                </names>
+                <descriptions/>
+                <itemType>THING</itemType>
+                <maxAmount>0</maxAmount>
+                <price>300000</price>
+                <coin>6</coin>
+                <tied>false</tied>
+                <thingType>BACK_INSTANT_TOWN</thingType>
+            </backInstantTownThing>
+        </entry>
+        <entry key="T_ENHANCE_ARMOR_E_G001">
+            <enhanceArmorThing>
+                <id>
+                    <id>T_ENHANCE_ARMOR_E_G001</id>
+                    <only>false</only>
+                </id>
+                <names>
+                    <entry key="zh_TW">E 級強化防具捲</entry>
+                </names>
+                <descriptions/>
+                <itemType>THING</itemType>
+                <maxAmount>0</maxAmount>
+                <price>2500000</price>
+                <coin>50</coin>
+                <tied>false</tied>
+                <thingType>ENHANCE_ARMOR</thingType>
+                <enhanceType>GENERAL</enhanceType>
+                <levelType>E</levelType>
+            </enhanceArmorThing>
+        </entry>
+        <entry key="T_ENHANCE_ARMOR_E_B001">
+            <enhanceArmorThing>
+                <id>
+                    <id>T_ENHANCE_ARMOR_E_B001</id>
+                    <only>false</only>
+                </id>
+                <names>
+                    <entry key="zh_TW">祝福 E 級強化防具捲</entry>
+                </names>
+                <descriptions/>
+                <itemType>THING</itemType>
+                <maxAmount>0</maxAmount>
+                <price>10000000</price>
+                <coin>200</coin>
+                <tied>false</tied>
+                <thingType>ENHANCE_ARMOR</thingType>
+                <enhanceType>BLESS</enhanceType>
+                <levelType>E</levelType>
+            </enhanceArmorThing>
+        </entry>
+        <entry key="T_ENHANCE_ARMOR_E_F001">
+            <enhanceArmorThing>
+                <id>
+                    <id>T_ENHANCE_ARMOR_E_F001</id>
+                    <only>false</only>
+                </id>
+                <names>
+                    <entry key="zh_TW">幻想 E 級強化防具捲</entry>
+                </names>
+                <descriptions/>
+                <itemType>THING</itemType>
+                <maxAmount>0</maxAmount>
+                <price>25000000</price>
+                <coin>500</coin>
+                <tied>false</tied>
+                <thingType>ENHANCE_ARMOR</thingType>
+                <enhanceType>FANTASY</enhanceType>
+                <levelType>E</levelType>
+            </enhanceArmorThing>
+        </entry>
+        <entry key="T_ENHANCE_ARMOR_D_G001">
+            <enhanceArmorThing>
+                <id>
+                    <id>T_ENHANCE_ARMOR_D_G001</id>
+                    <only>false</only>
+                </id>
+                <names>
+                    <entry key="zh_TW">D 級強化防具捲</entry>
+                </names>
+                <descriptions/>
+                <itemType>THING</itemType>
+                <maxAmount>0</maxAmount>
+                <price>5000000</price>
+                <coin>100</coin>
+                <tied>false</tied>
+                <thingType>ENHANCE_ARMOR</thingType>
+                <enhanceType>GENERAL</enhanceType>
+                <levelType>D</levelType>
+            </enhanceArmorThing>
+        </entry>
+        <entry key="T_ENHANCE_ARMOR_D_B001">
+            <enhanceArmorThing>
+                <id>
+                    <id>T_ENHANCE_ARMOR_D_B001</id>
+                    <only>false</only>
+                </id>
+                <names>
+                    <entry key="zh_TW">祝福 D 級強化防具捲</entry>
+                </names>
+                <descriptions/>
+                <itemType>THING</itemType>
+                <maxAmount>0</maxAmount>
+                <price>20000000</price>
+                <coin>400</coin>
+                <tied>false</tied>
+                <thingType>ENHANCE_ARMOR</thingType>
+                <enhanceType>BLESS</enhanceType>
+                <levelType>D</levelType>
+            </enhanceArmorThing>
+        </entry>
+        <entry key="T_ENHANCE_ARMOR_D_F001">
+            <enhanceArmorThing>
+                <id>
+                    <id>T_ENHANCE_ARMOR_D_F001</id>
+                    <only>false</only>
+                </id>
+                <names>
+                    <entry key="zh_TW">幻想 D 級強化防具捲</entry>
+                </names>
+                <descriptions/>
+                <itemType>THING</itemType>
+                <maxAmount>0</maxAmount>
+                <price>50000000</price>
+                <coin>1000</coin>
+                <tied>false</tied>
+                <thingType>ENHANCE_ARMOR</thingType>
+                <enhanceType>FANTASY</enhanceType>
+                <levelType>D</levelType>
+            </enhanceArmorThing>
+        </entry>
+        <entry key="T_ENHANCE_ARMOR_C_G001">
+            <enhanceArmorThing>
+                <id>
+                    <id>T_ENHANCE_ARMOR_C_G001</id>
+                    <only>false</only>
+                </id>
+                <names>
+                    <entry key="zh_TW">C 級強化防具捲</entry>
+                </names>
+                <descriptions/>
+                <itemType>THING</itemType>
+                <maxAmount>0</maxAmount>
+                <price>10000000</price>
+                <coin>200</coin>
+                <tied>false</tied>
+                <thingType>ENHANCE_ARMOR</thingType>
+                <enhanceType>GENERAL</enhanceType>
+                <levelType>C</levelType>
+            </enhanceArmorThing>
+        </entry>
+        <entry key="T_ENHANCE_ARMOR_C_B001">
+            <enhanceArmorThing>
+                <id>
+                    <id>T_ENHANCE_ARMOR_C_B001</id>
+                    <only>false</only>
+                </id>
+                <names>
+                    <entry key="zh_TW">祝福 C 級強化防具捲</entry>
+                </names>
+                <descriptions/>
+                <itemType>THING</itemType>
+                <maxAmount>0</maxAmount>
+                <price>40000000</price>
+                <coin>800</coin>
+                <tied>false</tied>
+                <thingType>ENHANCE_ARMOR</thingType>
+                <enhanceType>BLESS</enhanceType>
+                <levelType>C</levelType>
+            </enhanceArmorThing>
+        </entry>
+        <entry key="T_ENHANCE_ARMOR_C_F001">
+            <enhanceArmorThing>
+                <id>
+                    <id>T_ENHANCE_ARMOR_C_F001</id>
+                    <only>false</only>
+                </id>
+                <names>
+                    <entry key="zh_TW">幻想 C 級強化防具捲</entry>
+                </names>
+                <descriptions/>
+                <itemType>THING</itemType>
+                <maxAmount>0</maxAmount>
+                <price>100000000</price>
+                <coin>2000</coin>
+                <tied>false</tied>
+                <thingType>ENHANCE_ARMOR</thingType>
+                <enhanceType>FANTASY</enhanceType>
+                <levelType>C</levelType>
+            </enhanceArmorThing>
+        </entry>
+        <entry key="T_ENHANCE_ARMOR_B_G001">
+            <enhanceArmorThing>
+                <id>
+                    <id>T_ENHANCE_ARMOR_B_G001</id>
+                    <only>false</only>
+                </id>
+                <names>
+                    <entry key="zh_TW">B 級強化防具捲</entry>
+                </names>
+                <descriptions/>
+                <itemType>THING</itemType>
+                <maxAmount>0</maxAmount>
+                <price>20000000</price>
+                <coin>400</coin>
+                <tied>false</tied>
+                <thingType>ENHANCE_ARMOR</thingType>
+                <enhanceType>GENERAL</enhanceType>
+                <levelType>B</levelType>
+            </enhanceArmorThing>
+        </entry>
+        <entry key="T_ENHANCE_ARMOR_B_B001">
+            <enhanceArmorThing>
+                <id>
+                    <id>T_ENHANCE_ARMOR_B_B001</id>
+                    <only>false</only>
+                </id>
+                <names>
+                    <entry key="zh_TW">祝福 B 級強化防具捲</entry>
+                </names>
+                <descriptions/>
+                <itemType>THING</itemType>
+                <maxAmount>0</maxAmount>
+                <price>80000000</price>
+                <coin>1600</coin>
+                <tied>false</tied>
+                <thingType>ENHANCE_ARMOR</thingType>
+                <enhanceType>BLESS</enhanceType>
+                <levelType>B</levelType>
+            </enhanceArmorThing>
+        </entry>
+        <entry key="T_ENHANCE_ARMOR_B_F001">
+            <enhanceArmorThing>
+                <id>
+                    <id>T_ENHANCE_ARMOR_B_F001</id>
+                    <only>false</only>
+                </id>
+                <names>
+                    <entry key="zh_TW">幻想 B 級強化防具捲</entry>
+                </names>
+                <descriptions/>
+                <itemType>THING</itemType>
+                <maxAmount>0</maxAmount>
+                <price>200000000</price>
+                <coin>4000</coin>
+                <tied>false</tied>
+                <thingType>ENHANCE_ARMOR</thingType>
+                <enhanceType>FANTASY</enhanceType>
+                <levelType>B</levelType>
+            </enhanceArmorThing>
+        </entry>
+        <entry key="T_ENHANCE_ARMOR_A_G001">
+            <enhanceArmorThing>
+                <id>
+                    <id>T_ENHANCE_ARMOR_A_G001</id>
+                    <only>false</only>
+                </id>
+                <names>
+                    <entry key="zh_TW">A 級強化防具捲</entry>
+                </names>
+                <descriptions/>
+                <itemType>THING</itemType>
+                <maxAmount>0</maxAmount>
+                <price>40000000</price>
+                <coin>800</coin>
+                <tied>false</tied>
+                <thingType>ENHANCE_ARMOR</thingType>
+                <enhanceType>GENERAL</enhanceType>
+                <levelType>A</levelType>
+            </enhanceArmorThing>
+        </entry>
+        <entry key="T_ENHANCE_ARMOR_A_B001">
+            <enhanceArmorThing>
+                <id>
+                    <id>T_ENHANCE_ARMOR_A_B001</id>
+                    <only>false</only>
+                </id>
+                <names>
+                    <entry key="zh_TW">祝福 A 級強化防具捲</entry>
+                </names>
+                <descriptions/>
+                <itemType>THING</itemType>
+                <maxAmount>0</maxAmount>
+                <price>160000000</price>
+                <coin>3200</coin>
+                <tied>false</tied>
+                <thingType>ENHANCE_ARMOR</thingType>
+                <enhanceType>BLESS</enhanceType>
+                <levelType>A</levelType>
+            </enhanceArmorThing>
+        </entry>
+        <entry key="T_ENHANCE_ARMOR_A_F001">
+            <enhanceArmorThing>
+                <id>
+                    <id>T_ENHANCE_ARMOR_A_F001</id>
+                    <only>false</only>
+                </id>
+                <names>
+                    <entry key="zh_TW">幻想 A 級強化防具捲</entry>
+                </names>
+                <descriptions/>
+                <itemType>THING</itemType>
+                <maxAmount>0</maxAmount>
+                <price>320000000</price>
+                <coin>8000</coin>
+                <tied>false</tied>
+                <thingType>ENHANCE_ARMOR</thingType>
+                <enhanceType>FANTASY</enhanceType>
+                <levelType>A</levelType>
+            </enhanceArmorThing>
+        </entry>
+        <entry key="T_ENHANCE_WEAPON_E_G001">
+            <enhanceWeaponThing>
+                <id>
+                    <id>T_ENHANCE_WEAPON_E_G001</id>
+                    <only>false</only>
+                </id>
+                <names>
+                    <entry key="zh_TW">E 級強化武器捲</entry>
+                </names>
+                <descriptions/>
+                <itemType>THING</itemType>
+                <maxAmount>0</maxAmount>
+                <price>5000000</price>
+                <coin>100</coin>
+                <tied>false</tied>
+                <thingType>ENHANCE_WEAPON</thingType>
+                <enhanceType>GENERAL</enhanceType>
+                <levelType>E</levelType>
+            </enhanceWeaponThing>
+        </entry>
+        <entry key="T_ENHANCE_WEAPON_E_B001">
+            <enhanceWeaponThing>
+                <id>
+                    <id>T_ENHANCE_WEAPON_E_B001</id>
+                    <only>false</only>
+                </id>
+                <names>
+                    <entry key="zh_TW">祝福 E 級強化武器捲</entry>
+                </names>
+                <descriptions/>
+                <itemType>THING</itemType>
+                <maxAmount>0</maxAmount>
+                <price>20000000</price>
+                <coin>400</coin>
+                <tied>false</tied>
+                <thingType>ENHANCE_WEAPON</thingType>
+                <enhanceType>BLESS</enhanceType>
+                <levelType>E</levelType>
+            </enhanceWeaponThing>
+        </entry>
+        <entry key="T_ENHANCE_WEAPON_E_F001">
+            <enhanceWeaponThing>
+                <id>
+                    <id>T_ENHANCE_WEAPON_E_F001</id>
+                    <only>false</only>
+                </id>
+                <names>
+                    <entry key="zh_TW">幻想 E 級強化武器捲</entry>
+                </names>
+                <descriptions/>
+                <itemType>THING</itemType>
+                <maxAmount>0</maxAmount>
+                <price>50000000</price>
+                <coin>1000</coin>
+                <tied>false</tied>
+                <thingType>ENHANCE_WEAPON</thingType>
+                <enhanceType>FANTASY</enhanceType>
+                <levelType>E</levelType>
+            </enhanceWeaponThing>
+        </entry>
+        <entry key="T_ENHANCE_WEAPON_D_G001">
+            <enhanceWeaponThing>
+                <id>
+                    <id>T_ENHANCE_WEAPON_D_G001</id>
+                    <only>false</only>
+                </id>
+                <names>
+                    <entry key="zh_TW">D 級強化武器捲</entry>
+                </names>
+                <descriptions/>
+                <itemType>THING</itemType>
+                <maxAmount>0</maxAmount>
+                <price>10000000</price>
+                <coin>200</coin>
+                <tied>false</tied>
+                <thingType>ENHANCE_WEAPON</thingType>
+                <enhanceType>GENERAL</enhanceType>
+                <levelType>D</levelType>
+            </enhanceWeaponThing>
+        </entry>
+        <entry key="T_ENHANCE_WEAPON_D_B001">
+            <enhanceWeaponThing>
+                <id>
+                    <id>T_ENHANCE_WEAPON_D_B001</id>
+                    <only>false</only>
+                </id>
+                <names>
+                    <entry key="zh_TW">祝福 D 級強化武器捲</entry>
+                </names>
+                <descriptions/>
+                <itemType>THING</itemType>
+                <maxAmount>0</maxAmount>
+                <price>40000000</price>
+                <coin>800</coin>
+                <tied>false</tied>
+                <thingType>ENHANCE_WEAPON</thingType>
+                <enhanceType>BLESS</enhanceType>
+                <levelType>D</levelType>
+            </enhanceWeaponThing>
+        </entry>
+        <entry key="T_ENHANCE_WEAPON_D_F001">
+            <enhanceWeaponThing>
+                <id>
+                    <id>T_ENHANCE_WEAPON_D_F001</id>
+                    <only>false</only>
+                </id>
+                <names>
+                    <entry key="zh_TW">幻想 D 級強化武器捲</entry>
+                </names>
+                <descriptions/>
+                <itemType>THING</itemType>
+                <maxAmount>0</maxAmount>
+                <price>100000000</price>
+                <coin>2000</coin>
+                <tied>false</tied>
+                <thingType>ENHANCE_WEAPON</thingType>
+                <enhanceType>FANTASY</enhanceType>
+                <levelType>D</levelType>
+            </enhanceWeaponThing>
+        </entry>
+        <entry key="T_ENHANCE_WEAPON_C_G001">
+            <enhanceWeaponThing>
+                <id>
+                    <id>T_ENHANCE_WEAPON_C_G001</id>
+                    <only>false</only>
+                </id>
+                <names>
+                    <entry key="zh_TW">C 級強化武器捲</entry>
+                </names>
+                <descriptions/>
+                <itemType>THING</itemType>
+                <maxAmount>0</maxAmount>
+                <price>20000000</price>
+                <coin>400</coin>
+                <tied>false</tied>
+                <thingType>ENHANCE_WEAPON</thingType>
+                <enhanceType>GENERAL</enhanceType>
+                <levelType>C</levelType>
+            </enhanceWeaponThing>
+        </entry>
+        <entry key="T_ENHANCE_WEAPON_C_B001">
+            <enhanceWeaponThing>
+                <id>
+                    <id>T_ENHANCE_WEAPON_C_B001</id>
+                    <only>false</only>
+                </id>
+                <names>
+                    <entry key="zh_TW">祝福 C 級強化武器捲</entry>
+                </names>
+                <descriptions/>
+                <itemType>THING</itemType>
+                <maxAmount>0</maxAmount>
+                <price>80000000</price>
+                <coin>1600</coin>
+                <tied>false</tied>
+                <thingType>ENHANCE_WEAPON</thingType>
+                <enhanceType>BLESS</enhanceType>
+                <levelType>C</levelType>
+            </enhanceWeaponThing>
+        </entry>
+        <entry key="T_ENHANCE_WEAPON_C_F001">
+            <enhanceWeaponThing>
+                <id>
+                    <id>T_ENHANCE_WEAPON_C_F001</id>
+                    <only>false</only>
+                </id>
+                <names>
+                    <entry key="zh_TW">幻想 C 級強化武器捲</entry>
+                </names>
+                <descriptions/>
+                <itemType>THING</itemType>
+                <maxAmount>0</maxAmount>
+                <price>200000000</price>
+                <coin>4000</coin>
+                <tied>false</tied>
+                <thingType>ENHANCE_WEAPON</thingType>
+                <enhanceType>FANTASY</enhanceType>
+                <levelType>C</levelType>
+            </enhanceWeaponThing>
+        </entry>
+        <entry key="T_ENHANCE_WEAPON_B_G001">
+            <enhanceWeaponThing>
+                <id>
+                    <id>T_ENHANCE_WEAPON_B_G001</id>
+                    <only>false</only>
+                </id>
+                <names>
+                    <entry key="zh_TW">B 級強化武器捲</entry>
+                </names>
+                <descriptions/>
+                <itemType>THING</itemType>
+                <maxAmount>0</maxAmount>
+                <price>40000000</price>
+                <coin>800</coin>
+                <tied>false</tied>
+                <thingType>ENHANCE_WEAPON</thingType>
+                <enhanceType>GENERAL</enhanceType>
+                <levelType>B</levelType>
+            </enhanceWeaponThing>
+        </entry>
+        <entry key="T_ENHANCE_WEAPON_B_B001">
+            <enhanceWeaponThing>
+                <id>
+                    <id>T_ENHANCE_WEAPON_B_B001</id>
+                    <only>false</only>
+                </id>
+                <names>
+                    <entry key="zh_TW">祝福 B 級強化武器捲</entry>
+                </names>
+                <descriptions/>
+                <itemType>THING</itemType>
+                <maxAmount>0</maxAmount>
+                <price>160000000</price>
+                <coin>3200</coin>
+                <tied>false</tied>
+                <thingType>ENHANCE_WEAPON</thingType>
+                <enhanceType>BLESS</enhanceType>
+                <levelType>B</levelType>
+            </enhanceWeaponThing>
+        </entry>
+        <entry key="T_ENHANCE_WEAPON_B_F001">
+            <enhanceWeaponThing>
+                <id>
+                    <id>T_ENHANCE_WEAPON_B_F001</id>
+                    <only>false</only>
+                </id>
+                <names>
+                    <entry key="zh_TW">幻想 B 級強化武器捲</entry>
+                </names>
+                <descriptions/>
+                <itemType>THING</itemType>
+                <maxAmount>0</maxAmount>
+                <price>400000000</price>
+                <coin>8000</coin>
+                <tied>false</tied>
+                <thingType>ENHANCE_WEAPON</thingType>
+                <enhanceType>FANTASY</enhanceType>
+                <levelType>B</levelType>
+            </enhanceWeaponThing>
+        </entry>
+        <entry key="T_ENHANCE_WEAPON_A_G001">
+            <enhanceWeaponThing>
+                <id>
+                    <id>T_ENHANCE_WEAPON_A_G001</id>
+                    <only>false</only>
+                </id>
+                <names>
+                    <entry key="zh_TW">A 級強化武器捲</entry>
+                </names>
+                <descriptions/>
+                <itemType>THING</itemType>
+                <maxAmount>0</maxAmount>
+                <price>80000000</price>
+                <coin>1600</coin>
+                <tied>false</tied>
+                <thingType>ENHANCE_WEAPON</thingType>
+                <enhanceType>GENERAL</enhanceType>
+                <levelType>A</levelType>
+            </enhanceWeaponThing>
+        </entry>
+        <entry key="T_ENHANCE_WEAPON_A_B001">
+            <enhanceWeaponThing>
+                <id>
+                    <id>T_ENHANCE_WEAPON_A_B001</id>
+                    <only>false</only>
+                </id>
+                <names>
+                    <entry key="zh_TW">祝福 A 級強化武器捲</entry>
+                </names>
+                <descriptions/>
+                <itemType>THING</itemType>
+                <maxAmount>0</maxAmount>
+                <price>320000000</price>
+                <coin>6400</coin>
+                <tied>false</tied>
+                <thingType>ENHANCE_WEAPON</thingType>
+                <enhanceType>BLESS</enhanceType>
+                <levelType>A</levelType>
+            </enhanceWeaponThing>
+        </entry>
+        <entry key="T_ENHANCE_WEAPON_A_F001">
+            <enhanceWeaponThing>
+                <id>
+                    <id>T_ENHANCE_WEAPON_A_F001</id>
+                    <only>false</only>
+                </id>
+                <names>
+                    <entry key="zh_TW">幻想 A 級強化武器捲</entry>
+                </names>
+                <descriptions/>
+                <itemType>THING</itemType>
+                <maxAmount>0</maxAmount>
+                <price>800000000</price>
+                <coin>16000</coin>
+                <tied>false</tied>
+                <thingType>ENHANCE_WEAPON</thingType>
+                <enhanceType>FANTASY</enhanceType>
+                <levelType>A</levelType>
+            </enhanceWeaponThing>
+        </entry>
+        <entry key="T_ENHANCE_LAND_G001">
+            <enhanceLandThing>
+                <id>
+                    <id>T_ENHANCE_LAND_G001</id>
+                    <only>false</only>
+                </id>
+                <names>
+                    <entry key="zh_TW">強化土地捲</entry>
+                </names>
+                <descriptions/>
+                <itemType>THING</itemType>
+                <maxAmount>0</maxAmount>
+                <price>50000000</price>
+                <coin>1000</coin>
+                <tied>false</tied>
+                <thingType>ENHANCE_LAND</thingType>
+                <enhanceType>GENERAL</enhanceType>
+            </enhanceLandThing>
+        </entry>
+        <entry key="T_ENHANCE_LAND_B001">
+            <enhanceLandThing>
+                <id>
+                    <id>T_ENHANCE_LAND_B001</id>
+                    <only>false</only>
+                </id>
+                <names>
+                    <entry key="zh_TW">祝福強化土地捲</entry>
+                </names>
+                <descriptions/>
+                <itemType>THING</itemType>
+                <maxAmount>0</maxAmount>
+                <price>200000000</price>
+                <coin>4000</coin>
+                <tied>false</tied>
+                <thingType>ENHANCE_LAND</thingType>
+                <enhanceType>BLESS</enhanceType>
+            </enhanceLandThing>
+        </entry>
+        <entry key="T_ENHANCE_LAND_F001">
+            <enhanceLandThing>
+                <id>
+                    <id>T_ENHANCE_LAND_F001</id>
+                    <only>false</only>
+                </id>
+                <names>
+                    <entry key="zh_TW">幻想強化土地捲</entry>
+                </names>
+                <descriptions/>
+                <itemType>THING</itemType>
+                <maxAmount>0</maxAmount>
+                <price>500000000</price>
+                <coin>10000</coin>
+                <tied>false</tied>
+                <thingType>ENHANCE_LAND</thingType>
+                <enhanceType>FANTASY</enhanceType>
+            </enhanceLandThing>
+        </entry>
+        <entry key="T_ROLE_EXP_G001">
+            <roleExpThing>
+                <id>
+                    <id>T_ROLE_EXP_G001</id>
+                    <only>false</only>
+                </id>
+                <names>
+                    <entry key="zh_TW">經驗之力</entry>
+                </names>
+                <descriptions/>
+                <itemType>THING</itemType>
+                <maxAmount>0</maxAmount>
+                <price>500000</price>
+                <coin>10</coin>
+                <tied>true</tied>
+                <thingType>ROLE_EXP</thingType>
+                <probability>8000</probability>
+                <exp>60000</exp>
+            </roleExpThing>
+        </entry>
+        <entry key="T_ROLE_EXP_G002">
+            <roleExpThing>
+                <id>
+                    <id>T_ROLE_EXP_G002</id>
+                    <only>false</only>
+                </id>
+                <names>
+                    <entry key="zh_TW">想願經驗之力</entry>
+                </names>
+                <descriptions/>
+                <itemType>THING</itemType>
+                <maxAmount>0</maxAmount>
+                <price>1500000</price>
+                <coin>30</coin>
+                <tied>true</tied>
+                <thingType>ROLE_EXP</thingType>
+                <probability>5000</probability>
+                <exp>270000</exp>
+            </roleExpThing>
+        </entry>
+        <entry key="T_ROLE_EXP_G003">
+            <roleExpThing>
+                <id>
+                    <id>T_ROLE_EXP_G003</id>
+                    <only>false</only>
+                </id>
+                <names>
+                    <entry key="zh_TW">憧憬經驗之力</entry>
+                </names>
+                <descriptions/>
+                <itemType>THING</itemType>
+                <maxAmount>0</maxAmount>
+                <price>5000000</price>
+                <coin>100</coin>
+                <tied>true</tied>
+                <thingType>ROLE_EXP</thingType>
+                <probability>3000</probability>
+                <exp>1500000</exp>
+            </roleExpThing>
+        </entry>
+        <entry key="T_ROLE_SP_G001">
+            <roleSpThing>
+                <id>
+                    <id>T_ROLE_SP_G001</id>
+                    <only>false</only>
+                </id>
+                <names>
+                    <entry key="zh_TW">技魂之力</entry>
+                </names>
+                <descriptions/>
+                <itemType>THING</itemType>
+                <maxAmount>0</maxAmount>
+                <price>250000</price>
+                <coin>5</coin>
+                <tied>true</tied>
+                <thingType>ROLE_SP</thingType>
+                <probability>8000</probability>
+                <sp>30000</sp>
+            </roleSpThing>
+        </entry>
+        <entry key="T_ROLE_SP_G002">
+            <roleSpThing>
+                <id>
+                    <id>T_ROLE_SP_G002</id>
+                    <only>false</only>
+                </id>
+                <names>
+                    <entry key="zh_TW">想願技魂之力</entry>
+                </names>
+                <descriptions/>
+                <itemType>THING</itemType>
+                <maxAmount>0</maxAmount>
+                <price>750000</price>
+                <coin>15</coin>
+                <tied>true</tied>
+                <thingType>ROLE_SP</thingType>
+                <probability>5000</probability>
+                <sp>120000</sp>
+            </roleSpThing>
+        </entry>
+        <entry key="T_ROLE_SP_G003">
+            <roleSpThing>
+                <id>
+                    <id>T_ROLE_SP_G003</id>
+                    <only>false</only>
+                </id>
+                <names>
+                    <entry key="zh_TW">憧憬技魂之力</entry>
+                </names>
+                <descriptions/>
+                <itemType>THING</itemType>
+                <maxAmount>0</maxAmount>
+                <price>2500000</price>
+                <coin>50</coin>
+                <tied>true</tied>
+                <thingType>ROLE_SP</thingType>
+                <probability>3000</probability>
+                <sp>700000</sp>
+            </roleSpThing>
+        </entry>
+        <entry key="T_ROLE_GOLD_G001">
+            <roleGoldThing>
+                <id>
+                    <id>T_ROLE_GOLD_G001</id>
+                    <only>false</only>
+                </id>
+                <names>
+                    <entry key="zh_TW">黃金之力</entry>
+                </names>
+                <descriptions/>
+                <itemType>THING</itemType>
+                <maxAmount>0</maxAmount>
+                <price>500000</price>
+                <coin>10</coin>
+                <tied>true</tied>
+                <thingType>ROLE_GOLD</thingType>
+                <probability>8000</probability>
+                <gold>600000</gold>
+            </roleGoldThing>
+        </entry>
+        <entry key="T_ROLE_GOLD_G002">
+            <roleGoldThing>
+                <id>
+                    <id>T_ROLE_GOLD_G002</id>
+                    <only>false</only>
+                </id>
+                <names>
+                    <entry key="zh_TW">想願黃金之力</entry>
+                </names>
+                <descriptions/>
+                <itemType>THING</itemType>
+                <maxAmount>0</maxAmount>
+                <price>1500000</price>
+                <coin>30</coin>
+                <tied>true</tied>
+                <thingType>ROLE_GOLD</thingType>
+                <probability>5000</probability>
+                <gold>2700000</gold>
+            </roleGoldThing>
+        </entry>
+        <entry key="T_ROLE_GOLD_G003">
+            <roleGoldThing>
+                <id>
+                    <id>T_ROLE_GOLD_G003</id>
+                    <only>false</only>
+                </id>
+                <names>
+                    <entry key="zh_TW">憧憬黃金之力</entry>
+                </names>
+                <descriptions/>
+                <itemType>THING</itemType>
+                <maxAmount>0</maxAmount>
+                <price>5000000</price>
+                <coin>100</coin>
+                <tied>true</tied>
+                <thingType>ROLE_GOLD</thingType>
+                <probability>3000</probability>
+                <gold>15000000</gold>
+            </roleGoldThing>
+        </entry>
+        <entry key="T_ROLE_FAME_G001">
+            <roleFameThing>
+                <id>
+                    <id>T_ROLE_FAME_G001</id>
+                    <only>false</only>
+                </id>
+                <names>
+                    <entry key="zh_TW">聲望之力</entry>
+                </names>
+                <descriptions/>
+                <itemType>THING</itemType>
+                <maxAmount>0</maxAmount>
+                <price>500000</price>
+                <coin>10</coin>
+                <tied>true</tied>
+                <thingType>ROLE_FAME</thingType>
+                <probability>8000</probability>
+                <fame>6</fame>
+            </roleFameThing>
+        </entry>
+        <entry key="T_ROLE_FAME_G002">
+            <roleFameThing>
+                <id>
+                    <id>T_ROLE_FAME_G002</id>
+                    <only>false</only>
+                </id>
+                <names>
+                    <entry key="zh_TW">想願聲望之力</entry>
+                </names>
+                <descriptions/>
+                <itemType>THING</itemType>
+                <maxAmount>0</maxAmount>
+                <price>1500000</price>
+                <coin>30</coin>
+                <tied>true</tied>
+                <thingType>ROLE_FAME</thingType>
+                <probability>5000</probability>
+                <fame>27</fame>
+            </roleFameThing>
+        </entry>
+        <entry key="T_ROLE_FAME_G003">
+            <roleFameThing>
+                <id>
+                    <id>T_ROLE_FAME_G003</id>
+                    <only>false</only>
+                </id>
+                <names>
+                    <entry key="zh_TW">憧憬聲望之力</entry>
+                </names>
+                <descriptions/>
+                <itemType>THING</itemType>
+                <maxAmount>0</maxAmount>
+                <price>5000000</price>
+                <coin>100</coin>
+                <tied>true</tied>
+                <thingType>ROLE_FAME</thingType>
+                <probability>3000</probability>
+                <fame>150</fame>
+            </roleFameThing>
+        </entry>
+        <entry key="T_SASANG_PLAY_G001">
+            <thing>
+                <id>
+                    <id>T_SASANG_PLAY_G001</id>
+                    <only>false</only>
+                </id>
+                <names>
+                    <entry key="zh_TW">四象石</entry>
+                </names>
+                <descriptions>
+                    <entry key="zh_TW">四象消耗的道具</entry>
+                </descriptions>
+                <itemType>THING</itemType>
+                <maxAmount>0</maxAmount>
+                <price>2500000</price>
+                <coin>50</coin>
+                <tied>false</tied>
+            </thing>
+        </entry>
+        <entry key="T_MANOR_WATER_G001">
+            <thing>
+                <id>
+                    <id>T_MANOR_WATER_G001</id>
+                    <only>false</only>
+                </id>
+                <names>
+                    <entry key="zh_TW">莊園澆水石</entry>
+                </names>
+                <descriptions>
+                    <entry key="zh_TW">莊園澆水消耗的道具</entry>
+                </descriptions>
+                <itemType>THING</itemType>
+                <maxAmount>0</maxAmount>
+                <price>100000</price>
+                <coin>2</coin>
+                <tied>false</tied>
+            </thing>
+        </entry>
+        <entry key="T_MANOR_PRAY_G001">
+            <thing>
+                <id>
+                    <id>T_MANOR_PRAY_G001</id>
+                    <only>false</only>
+                </id>
+                <names>
+                    <entry key="zh_TW">莊園祈禱石</entry>
+                </names>
+                <descriptions>
+                    <entry key="zh_TW">莊園祈禱消耗的道具</entry>
+                </descriptions>
+                <itemType>THING</itemType>
+                <maxAmount>0</maxAmount>
+                <price>250000</price>
+                <coin>5</coin>
+                <tied>false</tied>
+            </thing>
+        </entry>
+        <entry key="T_MANOR_SPEED_G001">
+            <thing>
+                <id>
+                    <id>T_MANOR_SPEED_G001</id>
+                    <only>false</only>
+                </id>
+                <names>
+                    <entry key="zh_TW">莊園加速石</entry>
+                </names>
+                <descriptions>
+                    <entry key="zh_TW">莊園加速消耗的道具</entry>
+                </descriptions>
+                <itemType>THING</itemType>
+                <maxAmount>0</maxAmount>
+                <price>750000</price>
+                <coin>15</coin>
+                <tied>false</tied>
+            </thing>
+        </entry>
+        <entry key="T_MANOR_REVIVE_G001">
+            <thing>
+                <id>
+                    <id>T_MANOR_REVIVE_G001</id>
+                    <only>false</only>
+                </id>
+                <names>
+                    <entry key="zh_TW">莊園復活石</entry>
+                </names>
+                <descriptions>
+                    <entry key="zh_TW">莊園復活速消耗的道具</entry>
+                </descriptions>
+                <itemType>THING</itemType>
+                <maxAmount>0</maxAmount>
+                <price>250000</price>
+                <coin>5</coin>
+                <tied>false</tied>
+            </thing>
+        </entry>
+        <entry key="T_TREASURE_REFRESH_G001">
+            <thing>
+                <id>
+                    <id>T_TREASURE_REFRESH_G001</id>
+                    <only>false</only>
+                </id>
+                <names>
+                    <entry key="zh_TW">祕寶刷新石</entry>
+                </names>
+                <descriptions>
+                    <entry key="zh_TW">祕寶刷新消耗的道具</entry>
+                </descriptions>
+                <itemType>THING</itemType>
+                <maxAmount>0</maxAmount>
+                <price>2500000</price>
+                <coin>50</coin>
+                <tied>false</tied>
+            </thing>
+        </entry>
+        <entry key="T_TRAIN_INSPIRE_G001">
+            <thing>
+                <id>
+                    <id>T_TRAIN_INSPIRE_G001</id>
+                    <only>false</only>
+                </id>
+                <names>
+                    <entry key="zh_TW">訓練鼓舞石</entry>
+                </names>
+                <descriptions>
+                    <entry key="zh_TW">訓練鼓舞消耗的道具</entry>
+                </descriptions>
+                <itemType>THING</itemType>
+                <maxAmount>0</maxAmount>
+                <price>10000000</price>
+                <coin>200</coin>
+                <tied>false</tied>
+            </thing>
+        </entry>
+        <entry key="T_WUXING_PLAY_G001">
+            <thing>
+                <id>
+                    <id>T_WUXING_PLAY_G001</id>
+                    <only>false</only>
+                </id>
+                <names>
+                    <entry key="zh_TW">五行石</entry>
+                </names>
+                <descriptions>
+                    <entry key="zh_TW">五行消耗的道具</entry>
+                </descriptions>
+                <itemType>THING</itemType>
+                <maxAmount>0</maxAmount>
+                <price>3500000</price>
+                <coin>70</coin>
+                <tied>false</tied>
+            </thing>
+        </entry>
+        <entry key="T_QIXING_PLAY_G001">
+            <thing>
+                <id>
+                    <id>T_QIXING_PLAY_G001</id>
+                    <only>false</only>
+                </id>
+                <names>
+                    <entry key="zh_TW">七星石</entry>
+                </names>
+                <descriptions>
+                    <entry key="zh_TW">七星消耗的道具</entry>
+                </descriptions>
+                <itemType>THING</itemType>
+                <maxAmount>0</maxAmount>
+                <price>2000000</price>
+                <coin>40</coin>
+                <tied>false</tied>
+            </thing>
+        </entry>
+    </things>
+</thingCollector>

@@ -1,0 +1,649 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<weaponCollector>
+    <id>org.openyu.mix.item.vo.WeaponCollector</id>
+    <levelTypes key="V">181,201</levelTypes>
+    <levelTypes key="W">161,181</levelTypes>
+    <levelTypes key="X">141,161</levelTypes>
+    <levelTypes key="Y">121,141</levelTypes>
+    <levelTypes key="Z">101,121</levelTypes>
+    <levelTypes key="A">81,101</levelTypes>
+    <levelTypes key="B">61,81</levelTypes>
+    <levelTypes key="C">41,61</levelTypes>
+    <levelTypes key="D">21,41</levelTypes>
+    <levelTypes key="E">1,21</levelTypes>
+    <positionTypes key="LEFT_HAND">1</positionTypes>
+    <positionTypes key="RIGHT_HAND">2</positionTypes>
+    <positionTypes key="PAIR_HAND">3</positionTypes>
+    <positionTypes key="BODY_HEAD">11</positionTypes>
+    <positionTypes key="BODY_HAND">12</positionTypes>
+    <positionTypes key="BODY_FOOT">13</positionTypes>
+    <positionTypes key="BODY_UPPER">14</positionTypes>
+    <positionTypes key="BODY_LOWER">15</positionTypes>
+    <positionTypes key="BODY_CLOAK">16</positionTypes>
+    <positionTypes key="FITTING_HEAD_JEWELRY">21</positionTypes>
+    <positionTypes key="FITTING_BRACELET">22</positionTypes>
+    <positionTypes key="FITTING_FOOT_JEWELRY">23</positionTypes>
+    <positionTypes key="FITTING_SHAWL">24</positionTypes>
+    <positionTypes key="FITTING_BELT">25</positionTypes>
+    <positionTypes key="ACCESSORIES_NECKLACE">31</positionTypes>
+    <positionTypes key="ACCESSORIES_EARRING">32</positionTypes>
+    <positionTypes key="ACCESSORIES_RING">33</positionTypes>
+    <seriesTypes key="MARS">4</seriesTypes>
+    <enhanceLevels key="_0">0</enhanceLevels>
+    <enhanceLevels key="_1">1</enhanceLevels>
+    <enhanceLevels key="_2">2</enhanceLevels>
+    <enhanceLevels key="_3">3</enhanceLevels>
+    <enhanceLevels key="_4">4</enhanceLevels>
+    <enhanceLevels key="_5">5</enhanceLevels>
+    <enhanceLevels key="_6">6</enhanceLevels>
+    <enhanceLevels key="_7">7</enhanceLevels>
+    <enhanceLevels key="_8">8</enhanceLevels>
+    <enhanceLevels key="_9">9</enhanceLevels>
+    <enhanceLevels key="_10">10</enhanceLevels>
+    <enhanceLevels key="_11">11</enhanceLevels>
+    <enhanceLevels key="_12">12</enhanceLevels>
+    <enhanceLevels key="_13">13</enhanceLevels>
+    <enhanceLevels key="_14">14</enhanceLevels>
+    <enhanceLevels key="_15">15</enhanceLevels>
+    <enhanceLevels key="_16">16</enhanceLevels>
+    <enhanceLevels key="_17">17</enhanceLevels>
+    <enhanceLevels key="_18">18</enhanceLevels>
+    <enhanceLevels key="_19">19</enhanceLevels>
+    <enhanceLevels key="_20">20</enhanceLevels>
+    <enhanceLevels key="_21">21</enhanceLevels>
+    <enhanceLevels key="_22">22</enhanceLevels>
+    <enhanceLevels key="_23">23</enhanceLevels>
+    <enhanceLevels key="_24">24</enhanceLevels>
+    <enhanceLevels key="_25">25</enhanceLevels>
+    <enhanceLevels key="_26">26</enhanceLevels>
+    <enhanceLevels key="_27">27</enhanceLevels>
+    <enhanceLevels key="_28">28</enhanceLevels>
+    <enhanceLevels key="_29">29</enhanceLevels>
+    <enhanceLevels key="_30">30</enhanceLevels>
+    <weaponTypes key="SWORD">1</weaponTypes>
+    <weaponTypes key="HAMMER">2</weaponTypes>
+    <weaponTypes key="DAGGER">3</weaponTypes>
+    <weaponTypes key="STAFF">4</weaponTypes>
+    <weaponTypes key="HANDS_SWORD">11</weaponTypes>
+    <weaponTypes key="HANDS_HAMMER">12</weaponTypes>
+    <weaponTypes key="HANDS_DAGGER">13</weaponTypes>
+    <weaponTypes key="HANDS_STAFF">14</weaponTypes>
+    <weaponTypes key="HANDS_BOW">15</weaponTypes>
+    <weaponTypes key="TWO_SWORD">21</weaponTypes>
+    <weaponTypes key="TWO_HAMMER">22</weaponTypes>
+    <weaponTypes key="TWO_DAGGER">23</weaponTypes>
+    <weaponTypes key="TWO_STAFF">24</weaponTypes>
+    <weaponTypes key="TWO_BOW">25</weaponTypes>
+    <weapons>
+        <entry key="W_MARS_SWORD_E001">
+            <value>
+                <id>
+                    <id>W_MARS_SWORD_E001</id>
+                    <only>false</only>
+                </id>
+                <names>
+                    <entry key="zh_TW">E 級單手劍</entry>
+                </names>
+                <descriptions/>
+                <itemType>WEAPON</itemType>
+                <maxAmount>0</maxAmount>
+                <price>0</price>
+                <coin>0</coin>
+                <tied>false</tied>
+                <levelType>E</levelType>
+                <positionType>RIGHT_HAND</positionType>
+                <seriesType>MARS</seriesType>
+                <attributeGroup>
+                    <attributes>
+                        <entry key="PHYSICAL_ATTACK">
+                            <value>
+<id>PHYSICAL_ATTACK</id>
+<point>40</point>
+<addPoint>0</addPoint>
+<addRate>0</addRate>
+                            </value>
+                        </entry>
+                        <entry key="PHYSICAL_CRITICAL_RATE">
+                            <value>
+<id>PHYSICAL_CRITICAL_RATE</id>
+<point>4000</point>
+<addPoint>0</addPoint>
+<addRate>0</addRate>
+                            </value>
+                        </entry>
+                        <entry key="PHYSICAL_CRITICAL_DAMAGE_RATE">
+                            <value>
+<id>PHYSICAL_CRITICAL_DAMAGE_RATE</id>
+<point>4000</point>
+<addPoint>0</addPoint>
+<addRate>0</addRate>
+                            </value>
+                        </entry>
+                        <entry key="PHYSICAL_HIT_RATE">
+                            <value>
+<id>PHYSICAL_HIT_RATE</id>
+<point>9600</point>
+<addPoint>0</addPoint>
+<addRate>0</addRate>
+                            </value>
+                        </entry>
+                        <entry key="PHYSICAL_ATTACK_SPEED">
+                            <value>
+<id>PHYSICAL_ATTACK_SPEED</id>
+<point>60</point>
+<addPoint>0</addPoint>
+<addRate>0</addRate>
+                            </value>
+                        </entry>
+                    </attributes>
+                </attributeGroup>
+                <weaponType>SWORD</weaponType>
+            </value>
+        </entry>
+        <entry key="W_MARS_HANDS_SWORD_E001">
+            <value>
+                <id>
+                    <id>W_MARS_HANDS_SWORD_E001</id>
+                    <only>false</only>
+                </id>
+                <names>
+                    <entry key="zh_TW">E 級雙手劍</entry>
+                </names>
+                <descriptions/>
+                <itemType>WEAPON</itemType>
+                <maxAmount>0</maxAmount>
+                <price>0</price>
+                <coin>0</coin>
+                <tied>false</tied>
+                <levelType>E</levelType>
+                <positionType>PAIR_HAND</positionType>
+                <seriesType>MARS</seriesType>
+                <attributeGroup>
+                    <attributes>
+                        <entry key="PHYSICAL_ATTACK">
+                            <value>
+<id>PHYSICAL_ATTACK</id>
+<point>75</point>
+<addPoint>0</addPoint>
+<addRate>0</addRate>
+                            </value>
+                        </entry>
+                        <entry key="PHYSICAL_CRITICAL_RATE">
+                            <value>
+<id>PHYSICAL_CRITICAL_RATE</id>
+<point>7500</point>
+<addPoint>0</addPoint>
+<addRate>0</addRate>
+                            </value>
+                        </entry>
+                        <entry key="PHYSICAL_CRITICAL_DAMAGE_RATE">
+                            <value>
+<id>PHYSICAL_CRITICAL_DAMAGE_RATE</id>
+<point>7500</point>
+<addPoint>0</addPoint>
+<addRate>0</addRate>
+                            </value>
+                        </entry>
+                        <entry key="PHYSICAL_HIT_RATE">
+                            <value>
+<id>PHYSICAL_HIT_RATE</id>
+<point>6400</point>
+<addPoint>0</addPoint>
+<addRate>0</addRate>
+                            </value>
+                        </entry>
+                        <entry key="PHYSICAL_ATTACK_SPEED">
+                            <value>
+<id>PHYSICAL_ATTACK_SPEED</id>
+<point>40</point>
+<addPoint>0</addPoint>
+<addRate>0</addRate>
+                            </value>
+                        </entry>
+                    </attributes>
+                </attributeGroup>
+                <weaponType>HANDS_SWORD</weaponType>
+            </value>
+        </entry>
+        <entry key="W_MARS_HANDS_HAMMER_E001">
+            <value>
+                <id>
+                    <id>W_MARS_HANDS_HAMMER_E001</id>
+                    <only>false</only>
+                </id>
+                <names>
+                    <entry key="zh_TW">E 級雙手槌</entry>
+                </names>
+                <descriptions/>
+                <itemType>WEAPON</itemType>
+                <maxAmount>0</maxAmount>
+                <price>0</price>
+                <coin>0</coin>
+                <tied>false</tied>
+                <levelType>E</levelType>
+                <positionType>PAIR_HAND</positionType>
+                <seriesType>MARS</seriesType>
+                <attributeGroup>
+                    <attributes>
+                        <entry key="PHYSICAL_ATTACK">
+                            <value>
+<id>PHYSICAL_ATTACK</id>
+<point>60</point>
+<addPoint>0</addPoint>
+<addRate>0</addRate>
+                            </value>
+                        </entry>
+                        <entry key="PHYSICAL_CRITICAL_RATE">
+                            <value>
+<id>PHYSICAL_CRITICAL_RATE</id>
+<point>6000</point>
+<addPoint>0</addPoint>
+<addRate>0</addRate>
+                            </value>
+                        </entry>
+                        <entry key="PHYSICAL_CRITICAL_DAMAGE_RATE">
+                            <value>
+<id>PHYSICAL_CRITICAL_DAMAGE_RATE</id>
+<point>6000</point>
+<addPoint>0</addPoint>
+<addRate>0</addRate>
+                            </value>
+                        </entry>
+                        <entry key="PHYSICAL_HIT_RATE">
+                            <value>
+<id>PHYSICAL_HIT_RATE</id>
+<point>7200</point>
+<addPoint>0</addPoint>
+<addRate>0</addRate>
+                            </value>
+                        </entry>
+                        <entry key="PHYSICAL_ATTACK_SPEED">
+                            <value>
+<id>PHYSICAL_ATTACK_SPEED</id>
+<point>45</point>
+<addPoint>0</addPoint>
+<addRate>0</addRate>
+                            </value>
+                        </entry>
+                    </attributes>
+                </attributeGroup>
+                <weaponType>HANDS_HAMMER</weaponType>
+            </value>
+        </entry>
+        <entry key="W_MARS_TWO_SWORD_E001">
+            <value>
+                <id>
+                    <id>W_MARS_TWO_SWORD_E001</id>
+                    <only>false</only>
+                </id>
+                <names>
+                    <entry key="zh_TW">E 級雙刀</entry>
+                </names>
+                <descriptions/>
+                <itemType>WEAPON</itemType>
+                <maxAmount>0</maxAmount>
+                <price>0</price>
+                <coin>0</coin>
+                <tied>false</tied>
+                <levelType>E</levelType>
+                <positionType>PAIR_HAND</positionType>
+                <seriesType>MARS</seriesType>
+                <attributeGroup>
+                    <attributes>
+                        <entry key="PHYSICAL_ATTACK">
+                            <value>
+<id>PHYSICAL_ATTACK</id>
+<point>75</point>
+<addPoint>0</addPoint>
+<addRate>0</addRate>
+                            </value>
+                        </entry>
+                        <entry key="PHYSICAL_CRITICAL_RATE">
+                            <value>
+<id>PHYSICAL_CRITICAL_RATE</id>
+<point>7500</point>
+<addPoint>0</addPoint>
+<addRate>0</addRate>
+                            </value>
+                        </entry>
+                        <entry key="PHYSICAL_CRITICAL_DAMAGE_RATE">
+                            <value>
+<id>PHYSICAL_CRITICAL_DAMAGE_RATE</id>
+<point>7500</point>
+<addPoint>0</addPoint>
+<addRate>0</addRate>
+                            </value>
+                        </entry>
+                        <entry key="PHYSICAL_HIT_RATE">
+                            <value>
+<id>PHYSICAL_HIT_RATE</id>
+<point>6400</point>
+<addPoint>0</addPoint>
+<addRate>0</addRate>
+                            </value>
+                        </entry>
+                        <entry key="PHYSICAL_ATTACK_SPEED">
+                            <value>
+<id>PHYSICAL_ATTACK_SPEED</id>
+<point>40</point>
+<addPoint>0</addPoint>
+<addRate>0</addRate>
+                            </value>
+                        </entry>
+                    </attributes>
+                </attributeGroup>
+                <weaponType>TWO_SWORD</weaponType>
+            </value>
+        </entry>
+        <entry key="W_MARS_TWO_HAMMER_E001">
+            <value>
+                <id>
+                    <id>W_MARS_TWO_HAMMER_E001</id>
+                    <only>false</only>
+                </id>
+                <names>
+                    <entry key="zh_TW">E 級雙槌</entry>
+                </names>
+                <descriptions/>
+                <itemType>WEAPON</itemType>
+                <maxAmount>0</maxAmount>
+                <price>0</price>
+                <coin>0</coin>
+                <tied>false</tied>
+                <levelType>E</levelType>
+                <positionType>PAIR_HAND</positionType>
+                <seriesType>MARS</seriesType>
+                <attributeGroup>
+                    <attributes>
+                        <entry key="PHYSICAL_ATTACK">
+                            <value>
+<id>PHYSICAL_ATTACK</id>
+<point>60</point>
+<addPoint>0</addPoint>
+<addRate>0</addRate>
+                            </value>
+                        </entry>
+                        <entry key="PHYSICAL_CRITICAL_RATE">
+                            <value>
+<id>PHYSICAL_CRITICAL_RATE</id>
+<point>6000</point>
+<addPoint>0</addPoint>
+<addRate>0</addRate>
+                            </value>
+                        </entry>
+                        <entry key="PHYSICAL_CRITICAL_DAMAGE_RATE">
+                            <value>
+<id>PHYSICAL_CRITICAL_DAMAGE_RATE</id>
+<point>6000</point>
+<addPoint>0</addPoint>
+<addRate>0</addRate>
+                            </value>
+                        </entry>
+                        <entry key="PHYSICAL_HIT_RATE">
+                            <value>
+<id>PHYSICAL_HIT_RATE</id>
+<point>7200</point>
+<addPoint>0</addPoint>
+<addRate>0</addRate>
+                            </value>
+                        </entry>
+                        <entry key="PHYSICAL_ATTACK_SPEED">
+                            <value>
+<id>PHYSICAL_ATTACK_SPEED</id>
+<point>45</point>
+<addPoint>0</addPoint>
+<addRate>0</addRate>
+                            </value>
+                        </entry>
+                    </attributes>
+                </attributeGroup>
+                <weaponType>TWO_HAMMER</weaponType>
+            </value>
+        </entry>
+    </weapons>
+    <enhanceFactors>
+        <entry key="_1">
+            <value>
+                <point>6</point>
+                <rate>15</rate>
+                <probability>10000</probability>
+                <id>_1</id>
+            </value>
+        </entry>
+        <entry key="_2">
+            <value>
+                <point>7</point>
+                <rate>25</rate>
+                <probability>10000</probability>
+                <id>_2</id>
+            </value>
+        </entry>
+        <entry key="_3">
+            <value>
+                <point>8</point>
+                <rate>35</rate>
+                <probability>10000</probability>
+                <id>_3</id>
+            </value>
+        </entry>
+        <entry key="_4">
+            <value>
+                <point>9</point>
+                <rate>45</rate>
+                <probability>7100</probability>
+                <id>_4</id>
+            </value>
+        </entry>
+        <entry key="_5">
+            <value>
+                <point>10</point>
+                <rate>55</rate>
+                <probability>7000</probability>
+                <id>_5</id>
+            </value>
+        </entry>
+        <entry key="_6">
+            <value>
+                <point>11</point>
+                <rate>65</rate>
+                <probability>6900</probability>
+                <id>_6</id>
+            </value>
+        </entry>
+        <entry key="_7">
+            <value>
+                <point>12</point>
+                <rate>75</rate>
+                <probability>6800</probability>
+                <id>_7</id>
+            </value>
+        </entry>
+        <entry key="_8">
+            <value>
+                <point>13</point>
+                <rate>85</rate>
+                <probability>6700</probability>
+                <id>_8</id>
+            </value>
+        </entry>
+        <entry key="_9">
+            <value>
+                <point>14</point>
+                <rate>95</rate>
+                <probability>6600</probability>
+                <id>_9</id>
+            </value>
+        </entry>
+        <entry key="_10">
+            <value>
+                <point>15</point>
+                <rate>105</rate>
+                <probability>6500</probability>
+                <id>_10</id>
+            </value>
+        </entry>
+        <entry key="_11">
+            <value>
+                <point>16</point>
+                <rate>115</rate>
+                <probability>6400</probability>
+                <id>_11</id>
+            </value>
+        </entry>
+        <entry key="_12">
+            <value>
+                <point>17</point>
+                <rate>125</rate>
+                <probability>6300</probability>
+                <id>_12</id>
+            </value>
+        </entry>
+        <entry key="_13">
+            <value>
+                <point>18</point>
+                <rate>135</rate>
+                <probability>6200</probability>
+                <id>_13</id>
+            </value>
+        </entry>
+        <entry key="_14">
+            <value>
+                <point>19</point>
+                <rate>145</rate>
+                <probability>6100</probability>
+                <id>_14</id>
+            </value>
+        </entry>
+        <entry key="_15">
+            <value>
+                <point>20</point>
+                <rate>155</rate>
+                <probability>6000</probability>
+                <id>_15</id>
+            </value>
+        </entry>
+        <entry key="_16">
+            <value>
+                <point>21</point>
+                <rate>165</rate>
+                <probability>5900</probability>
+                <id>_16</id>
+            </value>
+        </entry>
+        <entry key="_17">
+            <value>
+                <point>22</point>
+                <rate>175</rate>
+                <probability>5800</probability>
+                <id>_17</id>
+            </value>
+        </entry>
+        <entry key="_18">
+            <value>
+                <point>23</point>
+                <rate>185</rate>
+                <probability>5700</probability>
+                <id>_18</id>
+            </value>
+        </entry>
+        <entry key="_19">
+            <value>
+                <point>24</point>
+                <rate>195</rate>
+                <probability>5600</probability>
+                <id>_19</id>
+            </value>
+        </entry>
+        <entry key="_20">
+            <value>
+                <point>25</point>
+                <rate>205</rate>
+                <probability>5500</probability>
+                <id>_20</id>
+            </value>
+        </entry>
+        <entry key="_21">
+            <value>
+                <point>26</point>
+                <rate>215</rate>
+                <probability>5400</probability>
+                <id>_21</id>
+            </value>
+        </entry>
+        <entry key="_22">
+            <value>
+                <point>27</point>
+                <rate>225</rate>
+                <probability>5300</probability>
+                <id>_22</id>
+            </value>
+        </entry>
+        <entry key="_23">
+            <value>
+                <point>28</point>
+                <rate>235</rate>
+                <probability>5200</probability>
+                <id>_23</id>
+            </value>
+        </entry>
+        <entry key="_24">
+            <value>
+                <point>29</point>
+                <rate>245</rate>
+                <probability>5100</probability>
+                <id>_24</id>
+            </value>
+        </entry>
+        <entry key="_25">
+            <value>
+                <point>30</point>
+                <rate>255</rate>
+                <probability>5000</probability>
+                <id>_25</id>
+            </value>
+        </entry>
+        <entry key="_26">
+            <value>
+                <point>31</point>
+                <rate>265</rate>
+                <probability>4900</probability>
+                <id>_26</id>
+            </value>
+        </entry>
+        <entry key="_27">
+            <value>
+                <point>32</point>
+                <rate>275</rate>
+                <probability>4800</probability>
+                <id>_27</id>
+            </value>
+        </entry>
+        <entry key="_28">
+            <value>
+                <point>33</point>
+                <rate>285</rate>
+                <probability>4700</probability>
+                <id>_28</id>
+            </value>
+        </entry>
+        <entry key="_29">
+            <value>
+                <point>34</point>
+                <rate>295</rate>
+                <probability>4600</probability>
+                <id>_29</id>
+            </value>
+        </entry>
+        <entry key="_30">
+            <value>
+                <point>35</point>
+                <rate>305</rate>
+                <probability>4500</probability>
+                <id>_30</id>
+            </value>
+        </entry>
+    </enhanceFactors>
+    <maxEnhanceLevel>_30</maxEnhanceLevel>
+    <safeEnhanceLevel>_3</safeEnhanceLevel>
+    <fantasyEnhanceLevel>_15</fantasyEnhanceLevel>
+</weaponCollector>

@@ -1,0 +1,472 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<manorCollector>
+    <id>org.openyu.mix.manor.vo.ManorCollector</id>
+    <enhanceLevels key="_0">0</enhanceLevels>
+    <enhanceLevels key="_1">1</enhanceLevels>
+    <enhanceLevels key="_2">2</enhanceLevels>
+    <enhanceLevels key="_3">3</enhanceLevels>
+    <enhanceLevels key="_4">4</enhanceLevels>
+    <enhanceLevels key="_5">5</enhanceLevels>
+    <enhanceLevels key="_6">6</enhanceLevels>
+    <enhanceLevels key="_7">7</enhanceLevels>
+    <enhanceLevels key="_8">8</enhanceLevels>
+    <enhanceLevels key="_9">9</enhanceLevels>
+    <enhanceLevels key="_10">10</enhanceLevels>
+    <enhanceLevels key="_11">11</enhanceLevels>
+    <enhanceLevels key="_12">12</enhanceLevels>
+    <enhanceLevels key="_13">13</enhanceLevels>
+    <enhanceLevels key="_14">14</enhanceLevels>
+    <enhanceLevels key="_15">15</enhanceLevels>
+    <enhanceLevels key="_16">16</enhanceLevels>
+    <enhanceLevels key="_17">17</enhanceLevels>
+    <enhanceLevels key="_18">18</enhanceLevels>
+    <enhanceLevels key="_19">19</enhanceLevels>
+    <enhanceLevels key="_20">20</enhanceLevels>
+    <enhanceLevels key="_21">21</enhanceLevels>
+    <enhanceLevels key="_22">22</enhanceLevels>
+    <enhanceLevels key="_23">23</enhanceLevels>
+    <enhanceLevels key="_24">24</enhanceLevels>
+    <enhanceLevels key="_25">25</enhanceLevels>
+    <enhanceLevels key="_26">26</enhanceLevels>
+    <enhanceLevels key="_27">27</enhanceLevels>
+    <enhanceLevels key="_28">28</enhanceLevels>
+    <enhanceLevels key="_29">29</enhanceLevels>
+    <enhanceLevels key="_30">30</enhanceLevels>
+    <descriptions>
+        <entry key="zh_TW">莊園內有農場,隨著等級的提升,可以獲得更多的農場,農場內需開墾不同屬性的土地來耕種,隨著土地的強化等級提升,會減少作物的成長時間,大量提升產量,作物成熟後收割,會獲得各種不同的材料,打造裝備</entry>
+        <entry key="zh_CN">庄园内有农场,随着等级的提升,可以获得更多的农场,农场内需开垦不同属性的土地来耕种,随着土地的强化等级提升,会减少作物的成长时间,大量提升产量,作物成熟后收割,会获得各种不同的材料,打造装备</entry>
+    </descriptions>
+    <maxEnhanceLevel>_30</maxEnhanceLevel>
+    <safeEnhanceLevel>_3</safeEnhanceLevel>
+    <fantasyEnhanceLevel>_15</fantasyEnhanceLevel>
+    <reclaimGold>2500000</reclaimGold>
+    <disuseGold>500000</disuseGold>
+    <waterItem>T_MANOR_WATER_G001</waterItem>
+    <waterCoin>2</waterCoin>
+    <waterRate>1000</waterRate>
+    <prayItem>T_MANOR_PRAY_G001</prayItem>
+    <prayCoin>5</prayCoin>
+    <prayRate>2000</prayRate>
+    <speedItem>T_MANOR_SPEED_G001</speedItem>
+    <speedCoin>15</speedCoin>
+    <reviveItem>T_MANOR_REVIVE_G001</reviveItem>
+    <reviveCoin>20</reviveCoin>
+    <seeds>
+        <entry key="S_COTTON_G001">
+            <value>
+                <id>
+                    <id>S_COTTON_G001</id>
+                    <only>false</only>
+                </id>
+                <names>
+                    <entry key="zh_TW">棉花種子</entry>
+                    <entry key="zh_CN">棉花种子</entry>
+                </names>
+                <descriptions>
+                    <entry key="zh_TW">收割後可獲得棉布,打造裝備的材料之一</entry>
+                    <entry key="zh_CN">收割后可获得棉布，打造装备的材料之一</entry>
+                </descriptions>
+                <itemType>SEED</itemType>
+                <maxAmount>0</maxAmount>
+                <price>10000</price>
+                <coin>1</coin>
+                <tied>false</tied>
+                <levelLimit>20</levelLimit>
+                <growMills>28800000</growMills>
+                <reapMills>28800000</reapMills>
+                <products>
+                    <entry>
+                        <key>M_COTTON_G001</key>
+                        <value>1</value>
+                    </entry>
+                </products>
+            </value>
+        </entry>
+        <entry key="S_OAK_G001">
+            <value>
+                <id>
+                    <id>S_OAK_G001</id>
+                    <only>false</only>
+                </id>
+                <names>
+                    <entry key="zh_TW">橡樹種子</entry>
+                    <entry key="zh_CN">橡树种子</entry>
+                </names>
+                <descriptions>
+                    <entry key="zh_TW">收割後可獲得橡樹木板,打造裝備的材料之一</entry>
+                    <entry key="zh_CN">收割后可获得橡树木板，打造装备的材料之一</entry>
+                </descriptions>
+                <itemType>SEED</itemType>
+                <maxAmount>0</maxAmount>
+                <price>10000</price>
+                <coin>1</coin>
+                <tied>false</tied>
+                <levelLimit>20</levelLimit>
+                <growMills>43200000</growMills>
+                <reapMills>43200000</reapMills>
+                <products>
+                    <entry>
+                        <key>M_OAK_G001</key>
+                        <value>1</value>
+                    </entry>
+                </products>
+            </value>
+        </entry>
+    </seeds>
+    <lands>
+        <entry key="L_TROPICS_G001">
+            <value>
+                <id>
+                    <id>L_TROPICS_G001</id>
+                    <only>false</only>
+                </id>
+                <names>
+                    <entry key="zh_TW">熱帶地</entry>
+                    <entry key="zh_CN">热带地</entry>
+                </names>
+                <descriptions/>
+                <itemType>LAND</itemType>
+                <maxAmount>0</maxAmount>
+                <price>100000000</price>
+                <coin>2000</coin>
+                <tied>false</tied>
+                <levelLimit>20</levelLimit>
+                <attributeGroup>
+                    <attributes>
+                        <entry key="MANOR_OUTPUT">
+                            <value>
+<id>MANOR_OUTPUT</id>
+<point>2</point>
+<addPoint>0</addPoint>
+<addRate>0</addRate>
+                            </value>
+                        </entry>
+                        <entry key="MANOR_CRITICAL_RATE">
+                            <value>
+<id>MANOR_CRITICAL_RATE</id>
+<point>3000</point>
+<addPoint>0</addPoint>
+<addRate>0</addRate>
+                            </value>
+                        </entry>
+                        <entry key="MANOR_CRITICAL_OUTPUT_RATE">
+                            <value>
+<id>MANOR_CRITICAL_OUTPUT_RATE</id>
+<point>3000</point>
+<addPoint>0</addPoint>
+<addRate>0</addRate>
+                            </value>
+                        </entry>
+                        <entry key="MANOR_SPEED_RATE">
+                            <value>
+<id>MANOR_SPEED_RATE</id>
+<point>1000</point>
+<addPoint>0</addPoint>
+<addRate>0</addRate>
+                            </value>
+                        </entry>
+                    </attributes>
+                </attributeGroup>
+                <seeds>S_COTTON_G001</seeds>
+                <seeds>S_OAK_G001</seeds>
+            </value>
+        </entry>
+        <entry key="L_DESERT_G001">
+            <value>
+                <id>
+                    <id>L_DESERT_G001</id>
+                    <only>false</only>
+                </id>
+                <names>
+                    <entry key="zh_TW">沙漠地</entry>
+                    <entry key="zh_CN">沙漠地</entry>
+                </names>
+                <descriptions/>
+                <itemType>LAND</itemType>
+                <maxAmount>0</maxAmount>
+                <price>150000000</price>
+                <coin>3000</coin>
+                <tied>false</tied>
+                <levelLimit>20</levelLimit>
+                <attributeGroup>
+                    <attributes>
+                        <entry key="MANOR_OUTPUT">
+                            <value>
+<id>MANOR_OUTPUT</id>
+<point>1</point>
+<addPoint>0</addPoint>
+<addRate>0</addRate>
+                            </value>
+                        </entry>
+                        <entry key="MANOR_CRITICAL_RATE">
+                            <value>
+<id>MANOR_CRITICAL_RATE</id>
+<point>4000</point>
+<addPoint>0</addPoint>
+<addRate>0</addRate>
+                            </value>
+                        </entry>
+                        <entry key="MANOR_CRITICAL_OUTPUT_RATE">
+                            <value>
+<id>MANOR_CRITICAL_OUTPUT_RATE</id>
+<point>4000</point>
+<addPoint>0</addPoint>
+<addRate>0</addRate>
+                            </value>
+                        </entry>
+                        <entry key="MANOR_SPEED_RATE">
+                            <value>
+<id>MANOR_SPEED_RATE</id>
+<point>500</point>
+<addPoint>0</addPoint>
+<addRate>0</addRate>
+                            </value>
+                        </entry>
+                    </attributes>
+                </attributeGroup>
+            </value>
+        </entry>
+    </lands>
+    <enhanceFactors>
+        <entry key="_1">
+            <value>
+                <point>2</point>
+                <rate>11</rate>
+                <probability>10000</probability>
+                <id>_1</id>
+            </value>
+        </entry>
+        <entry key="_2">
+            <value>
+                <point>3</point>
+                <rate>21</rate>
+                <probability>10000</probability>
+                <id>_2</id>
+            </value>
+        </entry>
+        <entry key="_3">
+            <value>
+                <point>4</point>
+                <rate>31</rate>
+                <probability>10000</probability>
+                <id>_3</id>
+            </value>
+        </entry>
+        <entry key="_4">
+            <value>
+                <point>5</point>
+                <rate>41</rate>
+                <probability>7400</probability>
+                <id>_4</id>
+            </value>
+        </entry>
+        <entry key="_5">
+            <value>
+                <point>6</point>
+                <rate>51</rate>
+                <probability>7250</probability>
+                <id>_5</id>
+            </value>
+        </entry>
+        <entry key="_6">
+            <value>
+                <point>7</point>
+                <rate>61</rate>
+                <probability>7100</probability>
+                <id>_6</id>
+            </value>
+        </entry>
+        <entry key="_7">
+            <value>
+                <point>8</point>
+                <rate>71</rate>
+                <probability>6950</probability>
+                <id>_7</id>
+            </value>
+        </entry>
+        <entry key="_8">
+            <value>
+                <point>9</point>
+                <rate>81</rate>
+                <probability>6800</probability>
+                <id>_8</id>
+            </value>
+        </entry>
+        <entry key="_9">
+            <value>
+                <point>10</point>
+                <rate>91</rate>
+                <probability>6650</probability>
+                <id>_9</id>
+            </value>
+        </entry>
+        <entry key="_10">
+            <value>
+                <point>11</point>
+                <rate>101</rate>
+                <probability>6500</probability>
+                <id>_10</id>
+            </value>
+        </entry>
+        <entry key="_11">
+            <value>
+                <point>12</point>
+                <rate>111</rate>
+                <probability>6350</probability>
+                <id>_11</id>
+            </value>
+        </entry>
+        <entry key="_12">
+            <value>
+                <point>13</point>
+                <rate>121</rate>
+                <probability>6200</probability>
+                <id>_12</id>
+            </value>
+        </entry>
+        <entry key="_13">
+            <value>
+                <point>14</point>
+                <rate>131</rate>
+                <probability>6050</probability>
+                <id>_13</id>
+            </value>
+        </entry>
+        <entry key="_14">
+            <value>
+                <point>15</point>
+                <rate>141</rate>
+                <probability>5900</probability>
+                <id>_14</id>
+            </value>
+        </entry>
+        <entry key="_15">
+            <value>
+                <point>16</point>
+                <rate>151</rate>
+                <probability>5750</probability>
+                <id>_15</id>
+            </value>
+        </entry>
+        <entry key="_16">
+            <value>
+                <point>17</point>
+                <rate>161</rate>
+                <probability>5600</probability>
+                <id>_16</id>
+            </value>
+        </entry>
+        <entry key="_17">
+            <value>
+                <point>18</point>
+                <rate>171</rate>
+                <probability>5450</probability>
+                <id>_17</id>
+            </value>
+        </entry>
+        <entry key="_18">
+            <value>
+                <point>19</point>
+                <rate>181</rate>
+                <probability>5300</probability>
+                <id>_18</id>
+            </value>
+        </entry>
+        <entry key="_19">
+            <value>
+                <point>20</point>
+                <rate>191</rate>
+                <probability>5150</probability>
+                <id>_19</id>
+            </value>
+        </entry>
+        <entry key="_20">
+            <value>
+                <point>21</point>
+                <rate>201</rate>
+                <probability>5000</probability>
+                <id>_20</id>
+            </value>
+        </entry>
+        <entry key="_21">
+            <value>
+                <point>22</point>
+                <rate>211</rate>
+                <probability>4850</probability>
+                <id>_21</id>
+            </value>
+        </entry>
+        <entry key="_22">
+            <value>
+                <point>23</point>
+                <rate>221</rate>
+                <probability>4700</probability>
+                <id>_22</id>
+            </value>
+        </entry>
+        <entry key="_23">
+            <value>
+                <point>24</point>
+                <rate>231</rate>
+                <probability>4550</probability>
+                <id>_23</id>
+            </value>
+        </entry>
+        <entry key="_24">
+            <value>
+                <point>25</point>
+                <rate>241</rate>
+                <probability>4400</probability>
+                <id>_24</id>
+            </value>
+        </entry>
+        <entry key="_25">
+            <value>
+                <point>26</point>
+                <rate>251</rate>
+                <probability>4250</probability>
+                <id>_25</id>
+            </value>
+        </entry>
+        <entry key="_26">
+            <value>
+                <point>27</point>
+                <rate>261</rate>
+                <probability>4100</probability>
+                <id>_26</id>
+            </value>
+        </entry>
+        <entry key="_27">
+            <value>
+                <point>28</point>
+                <rate>271</rate>
+                <probability>3950</probability>
+                <id>_27</id>
+            </value>
+        </entry>
+        <entry key="_28">
+            <value>
+                <point>29</point>
+                <rate>281</rate>
+                <probability>3800</probability>
+                <id>_28</id>
+            </value>
+        </entry>
+        <entry key="_29">
+            <value>
+                <point>30</point>
+                <rate>291</rate>
+                <probability>3650</probability>
+                <id>_29</id>
+            </value>
+        </entry>
+        <entry key="_30">
+            <value>
+                <point>31</point>
+                <rate>301</rate>
+                <probability>3500</probability>
+                <id>_30</id>
+            </value>
+        </entry>
+    </enhanceFactors>
+</manorCollector>

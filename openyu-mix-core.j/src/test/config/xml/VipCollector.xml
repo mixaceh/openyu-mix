@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<vipCollector>
+    <id>org.openyu.mix.vip.vo.VipCollector</id>
+    <bagTabTypes>
+        <entry>
+            <key>_0</key>
+            <value>_0</value>
+        </entry>
+        <entry>
+            <key>_1</key>
+            <value>_1</value>
+        </entry>
+        <entry>
+            <key>_2</key>
+            <value>_2</value>
+        </entry>
+    </bagTabTypes>
+    <manorFarmTypes>
+        <entry>
+            <key>_0</key>
+            <value>_0</value>
+        </entry>
+        <entry>
+            <key>_1</key>
+            <value>_2</value>
+        </entry>
+        <entry>
+            <key>_2</key>
+            <value>_4</value>
+        </entry>
+    </manorFarmTypes>
+    <sasangCoinVipType>_2</sasangCoinVipType>
+    <manorCoinVipType>_2</manorCoinVipType>
+    <treasureCoinVipType>_2</treasureCoinVipType>
+    <trainCoinVipType>_2</trainCoinVipType>
+    <wuxingCoinVipType>_2</wuxingCoinVipType>
+</vipCollector>

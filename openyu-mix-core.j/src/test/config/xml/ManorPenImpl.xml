@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<manorPen>
+    <farms>
+        <entry key="0">
+            <value>
+                <id>0</id>
+                <locked>false</locked>
+                <seeds/>
+            </value>
+        </entry>
+        <entry key="1">
+            <value>
+                <id>1</id>
+                <locked>true</locked>
+                <seeds/>
+            </value>
+        </entry>
+        <entry key="2">
+            <value>
+                <id>2</id>
+                <locked>true</locked>
+                <seeds/>
+            </value>
+        </entry>
+    </farms>
+</manorPen>

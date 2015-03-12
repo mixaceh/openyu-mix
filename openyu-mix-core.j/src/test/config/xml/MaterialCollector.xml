@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<materialCollector>
+    <id>org.openyu.mix.item.vo.MaterialCollector</id>
+    <materialTypes key="CLOTH">1</materialTypes>
+    <materialTypes key="WOOD">2</materialTypes>
+    <materialTypes key="ORE">3</materialTypes>
+    <materials>
+        <entry key="M_COTTON_G001">
+            <value>
+                <id>
+                    <id>M_COTTON_G001</id>
+                    <only>false</only>
+                </id>
+                <names>
+                    <entry key="zh_TW">棉布</entry>
+                </names>
+                <descriptions/>
+                <itemType>MATERIAL</itemType>
+                <maxAmount>0</maxAmount>
+                <price>5000</price>
+                <coin>1</coin>
+                <tied>false</tied>
+                <materialType>CLOTH</materialType>
+            </value>
+        </entry>
+        <entry key="M_OAK_G001">
+            <value>
+                <id>
+                    <id>M_OAK_G001</id>
+                    <only>false</only>
+                </id>
+                <names>
+                    <entry key="zh_TW">橡樹木板</entry>
+                </names>
+                <descriptions/>
+                <itemType>MATERIAL</itemType>
+                <maxAmount>0</maxAmount>
+                <price>5000</price>
+                <coin>1</coin>
+                <tied>false</tied>
+                <materialType>WOOD</materialType>
+            </value>
+        </entry>
+        <entry key="M_GOLD_ORE_G001">
+            <value>
+                <id>
+                    <id>M_GOLD_ORE_G001</id>
+                    <only>false</only>
+                </id>
+                <names>
+                    <entry key="zh_TW">金礦石</entry>
+                </names>
+                <descriptions/>
+                <itemType>MATERIAL</itemType>
+                <maxAmount>0</maxAmount>
+                <price>10000</price>
+                <coin>1</coin>
+                <tied>false</tied>
+                <materialType>ORE</materialType>
+            </value>
+        </entry>
+        <entry key="M_SILVER_ORE_G001">
+            <value>
+                <id>
+                    <id>M_SILVER_ORE_G001</id>
+                    <only>false</only>
+                </id>
+                <names>
+                    <entry key="zh_TW">銀礦石</entry>
+                </names>
+                <descriptions/>
+                <itemType>MATERIAL</itemType>
+                <maxAmount>0</maxAmount>
+                <price>8000</price>
+                <coin>1</coin>
+                <tied>false</tied>
+                <materialType>ORE</materialType>
+            </value>
+        </entry>
+        <entry key="M_COPPER_ORE_G001">
+            <value>
+                <id>
+                    <id>M_COPPER_ORE_G001</id>
+                    <only>false</only>
+                </id>
+                <names>
+                    <entry key="zh_TW">銅礦石</entry>
+                </names>
+                <descriptions/>
+                <itemType>MATERIAL</itemType>
+                <maxAmount>0</maxAmount>
+                <price>5000</price>
+                <coin>1</coin>
+                <tied>false</tied>
+                <materialType>ORE</materialType>
+            </value>
+        </entry>
+        <entry key="M_IRON_ORE_G001">
+            <value>
+                <id>
+                    <id>M_IRON_ORE_G001</id>
+                    <only>false</only>
+                </id>
+                <names>
+                    <entry key="zh_TW">鐵礦石</entry>
+                </names>
+                <descriptions/>
+                <itemType>MATERIAL</itemType>
+                <maxAmount>0</maxAmount>
+                <price>3000</price>
+                <coin>1</coin>
+                <tied>false</tied>
+                <materialType>ORE</materialType>
+            </value>
+        </entry>
+        <entry key="M_DIAMOND_ORE_G001">
+            <value>
+                <id>
+                    <id>M_DIAMOND_ORE_G001</id>
+                    <only>false</only>
+                </id>
+                <names>
+                    <entry key="zh_TW">鑽石礦石</entry>
+                </names>
+                <descriptions/>
+                <itemType>MATERIAL</itemType>
+                <maxAmount>0</maxAmount>
+                <price>20000</price>
+                <coin>1</coin>
+                <tied>false</tied>
+                <materialType>ORE</materialType>
+            </value>
+        </entry>
+        <entry key="M_CRYSTAL_ORE_G001">
+            <value>
+                <id>
+                    <id>M_CRYSTAL_ORE_G001</id>
+                    <only>false</only>
+                </id>
+                <names>
+                    <entry key="zh_TW">水晶礦石</entry>
+                </names>
+                <descriptions/>
+                <itemType>MATERIAL</itemType>
+                <maxAmount>0</maxAmount>
+                <price>15000</price>
+                <coin>1</coin>
+                <tied>false</tied>
+                <materialType>ORE</materialType>
+            </value>
+        </entry>
+    </materials>
+</materialCollector>

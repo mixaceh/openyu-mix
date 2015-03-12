@@ -1,0 +1,466 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<activityCollector>
+    <id>org.openyu.mix.activity.vo.ActivityCollector</id>
+    <activityTypes key="EXP_AWARD">1</activityTypes>
+    <activityTypes key="SP_AWARD">2</activityTypes>
+    <activityTypes key="GOLD_AWARD">3</activityTypes>
+    <activityTypes key="FAME_AWARD">4</activityTypes>
+    <activityTypes key="VIP_AWARD">5</activityTypes>
+    <activityTypes key="EXP_TARGET">51</activityTypes>
+    <activityTypes key="SP_TARGET">52</activityTypes>
+    <activityTypes key="GOLD_TARGET">53</activityTypes>
+    <activityTypes key="FAME_TARGET">54</activityTypes>
+    <activityTypes key="VIP_TARGET">55</activityTypes>
+    <activityTypes key="DAILY_COIN_TARGET">61</activityTypes>
+    <activityTypes key="ACCU_COIN_TARGET">62</activityTypes>
+    <activitys>
+        <entry key="DAILY_COIN_TARGET_001">
+            <dailyCoinActivity>
+                <id>
+                    <id>DAILY_COIN_TARGET_001</id>
+                    <only>false</only>
+                </id>
+                <names>
+                    <entry key="zh_TW">每日消費儲值幣目標活動</entry>
+                </names>
+                <descriptions>
+                    <entry key="zh_TW">每日消費儲值幣可達成不同階段目標,每日00:00將會重置,可獲得豐碩的獎勵</entry>
+                </descriptions>
+                <activityType>DAILY_COIN_TARGET</activityType>
+                <begDate>2013/01/01</begDate>
+                <endDate>2013/06/30</endDate>
+                <dailyReset>true</dailyReset>
+                <inOrder>true</inOrder>
+                <targets>
+                    <entry key="0">
+                        <coinTarget>
+                            <id>0</id>
+                            <levelLimit>10</levelLimit>
+                            <expiredDay>0</expiredDay>
+                            <tips>
+<entry key="zh_TW">消費1000儲值幣,玩四象轉生是不錯的選擇</entry>
+                            </tips>
+                            <awards>
+<entry>
+    <key>T_ENHANCE_WEAPON_E_G001</key>
+    <value>1</value>
+</entry>
+                            </awards>
+                            <coin>1000</coin>
+                        </coinTarget>
+                    </entry>
+                    <entry key="1">
+                        <coinTarget>
+                            <id>1</id>
+                            <levelLimit>15</levelLimit>
+                            <expiredDay>0</expiredDay>
+                            <tips>
+<entry key="zh_TW">消費1200儲值幣,玩四象轉生是不錯的選擇</entry>
+                            </tips>
+                            <awards>
+<entry>
+    <key>T_ENHANCE_WEAPON_E_B001</key>
+    <value>1</value>
+</entry>
+                            </awards>
+                            <coin>1200</coin>
+                        </coinTarget>
+                    </entry>
+                    <entry key="2">
+                        <coinTarget>
+                            <id>2</id>
+                            <levelLimit>20</levelLimit>
+                            <expiredDay>0</expiredDay>
+                            <tips>
+<entry key="zh_TW">消費1500儲值幣,玩四象轉生是不錯的選擇</entry>
+                            </tips>
+                            <awards>
+<entry>
+    <key>T_ENHANCE_WEAPON_D_G001</key>
+    <value>1</value>
+</entry>
+                            </awards>
+                            <coin>1500</coin>
+                        </coinTarget>
+                    </entry>
+                    <entry key="3">
+                        <coinTarget>
+                            <id>3</id>
+                            <levelLimit>25</levelLimit>
+                            <expiredDay>0</expiredDay>
+                            <tips>
+<entry key="zh_TW">消費1800儲值幣,玩四象轉生是不錯的選擇</entry>
+                            </tips>
+                            <awards>
+<entry>
+    <key>T_ENHANCE_WEAPON_D_B001</key>
+    <value>1</value>
+</entry>
+                            </awards>
+                            <coin>1800</coin>
+                        </coinTarget>
+                    </entry>
+                    <entry key="4">
+                        <coinTarget>
+                            <id>4</id>
+                            <levelLimit>30</levelLimit>
+                            <expiredDay>0</expiredDay>
+                            <tips>
+<entry key="zh_TW">消費3000儲值幣,玩四象轉生是不錯的選擇</entry>
+                            </tips>
+                            <awards>
+<entry>
+    <key>T_ENHANCE_WEAPON_E_F001</key>
+    <value>1</value>
+</entry>
+                            </awards>
+                            <coin>3000</coin>
+                        </coinTarget>
+                    </entry>
+                </targets>
+            </dailyCoinActivity>
+        </entry>
+        <entry key="ACCU_COIN_TARGET_001">
+            <accuCoinActivity>
+                <id>
+                    <id>ACCU_COIN_TARGET_001</id>
+                    <only>false</only>
+                </id>
+                <names>
+                    <entry key="zh_TW">累計消費儲值幣目標活動</entry>
+                </names>
+                <descriptions>
+                    <entry key="zh_TW">累計消費儲值幣可達成不同階段目標,可獲得豐碩的獎勵</entry>
+                </descriptions>
+                <activityType>ACCU_COIN_TARGET</activityType>
+                <begDate>2013/01/01</begDate>
+                <endDate>2013/06/30</endDate>
+                <dailyReset>false</dailyReset>
+                <inOrder>true</inOrder>
+                <targets>
+                    <entry key="0">
+                        <coinTarget>
+                            <id>0</id>
+                            <levelLimit>10</levelLimit>
+                            <expiredDay>0</expiredDay>
+                            <tips>
+<entry key="zh_TW">累計消費12000儲值幣,玩四象轉生是不錯的選擇</entry>
+                            </tips>
+                            <awards>
+<entry>
+    <key>T_ENHANCE_WEAPON_E_B001</key>
+    <value>1</value>
+</entry>
+<entry>
+    <key>T_ROLE_EXP_G001</key>
+    <value>5</value>
+</entry>
+                            </awards>
+                            <coin>12000</coin>
+                        </coinTarget>
+                    </entry>
+                    <entry key="1">
+                        <coinTarget>
+                            <id>1</id>
+                            <levelLimit>15</levelLimit>
+                            <expiredDay>0</expiredDay>
+                            <tips>
+<entry key="zh_TW">累計消費32000儲值幣,玩四象轉生是不錯的選擇</entry>
+                            </tips>
+                            <awards>
+<entry>
+    <key>T_ENHANCE_WEAPON_E_B001</key>
+    <value>1</value>
+</entry>
+<entry>
+    <key>T_ROLE_EXP_G002</key>
+    <value>5</value>
+</entry>
+                            </awards>
+                            <coin>32000</coin>
+                        </coinTarget>
+                    </entry>
+                    <entry key="2">
+                        <coinTarget>
+                            <id>2</id>
+                            <levelLimit>20</levelLimit>
+                            <expiredDay>0</expiredDay>
+                            <tips>
+<entry key="zh_TW">累計消費52000儲值幣,玩四象轉生是不錯的選擇</entry>
+                            </tips>
+                            <awards>
+<entry>
+    <key>T_ENHANCE_WEAPON_D_B001</key>
+    <value>1</value>
+</entry>
+<entry>
+    <key>T_ROLE_GOLD_G001</key>
+    <value>5</value>
+</entry>
+                            </awards>
+                            <coin>52000</coin>
+                        </coinTarget>
+                    </entry>
+                    <entry key="3">
+                        <coinTarget>
+                            <id>3</id>
+                            <levelLimit>25</levelLimit>
+                            <expiredDay>0</expiredDay>
+                            <tips>
+<entry key="zh_TW">累計消費120000儲值幣,玩四象轉生是不錯的選擇</entry>
+                            </tips>
+                            <awards>
+<entry>
+    <key>T_ENHANCE_WEAPON_D_B001</key>
+    <value>1</value>
+</entry>
+<entry>
+    <key>T_ROLE_GOLD_G002</key>
+    <value>5</value>
+</entry>
+                            </awards>
+                            <coin>120000</coin>
+                        </coinTarget>
+                    </entry>
+                    <entry key="4">
+                        <coinTarget>
+                            <id>4</id>
+                            <levelLimit>30</levelLimit>
+                            <expiredDay>0</expiredDay>
+                            <tips>
+<entry key="zh_TW">累計消費270000儲值幣,玩四象轉生是不錯的選擇</entry>
+                            </tips>
+                            <awards>
+<entry>
+    <key>T_ENHANCE_WEAPON_E_F001</key>
+    <value>1</value>
+</entry>
+<entry>
+    <key>T_ENHANCE_WEAPON_D_F001</key>
+    <value>1</value>
+</entry>
+<entry>
+    <key>T_ROLE_EXP_G003</key>
+    <value>5</value>
+</entry>
+<entry>
+    <key>T_ROLE_GOLD_G003</key>
+    <value>5</value>
+</entry>
+                            </awards>
+                            <coin>270000</coin>
+                        </coinTarget>
+                    </entry>
+                </targets>
+            </accuCoinActivity>
+        </entry>
+        <entry key="FAME_TARGET_001">
+            <fameActivity>
+                <id>
+                    <id>FAME_TARGET_001</id>
+                    <only>false</only>
+                </id>
+                <names>
+                    <entry key="zh_TW">聲望目標活動</entry>
+                </names>
+                <descriptions>
+                    <entry key="zh_TW">提升聲望達成不同階段目標,可獲得豐碩的獎勵</entry>
+                </descriptions>
+                <activityType>FAME_TARGET</activityType>
+                <dailyReset>false</dailyReset>
+                <inOrder>true</inOrder>
+                <targets>
+                    <entry key="0">
+                        <fameTarget>
+                            <id>0</id>
+                            <levelLimit>30</levelLimit>
+                            <expiredDay>5</expiredDay>
+                            <tips>
+<entry key="zh_TW">提升聲望到100</entry>
+                            </tips>
+                            <awards>
+<entry>
+    <key>T_ROLE_EXP_G001</key>
+    <value>1</value>
+</entry>
+                            </awards>
+                            <fame>100</fame>
+                        </fameTarget>
+                    </entry>
+                    <entry key="1">
+                        <fameTarget>
+                            <id>1</id>
+                            <levelLimit>35</levelLimit>
+                            <expiredDay>5</expiredDay>
+                            <tips>
+<entry key="zh_TW">提升聲望到500</entry>
+                            </tips>
+                            <awards>
+<entry>
+    <key>T_ROLE_EXP_G001</key>
+    <value>5</value>
+</entry>
+                            </awards>
+                            <fame>500</fame>
+                        </fameTarget>
+                    </entry>
+                    <entry key="2">
+                        <fameTarget>
+                            <id>2</id>
+                            <levelLimit>40</levelLimit>
+                            <expiredDay>5</expiredDay>
+                            <tips>
+<entry key="zh_TW">提升聲望到700</entry>
+                            </tips>
+                            <awards>
+<entry>
+    <key>T_ROLE_EXP_G002</key>
+    <value>1</value>
+</entry>
+                            </awards>
+                            <fame>700</fame>
+                        </fameTarget>
+                    </entry>
+                    <entry key="3">
+                        <fameTarget>
+                            <id>3</id>
+                            <levelLimit>45</levelLimit>
+                            <expiredDay>5</expiredDay>
+                            <tips>
+<entry key="zh_TW">提升聲望到1500</entry>
+                            </tips>
+                            <awards>
+<entry>
+    <key>T_ROLE_EXP_G002</key>
+    <value>5</value>
+</entry>
+                            </awards>
+                            <fame>1500</fame>
+                        </fameTarget>
+                    </entry>
+                    <entry key="4">
+                        <fameTarget>
+                            <id>4</id>
+                            <levelLimit>50</levelLimit>
+                            <expiredDay>5</expiredDay>
+                            <tips>
+<entry key="zh_TW">提升聲望到3000</entry>
+                            </tips>
+                            <awards>
+<entry>
+    <key>T_ROLE_EXP_G003</key>
+    <value>5</value>
+</entry>
+                            </awards>
+                            <fame>3000</fame>
+                        </fameTarget>
+                    </entry>
+                </targets>
+            </fameActivity>
+        </entry>
+        <entry key="VIP_TARGET_001">
+            <vipActivity>
+                <id>
+                    <id>VIP_TARGET_001</id>
+                    <only>false</only>
+                </id>
+                <names>
+                    <entry key="zh_TW">vip目標活動</entry>
+                </names>
+                <descriptions>
+                    <entry key="zh_TW">提升vip達成不同階段目標,可獲得豐碩的獎勵</entry>
+                </descriptions>
+                <activityType>VIP_TARGET</activityType>
+                <dailyReset>false</dailyReset>
+                <inOrder>true</inOrder>
+                <targets>
+                    <entry key="0">
+                        <vipTarget>
+                            <id>0</id>
+                            <levelLimit>30</levelLimit>
+                            <expiredDay>5</expiredDay>
+                            <tips>
+<entry key="zh_TW">提升vip到1級</entry>
+                            </tips>
+                            <awards>
+<entry>
+    <key>T_ROLE_GOLD_G001</key>
+    <value>1</value>
+</entry>
+                            </awards>
+                            <vipType>_1</vipType>
+                        </vipTarget>
+                    </entry>
+                    <entry key="1">
+                        <vipTarget>
+                            <id>1</id>
+                            <levelLimit>35</levelLimit>
+                            <expiredDay>5</expiredDay>
+                            <tips>
+<entry key="zh_TW">提升vip到2級</entry>
+                            </tips>
+                            <awards>
+<entry>
+    <key>T_ROLE_GOLD_G001</key>
+    <value>5</value>
+</entry>
+                            </awards>
+                            <vipType>_2</vipType>
+                        </vipTarget>
+                    </entry>
+                    <entry key="2">
+                        <vipTarget>
+                            <id>2</id>
+                            <levelLimit>40</levelLimit>
+                            <expiredDay>5</expiredDay>
+                            <tips>
+<entry key="zh_TW">提升vip到3級</entry>
+                            </tips>
+                            <awards>
+<entry>
+    <key>T_ROLE_GOLD_G002</key>
+    <value>1</value>
+</entry>
+                            </awards>
+                            <vipType>_3</vipType>
+                        </vipTarget>
+                    </entry>
+                    <entry key="3">
+                        <vipTarget>
+                            <id>3</id>
+                            <levelLimit>45</levelLimit>
+                            <expiredDay>5</expiredDay>
+                            <tips>
+<entry key="zh_TW">提升vip到4級</entry>
+                            </tips>
+                            <awards>
+<entry>
+    <key>T_ROLE_GOLD_G002</key>
+    <value>5</value>
+</entry>
+                            </awards>
+                            <vipType>_4</vipType>
+                        </vipTarget>
+                    </entry>
+                    <entry key="4">
+                        <vipTarget>
+                            <id>4</id>
+                            <levelLimit>50</levelLimit>
+                            <expiredDay>5</expiredDay>
+                            <tips>
+<entry key="zh_TW">提升vip到5級</entry>
+                            </tips>
+                            <awards>
+<entry>
+    <key>T_ROLE_GOLD_G003</key>
+    <value>5</value>
+</entry>
+                            </awards>
+                            <vipType>_5</vipType>
+                        </vipTarget>
+                    </entry>
+                </targets>
+            </vipActivity>
+        </entry>
+    </activitys>
+</activityCollector>
