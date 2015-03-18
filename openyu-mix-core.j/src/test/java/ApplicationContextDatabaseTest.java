@@ -25,7 +25,7 @@ public class ApplicationContextDatabaseTest extends BaseTestSupporter {
 	public static void setUpBeforeClass() throws Exception {
 		applicationContext = new ClassPathXmlApplicationContext(new String[] {
 				"applicationContext-init.xml",//
-				"META-INF/applicationContext-sfc.xml",//
+				"META-INF/applicationContext-commons-core.xml",//
 				"META-INF/applicationContext-sls.xml",//
 				"applicationContext-database.xml",//
 		});

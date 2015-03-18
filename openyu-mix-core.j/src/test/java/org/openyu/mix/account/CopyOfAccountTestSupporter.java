@@ -28,7 +28,7 @@ import org.openyu.mix.app.AppTestSupporter;
 @ContextConfiguration(locations = {
 //
 		"classpath:applicationContext-init.xml",//
-		"classpath:META-INF/applicationContext-sfc.xml",//
+		"classpath:META-INF/applicationContext-commons-core.xml",//
 		"classpath:applicationContext-message.xml",//
 		"classpath:applicationContext-database.xml",//
 		"classpath:applicationContext-database-log.xml",//
@@ -68,7 +68,7 @@ public class CopyOfAccountTestSupporter extends AppTestSupporter {
 	// public static void setUpBeforeClass() throws Exception {
 	// applicationContext = new ClassPathXmlApplicationContext(new String[] {
 	// "applicationContext-init.xml",//
-	// "META-INF/applicationContext-sfc.xml",//
+	// "META-INF/applicationContext-commons-core.xml",//
 	// "applicationContext-message.xml",//
 	// "applicationContext-database.xml",//
 	// "applicationContext-database-log.xml",//

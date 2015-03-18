@@ -2397,17 +2397,9 @@
 					<artifactId>maven-surefire-plugin</artifactId>
 					<version>2.18.1</version>
 					<configuration>
-						<!--  
-						<skipTests>true</skipTests>
-						-->
 						<testFailureIgnore>true</testFailureIgnore>
-						<!--  
 						<includes>
-							<include>org/openyu/sfc/*Test.java</include>
-							<include>org/openyu/sfc/enumz/*Test.java</include>
-							<include>org/openyu/sfc/jaxb/*Test.java</include>
 						</includes>
-						-->
 					</configuration>
 				</plugin>
 				<plugin>
@@ -2426,13 +2418,8 @@
 							<lineRate>85</lineRate>
 						</check>
 						<instrumentation>
-							<!--  
 							<includes>
-								<include>org/openyu/sfc/*.class</include>
-								<include>org/openyu/sfc/enumz/*.class</include>
-								<include>org/openyu/sfc/jaxb/*.class</include>
 							</includes>
-							-->
 						</instrumentation>
 						<formats>
 							<format>html</format>

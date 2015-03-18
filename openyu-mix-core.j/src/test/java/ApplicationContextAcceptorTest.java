@@ -14,7 +14,7 @@ public class ApplicationContextAcceptorTest extends BaseTestSupporter
 	{
 		applicationContext = new ClassPathXmlApplicationContext(new String[] {
 				"applicationContext-init.xml",// 
-				"META-INF/applicationContext-sfc.xml",//				
+				"META-INF/applicationContext-commons-core.xml",//				
 				"applicationContext-database.xml",//
 				"applicationContext-database-log.xml",//
 				"applicationContext-schedule.xml",//

@@ -23,7 +23,7 @@ public class LoginTestSupporter extends CoreTestSupporter
 	{
 		applicationContext = new ClassPathXmlApplicationContext(new String[] {
 				"applicationContext-init.xml",// 
-				"META-INF/applicationContext-sfc.xml",//
+				"META-INF/applicationContext-commons-core.xml",//
 				"applicationContext-message.xml",//
 				"applicationContext-database.xml",// 
 				"applicationContext-database-log.xml",// 

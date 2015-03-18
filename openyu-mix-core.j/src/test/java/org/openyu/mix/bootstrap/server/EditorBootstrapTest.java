@@ -8,8 +8,8 @@ public class EditorBootstrapTest extends BaseTestSupporter {
 
 	private static String[] configLocations = new String[] {
 			"applicationContext-init.xml",//
-			// "META-INF/applicationContext-sfc-editor.xml",
-			"META-INF/applicationContext-mix-editor.xml",//
+			// "META-INF/applicationContext-commons-core-editor.xml",
+			"META-INF/applicationContext-mix-core-editor.xml",//
 	};
 
 	@Test
