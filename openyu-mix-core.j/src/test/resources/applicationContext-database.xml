@@ -124,11 +124,6 @@
  				
 			</props>
 		</property>
-		<!--  
-		<property name="cacheProvider">
-			<ref bean="cacheProvider" />
-		</property>
-		-->
 		<!-- hibernate 3  
 		<property name="lobHandler">
 			<ref bean="lobHandler" />

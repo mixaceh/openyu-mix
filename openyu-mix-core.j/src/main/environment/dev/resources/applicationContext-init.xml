@@ -89,34 +89,6 @@
 		</property>
 	</bean>  	
 
-    <!--  
-	<bean id="cacheProvider" class="org.openyu.commons.hibernate.EhCacheProvider">
-		<property name="cacheManagerName">
-			<value>cacheProvider</value>
-		</property>
-		<property name="configLocation">
-			<value>classpath:ehcache.xml</value>
-		</property>
-		<property name="diskStoreLocation">
-			<value>file:ehcache</value>
-		</property>
-	</bean>
-	-->
-
-	<!--  
-	<bean id="logCacheProvider" class="org.openyu.commons.hibernate.EhCacheProvider">
-		<property name="cacheManagerName">
-			<value>logCacheProvider</value>
-		</property>
-		<property name="configLocation">
-			<value>classpath:ehcache-log.xml</value>
-		</property>
-		<property name="diskStoreLocation">
-			<value>file:ehcache-log</value>
-		</property>
-	</bean>
-	-->
-
 	<!-- velocity -->
 	<bean id="velocityEngine" class="org.springframework.ui.velocity.VelocityEngineFactoryBean">
 		<property name="resourceLoaderPath" value="file:../custom/template/vm" />
