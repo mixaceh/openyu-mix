@@ -7,7 +7,7 @@
              http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
              http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd">
 
-	<!-- configHelper
+	<!-- configHelper  -->
 	<bean id="configHelper" class="org.openyu.commons.util.ConfigHelper">
 		<property name="configLocation">
 			<value>file:../etc/config.xml</value>
@@ -40,7 +40,7 @@
 			<value>file:../custom/upload</value>
 		</property>
 	</bean>
-	 -->
+
 
 	<bean id="propertyPlaceholderConfigurer"
 		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
@@ -50,21 +50,6 @@
 			<list>
 				<value>file:../etc/database.properties</value>
 				<value>file:../etc/database-log.properties</value>
-				
-				<!-- hbase zookeeper -->
-				<value>file:../etc/hbase-zookeeper.properties</value>
-				
-				<!-- hbase thrift -->
-				<value>file:../etc/hbase-thrift.properties</value>
-
-				<!-- cassandra thrift -->
-				<value>file:../etc/cassandra-thrift.properties</value>
-
-				<!-- commons net ftp -->
-				<value>file:../etc/commons-net-ftp.properties</value>
-
-				<!--  rabbit mq -->
-				<value>file:../etc/rabbitmq.properties</value>
 			</list>
 		</property>
 	</bean>
@@ -76,6 +61,8 @@
 		<property name="locations">
 			<list>
 				<value>file:../etc/authKeyService.properties</value>
+				<value>file:../etc/protocolService.properties</value>
+				<value>file:../etc/acceptorService.properties</value>
 			</list>
 		</property>
 	</bean>
@@ -90,19 +77,20 @@
 	</bean>  	
 
 	<!-- velocity -->
-	<bean id="velocityEngine" class="org.springframework.ui.velocity.VelocityEngineFactoryBean">
+	<bean id="velocityConfigurer"
+		class="org.springframework.web.servlet.view.velocity.VelocityConfigurer">
 		<property name="resourceLoaderPath" value="file:../custom/template/vm" />
 		<property name="configLocation" value="file:../etc/velocity.properties" />
 	</bean>
 
 	<!-- freemarker -->
-	<bean id="freeMarkerConfiguration"
-		class="org.springframework.ui.freemarker.FreeMarkerConfigurationFactoryBean">
+	<bean id="freeMarkerConfigurer"
+		class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
 		<property name="templateLoaderPath" value="file:../custom/template/ftl" />
 		<property name="configLocation" value="file:../etc/freemarker.properties" />
 	</bean>
 
-	<!-- annotation -->
+	<!-- autowired -->
 	<bean
 		class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor" />
 

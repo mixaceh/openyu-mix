@@ -1,20 +1,17 @@
-import java.text.Collator;
-import java.util.Arrays;
-
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.core.io.Resource;
+import org.openyu.commons.junit.supporter.BaseTestSupporter;
 
-public class ApplicationContextTest {
-
-	protected static ApplicationContext applicationContext;
+public class ApplicationContextTest extends BaseTestSupporter {
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
+		begTime = System.nanoTime();
 		applicationContext = new ClassPathXmlApplicationContext(
 				new String[] { "applicationContext.xml" });
+		endTime = System.nanoTime();
 	}
 
 	@Test
@@ -27,20 +24,13 @@ public class ApplicationContextTest {
 		Resource resource = applicationContext
 				.getResource("applicationContext.xml");
 		System.out.println(resource + " exist: " + resource.exists());
+		//
+		resource = applicationContext.getResource("WEB-INF/web.xml");
+		System.out.println(resource + " exist: " + resource.exists());
 	}
 
 	@Test
 	public void beans() {
-		System.out.println(applicationContext);
-		String[] beanNames = applicationContext.getBeanDefinitionNames();
-		Arrays.sort(beanNames, Collator.getInstance(java.util.Locale.ENGLISH));
-		//
-		System.out.println("=========================================");
-		System.out.println("Spring beans");
-		System.out.println("=========================================");
-		for (int i = 0; i < beanNames.length; i++) {
-			System.out.println(beanNames[i]);
-		}
-
+		printBeans();
 	}
 }

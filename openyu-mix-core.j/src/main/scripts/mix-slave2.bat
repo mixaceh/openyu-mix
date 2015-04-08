@@ -10,6 +10,10 @@ set _CLASSPATH=.;..\*;..\lib\*;..\..\*;..\..\lib\*;..\..\..\*;..\..\..\lib\*;..\
 
 rem @echo Using classpath:%_CLASSPATH%
 
-java -Xmn96m -Xms192m -Xmx192m -Xss128k -XX:PermSize=64m -XX:MaxPermSize=64m -cp %_CLASSPATH% -XX:+UseParNewGC -Djava.net.preferIPv4Stack=true -verbose:gc org.openyu.socklet.bootstrap.server.ServerBootstrap org/openyu/mix/bootstrap/server/applicationContext-slave2.xml
+set _CONFIG_LOCATIONS=org/openyu/mix/bootstrap/server/applicationContext-slave2.xml
+rem set _CONFIG_LOCATIONS=%_CONFIG_LOCATIONS% sample.xml  
+
+java -Xmn96m -Xms192m -Xmx192m -Xss256k -XX:PermSize=128m -XX:MaxPermSize=128m -cp %_CLASSPATH% -XX:+UseParNewGC -Djava.net.preferIPv4Stack=true -verbose:gc org.openyu.socklet.bootstrap.server.ServerBootstrap %_CONFIG_LOCATIONS%
 
 set _CLASSPATH=.
+set _CONFIG_LOCATIONS=
