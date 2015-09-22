@@ -56,6 +56,8 @@ public class ActivityServiceImpl extends AppServiceSupporter implements
 	 */
 	private long LISTEN_MILLS = 10 * 1000L;
 
+	private transient ListenRunner listenRunner = new ListenRunner();
+
 	public ActivityServiceImpl() {
 	}
 
@@ -68,7 +70,18 @@ public class ActivityServiceImpl extends AppServiceSupporter implements
 		super.init();
 		//
 		// 監聽
-		threadService.submit(new ListenRunner());
+		threadService.submit(listenRunner);
+	}
+	
+	/**
+	 * 銷毀化
+	 *
+	 * @throws Exception
+	 */
+	protected void uninit() throws Exception {
+		super.uninit();
+		//
+		listenRunner.setCancel(true);
 	}
 
 	// --------------------------------------------------
@@ -80,12 +93,17 @@ public class ActivityServiceImpl extends AppServiceSupporter implements
 		public void execute() {
 			while (true) {
 				try {
+					if (isCancel()) {
+						break;
+					}
 					listen();
 					ThreadHelper.sleep(LISTEN_MILLS);
 				} catch (Exception ex) {
 					// ex.printStackTrace();
 				}
 			}
+			//
+			LOGGER.info("Break off " + getClass().getSimpleName());
 		}
 	}
 

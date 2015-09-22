@@ -91,22 +91,27 @@ public class ManorServiceImpl extends AppServiceSupporter implements
 		super.init();
 		//
 		// 監聽
-		threadService.submit(new ListenRunner());
+		threadService.submit(new ManorListenRunner());
 	}
 
 	/**
 	 * 監聽
 	 */
-	protected class ListenRunner extends BaseRunnableSupporter {
+	protected class ManorListenRunner extends BaseRunnableSupporter {
 		public void execute() {
 			while (true) {
 				try {
+					if (isCancel()) {
+						break;
+					}
 					listen();
 					ThreadHelper.sleep(LISTEN_MILLS);
 				} catch (Exception ex) {
 					// ex.printStackTrace();
 				}
 			}
+			//
+			LOGGER.warn("Break off " + getClass().getSimpleName());
 		}
 	}
 

@@ -75,6 +75,8 @@ public class StoreChatServiceImpl extends AppServiceSupporter implements
 	 * 序列化佇列
 	 */
 	protected transient SerializeQueue<SerializeChat> serializeQueue = new SerializeQueue<SerializeChat>();
+	
+	
 
 	public StoreChatServiceImpl() {
 	}
@@ -88,7 +90,7 @@ public class StoreChatServiceImpl extends AppServiceSupporter implements
 		super.init();
 		//
 		// 監聽執行者
-		threadService.submit(new ListenRunner());
+		threadService.submit(new StoreChatsRunner());
 		// 序列化佇列
 		threadService.submit(serializeQueue);
 	}
@@ -96,22 +98,23 @@ public class StoreChatServiceImpl extends AppServiceSupporter implements
 	/**
 	 * 監聽執行者
 	 */
-	protected class ListenRunner extends BaseRunnableSupporter {
+	protected class StoreChatsRunner extends BaseRunnableSupporter {
 		public void execute() {
 			while (true) {
 				try {
-					// 自動儲存就不發訊息給client了
-					int count = storeChats(false);
-					if (count > 0) {
-						LOGGER.info("Automatic save chats to DB, total count ["
-								+ count + "]");
+					if (isCancel()) {
+						break;
 					}
+					// 自動儲存就不發訊息給client了
+					storeChats(false);
 					ThreadHelper.sleep(chatCollector.getListenMills());
 					// ThreadHelper.sleep(10 * 1000);
 				} catch (Exception ex) {
 					// ex.printStackTrace();
 				}
 			}
+			//
+			LOGGER.warn("Break off " + getClass().getSimpleName());
 		}
 	}
 
@@ -133,6 +136,11 @@ public class StoreChatServiceImpl extends AppServiceSupporter implements
 			} catch (Exception ex) {
 				ex.printStackTrace();
 			}
+		}
+		//
+		if (result > 0) {
+			LOGGER.info("Automatic save chats to DB, total count [" + result
+					+ "]");
 		}
 		return result;
 	}
