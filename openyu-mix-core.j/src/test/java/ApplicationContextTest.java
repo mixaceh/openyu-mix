@@ -30,7 +30,7 @@ public class ApplicationContextTest extends BaseTestSupporter {
 	}
 
 	@Test
-	public void beans() {
+	public void showBeans() {
 		printBeans();
 	}
 }
