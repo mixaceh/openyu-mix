@@ -10,7 +10,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.openyu.mix.mail.vo.MailType;
 import org.openyu.mix.mail.vo.adapter.MailTypeXmlAdapter;
-import org.openyu.commons.bean.supporter.BaseCollectorSupporter;
+import org.openyu.commons.collector.supporter.BaseCollectorSupporter;
 import org.openyu.commons.enumz.EnumHelper;
 
 /**

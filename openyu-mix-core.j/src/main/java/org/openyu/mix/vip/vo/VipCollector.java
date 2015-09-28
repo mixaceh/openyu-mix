@@ -9,7 +9,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import org.openyu.mix.manor.vo.ManorPen.FarmType;
 import org.openyu.mix.role.vo.BagPen.TabType;
-import org.openyu.commons.bean.supporter.BaseCollectorSupporter;
+import org.openyu.commons.collector.supporter.BaseCollectorSupporter;
 import org.openyu.commons.enumz.EnumHelper;
 import org.openyu.commons.lang.NumberHelper;
 import org.openyu.commons.util.ConfigHelper;

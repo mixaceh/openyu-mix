@@ -5,7 +5,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import org.openyu.commons.bean.supporter.BaseCollectorSupporter;
+import org.openyu.commons.collector.supporter.BaseCollectorSupporter;
 import org.openyu.commons.nio.NioHelper;
 import org.openyu.commons.security.SecurityProcessor;
 import org.openyu.commons.security.impl.SecurityProcessorImpl;

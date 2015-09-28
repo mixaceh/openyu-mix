@@ -4,14 +4,16 @@ import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
 import org.openyu.commons.bean.NamesBean;
 import org.openyu.commons.bean.adapter.NamesBeanXmlAdapter;
-import org.openyu.commons.bean.supporter.BaseCollectorSupporter;
 import org.openyu.commons.bean.supporter.NamesBeanSupporter;
+import org.openyu.commons.collector.supporter.BaseCollectorSupporter;
 import org.openyu.commons.enumz.EnumHelper;
 import org.openyu.mix.app.vo.Prize;
 import org.openyu.mix.app.vo.adapter.StringPrizeXmlAdapter;

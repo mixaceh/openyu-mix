@@ -3,6 +3,7 @@ package org.openyu.mix.item.vo;
 import java.util.Arrays;
 import java.util.LinkedHashSet;
 import java.util.Set;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -11,7 +12,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import org.openyu.mix.item.vo.adapter.EquipmentLevelTypeXmlAdapter;
 import org.openyu.mix.item.vo.adapter.EquipmentPositionTypeXmlAdapter;
 import org.openyu.mix.item.vo.adapter.EquipmentSeriesTypeXmlAdapter;
-import org.openyu.commons.bean.supporter.BaseCollectorSupporter;
+import org.openyu.commons.collector.supporter.BaseCollectorSupporter;
 
 /**
  * 裝備數據

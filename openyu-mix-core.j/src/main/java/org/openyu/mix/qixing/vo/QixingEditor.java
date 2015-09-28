@@ -5,8 +5,8 @@ import java.io.File;
 import jxl.Workbook;
 import jxl.write.WritableWorkbook;
 
-import org.openyu.commons.bean.ex.EditorException;
-import org.openyu.commons.bean.supporter.BaseEditorSupporter;
+import org.openyu.commons.editor.ex.EditorException;
+import org.openyu.commons.editor.supporter.BaseEditorSupporter;
 
 public class QixingEditor extends BaseEditorSupporter {
 

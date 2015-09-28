@@ -6,6 +6,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -15,7 +16,7 @@ import org.openyu.mix.item.vo.ThingType;
 import org.openyu.mix.item.vo.adapter.StringThingXmlAdapter;
 import org.openyu.mix.item.vo.adapter.ThingTypeXmlAdapter;
 import org.openyu.mix.item.vo.impl.ThingImpl;
-import org.openyu.commons.bean.supporter.BaseCollectorSupporter;
+import org.openyu.commons.collector.supporter.BaseCollectorSupporter;
 import org.openyu.commons.enumz.EnumHelper;
 import org.openyu.commons.lang.StringHelper;
 

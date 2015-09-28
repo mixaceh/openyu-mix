@@ -7,7 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.openyu.mix.flutter.vo.Attribute;
 import org.openyu.mix.flutter.vo.AttributeGroup;
 import org.openyu.mix.flutter.vo.AttributeType;
-import org.openyu.commons.service.supporter.BaseHelperSupporter;
+import org.openyu.commons.helper.supporter.BaseHelperSupporter;
 import org.openyu.socklet.message.vo.Message;
 
 /**

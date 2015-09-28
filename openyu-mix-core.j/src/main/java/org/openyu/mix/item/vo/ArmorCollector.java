@@ -21,7 +21,7 @@ import org.openyu.mix.item.vo.adapter.EquipmentSeriesTypeXmlAdapter;
 import org.openyu.mix.item.vo.adapter.StringArmorXmlAdapter;
 import org.openyu.mix.item.vo.impl.ArmorImpl;
 import org.openyu.mix.item.vo.impl.EnhanceFactorImpl;
-import org.openyu.commons.bean.supporter.BaseCollectorSupporter;
+import org.openyu.commons.collector.supporter.BaseCollectorSupporter;
 import org.openyu.commons.enumz.EnumHelper;
 import org.openyu.commons.lang.StringHelper;
 import org.slf4j.Logger;

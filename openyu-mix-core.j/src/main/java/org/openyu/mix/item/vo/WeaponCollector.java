@@ -23,7 +23,7 @@ import org.openyu.mix.item.vo.adapter.WeaponTypeXmlAdapter;
 import org.openyu.mix.item.vo.adapter.EnhanceLevelXmlAdapter;
 import org.openyu.mix.item.vo.impl.EnhanceFactorImpl;
 import org.openyu.mix.item.vo.impl.WeaponImpl;
-import org.openyu.commons.bean.supporter.BaseCollectorSupporter;
+import org.openyu.commons.collector.supporter.BaseCollectorSupporter;
 import org.openyu.commons.enumz.EnumHelper;
 import org.openyu.commons.lang.StringHelper;
 import org.slf4j.Logger;

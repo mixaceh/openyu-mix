@@ -15,11 +15,10 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.openyu.commons.bean.NamesBean;
 import org.openyu.commons.bean.adapter.NamesBeanXmlAdapter;
-import org.openyu.commons.bean.supporter.BaseCollectorSupporter;
 import org.openyu.commons.bean.supporter.NamesBeanSupporter;
+import org.openyu.commons.collector.supporter.BaseCollectorSupporter;
 import org.openyu.commons.enumz.EnumHelper;
 import org.openyu.commons.lang.ArrayHelper;
-
 import org.openyu.mix.app.vo.Prize;
 import org.openyu.mix.app.vo.adapter.StringPrizeXmlAdapter;
 import org.openyu.mix.sasang.vo.SasangType;

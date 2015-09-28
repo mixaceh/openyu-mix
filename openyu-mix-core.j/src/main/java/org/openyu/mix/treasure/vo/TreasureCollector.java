@@ -16,8 +16,8 @@ import org.openyu.mix.treasure.vo.impl.TreasureImpl;
 import org.openyu.commons.bean.BeanHelper;
 import org.openyu.commons.bean.NamesBean;
 import org.openyu.commons.bean.adapter.NamesBeanXmlAdapter;
-import org.openyu.commons.bean.supporter.BaseCollectorSupporter;
 import org.openyu.commons.bean.supporter.NamesBeanSupporter;
+import org.openyu.commons.collector.supporter.BaseCollectorSupporter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
