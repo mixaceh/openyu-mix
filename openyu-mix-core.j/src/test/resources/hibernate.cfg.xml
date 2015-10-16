@@ -57,13 +57,15 @@
 		<property name="hibernate.search.default.directory_provider">org.hibernate.search.store.FSDirectoryProvider</property>
 		-->
 		
+		<property name="hibernate.search.lucene_version">LUCENE_CURRENT</property>
 		<property name="hibernate.search.default.directory_provider">filesystem</property>
 		<property name="hibernate.search.default.indexBase">search</property>
 		<property name="javax.persistence.validation.mode">none</property>
 
-		<!--
-		<mapping class="" />
-		 -->
+		<!-- test -->
+		<mapping class="org.openyu.commons.po.impl.DogPoImpl" />
+		<mapping class="org.openyu.commons.po.impl.CatPoImpl" />
+		
 	</session-factory>
 
 </hibernate-configuration>
