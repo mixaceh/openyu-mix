@@ -62,7 +62,7 @@ public final class EquipmentCollector extends BaseCollectorSupporter {
 				equipmentCollector.initialize();
 			}
 
-			// 此有系統預設值,只是為了轉出xml,並非給企劃編輯用
+			// 此有系統值,只是為了轉出xml,並非給企劃編輯用
 			equipmentCollector.levelTypes = new LinkedHashSet<LevelType>(
 					Arrays.asList(LevelType.values()));
 			equipmentCollector.positionTypes = new LinkedHashSet<PositionType>(

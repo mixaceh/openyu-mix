@@ -130,7 +130,7 @@ public final class WeaponCollector extends BaseCollectorSupporter {
 				weaponCollector.initialize();
 			}
 
-			// 此有系統預設值,只是為了轉出xml,並非給企劃編輯用
+			// 此有系統值,只是為了轉出xml,並非給企劃編輯用
 			weaponCollector.levelTypes = EnumHelper.valuesSet(LevelType.class);
 			weaponCollector.positionTypes = EnumHelper
 					.valuesSet(PositionType.class);

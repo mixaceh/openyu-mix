@@ -15,6 +15,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import org.openyu.mix.item.vo.adapter.StringMaterialXmlAdapter;
 import org.openyu.mix.item.vo.adapter.MaterialTypeXmlAdapter;
 import org.openyu.mix.item.vo.impl.MaterialImpl;
+import org.openyu.commons.collector.CollectorHelper;
 import org.openyu.commons.collector.supporter.BaseCollectorSupporter;
 import org.openyu.commons.enumz.EnumHelper;
 import org.openyu.commons.lang.StringHelper;
@@ -31,14 +32,20 @@ public final class MaterialCollector extends BaseCollectorSupporter {
 
 	private static final long serialVersionUID = 1507901194525580302L;
 
-	private static MaterialCollector materialCollector;
+	private static MaterialCollector instance;
 
+	// --------------------------------------------------
+	// 此有系統值,只是為了轉出xml,並非給企劃編輯用
+	// --------------------------------------------------
 	/**
 	 * 材料類別
 	 */
 	@XmlJavaTypeAdapter(MaterialTypeXmlAdapter.class)
 	private Set<MaterialType> materialTypes = new LinkedHashSet<MaterialType>();
 
+	// --------------------------------------------------
+	// 企劃編輯用
+	// --------------------------------------------------
 	/**
 	 * 所有材料
 	 */
@@ -55,41 +62,68 @@ public final class MaterialCollector extends BaseCollectorSupporter {
 		return getInstance(true);
 	}
 
-	public synchronized static MaterialCollector getInstance(boolean initial) {
-		if (materialCollector == null) {
-			materialCollector = new MaterialCollector();
-			if (initial) {
-				materialCollector.initialize();
+	public synchronized static MaterialCollector getInstance(boolean start) {
+		if (instance == null) {
+			instance = CollectorHelper.readFromSer(MaterialCollector.class);
+			// 此時有可能會沒有ser檔案,或舊的結構造成ex,只要再轉出一次ser,覆蓋原本ser即可
+			if (instance == null) {
+				instance = new MaterialCollector();
 			}
-
-			// 此有系統預設值,只是為了轉出xml,並非給企劃編輯用
-			materialCollector.materialTypes = EnumHelper
-					.valuesSet(MaterialType.class);
+			//
+			if (start) {
+				// 啟動
+				instance.start();
+			}
+			// 此有系統值,只是為了轉出xml,並非給企劃編輯用
+			instance.materialTypes = EnumHelper.valuesSet(MaterialType.class);
 
 		}
-		return materialCollector;
+		return instance;
 	}
 
 	/**
-	 * 初始化
+	 * 單例關閉
 	 * 
+	 * @return
 	 */
-	public void initialize() {
-		if (!materialCollector.isInitialized()) {
-			materialCollector = readFromSer(MaterialCollector.class);
-			// 此時有可能會沒有ser檔案,或舊的結構造成ex,只要再轉出一次ser,覆蓋原本ser即可
-			if (materialCollector == null) {
-				materialCollector = new MaterialCollector();
-			}
+	public synchronized static MaterialCollector shutdownInstance() {
+		if (instance != null) {
+			MaterialCollector oldInstance = instance;
+			instance = null;
 			//
-			materialCollector.setInitialized(true);
+			if (oldInstance != null) {
+				oldInstance.shutdown();
+			}
 		}
+		return instance;
 	}
 
-	public void clear() {
+	/**
+	 * 單例重啟
+	 * 
+	 * @return
+	 */
+	public synchronized static MaterialCollector restartInstance() {
+		if (instance != null) {
+			instance.restart();
+		}
+		return instance;
+	}
+
+	/**
+	 * 內部啟動
+	 */
+	@Override
+	protected void doStart() throws Exception {
+
+	}
+
+	/**
+	 * 內部關閉
+	 */
+	@Override
+	protected void doShutdown() throws Exception {
 		materials.clear();
-		// 設為可初始化
-		setInitialized(false);
 	}
 
 	// --------------------------------------------------
@@ -151,8 +185,7 @@ public final class MaterialCollector extends BaseCollectorSupporter {
 			result = new MaterialImpl();
 			result.setId(id);
 		}
-		result.setUniqueId(Material.UNIQUE_ID_PREFIX
-				+ StringHelper.randomUnique());
+		result.setUniqueId(Material.UNIQUE_ID_PREFIX + StringHelper.randomUnique());
 		return result;
 	}
 

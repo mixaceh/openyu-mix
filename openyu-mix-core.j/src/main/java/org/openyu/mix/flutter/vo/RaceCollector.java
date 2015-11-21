@@ -66,7 +66,7 @@ public final class RaceCollector extends BaseCollectorSupporter {
 				raceCollector.initialize();
 			}
 
-			// 此有系統預設值,只是為了轉出xml,並非給企劃編輯用
+			// 此有系統值,只是為了轉出xml,並非給企劃編輯用
 			raceCollector.raceTypes = EnumHelper.valuesSet(RaceType.class);
 			raceCollector.attributeTypes = EnumHelper
 					.valuesSet(AttributeType.class);

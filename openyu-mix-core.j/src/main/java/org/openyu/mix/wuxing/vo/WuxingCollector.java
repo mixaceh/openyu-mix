@@ -118,7 +118,7 @@ public final class WuxingCollector extends BaseCollectorSupporter
 				wuxingCollector.initialize();
 			}
 
-			// 此有系統預設值,只是為了轉出xml,並非給企劃編輯用
+			// 此有系統值,只是為了轉出xml,並非給企劃編輯用
 			wuxingCollector.wuxingTypes = EnumHelper.valuesSet(WuxingType.class);
 
 		}

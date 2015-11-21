@@ -101,7 +101,7 @@ public final class TrainCollector extends BaseCollectorSupporter {
 			if (initial) {
 				trainCollector.initialize();
 			}
-			// 此有系統預設值,只是為了轉出xml,並非給企劃編輯用
+			// 此有系統值,只是為了轉出xml,並非給企劃編輯用
 		}
 		return trainCollector;
 	}
