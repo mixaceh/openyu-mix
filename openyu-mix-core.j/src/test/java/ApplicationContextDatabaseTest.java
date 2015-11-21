@@ -11,22 +11,23 @@ import org.hibernate.jdbc.Work;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.orm.hibernate4.HibernateTemplate;
 import org.springframework.orm.hibernate4.HibernateTransactionManager;
 import org.springframework.transaction.interceptor.TransactionInterceptor;
 import org.openyu.mix.app.dao.AppDao;
 import org.openyu.mix.app.service.AppService;
-import org.openyu.commons.dao.supporter.OjDaoSupporter;
+import org.openyu.commons.dao.supporter.CommonDaoSupporter;
 import org.openyu.commons.junit.supporter.BaseTestSupporter;
-import org.openyu.commons.service.OjService;
+import org.openyu.commons.service.CommonService;
 
 public class ApplicationContextDatabaseTest extends BaseTestSupporter {
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
-		applicationContext = new ClassPathXmlApplicationContext(new String[] {
-				"applicationContext-init.xml",//
-				"META-INF/applicationContext-commons-core.xml",//
-				"META-INF/applicationContext-sls.xml",//
+		applicationContext = new ClassPathXmlApplicationContext(new String[] {//
+				"applicationContext-init.xml", //
+				"applicationContext-bean.xml", //
+				"applicationContext-acceptor.xml",//
 				"applicationContext-database.xml",//
 		});
 	}
@@ -38,16 +39,13 @@ public class ApplicationContextDatabaseTest extends BaseTestSupporter {
 		assertNotNull(bean);
 		//
 		System.out.println("connection: " + bean.getConnection());
-		System.out.println("autoCommit: "
-				+ bean.getConnection().getAutoCommit());
-		System.out.println("transactionIsolation: "
-				+ bean.getConnection().getTransactionIsolation());
+		System.out.println("autoCommit: " + bean.getConnection().getAutoCommit());
+		System.out.println("transactionIsolation: " + bean.getConnection().getTransactionIsolation());
 	}
 
 	@Test
 	public void sessionFactory() throws Exception {
-		SessionFactory bean = (SessionFactory) applicationContext
-				.getBean("sessionFactory");
+		SessionFactory bean = (SessionFactory) applicationContext.getBean("sessionFactory");
 		System.out.println(bean);
 		assertNotNull(bean);
 		//
@@ -56,32 +54,42 @@ public class ApplicationContextDatabaseTest extends BaseTestSupporter {
 			public void execute(Connection connection) throws SQLException {
 				System.out.println("connection: " + connection);
 				System.out.println("autoCommit: " + connection.getAutoCommit());
-				System.out.println("transactionIsolation: "
-						+ connection.getTransactionIsolation());
+				System.out.println("transactionIsolation: " + connection.getTransactionIsolation());
 			}
 		});
 	}
 
 	@Test
+	public void hibernateTemplate() {
+		HibernateTemplate bean = (HibernateTemplate) applicationContext.getBean("hibernateTemplate");
+		System.out.println(bean);
+		assertNotNull(bean);
+	}
+
+	@Test
 	public void txAdvice() {
-		TransactionInterceptor bean = (TransactionInterceptor) applicationContext
-				.getBean("txAdvice");
+		TransactionInterceptor bean = (TransactionInterceptor) applicationContext.getBean("txAdvice");
 		System.out.println(bean);
 		assertNotNull(bean);
 	}
 
 	@Test
 	public void txManager() {
-		HibernateTransactionManager bean = (HibernateTransactionManager) applicationContext
-				.getBean("txManager");
+		HibernateTransactionManager bean = (HibernateTransactionManager) applicationContext.getBean("txManager");
 		System.out.println(bean);
 		assertNotNull(bean);
 	}
 
 	@Test
-	public void ojDaoSupporter() {
-		OjDaoSupporter bean = (OjDaoSupporter) applicationContext
-				.getBean("ojDaoSupporter");
+	public void commonDaoSupporter() {
+		CommonDaoSupporter bean = (CommonDaoSupporter) applicationContext.getBean("commonDaoSupporter");
+		System.out.println(bean);
+		assertNotNull(bean);
+	}
+
+	@Test
+	public void commonServiceSupporter() {
+		CommonService bean = (CommonService) applicationContext.getBean("commonServiceSupporter");
 		System.out.println(bean);
 		assertNotNull(bean);
 	}
@@ -94,17 +102,8 @@ public class ApplicationContextDatabaseTest extends BaseTestSupporter {
 	}
 
 	@Test
-	public void ojServiceSupporter() {
-		OjService bean = (OjService) applicationContext
-				.getBean("ojServiceSupporter");
-		System.out.println(bean);
-		assertNotNull(bean);
-	}
-
-	@Test
 	public void appServiceSupporter() {
-		AppService bean = (AppService) applicationContext
-				.getBean("appServiceSupporter");
+		AppService bean = (AppService) applicationContext.getBean("appServiceSupporter");
 		System.out.println(bean);
 		assertNotNull(bean);
 	}

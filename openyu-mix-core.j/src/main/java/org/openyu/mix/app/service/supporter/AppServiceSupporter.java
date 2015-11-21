@@ -6,20 +6,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.openyu.mix.app.service.AppService;
 import org.openyu.mix.role.vo.Role;
-import org.openyu.commons.service.supporter.OjServiceSupporter;
+import org.openyu.commons.service.supporter.CommonServiceSupporter;
 import org.openyu.socklet.acceptor.service.AcceptorService;
 import org.openyu.socklet.acceptor.vo.AcceptorStarter;
 import org.openyu.socklet.connector.vo.AcceptorConnector;
 import org.openyu.socklet.message.service.MessageService;
 import org.openyu.socklet.message.vo.Message;
 
-public class AppServiceSupporter extends OjServiceSupporter implements
-		AppService {
+public class AppServiceSupporter extends CommonServiceSupporter implements AppService {
 
 	private static final long serialVersionUID = -8839967232533601475L;
 
-	private static transient final Logger LOGGER = LoggerFactory
-			.getLogger(AppServiceSupporter.class);
+	private static transient final Logger LOGGER = LoggerFactory.getLogger(AppServiceSupporter.class);
 
 	@Autowired
 	@Qualifier("messageService")
@@ -116,8 +114,7 @@ public class AppServiceSupporter extends OjServiceSupporter implements
 	protected AcceptorStarter getAcceptorStarter() {
 		if (acceptorStarter == null) {
 			try {
-				acceptorStarter = (AcceptorStarter) applicationContext
-						.getBean("acceptorStarter");
+				acceptorStarter = (AcceptorStarter) applicationContext.getBean("acceptorStarter");
 			} catch (Exception ex) {
 			}
 		}

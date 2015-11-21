@@ -1,10 +1,12 @@
 package org.openyu.mix.app.dao.supporter;
 
+import org.openyu.commons.dao.supporter.CommonDaoSupporter;
 import org.openyu.mix.app.dao.AppDao;
-import org.openyu.commons.dao.supporter.OjDaoSupporter;
 
-public class AppDaoSupporter extends OjDaoSupporter implements AppDao
-{
-	public AppDaoSupporter()
-	{}
+public class AppDaoSupporter extends CommonDaoSupporter implements AppDao {
+	
+	private static final long serialVersionUID = -4765400307737826746L;
+
+	public AppDaoSupporter() {
+	}
 }
