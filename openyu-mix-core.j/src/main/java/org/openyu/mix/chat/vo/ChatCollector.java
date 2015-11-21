@@ -5,6 +5,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import org.openyu.commons.collector.CollectorHelper;
 import org.openyu.commons.collector.supporter.BaseCollectorSupporter;
 import org.openyu.commons.nio.NioHelper;
 import org.openyu.commons.security.SecurityProcessor;
@@ -23,18 +24,17 @@ import org.openyu.commons.util.impl.SerializeProcessorImpl;
 @XmlRootElement(name = "chatCollector")
 @XmlAccessorType(XmlAccessType.FIELD)
 public final class ChatCollector extends BaseCollectorSupporter {
-	// implements SerializeProcessor, SecurityProcessor, CompressProcessor {
 
 	private static final long serialVersionUID = 3530463458196103043L;
 
-	private static ChatCollector chatCollector;
+	private static ChatCollector instance;
 
 	// --------------------------------------------------
-	// 此有系統預設值,只是為了轉出xml,並非給企劃編輯用
+	// 此有系統值,只是為了轉出xml,並非給企劃編輯用
 	// --------------------------------------------------
 
 	// --------------------------------------------------
-	// biz
+	// 企劃編輯用
 	// --------------------------------------------------
 	/** 序列化 */
 	@XmlElement(type = SerializeProcessorImpl.class)
@@ -77,38 +77,67 @@ public final class ChatCollector extends BaseCollectorSupporter {
 		return getInstance(true);
 	}
 
-	public synchronized static ChatCollector getInstance(boolean initial) {
-		if (chatCollector == null) {
-			chatCollector = new ChatCollector();
-			if (initial) {
-				chatCollector.initialize();
+	public synchronized static ChatCollector getInstance(boolean start) {
+		if (instance == null) {
+			instance = CollectorHelper.readFromSer(ChatCollector.class);
+			// 此時有可能會沒有ser檔案,或舊的結構造成ex,只要再轉出一次ser,覆蓋原本ser即可
+			if (instance == null) {
+				instance = new ChatCollector();
 			}
-
+			//
+			if (start) {
+				// 啟動
+				instance.start();
+			}
 			// 此有系統預設值,只是為了轉出xml,並非給企劃編輯用
 
 		}
-		return chatCollector;
+		return instance;
 	}
 
 	/**
-	 * 初始化
+	 * 單例關閉
 	 * 
+	 * @return
 	 */
-	public void initialize() {
-		if (!chatCollector.isInitialized()) {
-			chatCollector = readFromSer(ChatCollector.class);
-			// 此時有可能會沒有ser檔案,或舊的結構造成ex,只要再轉出一次ser,覆蓋原本ser即可
-			if (chatCollector == null) {
-				chatCollector = new ChatCollector();
-			}
+	public synchronized static ChatCollector shutdownInstance() {
+		if (instance != null) {
+			ChatCollector oldInstance = instance;
+			instance = null;
 			//
-			chatCollector.setInitialized(true);
+			if (oldInstance != null) {
+				oldInstance.shutdown();
+			}
 		}
+		return instance;
 	}
 
-	public void clear() {
-		// 設為可初始化
-		setInitialized(false);
+	/**
+	 * 單例重啟
+	 * 
+	 * @return
+	 */
+	public synchronized static ChatCollector restartInstance() {
+		if (instance != null) {
+			instance.restart();
+		}
+		return instance;
+	}
+
+	/**
+	 * 內部啟動
+	 */
+	@Override
+	protected void doStart() throws Exception {
+
+	}
+
+	/**
+	 * 內部關閉
+	 */
+	@Override
+	protected void doShutdown() throws Exception {
+
 	}
 
 	public SerializeProcessor getSerializeProcessor() {
@@ -123,6 +152,7 @@ public final class ChatCollector extends BaseCollectorSupporter {
 		return compressProcessor;
 	}
 
+	// --------------------------------------------------
 	public int getRetryNumber() {
 		return retryNumber;
 	}

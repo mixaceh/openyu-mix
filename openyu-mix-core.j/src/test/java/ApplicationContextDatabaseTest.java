@@ -18,16 +18,17 @@ import org.openyu.mix.app.dao.AppDao;
 import org.openyu.mix.app.service.AppService;
 import org.openyu.commons.dao.supporter.CommonDaoSupporter;
 import org.openyu.commons.junit.supporter.BaseTestSupporter;
+import org.openyu.commons.lang.ClassHelper;
 import org.openyu.commons.service.CommonService;
 
 public class ApplicationContextDatabaseTest extends BaseTestSupporter {
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
-		applicationContext = new ClassPathXmlApplicationContext(new String[] {//
+		applicationContext = new ClassPathXmlApplicationContext(new String[] { //
 				"applicationContext-init.xml", //
 				"applicationContext-bean.xml", //
-				"applicationContext-acceptor.xml",//
+				"applicationContext-acceptor.xml", //
 				"applicationContext-database.xml",//
 		});
 	}
@@ -41,6 +42,10 @@ public class ApplicationContextDatabaseTest extends BaseTestSupporter {
 		System.out.println("connection: " + bean.getConnection());
 		System.out.println("autoCommit: " + bean.getConnection().getAutoCommit());
 		System.out.println("transactionIsolation: " + bean.getConnection().getTransactionIsolation());
+
+		// Object o =
+		// ClassHelper.newInstance("org.openyu.mix.role.po.userType.BagPenUserType");
+		// System.out.println(o);
 	}
 
 	@Test

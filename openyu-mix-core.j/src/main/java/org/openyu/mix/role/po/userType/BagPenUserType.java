@@ -1,5 +1,4 @@
 package org.openyu.mix.role.po.userType;
-
 import java.sql.Types;
 import java.util.Map;
 
