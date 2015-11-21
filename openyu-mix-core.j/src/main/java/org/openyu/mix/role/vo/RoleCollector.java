@@ -31,11 +31,11 @@ public final class RoleCollector extends BaseCollectorSupporter {
 	private static RoleCollector instance;
 
 	// --------------------------------------------------
-	// 此有系統預設值,只是為了轉出xml,並非給企劃編輯用
+	// 此有系統值,只是為了轉出xml,並非給企劃編輯用
 	// --------------------------------------------------
 
 	// --------------------------------------------------
-	// biz
+	// 企劃編輯用
 	// --------------------------------------------------
 	/** 序列化 */
 	@XmlElement(type = SerializeProcessorImpl.class)

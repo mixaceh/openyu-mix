@@ -16,6 +16,7 @@ import org.openyu.mix.item.vo.ThingType;
 import org.openyu.mix.item.vo.adapter.StringThingXmlAdapter;
 import org.openyu.mix.item.vo.adapter.ThingTypeXmlAdapter;
 import org.openyu.mix.item.vo.impl.ThingImpl;
+import org.openyu.commons.collector.CollectorHelper;
 import org.openyu.commons.collector.supporter.BaseCollectorSupporter;
 import org.openyu.commons.enumz.EnumHelper;
 import org.openyu.commons.lang.StringHelper;
@@ -32,14 +33,20 @@ public final class ThingCollector extends BaseCollectorSupporter {
 
 	private static final long serialVersionUID = 1507901194525580302L;
 
-	private static ThingCollector thingCollector;
+	private static ThingCollector instance;
 
+	// --------------------------------------------------
+	// 此有系統值,只是為了轉出xml,並非給企劃編輯用
+	// --------------------------------------------------
 	/**
 	 * 物品類別
 	 */
 	@XmlJavaTypeAdapter(ThingTypeXmlAdapter.class)
 	private Set<ThingType> thingTypes = new LinkedHashSet<ThingType>();
 
+	// --------------------------------------------------
+	// 企劃編輯用
+	// --------------------------------------------------
 	/**
 	 * 所有物品 <id,thing>
 	 */
@@ -56,39 +63,69 @@ public final class ThingCollector extends BaseCollectorSupporter {
 		return getInstance(true);
 	}
 
-	public synchronized static ThingCollector getInstance(boolean initial) {
-		if (thingCollector == null) {
-			thingCollector = new ThingCollector();
-			if (initial) {
-				thingCollector.initialize();
+	public synchronized static ThingCollector getInstance(boolean start) {
+		if (instance == null) {
+			instance = CollectorHelper.readFromSer(ThingCollector.class);
+			// 此時有可能會沒有ser檔案,或舊的結構造成ex,只要再轉出一次ser,覆蓋原本ser即可
+			if (instance == null) {
+				instance = new ThingCollector();
 			}
-
+			//
+			if (start) {
+				// 啟動
+				instance.start();
+			}
 			// 此有系統預設值,只是為了轉出xml,並非給企劃編輯用
-			thingCollector.thingTypes = EnumHelper.valuesSet(ThingType.class);
+
+			instance.thingTypes = EnumHelper.valuesSet(ThingType.class);
 		}
-		return thingCollector;
+		return instance;
 	}
 
 	/**
-	 * 初始化
+	 * 單例關閉
 	 * 
+	 * @return
 	 */
-	public void initialize() {
-		if (!thingCollector.isInitialized()) {
-			thingCollector = readFromSer(ThingCollector.class);
-			// 此時有可能會沒有ser檔案,或舊的結構造成ex,只要再轉出一次ser,覆蓋原本ser即可
-			if (thingCollector == null) {
-				thingCollector = new ThingCollector();
-			}
+	public synchronized static ThingCollector shutdownInstance() {
+		if (instance != null) {
+			ThingCollector oldInstance = instance;
+			instance = null;
 			//
-			thingCollector.setInitialized(true);
+			if (oldInstance != null) {
+				oldInstance.shutdown();
+			}
 		}
+		return instance;
 	}
 
-	public void clear() {
+	/**
+	 * 單例重啟
+	 * 
+	 * @return
+	 */
+	public synchronized static ThingCollector restartInstance() {
+		if (instance != null) {
+			instance.restart();
+		}
+		return instance;
+	}
+
+	/**
+	 * 內部啟動
+	 */
+	@Override
+	protected void doStart() throws Exception {
+
+	}
+
+	/**
+	 * 內部關閉
+	 */
+	@Override
+	protected void doShutdown() throws Exception {
 		things.clear();
-		// 設為可初始化
-		setInitialized(false);
+
 	}
 
 	// --------------------------------------------------

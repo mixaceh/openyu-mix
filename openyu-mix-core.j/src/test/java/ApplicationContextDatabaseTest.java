@@ -43,9 +43,9 @@ public class ApplicationContextDatabaseTest extends BaseTestSupporter {
 		System.out.println("autoCommit: " + bean.getConnection().getAutoCommit());
 		System.out.println("transactionIsolation: " + bean.getConnection().getTransactionIsolation());
 
-		// Object o =
-		// ClassHelper.newInstance("org.openyu.mix.role.po.userType.BagPenUserType");
-		// System.out.println(o);
+		 Object o =
+		 ClassHelper.newInstance("org.openyu.mix.role.po.userType.BagPenUserType");
+		 System.out.println(o);
 	}
 
 	@Test
