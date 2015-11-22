@@ -24,6 +24,7 @@ import org.openyu.mix.manor.vo.impl.SeedImpl;
 import org.openyu.commons.bean.NamesBean;
 import org.openyu.commons.bean.adapter.NamesBeanXmlAdapter;
 import org.openyu.commons.bean.supporter.NamesBeanSupporter;
+import org.openyu.commons.collector.CollectorHelper;
 import org.openyu.commons.collector.supporter.BaseCollectorSupporter;
 import org.openyu.commons.enumz.EnumHelper;
 import org.openyu.commons.lang.StringHelper;
@@ -42,17 +43,22 @@ public final class ManorCollector extends BaseCollectorSupporter {
 
 	private static final long serialVersionUID = 4981643884128613616L;
 
-	private static transient final Logger LOGGER = LoggerFactory
-			.getLogger(ManorCollector.class);
+	private static transient final Logger LOGGER = LoggerFactory.getLogger(ManorCollector.class);
 
-	private static ManorCollector manorCollector;
+	private static ManorCollector instance;
 
+	// --------------------------------------------------
+	// 此有系統值,只是為了轉出xml,並非給企劃編輯用
+	// --------------------------------------------------
 	/**
 	 * 強化等級
 	 */
 	@XmlJavaTypeAdapter(EnhanceLevelXmlAdapter.class)
 	private Set<EnhanceLevel> enhanceLevels = new LinkedHashSet<EnhanceLevel>();
 
+	// --------------------------------------------------
+	// 企劃編輯用
+	// --------------------------------------------------
 	/**
 	 * 說明
 	 */
@@ -218,47 +224,74 @@ public final class ManorCollector extends BaseCollectorSupporter {
 		return getInstance(true);
 	}
 
-	public synchronized static ManorCollector getInstance(boolean initial) {
-		if (manorCollector == null) {
-			manorCollector = new ManorCollector();
-			if (initial) {
-				manorCollector.initialize();
+	public synchronized static ManorCollector getInstance(boolean start) {
+		if (instance == null) {
+			instance = CollectorHelper.readFromSer(ManorCollector.class);
+			// 此時有可能會沒有ser檔案,或舊的結構造成ex,只要再轉出一次ser,覆蓋原本ser即可
+			if (instance == null) {
+				instance = new ManorCollector();
+			}
+			//
+			if (start) {
+				// 啟動
+				instance.start();
 			}
 			// 此有系統值,只是為了轉出xml,並非給企劃編輯用
-			manorCollector.enhanceLevels = EnumHelper
-					.valuesSet(EnhanceLevel.class);
+			instance.enhanceLevels = EnumHelper.valuesSet(EnhanceLevel.class);
 			//
 		}
-		return manorCollector;
+		return instance;
 	}
 
 	/**
-	 * 初始化
+	 * 單例關閉
 	 * 
+	 * @return
 	 */
-	public void initialize() {
-		if (!manorCollector.isInitialized()) {
-			manorCollector = readFromSer(ManorCollector.class);
-			// 此時有可能會沒有ser檔案,或舊的結構造成ex,只要再轉出一次ser,覆蓋原本ser即可
-			if (manorCollector == null) {
-				manorCollector = new ManorCollector();
+	public synchronized static ManorCollector shutdownInstance() {
+		if (instance != null) {
+			ManorCollector oldInstance = instance;
+			instance = null;
+			//
+			if (oldInstance != null) {
+				oldInstance.shutdown();
 			}
-
-			// 累計土地強化因子
-			manorCollector.accuEnhanceFactors = buildAccuEnhanceFactors();
-			manorCollector.setInitialized(true);
 		}
+		return instance;
 	}
 
-	public void clear() {
+	/**
+	 * 單例重啟
+	 * 
+	 * @return
+	 */
+	public synchronized static ManorCollector restartInstance() {
+		if (instance != null) {
+			instance.restart();
+		}
+		return instance;
+	}
+
+	/**
+	 * 內部啟動
+	 */
+	@Override
+	protected void doStart() throws Exception {
+		// 累計土地強化因子
+		instance.accuEnhanceFactors = buildAccuEnhanceFactors();
+	}
+
+	/**
+	 * 內部關閉
+	 */
+	@Override
+	protected void doShutdown() throws Exception {
 		seeds.clear();
 		// seedFactors.clear();
 		lands.clear();
 		// landFactors.clear();
 		enhanceFactors.clear();
 		accuEnhanceFactors.clear();
-		// 設為可初始化
-		setInitialized(false);
 	}
 
 	protected Map<EnhanceLevel, EnhanceFactor> buildAccuEnhanceFactors() {
@@ -267,8 +300,7 @@ public final class ManorCollector extends BaseCollectorSupporter {
 		int accuPoint = 0;// 累計值
 		int accuRate = 0;// 累計比率
 		double accuProbability = 1d;// 累計機率
-		for (Map.Entry<EnhanceLevel, EnhanceFactor> entry : manorCollector.enhanceFactors
-				.entrySet()) {
+		for (Map.Entry<EnhanceLevel, EnhanceFactor> entry : instance.enhanceFactors.entrySet()) {
 			EnhanceLevel enhanceLevel = entry.getKey();
 			EnhanceFactor enhanceFactor = entry.getValue();
 			// 累計
@@ -282,8 +314,7 @@ public final class ManorCollector extends BaseCollectorSupporter {
 			accufactor.setProbability(((int) (accuProbability * 10000d)));
 			//
 			if (accufactor.getProbability() == 0) {
-				LOGGER.info("Manor [" + enhanceLevel
-						+ "] probability is zero");
+				LOGGER.info("Manor [" + enhanceLevel + "] probability is zero");
 			}
 			//
 			result.put(enhanceLevel, accufactor);
@@ -542,8 +573,7 @@ public final class ManorCollector extends BaseCollectorSupporter {
 		return enhanceFactors;
 	}
 
-	public void setEnhanceFactors(
-			Map<EnhanceLevel, EnhanceFactor> enhanceFactors) {
+	public void setEnhanceFactors(Map<EnhanceLevel, EnhanceFactor> enhanceFactors) {
 		if (enhanceFactors == null) {
 			enhanceFactors = new LinkedHashMap<EnhanceLevel, EnhanceFactor>();
 		}
@@ -562,8 +592,7 @@ public final class ManorCollector extends BaseCollectorSupporter {
 		return accuEnhanceFactors;
 	}
 
-	public void setAccuEnhanceFactors(
-			Map<EnhanceLevel, EnhanceFactor> accuEnhanceFactors) {
+	public void setAccuEnhanceFactors(Map<EnhanceLevel, EnhanceFactor> accuEnhanceFactors) {
 		this.accuEnhanceFactors = accuEnhanceFactors;
 	}
 
@@ -788,8 +817,7 @@ public final class ManorCollector extends BaseCollectorSupporter {
 	 */
 	public EnhanceFactor getEnhanceFactor(int enhanceValue) {
 		EnhanceFactor result = null;
-		EnhanceLevel enhanceLevel = EnumHelper.valueOf(EnhanceLevel.class,
-				enhanceValue);
+		EnhanceLevel enhanceLevel = EnumHelper.valueOf(EnhanceLevel.class, enhanceValue);
 		if (enhanceLevel != null) {
 			result = getEnhanceFactor(enhanceLevel);
 		}
@@ -819,8 +847,7 @@ public final class ManorCollector extends BaseCollectorSupporter {
 	 */
 	public EnhanceFactor getAccuEnhanceFactor(int enhanceValue) {
 		EnhanceFactor result = null;
-		EnhanceLevel enhanceLevel = EnumHelper.valueOf(EnhanceLevel.class,
-				enhanceValue);
+		EnhanceLevel enhanceLevel = EnumHelper.valueOf(EnhanceLevel.class, enhanceValue);
 		if (enhanceLevel != null) {
 			result = getAccuEnhanceFactor(enhanceLevel);
 		}

@@ -68,11 +68,12 @@ public final class ChatCollector extends BaseCollectorSupporter {
 	 */
 	private long listenMills = 3 * 60 * 1000L + 10000L;// 3分鐘又10秒
 
+	// --------------------------------------------------
+
 	public ChatCollector() {
 		setId(ChatCollector.class.getName());
 	}
 
-	// --------------------------------------------------
 	public synchronized static ChatCollector getInstance() {
 		return getInstance(true);
 	}

@@ -23,6 +23,7 @@ import org.openyu.mix.item.vo.adapter.WeaponTypeXmlAdapter;
 import org.openyu.mix.item.vo.adapter.EnhanceLevelXmlAdapter;
 import org.openyu.mix.item.vo.impl.EnhanceFactorImpl;
 import org.openyu.mix.item.vo.impl.WeaponImpl;
+import org.openyu.commons.collector.CollectorHelper;
 import org.openyu.commons.collector.supporter.BaseCollectorSupporter;
 import org.openyu.commons.enumz.EnumHelper;
 import org.openyu.commons.lang.StringHelper;
@@ -41,11 +42,13 @@ public final class WeaponCollector extends BaseCollectorSupporter {
 
 	private static final long serialVersionUID = 3300149883340061142L;
 
-	private static transient final Logger LOGGER = LoggerFactory
-			.getLogger(WeaponCollector.class);
+	private static transient final Logger LOGGER = LoggerFactory.getLogger(WeaponCollector.class);
 
-	private static WeaponCollector weaponCollector;
+	private static WeaponCollector instance;
 
+	// --------------------------------------------------
+	// 此有系統值,只是為了轉出xml,並非給企劃編輯用
+	// --------------------------------------------------
 	/**
 	 * 等級類別
 	 */
@@ -76,6 +79,9 @@ public final class WeaponCollector extends BaseCollectorSupporter {
 	@XmlJavaTypeAdapter(WeaponTypeXmlAdapter.class)
 	private Set<WeaponType> weaponTypes = new LinkedHashSet<WeaponType>();
 
+	// --------------------------------------------------
+	// 企劃編輯用
+	// --------------------------------------------------
 	/**
 	 * 所有武器
 	 */
@@ -123,52 +129,75 @@ public final class WeaponCollector extends BaseCollectorSupporter {
 		return getInstance(true);
 	}
 
-	public synchronized static WeaponCollector getInstance(boolean initial) {
-		if (weaponCollector == null) {
-			weaponCollector = new WeaponCollector();
-			if (initial) {
-				weaponCollector.initialize();
+	public synchronized static WeaponCollector getInstance(boolean start) {
+		if (instance == null) {
+			instance = CollectorHelper.readFromSer(WeaponCollector.class);
+			// 此時有可能會沒有ser檔案,或舊的結構造成ex,只要再轉出一次ser,覆蓋原本ser即可
+			if (instance == null) {
+				instance = new WeaponCollector();
 			}
-
+			//
+			if (start) {
+				// 啟動
+				instance.start();
+			}
 			// 此有系統值,只是為了轉出xml,並非給企劃編輯用
-			weaponCollector.levelTypes = EnumHelper.valuesSet(LevelType.class);
-			weaponCollector.positionTypes = EnumHelper
-					.valuesSet(PositionType.class);
-			weaponCollector.seriesTypes = EnumHelper
-					.valuesSet(SeriesType.class);
-			weaponCollector.enhanceLevels = EnumHelper
-					.valuesSet(EnhanceLevel.class);
-			weaponCollector.weaponTypes = EnumHelper
-					.valuesSet(WeaponType.class);
+			instance.levelTypes = EnumHelper.valuesSet(LevelType.class);
+			instance.positionTypes = EnumHelper.valuesSet(PositionType.class);
+			instance.seriesTypes = EnumHelper.valuesSet(SeriesType.class);
+			instance.enhanceLevels = EnumHelper.valuesSet(EnhanceLevel.class);
+			instance.weaponTypes = EnumHelper.valuesSet(WeaponType.class);
 		}
-		return weaponCollector;
+		return instance;
 	}
 
 	/**
-	 * 初始化
+	 * 單例關閉
 	 * 
+	 * @return
 	 */
-	public void initialize() {
-		if (!weaponCollector.isInitialized()) {
-			weaponCollector = readFromSer(WeaponCollector.class);
-			// 此時有可能會沒有ser檔案,或舊的結構造成ex,只要再轉出一次ser,覆蓋原本ser即可
-			if (weaponCollector == null) {
-				weaponCollector = new WeaponCollector();
+	public synchronized static WeaponCollector shutdownInstance() {
+		if (instance != null) {
+			WeaponCollector oldInstance = instance;
+			instance = null;
+			//
+			if (oldInstance != null) {
+				oldInstance.shutdown();
 			}
-
-			// 累計土地強化因子
-			weaponCollector.accuEnhanceFactors = buildAccuEnhanceFactors();
-			weaponCollector.setInitialized(true);
 		}
+		return instance;
 	}
 
-	public void clear() {
+	/**
+	 * 單例重啟
+	 * 
+	 * @return
+	 */
+	public synchronized static WeaponCollector restartInstance() {
+		if (instance != null) {
+			instance.restart();
+		}
+		return instance;
+	}
+
+	/**
+	 * 內部啟動
+	 */
+	@Override
+	protected void doStart() throws Exception {
+
+		// 累計土地強化因子
+		instance.accuEnhanceFactors = buildAccuEnhanceFactors();
+	}
+
+	/**
+	 * 內部關閉
+	 */
+	@Override
+	protected void doShutdown() throws Exception {
 		weapons.clear();
 		accuEnhanceFactors.clear();
-		// 設為可初始化
-		setInitialized(false);
 	}
-
 	// --------------------------------------------------
 
 	protected Map<EnhanceLevel, EnhanceFactor> buildAccuEnhanceFactors() {
@@ -177,8 +206,7 @@ public final class WeaponCollector extends BaseCollectorSupporter {
 		int accuPoint = 0;// 累計值
 		int accuRate = 0;// 累計比率
 		double accuProbability = 1d;// 累計機率
-		for (Map.Entry<EnhanceLevel, EnhanceFactor> entry : weaponCollector.enhanceFactors
-				.entrySet()) {
+		for (Map.Entry<EnhanceLevel, EnhanceFactor> entry : instance.enhanceFactors.entrySet()) {
 			EnhanceLevel key = entry.getKey();
 			EnhanceFactor value = entry.getValue();
 			// 累計
@@ -305,8 +333,7 @@ public final class WeaponCollector extends BaseCollectorSupporter {
 		return enhanceFactors;
 	}
 
-	public void setEnhanceFactors(
-			Map<EnhanceLevel, EnhanceFactor> enhanceFactors) {
+	public void setEnhanceFactors(Map<EnhanceLevel, EnhanceFactor> enhanceFactors) {
 		if (enhanceFactors == null) {
 			enhanceFactors = new LinkedHashMap<EnhanceLevel, EnhanceFactor>();
 		}
@@ -325,8 +352,7 @@ public final class WeaponCollector extends BaseCollectorSupporter {
 		return accuEnhanceFactors;
 	}
 
-	public void setAccuEnhanceFactors(
-			Map<EnhanceLevel, EnhanceFactor> accuEnhanceFactors) {
+	public void setAccuEnhanceFactors(Map<EnhanceLevel, EnhanceFactor> accuEnhanceFactors) {
 		this.accuEnhanceFactors = accuEnhanceFactors;
 	}
 
@@ -403,8 +429,7 @@ public final class WeaponCollector extends BaseCollectorSupporter {
 		if (result == null) {
 			result = new WeaponImpl(id);
 		}
-		result.setUniqueId(Weapon.UNIQUE_ID_PREFIX
-				+ StringHelper.randomUnique());
+		result.setUniqueId(Weapon.UNIQUE_ID_PREFIX + StringHelper.randomUnique());
 		return result;
 	}
 
@@ -490,8 +515,7 @@ public final class WeaponCollector extends BaseCollectorSupporter {
 	 */
 	public EnhanceFactor getEnhanceFactor(int enhanceValue) {
 		EnhanceFactor result = null;
-		EnhanceLevel enhanceLevel = EnumHelper.valueOf(EnhanceLevel.class,
-				enhanceValue);
+		EnhanceLevel enhanceLevel = EnumHelper.valueOf(EnhanceLevel.class, enhanceValue);
 		if (enhanceLevel != null) {
 			result = getEnhanceFactor(enhanceLevel);
 		}
@@ -521,8 +545,7 @@ public final class WeaponCollector extends BaseCollectorSupporter {
 	 */
 	public EnhanceFactor getAccuEnhanceFactor(int enhanceValue) {
 		EnhanceFactor result = null;
-		EnhanceLevel enhanceLevel = EnumHelper.valueOf(EnhanceLevel.class,
-				enhanceValue);
+		EnhanceLevel enhanceLevel = EnumHelper.valueOf(EnhanceLevel.class, enhanceValue);
 		if (enhanceLevel != null) {
 			result = getAccuEnhanceFactor(enhanceLevel);
 		}

@@ -35,11 +35,9 @@
 			value="file:src/test/config/etc/hibernate.cfg.xml" />
 		<property name="packagesToScan">
 			<list>
-			<!--  
 				<value>org.openyu.mix.account.po.impl</value>
 				<value>org.openyu.mix.role.po.impl</value>
 				<value>org.openyu.mix.chat.po.impl</value>
-			-->
 			</list>
 		</property>
 	</bean>

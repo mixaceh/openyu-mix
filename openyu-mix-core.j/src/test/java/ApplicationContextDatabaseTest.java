@@ -42,10 +42,6 @@ public class ApplicationContextDatabaseTest extends BaseTestSupporter {
 		System.out.println("connection: " + bean.getConnection());
 		System.out.println("autoCommit: " + bean.getConnection().getAutoCommit());
 		System.out.println("transactionIsolation: " + bean.getConnection().getTransactionIsolation());
-
-		 Object o =
-		 ClassHelper.newInstance("org.openyu.mix.role.po.userType.BagPenUserType");
-		 System.out.println(o);
 	}
 
 	@Test
@@ -111,5 +107,11 @@ public class ApplicationContextDatabaseTest extends BaseTestSupporter {
 		AppService bean = (AppService) applicationContext.getBean("appServiceSupporter");
 		System.out.println(bean);
 		assertNotNull(bean);
+	}
+
+	@Test
+	public void newInstance() throws Exception {
+		Object ojbect = ClassHelper.newInstance("org.openyu.mix.treasure.po.userType.TreasurePenUserType");
+		System.out.println(ojbect);
 	}
 }

@@ -9,6 +9,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import org.openyu.mix.manor.vo.ManorPen.FarmType;
 import org.openyu.mix.role.vo.BagPen.TabType;
+import org.openyu.commons.collector.CollectorHelper;
 import org.openyu.commons.collector.supporter.BaseCollectorSupporter;
 import org.openyu.commons.enumz.EnumHelper;
 import org.openyu.commons.lang.NumberHelper;
@@ -26,12 +27,11 @@ public final class VipCollector extends BaseCollectorSupporter {
 
 	private static final long serialVersionUID = 3351247036913668230L;
 
-	private static VipCollector vipCollector;
+	private static VipCollector instance;
 
 	public final static String VIP_TYPE = "vipCollector.vipType";
 
-	private static Map<String, String> appVipTypes = ConfigHelper
-			.getMap(VIP_TYPE);
+	private static Map<String, String> appVipTypes = ConfigHelper.getMap(VIP_TYPE);
 
 	/**
 	 * vip等級,來自於appConfig-op.xml
@@ -100,41 +100,69 @@ public final class VipCollector extends BaseCollectorSupporter {
 		return getInstance(true);
 	}
 
-	public synchronized static VipCollector getInstance(boolean initial) {
-		if (vipCollector == null) {
-			vipCollector = new VipCollector();
-			if (initial) {
-				vipCollector.initialize();
+	public synchronized static VipCollector getInstance(boolean start) {
+		if (instance == null) {
+			instance = CollectorHelper.readFromSer(VipCollector.class);
+			// 此時有可能會沒有ser檔案,或舊的結構造成ex,只要再轉出一次ser,覆蓋原本ser即可
+			if (instance == null) {
+				instance = new VipCollector();
 			}
+			//
+			if (start) {
+				// 啟動
+				instance.start();
+			}
+			// 此有系統值,只是為了轉出xml,並非給企劃編輯用
 		}
-		return vipCollector;
+		return instance;
 	}
 
 	/**
-	 * 初始化
+	 * 單例關閉
 	 * 
+	 * @return
 	 */
-	public void initialize() {
-		if (!vipCollector.isInitialized()) {
-			vipCollector = readFromSer(VipCollector.class);
-			// 此時有可能會沒有ser檔案,或舊的結構造成ex,只要再轉出一次ser,覆蓋原本ser即可
-			if (vipCollector == null) {
-				vipCollector = new VipCollector();
+	public synchronized static VipCollector shutdownInstance() {
+		if (instance != null) {
+			VipCollector oldInstance = instance;
+			instance = null;
+			//
+			if (oldInstance != null) {
+				oldInstance.shutdown();
 			}
-
-			// vip等級
-			vipCollector.vipTypes = buildVipTypes();
-			vipCollector.maxVipType = buildMaxVipType();
-			vipCollector.setInitialized(true);
 		}
+		return instance;
 	}
 
-	public void clear() {
+	/**
+	 * 單例重啟
+	 * 
+	 * @return
+	 */
+	public synchronized static VipCollector restartInstance() {
+		if (instance != null) {
+			instance.restart();
+		}
+		return instance;
+	}
+
+	/**
+	 * 內部啟動
+	 */
+	@Override
+	protected void doStart() throws Exception {
+		// vip等級
+		instance.vipTypes = buildVipTypes();
+		instance.maxVipType = buildMaxVipType();
+	}
+
+	/**
+	 * 內部關閉
+	 */
+	@Override
+	protected void doShutdown() throws Exception {
 		vipTypes.clear();
-		// 設為可初始化
-		setInitialized(false);
 	}
-
 	// --------------------------------------------------
 
 	/**
@@ -164,7 +192,7 @@ public final class VipCollector extends BaseCollectorSupporter {
 	 */
 	protected VipType buildMaxVipType() {
 		VipType result = null;
-		for (VipType vipType : vipCollector.vipTypes.keySet()) {
+		for (VipType vipType : instance.vipTypes.keySet()) {
 			if (result == null || vipType.getValue() > result.getValue()) {
 				result = vipType;
 			}

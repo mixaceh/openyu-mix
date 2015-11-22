@@ -12,6 +12,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import org.openyu.mix.item.vo.adapter.EquipmentLevelTypeXmlAdapter;
 import org.openyu.mix.item.vo.adapter.EquipmentPositionTypeXmlAdapter;
 import org.openyu.mix.item.vo.adapter.EquipmentSeriesTypeXmlAdapter;
+import org.openyu.commons.collector.CollectorHelper;
 import org.openyu.commons.collector.supporter.BaseCollectorSupporter;
 
 /**
@@ -26,8 +27,10 @@ public final class EquipmentCollector extends BaseCollectorSupporter {
 
 	private static final long serialVersionUID = -8177863933077620473L;
 
-	private static EquipmentCollector equipmentCollector;
-
+	private static EquipmentCollector instance;
+	// --------------------------------------------------
+	// 此有系統值,只是為了轉出xml,並非給企劃編輯用
+	// --------------------------------------------------
 	/**
 	 * 等級類別
 	 */
@@ -47,6 +50,12 @@ public final class EquipmentCollector extends BaseCollectorSupporter {
 	private Set<SeriesType> seriesTypes = new LinkedHashSet<SeriesType>();
 
 	// --------------------------------------------------
+	// 企劃編輯用
+	// --------------------------------------------------
+	
+	
+	// --------------------------------------------------
+	
 	public EquipmentCollector() {
 		setId(EquipmentCollector.class.getName());
 	}
@@ -55,43 +64,69 @@ public final class EquipmentCollector extends BaseCollectorSupporter {
 		return getInstance(true);
 	}
 
-	public synchronized static EquipmentCollector getInstance(boolean initial) {
-		if (equipmentCollector == null) {
-			equipmentCollector = new EquipmentCollector();
-			if (initial) {
-				equipmentCollector.initialize();
+	public synchronized static EquipmentCollector getInstance(boolean start) {
+		if (instance == null) {
+			instance = CollectorHelper.readFromSer(EquipmentCollector.class);
+			// 此時有可能會沒有ser檔案,或舊的結構造成ex,只要再轉出一次ser,覆蓋原本ser即可
+			if (instance == null) {
+				instance = new EquipmentCollector();
 			}
-
+			//
+			if (start) {
+				// 啟動
+				instance.start();
+			}
 			// 此有系統值,只是為了轉出xml,並非給企劃編輯用
-			equipmentCollector.levelTypes = new LinkedHashSet<LevelType>(
-					Arrays.asList(LevelType.values()));
-			equipmentCollector.positionTypes = new LinkedHashSet<PositionType>(
-					Arrays.asList(PositionType.values()));
-			equipmentCollector.seriesTypes = new LinkedHashSet<SeriesType>(
-					Arrays.asList(SeriesType.values()));
+			instance.levelTypes = new LinkedHashSet<LevelType>(Arrays.asList(LevelType.values()));
+			instance.positionTypes = new LinkedHashSet<PositionType>(Arrays.asList(PositionType.values()));
+			instance.seriesTypes = new LinkedHashSet<SeriesType>(Arrays.asList(SeriesType.values()));
 		}
-		return equipmentCollector;
+		return instance;
 	}
 
 	/**
-	 * 初始化
+	 * 單例關閉
 	 * 
+	 * @return
 	 */
-	public void initialize() {
-		if (!equipmentCollector.isInitialized()) {
-			equipmentCollector = readFromSer(EquipmentCollector.class);
-			// 此時有可能會沒有ser檔案,或舊的結構造成ex,只要再轉出一次ser,覆蓋原本ser即可
-			if (equipmentCollector == null) {
-				equipmentCollector = new EquipmentCollector();
-			}
+	public synchronized static EquipmentCollector shutdownInstance() {
+		if (instance != null) {
+			EquipmentCollector oldInstance = instance;
+			instance = null;
 			//
-			equipmentCollector.setInitialized(true);
+			if (oldInstance != null) {
+				oldInstance.shutdown();
+			}
 		}
+		return instance;
 	}
 
-	public void clear() {
-		// 設為可初始化
-		setInitialized(false);
+	/**
+	 * 單例重啟
+	 * 
+	 * @return
+	 */
+	public synchronized static EquipmentCollector restartInstance() {
+		if (instance != null) {
+			instance.restart();
+		}
+		return instance;
+	}
+
+	/**
+	 * 內部啟動
+	 */
+	@Override
+	protected void doStart() throws Exception {
+
+	}
+
+	/**
+	 * 內部關閉
+	 */
+	@Override
+	protected void doShutdown() throws Exception {
+
 	}
 
 	// --------------------------------------------------
