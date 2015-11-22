@@ -16,6 +16,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import org.openyu.commons.bean.NamesBean;
 import org.openyu.commons.bean.adapter.NamesBeanXmlAdapter;
 import org.openyu.commons.bean.supporter.NamesBeanSupporter;
+import org.openyu.commons.collector.CollectorHelper;
 import org.openyu.commons.collector.supporter.BaseCollectorSupporter;
 import org.openyu.commons.enumz.EnumHelper;
 import org.openyu.commons.lang.ArrayHelper;
@@ -34,25 +35,24 @@ import org.openyu.mix.sasang.vo.impl.SasangImpl;
 // --------------------------------------------------
 @XmlRootElement(name = "sasangCollector")
 @XmlAccessorType(XmlAccessType.FIELD)
-public final class SasangCollector extends BaseCollectorSupporter
-{
+public final class SasangCollector extends BaseCollectorSupporter {
 
 	private static final long serialVersionUID = -366805549782373969L;
 
-	private static SasangCollector sasangCollector;
+	private static SasangCollector instance;
 
-	//--------------------------------------------------
-	//此有系統值,只是為了轉出xml,並非給企劃編輯用
-	//--------------------------------------------------
+	// --------------------------------------------------
+	// 此有系統值,只是為了轉出xml,並非給企劃編輯用
+	// --------------------------------------------------
 	/**
 	 * 四象類別
 	 */
 	@XmlJavaTypeAdapter(SasangTypeXmlAdapter.class)
 	private Set<SasangType> sasangTypes = new LinkedHashSet<SasangType>();
 
-	//--------------------------------------------------
-	//biz
-	//--------------------------------------------------
+	// --------------------------------------------------
+	// biz
+	// --------------------------------------------------
 	/**
 	 * 說明
 	 */
@@ -67,7 +67,7 @@ public final class SasangCollector extends BaseCollectorSupporter
 	/**
 	 * 花費的金幣
 	 */
-	private long playGold = 250 * 10000L;//250w
+	private long playGold = 250 * 10000L;// 250w
 
 	/**
 	 * 每日可玩的次數
@@ -77,7 +77,7 @@ public final class SasangCollector extends BaseCollectorSupporter
 	/**
 	 * 花費的道具,數量為1
 	 */
-	private String playItem = "T_SASANG_PLAY_G001";//四象石
+	private String playItem = "T_SASANG_PLAY_G001";// 四象石
 
 	/**
 	 * 花費的儲值幣
@@ -98,73 +98,88 @@ public final class SasangCollector extends BaseCollectorSupporter
 	@XmlJavaTypeAdapter(StringPrizeXmlAdapter.class)
 	private Map<String, Prize> prizes = new LinkedHashMap<String, Prize>();
 
-	public SasangCollector()
-	{
+	public SasangCollector() {
 		setId(SasangCollector.class.getName());
 	}
 
 	// --------------------------------------------------
-	public synchronized static SasangCollector getInstance()
-	{
+	public synchronized static SasangCollector getInstance() {
 		return getInstance(true);
 	}
 
-	public synchronized static SasangCollector getInstance(boolean initial)
-	{
-		if (sasangCollector == null)
-		{
-			sasangCollector = new SasangCollector();
-			if (initial)
-			{
-				sasangCollector.initialize();
+	public synchronized static SasangCollector getInstance(boolean start) {
+		if (instance == null) {
+			instance = CollectorHelper.readFromSer(SasangCollector.class);
+			// 此時有可能會沒有ser檔案,或舊的結構造成ex,只要再轉出一次ser,覆蓋原本ser即可
+			if (instance == null) {
+				instance = new SasangCollector();
 			}
-
+			//
+			if (start) {
+				// 啟動
+				instance.start();
+			}
 			// 此有系統值,只是為了轉出xml,並非給企劃編輯用
-			sasangCollector.sasangTypes = EnumHelper.valuesSet(SasangType.class);
-
+			instance.sasangTypes = EnumHelper.valuesSet(SasangType.class);
 		}
-		return sasangCollector;
+		return instance;
 	}
 
 	/**
-	 * 初始化
+	 * 單例關閉
 	 * 
+	 * @return
 	 */
-	public void initialize()
-	{
-		if (!sasangCollector.isInitialized())
-		{
-			sasangCollector = readFromSer(SasangCollector.class);
-			// 此時有可能會沒有ser檔案,或舊的結構造成ex,只要再轉出一次ser,覆蓋原本ser即可
-			if (sasangCollector == null)
-			{
-				sasangCollector = new SasangCollector();
-			}
+	public synchronized static SasangCollector shutdownInstance() {
+		if (instance != null) {
+			SasangCollector oldInstance = instance;
+			instance = null;
 			//
-			sasangCollector.setInitialized(true);
+			if (oldInstance != null) {
+				oldInstance.shutdown();
+			}
 		}
+		return instance;
 	}
 
-	public void clear()
-	{
+	/**
+	 * 單例重啟
+	 * 
+	 * @return
+	 */
+	public synchronized static SasangCollector restartInstance() {
+		if (instance != null) {
+			instance.restart();
+		}
+		return instance;
+	}
+
+	/**
+	 * 內部啟動
+	 */
+	@Override
+	protected void doStart() throws Exception {
+
+	}
+
+	/**
+	 * 內部關閉
+	 */
+	@Override
+	protected void doShutdown() throws Exception {
 		sasangs.clear();
 		prizes.clear();
-		// 設為可初始化
-		setInitialized(false);
 	}
 
 	// --------------------------------------------------
-	public Set<SasangType> getSasangTypes()
-	{
-		if (sasangTypes == null)
-		{
+	public Set<SasangType> getSasangTypes() {
+		if (sasangTypes == null) {
 			sasangTypes = new LinkedHashSet<SasangType>();
 		}
 		return sasangTypes;
 	}
 
-	public void setSasangTypes(Set<SasangType> sasangTypes)
-	{
+	public void setSasangTypes(Set<SasangType> sasangTypes) {
 		this.sasangTypes = sasangTypes;
 	}
 
@@ -173,87 +188,70 @@ public final class SasangCollector extends BaseCollectorSupporter
 	 * 
 	 * @return
 	 */
-	public String getDescription()
-	{
+	public String getDescription() {
 		return descriptions.getName();
 	}
 
-	public void setDescription(String description)
-	{
+	public void setDescription(String description) {
 		this.descriptions.setName(description);
 	}
 
-	public NamesBean getDescriptions()
-	{
+	public NamesBean getDescriptions() {
 		return descriptions;
 	}
 
-	public void setDescriptions(NamesBean descriptions)
-	{
+	public void setDescriptions(NamesBean descriptions) {
 		this.descriptions = descriptions;
 	}
 
-	public int getLevelLimit()
-	{
+	public int getLevelLimit() {
 		return levelLimit;
 	}
 
-	public void setLevelLimit(int levelLimit)
-	{
+	public void setLevelLimit(int levelLimit) {
 		this.levelLimit = levelLimit;
 	}
 
-	public long getPlayGold()
-	{
+	public long getPlayGold() {
 		return playGold;
 	}
 
-	public void setPlayGold(long playGold)
-	{
+	public void setPlayGold(long playGold) {
 		this.playGold = playGold;
 	}
 
-	public int getDailyTimes()
-	{
+	public int getDailyTimes() {
 		return dailyTimes;
 	}
 
-	public void setDailyTimes(int dailyTimes)
-	{
+	public void setDailyTimes(int dailyTimes) {
 		this.dailyTimes = dailyTimes;
 	}
 
-	public String getPlayItem()
-	{
+	public String getPlayItem() {
 		return playItem;
 	}
 
-	public void setPlayItem(String playItem)
-	{
+	public void setPlayItem(String playItem) {
 		this.playItem = playItem;
 	}
 
-	public int getPlayCoin()
-	{
+	public int getPlayCoin() {
 		return playCoin;
 	}
 
-	public void setPlayCoin(int playCoin)
-	{
+	public void setPlayCoin(int playCoin) {
 		this.playCoin = playCoin;
 	}
 
-	public List<Sasang> getSasangs()
-	{
-		if (sasangs == null)
-		{
+	public List<Sasang> getSasangs() {
+		if (sasangs == null) {
 			sasangs = new LinkedList<Sasang>();
 		}
 		return sasangs;
 	}
 
-	public void setSasangs(List<Sasang> sasangs)
-	{
+	public void setSasangs(List<Sasang> sasangs) {
 		this.sasangs = sasangs;
 	}
 
@@ -263,35 +261,28 @@ public final class SasangCollector extends BaseCollectorSupporter
 	 * @param id
 	 * @return
 	 */
-	public Sasang getSasang(SasangType id)
-	{
+	public Sasang getSasang(SasangType id) {
 		Sasang result = null;
-		if (id != null)
-		{
-			for (Sasang sasang : sasangs)
-			{
-				if (sasang.getId().equals(id))
-				{
+		if (id != null) {
+			for (Sasang sasang : sasangs) {
+				if (sasang.getId().equals(id)) {
 					result = sasang;
 					break;
 				}
 			}
 		}
-		//return (result != null ? (Sasang) result.clone() : null);
+		// return (result != null ? (Sasang) result.clone() : null);
 		return result;
 	}
 
-	public Map<String, Prize> getPrizes()
-	{
-		if (prizes == null)
-		{
+	public Map<String, Prize> getPrizes() {
+		if (prizes == null) {
 			prizes = new LinkedHashMap<String, Prize>();
 		}
 		return prizes;
 	}
 
-	public void setPrizes(Map<String, Prize> prizes)
-	{
+	public void setPrizes(Map<String, Prize> prizes) {
 		this.prizes = prizes;
 	}
 
@@ -301,30 +292,26 @@ public final class SasangCollector extends BaseCollectorSupporter
 	 * @param id
 	 * @return
 	 */
-	public Prize getPrize(String id)
-	{
+	public Prize getPrize(String id) {
 		Prize result = null;
-		if (id != null)
-		{
+		if (id != null) {
 			result = prizes.get(id);
 		}
-		//return (result != null ? (Prize) result.clone() : null);
+		// return (result != null ? (Prize) result.clone() : null);
 		return result;
 	}
 
 	/**
 	 * 取得獎勵,by 四象類別
 	 * 
-	 * @param sasangTypes SasangType.BlackDragon... => 111
+	 * @param sasangTypes
+	 *            SasangType.BlackDragon... => 111
 	 * @return
 	 */
-	public Prize getPrize(SasangType... sasangTypes)
-	{
+	public Prize getPrize(SasangType... sasangTypes) {
 		StringBuilder buff = new StringBuilder();
-		if (ArrayHelper.notEmpty(sasangTypes))
-		{
-			for (SasangType sasangType : sasangTypes)
-			{
+		if (ArrayHelper.notEmpty(sasangTypes)) {
+			for (SasangType sasangType : sasangTypes) {
 				buff.append(sasangType.getValue());
 			}
 		}

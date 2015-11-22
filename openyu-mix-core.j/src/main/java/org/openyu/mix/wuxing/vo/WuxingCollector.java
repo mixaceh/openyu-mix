@@ -13,6 +13,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import org.openyu.commons.bean.NamesBean;
 import org.openyu.commons.bean.adapter.NamesBeanXmlAdapter;
 import org.openyu.commons.bean.supporter.NamesBeanSupporter;
+import org.openyu.commons.collector.CollectorHelper;
 import org.openyu.commons.collector.supporter.BaseCollectorSupporter;
 import org.openyu.commons.enumz.EnumHelper;
 import org.openyu.mix.app.vo.Prize;
@@ -29,12 +30,11 @@ import org.openyu.mix.wuxing.vo.adapter.WuxingTypeXmlAdapter;
 // --------------------------------------------------
 @XmlRootElement(name = "wuxingCollector")
 @XmlAccessorType(XmlAccessType.FIELD)
-public final class WuxingCollector extends BaseCollectorSupporter
-{
+public final class WuxingCollector extends BaseCollectorSupporter {
 
 	private static final long serialVersionUID = -366805549782373969L;
 
-	private static WuxingCollector wuxingCollector;
+	private static WuxingCollector instance;
 
 	/**
 	 * 五行類別
@@ -56,7 +56,7 @@ public final class WuxingCollector extends BaseCollectorSupporter
 	/**
 	 * 花費的金幣
 	 */
-	private long playGold = 350 * 10000L;//350w
+	private long playGold = 350 * 10000L;// 350w
 
 	/**
 	 * 每日可玩的次數
@@ -66,7 +66,7 @@ public final class WuxingCollector extends BaseCollectorSupporter
 	/**
 	 * 花費的道具,數量為1
 	 */
-	private String playItem = "T_WUXING_PLAY_G001";//五行石
+	private String playItem = "T_WUXING_PLAY_G001";// 五行石
 
 	/**
 	 * 花費的儲值幣
@@ -97,74 +97,90 @@ public final class WuxingCollector extends BaseCollectorSupporter
 	@XmlJavaTypeAdapter(StringPrizeXmlAdapter.class)
 	private Map<String, Prize> tiePrizes = new LinkedHashMap<String, Prize>();
 
-	public WuxingCollector()
-	{
+	public WuxingCollector() {
 		setId(WuxingCollector.class.getName());
 	}
 
 	// --------------------------------------------------
-	public synchronized static WuxingCollector getInstance()
-	{
+	public synchronized static WuxingCollector getInstance() {
 		return getInstance(true);
 	}
 
-	public synchronized static WuxingCollector getInstance(boolean initial)
-	{
-		if (wuxingCollector == null)
-		{
-			wuxingCollector = new WuxingCollector();
-			if (initial)
-			{
-				wuxingCollector.initialize();
+	public synchronized static WuxingCollector getInstance(boolean start) {
+		if (instance == null) {
+			instance = CollectorHelper.readFromSer(WuxingCollector.class);
+			// 此時有可能會沒有ser檔案,或舊的結構造成ex,只要再轉出一次ser,覆蓋原本ser即可
+			if (instance == null) {
+				instance = new WuxingCollector();
 			}
-
+			//
+			if (start) {
+				// 啟動
+				instance.start();
+			}
 			// 此有系統值,只是為了轉出xml,並非給企劃編輯用
-			wuxingCollector.wuxingTypes = EnumHelper.valuesSet(WuxingType.class);
+			instance.wuxingTypes = EnumHelper.valuesSet(WuxingType.class);
 
 		}
-		return wuxingCollector;
+		return instance;
 	}
 
 	/**
-	 * 初始化
+	 * 單例關閉
 	 * 
+	 * @return
 	 */
-	public void initialize()
-	{
-		if (!wuxingCollector.isInitialized())
-		{
-			wuxingCollector = readFromSer(WuxingCollector.class);
-			// 此時有可能會沒有ser檔案,或舊的結構造成ex,只要再轉出一次ser,覆蓋原本ser即可
-			if (wuxingCollector == null)
-			{
-				wuxingCollector = new WuxingCollector();
-			}
+	public synchronized static WuxingCollector shutdownInstance() {
+		if (instance != null) {
+			WuxingCollector oldInstance = instance;
+			instance = null;
 			//
-			wuxingCollector.setInitialized(true);
+			if (oldInstance != null) {
+				oldInstance.shutdown();
+			}
 		}
+		return instance;
 	}
 
-	public void clear()
-	{
+	/**
+	 * 單例重啟
+	 * 
+	 * @return
+	 */
+	public synchronized static WuxingCollector restartInstance() {
+		if (instance != null) {
+			instance.restart();
+		}
+		return instance;
+	}
+
+	/**
+	 * 內部啟動
+	 */
+	@Override
+	protected void doStart() throws Exception {
+
+	}
+
+	/**
+	 * 內部關閉
+	 */
+	@Override
+	protected void doShutdown() throws Exception {
 		finalPrizes.clear();
 		birthPrizes.clear();
 		tiePrizes.clear();
-		// 設為可初始化
-		setInitialized(false);
 	}
 
 	// --------------------------------------------------
-	public Set<WuxingType> getWuxingTypes()
-	{
-		if (wuxingTypes == null)
-		{
+	public Set<WuxingType> getWuxingTypes() {
+		if (wuxingTypes == null) {
 			wuxingTypes = new LinkedHashSet<WuxingType>();
 		}
 		return wuxingTypes;
 	}
 
-	public void setWuxingTypes(Set<WuxingType> wuxingTypes)
-	{
+	public void setWuxingTypes(Set<WuxingType> wuxingTypes) {
 		this.wuxingTypes = wuxingTypes;
 	}
 
@@ -173,87 +189,70 @@ public final class WuxingCollector extends BaseCollectorSupporter
 	 * 
 	 * @return
 	 */
-	public String getDescription()
-	{
+	public String getDescription() {
 		return descriptions.getName();
 	}
 
-	public void setDescription(String description)
-	{
+	public void setDescription(String description) {
 		this.descriptions.setName(description);
 	}
 
-	public NamesBean getDescriptions()
-	{
+	public NamesBean getDescriptions() {
 		return descriptions;
 	}
 
-	public void setDescriptions(NamesBean descriptions)
-	{
+	public void setDescriptions(NamesBean descriptions) {
 		this.descriptions = descriptions;
 	}
 
-	public int getLevelLimit()
-	{
+	public int getLevelLimit() {
 		return levelLimit;
 	}
 
-	public void setLevelLimit(int levelLimit)
-	{
+	public void setLevelLimit(int levelLimit) {
 		this.levelLimit = levelLimit;
 	}
 
-	public long getPlayGold()
-	{
+	public long getPlayGold() {
 		return playGold;
 	}
 
-	public void setPlayGold(long playGold)
-	{
+	public void setPlayGold(long playGold) {
 		this.playGold = playGold;
 	}
 
-	public int getDailyTimes()
-	{
+	public int getDailyTimes() {
 		return dailyTimes;
 	}
 
-	public void setDailyTimes(int dailyTimes)
-	{
+	public void setDailyTimes(int dailyTimes) {
 		this.dailyTimes = dailyTimes;
 	}
 
-	public String getPlayItem()
-	{
+	public String getPlayItem() {
 		return playItem;
 	}
 
-	public void setPlayItem(String playItem)
-	{
+	public void setPlayItem(String playItem) {
 		this.playItem = playItem;
 	}
 
-	public int getPlayCoin()
-	{
+	public int getPlayCoin() {
 		return playCoin;
 	}
 
-	public void setPlayCoin(int playCoin)
-	{
+	public void setPlayCoin(int playCoin) {
 		this.playCoin = playCoin;
 	}
 
-	public Map<String, Prize> getFinalPrizes()
-	{
-		if (finalPrizes == null)
-		{
+	public Map<String, Prize> getFinalPrizes() {
+		if (finalPrizes == null) {
 			finalPrizes = new LinkedHashMap<String, Prize>();
 		}
 		return finalPrizes;
 	}
 
-	public void setFinalPrizes(Map<String, Prize> finalPrizes)
-	{
+	public void setFinalPrizes(Map<String, Prize> finalPrizes) {
 		this.finalPrizes = finalPrizes;
 	}
 
@@ -263,28 +262,23 @@ public final class WuxingCollector extends BaseCollectorSupporter
 	 * @param id
 	 * @return
 	 */
-	public Prize getFinalPrize(String id)
-	{
+	public Prize getFinalPrize(String id) {
 		Prize result = null;
-		if (id != null)
-		{
+		if (id != null) {
 			result = finalPrizes.get(id);
 		}
-		//return (result != null ? (Prize) result.clone() : null);
+		// return (result != null ? (Prize) result.clone() : null);
 		return result;
 	}
 
-	public Map<String, Prize> getBirthPrizes()
-	{
-		if (birthPrizes == null)
-		{
+	public Map<String, Prize> getBirthPrizes() {
+		if (birthPrizes == null) {
 			birthPrizes = new LinkedHashMap<String, Prize>();
 		}
 		return birthPrizes;
 	}
 
-	public void setBirthPrizes(Map<String, Prize> birthPrizes)
-	{
+	public void setBirthPrizes(Map<String, Prize> birthPrizes) {
 		this.birthPrizes = birthPrizes;
 	}
 
@@ -294,28 +288,23 @@ public final class WuxingCollector extends BaseCollectorSupporter
 	 * @param id
 	 * @return
 	 */
-	public Prize getBirthPrize(String id)
-	{
+	public Prize getBirthPrize(String id) {
 		Prize result = null;
-		if (id != null)
-		{
+		if (id != null) {
 			result = birthPrizes.get(id);
 		}
-		//return (result != null ? (Prize) result.clone() : null);
+		// return (result != null ? (Prize) result.clone() : null);
 		return result;
 	}
 
-	public Map<String, Prize> getTiePrizes()
-	{
-		if (tiePrizes == null)
-		{
+	public Map<String, Prize> getTiePrizes() {
+		if (tiePrizes == null) {
 			tiePrizes = new LinkedHashMap<String, Prize>();
 		}
 		return tiePrizes;
 	}
 
-	public void setTiePrizes(Map<String, Prize> tiePrizes)
-	{
+	public void setTiePrizes(Map<String, Prize> tiePrizes) {
 		this.tiePrizes = tiePrizes;
 	}
 
@@ -325,14 +314,12 @@ public final class WuxingCollector extends BaseCollectorSupporter
 	 * @param id
 	 * @return
 	 */
-	public Prize getTiePrize(String id)
-	{
+	public Prize getTiePrize(String id) {
 		Prize result = null;
-		if (id != null)
-		{
+		if (id != null) {
 			result = tiePrizes.get(id);
 		}
-		//return (result != null ? (Prize) result.clone() : null);
+		// return (result != null ? (Prize) result.clone() : null);
 		return result;
 	}
 }

@@ -17,6 +17,7 @@ import org.openyu.commons.bean.BeanHelper;
 import org.openyu.commons.bean.NamesBean;
 import org.openyu.commons.bean.adapter.NamesBeanXmlAdapter;
 import org.openyu.commons.bean.supporter.NamesBeanSupporter;
+import org.openyu.commons.collector.CollectorHelper;
 import org.openyu.commons.collector.supporter.BaseCollectorSupporter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,10 +34,9 @@ public final class TreasureCollector extends BaseCollectorSupporter {
 
 	private static final long serialVersionUID = -7165929460058525006L;
 
-	private static transient final Logger LOGGER = LoggerFactory
-			.getLogger(TreasureCollector.class);
+	private static transient final Logger LOGGER = LoggerFactory.getLogger(TreasureCollector.class);
 
-	private static TreasureCollector treasureCollector;
+	private static TreasureCollector instance;
 
 	/**
 	 * 說明
@@ -92,40 +92,68 @@ public final class TreasureCollector extends BaseCollectorSupporter {
 		return getInstance(true);
 	}
 
-	public synchronized static TreasureCollector getInstance(boolean initial) {
-		if (treasureCollector == null) {
-			treasureCollector = new TreasureCollector();
-			if (initial) {
-				treasureCollector.initialize();
+	public synchronized static TreasureCollector getInstance(boolean start) {
+		if (instance == null) {
+			instance = CollectorHelper.readFromSer(TreasureCollector.class);
+			// 此時有可能會沒有ser檔案,或舊的結構造成ex,只要再轉出一次ser,覆蓋原本ser即可
+			if (instance == null) {
+				instance = new TreasureCollector();
+			}
+			//
+			if (start) {
+				// 啟動
+				instance.start();
 			}
 			// 此有系統值,只是為了轉出xml,並非給企劃編輯用
 		}
-		return treasureCollector;
+		return instance;
 	}
 
 	/**
-	 * 初始化
+	 * 單例關閉
 	 * 
+	 * @return
 	 */
-	public void initialize() {
-		if (!treasureCollector.isInitialized()) {
-			treasureCollector = readFromSer(TreasureCollector.class);
-			// 此時有可能會沒有ser檔案,或舊的結構造成ex,只要再轉出一次ser,覆蓋原本ser即可
-			if (treasureCollector == null) {
-				treasureCollector = new TreasureCollector();
+	public synchronized static TreasureCollector shutdownInstance() {
+		if (instance != null) {
+			TreasureCollector oldInstance = instance;
+			instance = null;
+			//
+			if (oldInstance != null) {
+				oldInstance.shutdown();
 			}
-
-			// 處理treasure設定stockId
-			treasureCollector.stocks = buildStocks();
-			treasureCollector.setInitialized(true);
 		}
+		return instance;
 	}
 
-	public void clear() {
+	/**
+	 * 單例重啟
+	 * 
+	 * @return
+	 */
+	public synchronized static TreasureCollector restartInstance() {
+		if (instance != null) {
+			instance.restart();
+		}
+		return instance;
+	}
+
+	/**
+	 * 內部啟動
+	 */
+	@Override
+	protected void doStart() throws Exception {
+		// 處理treasure設定stockId
+		instance.stocks = buildStocks();
+	}
+
+	/**
+	 * 內部關閉
+	 */
+	@Override
+	protected void doShutdown() throws Exception {
 		stocks.clear();
 		products.clear();
-		// 設為可初始化
-		setInitialized(false);
 	}
 
 	// --------------------------------------------------
@@ -136,8 +164,7 @@ public final class TreasureCollector extends BaseCollectorSupporter {
 	 */
 	protected Map<String, Stock> buildStocks() {
 		Map<String, Stock> result = new LinkedHashMap<String, Stock>();
-		for (Map.Entry<String, Stock> entry : treasureCollector.stocks
-				.entrySet()) {
+		for (Map.Entry<String, Stock> entry : instance.stocks.entrySet()) {
 			String stockId = entry.getKey();
 			Stock stock = entry.getValue();
 			for (Treasure treasure : stock.getTreasures().values()) {

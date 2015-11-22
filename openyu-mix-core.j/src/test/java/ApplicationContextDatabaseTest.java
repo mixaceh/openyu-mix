@@ -108,10 +108,4 @@ public class ApplicationContextDatabaseTest extends BaseTestSupporter {
 		System.out.println(bean);
 		assertNotNull(bean);
 	}
-
-	@Test
-	public void newInstance() throws Exception {
-		Object ojbect = ClassHelper.newInstance("org.openyu.mix.treasure.po.userType.TreasurePenUserType");
-		System.out.println(ojbect);
-	}
 }
