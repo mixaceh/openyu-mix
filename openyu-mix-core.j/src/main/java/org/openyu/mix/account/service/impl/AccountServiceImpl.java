@@ -18,17 +18,18 @@ import org.openyu.mix.core.service.CoreModuleType;
 import org.openyu.mix.role.vo.Role;
 import org.openyu.commons.lang.ClassHelper;
 import org.openyu.commons.lang.NumberHelper;
+import org.openyu.commons.security.AuthKey;
 import org.openyu.commons.security.AuthKeyService;
 import org.openyu.socklet.message.vo.Message;
 
 /**
  * 帳戶服務
  */
-public class AccountServiceImpl extends AppServiceSupporter implements
-		AccountService {
+public class AccountServiceImpl extends AppServiceSupporter implements AccountService {
 
-	private static transient final Logger LOGGER = LoggerFactory
-			.getLogger(AccountServiceImpl.class);
+	private static final long serialVersionUID = 3372722011771351537L;
+
+	private static transient final Logger LOGGER = LoggerFactory.getLogger(AccountServiceImpl.class);
 
 	@Autowired
 	@Qualifier("authKeyService")
@@ -38,13 +39,13 @@ public class AccountServiceImpl extends AppServiceSupporter implements
 	}
 
 	public AccountDao getAccountDao() {
-		return (AccountDao) getOjDao();
+		return (AccountDao) getCommonDao();
 	}
 
 	@Autowired
 	@Qualifier("accountDao")
 	public void setAccountDao(AccountDao accountDao) {
-		setOjDao(accountDao);
+		setCommonDao(accountDao);
 	}
 
 	// --------------------------------------------------
@@ -129,8 +130,7 @@ public class AccountServiceImpl extends AppServiceSupporter implements
 		int currentCoin = findCoin(accountId);
 
 		// coin 不能為負數,都當正數處理,且兩數相加不能大於Integer.MAX_VALUE
-		result = (coin < 0 ? false : !NumberHelper.isAddOverflow(coin,
-				currentCoin));
+		result = (coin < 0 ? false : !NumberHelper.isAddOverflow(coin, currentCoin));
 		return result;
 	}
 
@@ -151,12 +151,11 @@ public class AccountServiceImpl extends AppServiceSupporter implements
 	 *            log用,儲值增加的原因
 	 * @return 真正增加的儲值幣,0=無改變, >0有改變
 	 */
-	public int increaseCoin(boolean sendable, String accountId, Role role,
-			int coin, boolean accuable, CoinType coinReason) {
+	public int increaseCoin(boolean sendable, String accountId, Role role, int coin, boolean accuable,
+			CoinType coinReason) {
 		int result = 0;
 		if (coin > 0) {
-			result = changeCoin(sendable, accountId, role, coin, accuable,
-					ActionType.INCREASE, coinReason);
+			result = changeCoin(sendable, accountId, role, coin, accuable, ActionType.INCREASE, coinReason);
 		}
 		return result;
 	}
@@ -174,8 +173,7 @@ public class AccountServiceImpl extends AppServiceSupporter implements
 		int currentCoin = findCoin(accountId);
 
 		// coin 不能為負數,都當正數處理
-		result = (coin < 0 || currentCoin == 0 ? false
-				: (coin > currentCoin ? false : true));
+		result = (coin < 0 || currentCoin == 0 ? false : (coin > currentCoin ? false : true));
 		return result;
 	}
 
@@ -196,12 +194,10 @@ public class AccountServiceImpl extends AppServiceSupporter implements
 	 *            log用,儲值增減的原因
 	 * @return 真正減少的儲值幣,0=無改變, <0有改變
 	 */
-	public int decreaseCoin(boolean sendable, String accountId, Role role,
-			int coin, CoinType coinReason) {
+	public int decreaseCoin(boolean sendable, String accountId, Role role, int coin, CoinType coinReason) {
 		int result = 0;
 		if (coin > 0) {
-			result = changeCoin(sendable, accountId, role, (-1) * coin, false,
-					ActionType.DECREASE, coinReason);
+			result = changeCoin(sendable, accountId, role, (-1) * coin, false, ActionType.DECREASE, coinReason);
 		}
 		return result;
 	}
@@ -227,9 +223,8 @@ public class AccountServiceImpl extends AppServiceSupporter implements
 	 *            log用,儲值增減的原因
 	 * @return 真正增減的儲值幣,0=無改變, !=0有改變
 	 */
-	public int changeCoin(boolean sendable, String accountId, Role role,
-			int coin, boolean accuable, ActionType coinAction,
-			CoinType coinReason) {
+	public int changeCoin(boolean sendable, String accountId, Role role, int coin, boolean accuable,
+			ActionType coinAction, CoinType coinReason) {
 		int result = 0;
 		// 檢查條件,若=0不改變了
 		if (coin == 0) {
@@ -278,8 +273,7 @@ public class AccountServiceImpl extends AppServiceSupporter implements
 	 * @param coinReason
 	 * @return
 	 */
-	public boolean resetCoin(boolean sendable, String accountId, Role role,
-			boolean accuable, CoinType coinReason) {
+	public boolean resetCoin(boolean sendable, String accountId, Role role, boolean accuable, CoinType coinReason) {
 		boolean result = false;
 		// 檢查條件
 		// 從db讀取
@@ -321,9 +315,8 @@ public class AccountServiceImpl extends AppServiceSupporter implements
 	 * @param diffCoin
 	 */
 	public Message sendCoin(Role role, int coin, int diffCoin) {
-		Message message = messageService.createMessage(CoreModuleType.ACCOUNT,
-				CoreModuleType.CLIENT, CoreMessageType.ACCOUNT_COIN_RESPONSE,
-				role.getId());
+		Message message = messageService.createMessage(CoreModuleType.ACCOUNT, CoreModuleType.CLIENT,
+				CoreMessageType.ACCOUNT_COIN_RESPONSE, role.getId());
 
 		message.addInt(coin);// 目前的儲值
 		message.addInt(diffCoin);// 增減的儲值
@@ -340,8 +333,7 @@ public class AccountServiceImpl extends AppServiceSupporter implements
 	 * @param accuCoin
 	 */
 	public Message sendAccuCoin(Role role, int accuCoin) {
-		Message message = messageService.createMessage(CoreModuleType.ACCOUNT,
-				CoreModuleType.CLIENT,
+		Message message = messageService.createMessage(CoreModuleType.ACCOUNT, CoreModuleType.CLIENT,
 				CoreMessageType.ACCOUNT_ACCU_COIN_RESPONSE, role.getId());
 
 		message.addInt(accuCoin);// 目前的累計儲值
@@ -375,8 +367,7 @@ public class AccountServiceImpl extends AppServiceSupporter implements
 		String authKey = checkAccount(accountId, password);
 		//
 		if (authKey != null) {
-			Message message = messageService.createMessage(
-					CoreModuleType.ACCOUNT, CoreModuleType.LOGIN,
+			Message message = messageService.createMessage(CoreModuleType.ACCOUNT, CoreModuleType.LOGIN,
 					CoreMessageType.LOGIN_AUTHORIZE_FROM_ACCOUNT_REQUEST);
 			message.addString(accountId);
 			message.addString(authKey);
@@ -391,7 +382,8 @@ public class AccountServiceImpl extends AppServiceSupporter implements
 		String result = null;
 		AccountPo orig = getAccountDao().findAccount(id, password);
 		if (orig != null) {
-			result = authKeyService.randomKey();
+			AuthKey authKey = authKeyService.createAuthKey();
+			result = authKey.getId();
 		}
 		return result;
 	}
@@ -400,10 +392,8 @@ public class AccountServiceImpl extends AppServiceSupporter implements
 		sendAuthorize(ErrorType.NO_ERROR, accountId, authKey);
 	}
 
-	public Message sendAuthorize(ErrorType errorType, String accountId,
-			String authKey) {
-		Message message = messageService.createMessage(CoreModuleType.ACCOUNT,
-				CoreModuleType.CLIENT,
+	public Message sendAuthorize(ErrorType errorType, String accountId, String authKey) {
+		Message message = messageService.createMessage(CoreModuleType.ACCOUNT, CoreModuleType.CLIENT,
 				CoreMessageType.ACCOUNT_AUTHORIZE_RESPONSE, accountId);
 
 		message.addInt(errorType.getValue());// 0, errorType 錯誤碼
