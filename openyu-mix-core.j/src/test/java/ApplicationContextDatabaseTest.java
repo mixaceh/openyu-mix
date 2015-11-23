@@ -18,7 +18,6 @@ import org.openyu.mix.app.dao.AppDao;
 import org.openyu.mix.app.service.AppService;
 import org.openyu.commons.dao.supporter.CommonDaoSupporter;
 import org.openyu.commons.junit.supporter.BaseTestSupporter;
-import org.openyu.commons.lang.ClassHelper;
 import org.openyu.commons.service.CommonService;
 
 public class ApplicationContextDatabaseTest extends BaseTestSupporter {
@@ -68,15 +67,15 @@ public class ApplicationContextDatabaseTest extends BaseTestSupporter {
 	}
 
 	@Test
-	public void txAdvice() {
-		TransactionInterceptor bean = (TransactionInterceptor) applicationContext.getBean("txAdvice");
+	public void commonTx() {
+		HibernateTransactionManager bean = (HibernateTransactionManager) applicationContext.getBean("commonTx");
 		System.out.println(bean);
 		assertNotNull(bean);
 	}
 
 	@Test
-	public void txManager() {
-		HibernateTransactionManager bean = (HibernateTransactionManager) applicationContext.getBean("txManager");
+	public void commonTxAdvice() {
+		TransactionInterceptor bean = (TransactionInterceptor) applicationContext.getBean("commonTxAdvice");
 		System.out.println(bean);
 		assertNotNull(bean);
 	}

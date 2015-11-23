@@ -13,52 +13,11 @@
 	<!-- bonecp -->
 	<bean
 		id="logDataSourceTarget"
-		class="com.jolbox.bonecp.BoneCPDataSource"
-		destroy-method="close">
-		<property name="driverClass">
-			<value>${log.bonecp.driverClass}</value>
-		</property>
-		<property name="jdbcUrl">
-			<value>${log.bonecp.jdbcUrl}</value>
-		</property>
-		<property name="username">
-			<value>${log.bonecp.username}</value>
-		</property>
-		<property name="password">
-			<value>${log.bonecp.password}</value>
-		</property>
-		<property name="initSQL">
-			<value>${log.bonecp.initSQL}</value>
-		</property>
-		<property name="idleConnectionTestPeriodInMinutes">
-			<value>${log.bonecp.idleConnectionTestPeriodInMinutes}</value>
-		</property>
-		<property name="idleMaxAgeInMinutes">
-			<value>${log.bonecp.idleMaxAgeInMinutes}</value>
-		</property>
-		<property name="maxConnectionsPerPartition">
-			<value>${log.bonecp.maxConnectionsPerPartition}</value>
-		</property>
-		<property name="minConnectionsPerPartition">
-			<value>${log.bonecp.minConnectionsPerPartition}</value>
-		</property>
-		<property name="partitionCount">
-			<value>${log.bonecp.partitionCount}</value>
-		</property>
-		<property name="acquireIncrement">
-			<value>${log.bonecp.acquireIncrement}</value>
-		</property>
-		<property name="statementsCacheSize">
-			<value>${log.bonecp.statementsCacheSize}</value>
-		</property>
-		<!-- bonecp 0.8 deprecated
-		<property name="releaseHelperThreads">
-			<value>${log.bonecp.releaseHelperThreads}</value>
-		</property>
-		-->
-		<property name="connectionTimeoutInMs">
-			<value>${log.bonecp.connectionTimeoutInMs}</value>
-		</property>
+		class="org.openyu.commons.commons.dbcp.BasicDataSourceFactoryBean"
+		parent="baseFactorySupporter">
+		<property
+			name="configLocation"
+			value="file:src/test/config/etc/dbcp-log.properties" />
 	</bean>
 
 	<bean
@@ -72,68 +31,12 @@
 	    <!-- hibernate 3 
 		class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
 		-->
-		<!--
-		<property name="configLocation" value="hibernate.cfg.xml" /> 
-		-->
 		<property
 			name="dataSource"
 			ref="logDataSource" />
-		<property name="hibernateProperties">
-			<props>
-				<!-- jdbc.properties -->
-				<!-- hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect -->
-
-				<prop key="hibernate.dialect">${log.bonecp.hibernate.dialect}</prop>
-				<!-- <prop key="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</prop> -->
-				<!-- <prop key="hibernate.dialect">org.hibernate.dialect.SQLServerDialect</prop> -->
-
-				<prop key="hibernate.bytecode.use_reflection_optimizer">false</prop>
-
-				<prop key="hibernate.generate_statistics">${log.bonecp.hibernate.generate_statistics}</prop>
-				<prop key="hibernate.show_sql">${log.bonecp.hibernate.show_sql}</prop>
-				<prop key="hibernate.format_sql">${log.bonecp.hibernate.format_sql}</prop>
-
-				<!--  hibernate 3  
-				<prop key="hibernate.cache.provider_class">net.sf.ehcache.hibernate.EhCacheProvider
-				</prop>
-				<prop key="hibernate.cache.provider_class">net.sf.ehcache.hibernate.SingletonEhCacheProvider
-				</prop>
-				-->
-
-				<!-- hibernate 4 
-				<prop key="hibernate.cache.region.factory_class">org.hibernate.cache.ehcache.EhCacheRegionFactory</prop>
-				<prop key="hibernate.cache.region.factory_class">org.hibernate.cache.ehcache.SingletonEhCacheRegionFactory</prop>
-				-->
-
-				<prop key="hibernate.cache.region.factory_class">org.hibernate.cache.ehcache.EhCacheRegionFactory</prop>
-				<prop key="hibernate.cache.use_second_level_cache">true</prop>
-				<prop key="hibernate.cache.use_query_cache">true</prop>
-				<prop key="hibernate.cache.use_structured_entries">true</prop>
-				<prop key="net.sf.ehcache.configurationResourceName">/ehcache-log.xml</prop>
-
-				<prop key="hibernate.bytecode.provider">cglib</prop>
-				<prop key="hibernate.jdbc.batch_size">${log.bonecp.hibernate.jdbc.batch_size}</prop>
-				<prop key="hibernate.hbm2ddl.auto">update</prop>
-
-				<!-- no jta -->
-				<prop key="hibernate.transaction.factory_class">org.hibernate.transaction.JDBCTransactionFactory
-				</prop>
-				<!-- jta
-				<prop key="hibernate.transaction.factory_class">hibernate.transaction.factory_class=org.hibernate.transaction.JTATransactionFactory 
-				</prop> 
-				-->
-
-				<prop key="hibernate.search.default.directory_provider">filesystem</prop>
-				<prop key="hibernate.search.default.indexBase">${log.bonecp.hibernate.search.default.indexBase}
-				</prop>
-				<prop key="javax.persistence.validation.mode">none</prop>
-			</props>
-		</property>
-		<!-- hibernate 3  
-		<property name="lobHandler">
-			<ref bean="logLobHandler" />
-		</property>
-		-->
+		<property
+			name="configLocation"
+			value="file:src/test/config/etc/hibernate-log.cfg.xml" />
 		<property name="packagesToScan">
 			<list>
 				<value>org.openyu.mix.item.log.impl</value>
@@ -157,11 +60,6 @@
 			ref="logSessionFactory"></property>
 	</bean>	
 
-	<!--  
-	<bean id="logLobHandler" class="org.springframework.jdbc.support.lob.DefaultLobHandler"
-		lazy-init="true" />
-	-->	
-
 	<!--
 	<bean id="logHibernateInterceptor" class="org.springframework.orm.hibernate3.HibernateInterceptor">
 		<property name="sessionFactory">
@@ -172,13 +70,13 @@
 
 	<!-- Hibernate transaction manager -->
 	<bean
-		id="logTxManager"
+		id="logTx"
 		class="org.springframework.orm.hibernate4.HibernateTransactionManager"
 		p:sessionFactory-ref="logSessionFactory" />
 
 	<tx:advice
 		id="logTxAdvice"
-		transaction-manager="logTxManager">
+		transaction-manager="logTx">
 		<tx:attributes>
 			<tx:method
 				name="find*"
@@ -210,6 +108,8 @@
 				rollback-for="java.lang.Exception"
 				propagation="REQUIRED"
 				read-only="false" />
+				
+			<!-- addtional -->
 			<tx:method
 				name="record*"
 				rollback-for="java.lang.Exception"
@@ -223,30 +123,22 @@
 		</tx:attributes>
 	</tx:advice>
 
-	<tx:annotation-driven transaction-manager="logTxManager" />
+	<tx:annotation-driven transaction-manager="logTx" />
 
-	<!-- log dao supporter 
-	<bean id="logOjDaoSupporter" class="org.openyu.commons.dao.supporter.OjDaoSupporter"
+	<!-- log dao supporter, use sessionFactory 
+	<bean id="logCommonDaoSupporter" class="org.openyu.commons.dao.supporter.CommonDaoSupporter"
 		p:sessionFactory-ref="logSessionFactory" />
 	-->
 
 	<bean
-		id="logOjDaoSupporter"
-		class="org.openyu.commons.dao.supporter.OjDaoSupporter"
+		id="logCommonDaoSupporter"
+		class="org.openyu.commons.dao.supporter.CommonDaoSupporter"
 		p:hibernateTemplate-ref="logHibernateTemplate" />
 
-	<!--
-	<bean id="logJdbcDaoSupporter" class="org.openyu.commons.dao.supporter.JdbcDaoSupporter">
-		<property name="dataSource">
-			<ref bean="logDataSource" />
-		</property>
-	</bean>
-	-->
-
 	<bean
-		id="appLogDaoSupporter"
+		id="appLogCommonSupporter"
 		class="org.openyu.mix.app.dao.supporter.AppLogDaoSupporter"
-		parent="logOjDaoSupporter" />
+		parent="logCommonDaoSupporter" />
 	
 	<!-- queue service -->
 	<bean
@@ -256,8 +148,8 @@
 		<property name="threadService">
 			<ref bean="threadService" />
 		</property>
-		<property name="ojDao">
-			<ref bean="logOjDaoSupporter" />
+		<property name="commonDao">
+			<ref bean="logCommonDaoSupporter" />
 		</property>
 	</bean>
 	

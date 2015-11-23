@@ -27,6 +27,9 @@
 	<bean
 		id="sessionFactory"
 		class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+		 <!-- hibernate 3 
+		class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
+		-->
 		<property
 			name="dataSource"
 			ref="dataSource" />
