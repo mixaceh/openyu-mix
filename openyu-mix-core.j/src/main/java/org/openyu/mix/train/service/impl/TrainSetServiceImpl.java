@@ -27,15 +27,6 @@ public class TrainSetServiceImpl extends AppServiceSupporter implements
 	public TrainSetServiceImpl() {
 	}
 
-	/**
-	 * 初始化
-	 *
-	 * @throws Exception
-	 */
-	protected void init() throws Exception {
-		super.init();
-	}
-
 	// --------------------------------------------------
 	// biz
 	// --------------------------------------------------

@@ -44,22 +44,6 @@ public class AppSockletServiceSupporter extends SockletServiceSupporter
 	public AppSockletServiceSupporter() {
 	}
 
-	/**
-	 * 初始化
-	 *
-	 * @throws Exception
-	 */
-	protected void init() throws Exception {
-		super.init();
-		//
-
-	}
-
-	protected void uninit() throws Exception {
-		super.uninit();
-		//
-	}
-
 	public void service(Message message) {
 
 	}

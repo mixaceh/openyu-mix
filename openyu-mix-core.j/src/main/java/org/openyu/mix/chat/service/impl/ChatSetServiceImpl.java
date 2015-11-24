@@ -34,16 +34,6 @@ public class ChatSetServiceImpl extends AppServiceSupporter implements
 	public ChatSetServiceImpl() {
 	}
 
-	/**
-	 * 初始化
-	 *
-	 * @throws Exception
-	 */
-	protected void init() throws Exception {
-		super.init();
-		//
-	}
-
 	// --------------------------------------------------
 	// biz
 	// --------------------------------------------------

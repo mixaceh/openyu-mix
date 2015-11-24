@@ -32,16 +32,6 @@ public class RelationSetServiceImpl extends AppServiceSupporter implements
 	public RelationSetServiceImpl() {
 	}
 
-	/**
-	 * 初始化
-	 *
-	 * @throws Exception
-	 */
-	protected void init() throws Exception {
-		super.init();
-		//
-	}
-
 	// --------------------------------------------------
 	// biz
 	// --------------------------------------------------

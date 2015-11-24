@@ -16,13 +16,11 @@ import org.openyu.commons.util.concurrent.impl.MapCacheImpl;
 /**
  * 角色集合服務, 存放所有本地/同步的角色在mem中
  */
-public class RoleSetServiceImpl extends AppServiceSupporter implements
-		RoleSetService {
+public class RoleSetServiceImpl extends AppServiceSupporter implements RoleSetService {
 
 	private static final long serialVersionUID = 7119102377797182772L;
 
-	private static transient final Logger LOGGER = LoggerFactory
-			.getLogger(RoleSetServiceImpl.class);
+	private static transient final Logger LOGGER = LoggerFactory.getLogger(RoleSetServiceImpl.class);
 
 	/**
 	 * 同步role, 來自於其它server上的role
@@ -32,16 +30,6 @@ public class RoleSetServiceImpl extends AppServiceSupporter implements
 	private MapCache<String, Role> syncRoles = new MapCacheImpl<String, Role>();
 
 	public RoleSetServiceImpl() {
-	}
-
-	/**
-	 * 初始化
-	 *
-	 * @throws Exception
-	 */
-	protected void init() throws Exception {
-		super.init();
-		//
 	}
 
 	// --------------------------------------------------

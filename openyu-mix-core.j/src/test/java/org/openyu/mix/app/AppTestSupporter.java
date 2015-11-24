@@ -56,14 +56,14 @@ public class AppTestSupporter extends BaseTestSupporter {
 	/**
 	 * db
 	 */
-	protected static HibernateTransactionManager txManager;
+	protected static HibernateTransactionManager commonTx;
 
 	protected static SessionFactory sessionFactory;
 
 	/**
 	 * log db
 	 */
-	protected static HibernateTransactionManager logTxManager;
+	protected static HibernateTransactionManager logTx;
 
 	protected static SessionFactory logSessionFactory;
 
@@ -111,13 +111,13 @@ public class AppTestSupporter extends BaseTestSupporter {
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
 		applicationContext = new ClassPathXmlApplicationContext(new String[] {
-				"applicationContext-init.xml",//
-				"META-INF/applicationContext-commons-core.xml",//
+				"applicationContext-init.xml", //
+				"applicationContext-bean.xml", //
 				"applicationContext-message.xml",//
+				"applicationContext-acceptor.xml", //
 				"applicationContext-database.xml",//
 				"applicationContext-database-log.xml",//
 				// "applicationContext-schedule.xml",// 排程
-				"META-INF/applicationContext-socklet-core.xml",//
 				"org/openyu/mix/app/applicationContext-app.xml",//
 		// biz
 		// "org/openyu/mix/account/applicationContext-account.xml",//
@@ -130,12 +130,12 @@ public class AppTestSupporter extends BaseTestSupporter {
 	}
 
 	protected static void initialize() {
-		txManager = (HibernateTransactionManager) applicationContext
-				.getBean("txManager");
+		commonTx = (HibernateTransactionManager) applicationContext
+				.getBean("commonTx");
 		sessionFactory = (SessionFactory) applicationContext
 				.getBean("sessionFactory");
-		logTxManager = (HibernateTransactionManager) applicationContext
-				.getBean("logTxManager");
+		logTx = (HibernateTransactionManager) applicationContext
+				.getBean("logTx");
 		logSessionFactory = (SessionFactory) applicationContext
 				.getBean("logSessionFactory");
 		//
@@ -170,9 +170,9 @@ public class AppTestSupporter extends BaseTestSupporter {
 
 	public static class BeanTest extends AppTestSupporter {
 		@Test
-		public void txManager() {
-			System.out.println(txManager);
-			assertNotNull(txManager);
+		public void commonTx() {
+			System.out.println(commonTx);
+			assertNotNull(commonTx);
 		}
 
 		@Test
@@ -182,9 +182,9 @@ public class AppTestSupporter extends BaseTestSupporter {
 		}
 
 		@Test
-		public void logTxManager() {
-			System.out.println(logTxManager);
-			assertNotNull(logTxManager);
+		public void logTx() {
+			System.out.println(logTx);
+			assertNotNull(logTx);
 		}
 
 		@Test

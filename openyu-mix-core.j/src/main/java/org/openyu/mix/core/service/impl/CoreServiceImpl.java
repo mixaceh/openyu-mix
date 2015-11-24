@@ -140,16 +140,6 @@ public class CoreServiceImpl extends AppServiceSupporter implements CoreService 
 	}
 
 	/**
-	 * 初始化
-	 *
-	 * @throws Exception
-	 */
-	protected void init() throws Exception {
-		super.init();
-		//
-	}
-
-	/**
 	 * 角色連線,用多緒處理
 	 * 
 	 * @param roleId
