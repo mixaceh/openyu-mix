@@ -1,7 +1,5 @@
 package org.openyu.mix.account.service.aop;
 
-import java.lang.reflect.Method;
-
 import org.aopalliance.intercept.MethodInvocation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,11 +13,11 @@ import org.openyu.mix.role.vo.Role;
 /**
  * 增加帳戶的儲值幣攔截器
  */
-public class AccountIncreaseCoinInterceptor extends
-		AppMethodInterceptorSupporter {
+public class AccountIncreaseCoinInterceptor extends AppMethodInterceptorSupporter {
 
-	private static transient final Logger LOGGER = LoggerFactory
-			.getLogger(AccountIncreaseCoinInterceptor.class);
+	private static final long serialVersionUID = -6365809971377142215L;
+
+	private static transient final Logger LOGGER = LoggerFactory.getLogger(AccountIncreaseCoinInterceptor.class);
 
 	@Autowired
 	@Qualifier("accountLogService")
@@ -34,16 +32,14 @@ public class AccountIncreaseCoinInterceptor extends
 	 * int increaseCoin(boolean sendable, String accountId,Role role, int coin,
 	 * boolean accuable, CoinReason coinReason);
 	 */
-	public Object invoke(final MethodInvocation methodInvocation,
-			final Method method, final Class<?>[] paramTypes,
-			final Object[] args) {
-		// 傳回值
+	protected Object doInvoke(MethodInvocation methodInvocation) throws Throwable {
 		Object result = null;
 		try {
 			// --------------------------------------------------
 			// proceed前
 			// --------------------------------------------------
 			// 參數
+			Object[] args = methodInvocation.getArguments();
 			boolean sendable = (Boolean) args[0];
 			String accountId = (String) args[1];
 			Role role = (Role) args[2];
@@ -63,11 +59,11 @@ public class AccountIncreaseCoinInterceptor extends
 			int ret = (Integer) result;
 			//
 			if (ret != 0 && coinReason != null) {
-				accountLogService.recordIncreaseCoin(accountId, role, ret,
-						coinReason);
+				accountLogService.recordIncreaseCoin(accountId, role, ret, coinReason);
 			}
-		} catch (Throwable ex) {
-			ex.printStackTrace();
+		} catch (Throwable e) {
+			LOGGER.error(new StringBuilder("Exception encountered during doInvoke()").toString(), e);
+			// throw e;
 		}
 		return result;
 	}

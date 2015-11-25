@@ -1,7 +1,5 @@
 package org.openyu.mix.account.service.aop;
 
-import java.lang.reflect.Method;
-
 import org.aopalliance.intercept.MethodInvocation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,8 +16,7 @@ import org.openyu.mix.role.vo.Role;
  */
 public class AccountResetCoinInterceptor extends AppMethodInterceptorSupporter {
 
-	private static transient final Logger LOGGER = LoggerFactory
-			.getLogger(AccountResetCoinInterceptor.class);
+	private static transient final Logger LOGGER = LoggerFactory.getLogger(AccountResetCoinInterceptor.class);
 
 	@Autowired
 	@Qualifier("accountLogService")
@@ -34,16 +31,14 @@ public class AccountResetCoinInterceptor extends AppMethodInterceptorSupporter {
 	 * boolean resetCoin(boolean sendable, String accountId, Role role, boolean
 	 * accuable, CoinReason coinReason);
 	 */
-	public Object invoke(final MethodInvocation methodInvocation,
-			final Method method, final Class<?>[] paramTypes,
-			final Object[] args) {
-		// 傳回值
+	protected Object doInvoke(MethodInvocation methodInvocation) throws Throwable {
 		Object result = null;
 		try {
 			// --------------------------------------------------
 			// proceed前
 			// --------------------------------------------------
 			// 參數
+			Object[] args = methodInvocation.getArguments();
 			boolean sendable = (Boolean) args[0];
 			String accountId = (String) args[1];
 			Role role = (Role) args[2];
@@ -62,11 +57,11 @@ public class AccountResetCoinInterceptor extends AppMethodInterceptorSupporter {
 			boolean ret = (Boolean) result;
 			//
 			if (ret && coinReason != null) {
-				accountLogService.recordChangeCoin(accountId, role, 0,
-						ActionType.RESET, coinReason);
+				accountLogService.recordChangeCoin(accountId, role, 0, ActionType.RESET, coinReason);
 			}
-		} catch (Throwable ex) {
-			ex.printStackTrace();
+		} catch (Throwable e) {
+			LOGGER.error(new StringBuilder("Exception encountered during doInvoke()").toString(), e);
+			// throw e;
 		}
 		return result;
 	}

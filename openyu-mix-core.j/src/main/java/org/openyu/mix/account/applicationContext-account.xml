@@ -20,7 +20,7 @@
 	<!-- advisor -->
 	<aop:config>
 		<aop:pointcut id="accountServiceTxPointcut" expression="bean(accountService)" />
-		<aop:advisor id="accountServiceTxAdvisor" advice-ref="txAdvice"
+		<aop:advisor id="accountServiceTxAdvisor" advice-ref="commonTxAdvice"
 			pointcut-ref="accountServiceTxPointcut" />
 	</aop:config>
 

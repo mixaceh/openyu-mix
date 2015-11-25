@@ -19,11 +19,11 @@ import org.openyu.commons.dao.inquiry.Inquiry;
 /**
  * 帳戶日誌服務
  */
-public class AccountLogServiceImpl extends AppLogServiceSupporter implements
-		AccountLogService {
+public class AccountLogServiceImpl extends AppLogServiceSupporter implements AccountLogService {
 
-	private static transient final Logger LOGGER = LoggerFactory
-			.getLogger(AccountLogServiceImpl.class);
+	private static final long serialVersionUID = 656386026958140296L;
+
+	private static transient final Logger LOGGER = LoggerFactory.getLogger(AccountLogServiceImpl.class);
 
 	@Autowired
 	@Qualifier("accountLogDao")
@@ -43,8 +43,7 @@ public class AccountLogServiceImpl extends AppLogServiceSupporter implements
 		return accountLogDao.findAccountCoinLog(accountId);
 	}
 
-	public List<AccountCoinLog> findAccountCoinLog(Inquiry inquiry,
-			String accountId) {
+	public List<AccountCoinLog> findAccountCoinLog(Inquiry inquiry, String accountId) {
 		return accountLogDao.findAccountCoinLog(inquiry, accountId);
 	}
 
@@ -63,8 +62,7 @@ public class AccountLogServiceImpl extends AppLogServiceSupporter implements
 	 * @param coin
 	 * @param coinReason
 	 */
-	public void recordIncreaseCoin(String accountId, Role role, int coin,
-			CoinType coinReason) {
+	public void recordIncreaseCoin(String accountId, Role role, int coin, CoinType coinReason) {
 		recordChangeCoin(accountId, role, coin, ActionType.INCREASE, coinReason);
 	}
 
@@ -76,10 +74,8 @@ public class AccountLogServiceImpl extends AppLogServiceSupporter implements
 	 * @param coin
 	 * @param coinReason
 	 */
-	public void recordDecreaseCoin(String accountId, Role role, int coin,
-			CoinType coinReason) {
-		recordChangeCoin(accountId, role, -1 * coin, ActionType.DECREASE,
-				coinReason);
+	public void recordDecreaseCoin(String accountId, Role role, int coin, CoinType coinReason) {
+		recordChangeCoin(accountId, role, -1 * coin, ActionType.DECREASE, coinReason);
 	}
 
 	/**
@@ -91,8 +87,7 @@ public class AccountLogServiceImpl extends AppLogServiceSupporter implements
 	 * @param coinAction
 	 * @param coinReason
 	 */
-	public void recordChangeCoin(String accountId, Role role, int coin,
-			ActionType coinAction, CoinType coinReason) {
+	public void recordChangeCoin(String accountId, Role role, int coin, ActionType coinAction, CoinType coinReason) {
 		AccountCoinLog log = new AccountCoinLogImpl();
 		// 紀錄角色相關資訊
 		recordRole(role, log);

@@ -1,7 +1,5 @@
 package org.openyu.mix.account.service.aop;
 
-import java.lang.reflect.Method;
-
 import org.aopalliance.intercept.MethodInvocation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,8 +16,9 @@ import org.openyu.mix.role.vo.Role;
  */
 public class AccountChangeCoinInterceptor extends AppMethodInterceptorSupporter {
 
-	private static transient final Logger LOGGER = LoggerFactory
-			.getLogger(AccountChangeCoinInterceptor.class);
+	private static final long serialVersionUID = -6116656191642710414L;
+
+	private static transient final Logger LOGGER = LoggerFactory.getLogger(AccountChangeCoinInterceptor.class);
 
 	@Autowired
 	@Qualifier("accountLogService")
@@ -34,15 +33,14 @@ public class AccountChangeCoinInterceptor extends AppMethodInterceptorSupporter 
 	 * int changeCoin(boolean sendable, String accountId, Role role, int coin,
 	 * boolean accuable, CoinAction coinAction, CoinReason coinReason);
 	 */
-	public Object invoke(MethodInvocation methodInvocation, Method method,
-			Class<?>[] paramTypes, Object[] args) {
-		// 傳回值
+	protected Object doInvoke(MethodInvocation methodInvocation) throws Throwable {
 		Object result = null;
 		try {
 			// --------------------------------------------------
 			// proceed前
 			// --------------------------------------------------
 			// 參數
+			Object[] args = methodInvocation.getArguments();
 			boolean sendable = (Boolean) args[0];
 			String accountId = (String) args[1];
 			Role role = (Role) args[2];
@@ -63,11 +61,11 @@ public class AccountChangeCoinInterceptor extends AppMethodInterceptorSupporter 
 			int ret = (Integer) result;
 			//
 			if (ret != 0 && coinAction != null && coinReason != null) {
-				accountLogService.recordChangeCoin(accountId, role, ret,
-						coinAction, coinReason);
+				accountLogService.recordChangeCoin(accountId, role, ret, coinAction, coinReason);
 			}
-		} catch (Throwable ex) {
-			ex.printStackTrace();
+		} catch (Throwable e) {
+			LOGGER.error(new StringBuilder("Exception encountered during doInvoke()").toString(), e);
+			// throw e;
 		}
 		return result;
 	}
