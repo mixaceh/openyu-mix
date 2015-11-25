@@ -136,7 +136,7 @@
 		p:hibernateTemplate-ref="logHibernateTemplate" />
 
 	<bean
-		id="appLogCommonSupporter"
+		id="appLogDaoSupporter"
 		class="org.openyu.mix.app.dao.supporter.AppLogDaoSupporter"
 		parent="logCommonDaoSupporter" />
 	
