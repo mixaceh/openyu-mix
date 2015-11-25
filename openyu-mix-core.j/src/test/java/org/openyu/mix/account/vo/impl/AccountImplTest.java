@@ -5,10 +5,11 @@ import static org.junit.Assert.assertNotNull;
 import java.util.Locale;
 
 import org.junit.Test;
+import org.openyu.commons.collector.CollectorHelper;
+import org.openyu.commons.junit.supporter.BaseTestSupporter;
 import org.openyu.mix.account.vo.Account;
-import org.openyu.commons.junit.supporter.BeanTestSupporter;
 
-public class AccountImplTest extends BeanTestSupporter {
+public class AccountImplTest extends BaseTestSupporter {
 
 	@Test
 	public void writeToXml() {
@@ -24,14 +25,14 @@ public class AccountImplTest extends BeanTestSupporter {
 		value.addName(Locale.SIMPLIFIED_CHINESE, "测试帐号");
 		value.addName(Locale.US, "Test Account");
 		//
-		String result = beanCollector.writeToXml(AccountImpl.class, value);
+		String result = CollectorHelper.writeToXml(AccountImpl.class, value);
 		System.out.println(result);
 		assertNotNull(result);
 	}
 
 	@Test
 	public void readFromXml() {
-		Account result = beanCollector.readFromXml(AccountImpl.class);
+		Account result = CollectorHelper.readFromXml(AccountImpl.class);
 		System.out.println(result);
 		assertNotNull(result);
 	}

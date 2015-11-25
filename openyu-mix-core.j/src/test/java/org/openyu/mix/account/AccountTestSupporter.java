@@ -35,32 +35,28 @@ public class AccountTestSupporter extends AppTestSupporter {
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
-		applicationContext = new ClassPathXmlApplicationContext(new String[] {
+		applicationContext = new ClassPathXmlApplicationContext(new String[] { //
 				"applicationContext-init.xml", //
 				"applicationContext-bean.xml", //
-				"applicationContext-message.xml",//
+				"applicationContext-message.xml", //
 				"applicationContext-acceptor.xml", //
-				"applicationContext-database.xml",//
-				"applicationContext-database-log.xml",//
+				"applicationContext-database.xml", //
+				"applicationContext-database-log.xml", //
 				// "applicationContext-schedule.xml",// 排程
-				"org/openyu/mix/app/applicationContext-app.xml",//				
+				"org/openyu/mix/app/applicationContext-app.xml", //
 				// biz
 				"org/openyu/mix/account/applicationContext-account.xml",//
-//				"org/openyu/mix/item/applicationContext-item.xml",//
-//				"org/openyu/mix/role/applicationContext-role.xml",//
+				// "org/openyu/mix/item/applicationContext-item.xml",//
+				// "org/openyu/mix/role/applicationContext-role.xml",//
 		});
 		// ---------------------------------------------------
 		initialize();
 		// ---------------------------------------------------
 		accountDao = (AccountDao) applicationContext.getBean("accountDao");
-		accountService = (AccountService) applicationContext
-				.getBean("accountService");
-		accountLogDao = (AccountLogDao) applicationContext
-				.getBean("accountLogDao");
-		accountLogService = (AccountLogService) applicationContext
-				.getBean("accountLogService");
-		accountSocklet = (AccountSocklet) applicationContext
-				.getBean("accountSocklet");
+		accountService = (AccountService) applicationContext.getBean("accountService");
+		accountLogDao = (AccountLogDao) applicationContext.getBean("accountLogDao");
+		accountLogService = (AccountLogService) applicationContext.getBean("accountLogService");
+		accountSocklet = (AccountSocklet) applicationContext.getBean("accountSocklet");
 	}
 
 	// --------------------------------------------------

@@ -110,42 +110,35 @@ public class AppTestSupporter extends BaseTestSupporter {
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
-		applicationContext = new ClassPathXmlApplicationContext(new String[] {
+		applicationContext = new ClassPathXmlApplicationContext(new String[] { //
 				"applicationContext-init.xml", //
 				"applicationContext-bean.xml", //
-				"applicationContext-message.xml",//
+				"applicationContext-message.xml", //
 				"applicationContext-acceptor.xml", //
-				"applicationContext-database.xml",//
-				"applicationContext-database-log.xml",//
+				"applicationContext-database.xml", //
+				"applicationContext-database-log.xml", //
 				// "applicationContext-schedule.xml",// 排程
 				"org/openyu/mix/app/applicationContext-app.xml",//
-		// biz
-		// "org/openyu/mix/account/applicationContext-account.xml",//
-		// "org/openyu/mix/item/applicationContext-item.xml",//
-		// "org/openyu/mix/role/applicationContext-role.xml",//
-				});
+				// biz
+				// "org/openyu/mix/account/applicationContext-account.xml",//
+				// "org/openyu/mix/item/applicationContext-item.xml",//
+				// "org/openyu/mix/role/applicationContext-role.xml",//
+		});
 		// ---------------------------------------------------
 		initialize();
 		// ---------------------------------------------------
 	}
 
 	protected static void initialize() {
-		commonTx = (HibernateTransactionManager) applicationContext
-				.getBean("commonTx");
-		sessionFactory = (SessionFactory) applicationContext
-				.getBean("sessionFactory");
-		logTx = (HibernateTransactionManager) applicationContext
-				.getBean("logTx");
-		logSessionFactory = (SessionFactory) applicationContext
-				.getBean("logSessionFactory");
+		commonTx = (HibernateTransactionManager) applicationContext.getBean("commonTx");
+		sessionFactory = (SessionFactory) applicationContext.getBean("sessionFactory");
+		logTx = (HibernateTransactionManager) applicationContext.getBean("logTx");
+		logSessionFactory = (SessionFactory) applicationContext.getBean("logSessionFactory");
 		//
-		messageService = (MessageService) applicationContext
-				.getBean("messageService");
-		protocolService = (ProtocolService) applicationContext
-				.getBean("protocolService");
+		messageService = (MessageService) applicationContext.getBean("messageService");
+		protocolService = (ProtocolService) applicationContext.getBean("protocolService");
 		// ---------------------------------------------------
-		javaConnector = new JavaConnectorImpl(CoreModuleType.class,
-				CoreMessageType.class, protocolService);
+		javaConnector = new JavaConnectorImpl(CoreModuleType.class, CoreMessageType.class, protocolService);
 		javaConnector.setReceiver(receiver);
 
 		// // 帳號
@@ -159,11 +152,9 @@ public class AppTestSupporter extends BaseTestSupporter {
 		// applicationContext.getBean("roleService");
 
 		// 角色集合
-		roleSetService = (RoleSetService) applicationContext
-				.getBean("roleSetService");
+		roleSetService = (RoleSetService) applicationContext.getBean("roleSetService");
 		// 聊天角色集合
-		chatSetService = (ChatSetService) applicationContext
-				.getBean("chatSetService");
+		chatSetService = (ChatSetService) applicationContext.getBean("chatSetService");
 	}
 
 	// --------------------------------------------------
@@ -335,9 +326,8 @@ public class AppTestSupporter extends BaseTestSupporter {
 
 		// 3.改用new的方式,不使用spring
 		RoleService roleService = new RoleServiceImpl();
-		result = roleService.createRole(roleId, name, RaceType.RONG,
-				CareerType.WARRIOR_1, GenderType.FEMALE, HairType.SHORT,
-				FaceType.CUTE);
+		result = roleService.createRole(roleId, name, RaceType.RONG, CareerType.WARRIOR_1, GenderType.FEMALE,
+				HairType.SHORT, FaceType.CUTE);
 		// 加到mem
 		roleSetService.addRole(result);
 		return result;
@@ -460,8 +450,7 @@ public class AppTestSupporter extends BaseTestSupporter {
 		// }
 		// 訊息編號,類別
 		if (message.getMessageType() != null) {
-			buff.append(" (" + message.getMessageType().getValue() + ") "
-					+ message.getMessageType());
+			buff.append(" (" + message.getMessageType().getValue() + ") " + message.getMessageType());
 		}
 
 		// content
@@ -472,32 +461,20 @@ public class AppTestSupporter extends BaseTestSupporter {
 				Object object = null;
 				//
 				Class<?> clazz = message.getClass(i);
-				if (BooleanEnum.class.equals(clazz)
-						|| Boolean.class.equals(clazz)
-						|| boolean.class.equals(clazz)) {
+				if (BooleanEnum.class.equals(clazz) || Boolean.class.equals(clazz) || boolean.class.equals(clazz)) {
 					object = message.getBoolean(i);
 				}
-				if (CharEnum.class.equals(clazz)
-						|| Character.class.equals(clazz)
-						|| char.class.equals(clazz)) {
+				if (CharEnum.class.equals(clazz) || Character.class.equals(clazz) || char.class.equals(clazz)) {
 					object = message.getChar(i);
-				} else if (StringEnum.class.equals(clazz)
-						|| String.class.equals(clazz)) {
+				} else if (StringEnum.class.equals(clazz) || String.class.equals(clazz)) {
 					object = message.getString(i);
-				} else if (IntEnum.class.equals(clazz)
-						|| Integer.class.equals(clazz)
-						|| int.class.equals(clazz)) {
+				} else if (IntEnum.class.equals(clazz) || Integer.class.equals(clazz) || int.class.equals(clazz)) {
 					object = message.getInt(i);
-				} else if (LongEnum.class.equals(clazz)
-						|| Long.class.equals(clazz) || long.class.equals(clazz)) {
+				} else if (LongEnum.class.equals(clazz) || Long.class.equals(clazz) || long.class.equals(clazz)) {
 					object = message.getLong(i);
-				} else if (FloatEnum.class.equals(clazz)
-						|| Float.class.equals(clazz)
-						|| float.class.equals(clazz)) {
+				} else if (FloatEnum.class.equals(clazz) || Float.class.equals(clazz) || float.class.equals(clazz)) {
 					object = message.getFloat(i);
-				} else if (DoubleEnum.class.equals(clazz)
-						|| Double.class.equals(clazz)
-						|| double.class.equals(clazz)) {
+				} else if (DoubleEnum.class.equals(clazz) || Double.class.equals(clazz) || double.class.equals(clazz)) {
 					object = message.getDouble(i);
 				} else if (byte[].class.equals(clazz)) {
 					object = message.getByteArray(i);
@@ -562,8 +539,8 @@ public class AppTestSupporter extends BaseTestSupporter {
 				Equipment equipment = (Equipment) item;
 				buff.append(", ");
 				buff.append(equipment.getEnhanceLevel());
-				for (Map.Entry<AttributeType, Attribute> entry : equipment
-						.getAttributeGroup().getAttributes().entrySet()) {
+				for (Map.Entry<AttributeType, Attribute> entry : equipment.getAttributeGroup().getAttributes()
+						.entrySet()) {
 					// 屬性
 					buff.append(", ");
 					buff.append(entry.getKey());

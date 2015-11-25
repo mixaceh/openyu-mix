@@ -74,8 +74,7 @@ public class AccountDaoImplTest extends AccountTestSupporter {
 			assertNotNull(pk);
 
 			// retrieve
-			AccountPo foundEntity = accountDao.find(AccountPoImpl.class,
-					accountPo.getSeq());
+			AccountPo foundEntity = accountDao.find(AccountPoImpl.class, accountPo.getSeq());
 			printFind(i, foundEntity);
 			assertAccountPo(accountPo, foundEntity);
 
@@ -86,8 +85,7 @@ public class AccountDaoImplTest extends AccountTestSupporter {
 			assertTrue(updated > 0);
 
 			// delete
-			AccountPo deletedEntity = accountDao.delete(AccountPoImpl.class,
-					accountPo.getSeq());
+			AccountPo deletedEntity = accountDao.delete(AccountPoImpl.class, accountPo.getSeq());
 			printDelete(i, deletedEntity);
 			assertNotNull(deletedEntity);
 		}
@@ -108,8 +106,7 @@ public class AccountDaoImplTest extends AccountTestSupporter {
 			printInsert(i, pk);
 			assertNotNull(pk);
 
-			AccountPo foundEntity = accountDao.find(AccountPoImpl.class,
-					accountPo.getSeq());
+			AccountPo foundEntity = accountDao.find(AccountPoImpl.class, accountPo.getSeq());
 			assertAccountPo(accountPo, foundEntity);
 
 			System.out.println(accountPo);
@@ -130,8 +127,7 @@ public class AccountDaoImplTest extends AccountTestSupporter {
 
 		long beg = System.currentTimeMillis();
 		for (int i = 0; i < count; i++) {
-			result = accountDao.findAccount(Locale.TRADITIONAL_CHINESE,
-					ACCOUNT_ID);
+			result = accountDao.findAccount(Locale.TRADITIONAL_CHINESE, ACCOUNT_ID);
 		}
 		long end = System.currentTimeMillis();
 		System.out.println(count + " times: " + (end - beg) + " mills. ");
