@@ -7,7 +7,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.junit.Rule;
 import org.junit.Test;
+import org.openyu.commons.collector.CollectorHelper;
+import org.openyu.commons.junit.supporter.BaseTestSupporter;
 import org.openyu.mix.item.vo.LevelType;
 import org.openyu.mix.item.vo.ThingType;
 import org.openyu.mix.item.vo.impl.ThingImpl;
@@ -37,15 +40,21 @@ import org.openyu.mix.item.vo.thing.impl.RoleExpThingImpl;
 import org.openyu.mix.item.vo.thing.impl.RoleFameThingImpl;
 import org.openyu.mix.item.vo.thing.impl.RoleGoldThingImpl;
 import org.openyu.mix.item.vo.thing.impl.RoleSpThingImpl;
-import org.openyu.commons.junit.supporter.BeanTestSupporter;
 
-public class ThingCollectorTest extends BeanTestSupporter{
+import com.carrotsearch.junitbenchmarks.BenchmarkOptions;
+import com.carrotsearch.junitbenchmarks.BenchmarkRule;
+
+public class ThingCollectorTest extends BaseTestSupporter {
+
+	@Rule
+	public BenchmarkRule benchmarkRule = new BenchmarkRule();
 
 	/**
 	 * 模擬治癒藥水道具
 	 * 
 	 * @return
 	 */
+	@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 	public static List<PotionHpThing> mockPotionHpThing() {
 		List<PotionHpThing> result = new LinkedList<PotionHpThing>();
 		//
@@ -123,8 +132,7 @@ public class ThingCollectorTest extends BeanTestSupporter{
 	public static List<PotionInstantHpThing> mockPotionInstantHpThing() {
 		List<PotionInstantHpThing> result = new LinkedList<PotionInstantHpThing>();
 		//
-		PotionInstantHpThing thing = new PotionInstantHpThingImpl(
-				"T_POTION_INSTANT_HP_G001");// T_道具類別
+		PotionInstantHpThing thing = new PotionInstantHpThingImpl("T_POTION_INSTANT_HP_G001");// T_道具類別
 		thing.setName("立即治癒藥水");
 		thing.setRate(1000);// 恢復比率
 		thing.setPrice(5 * 10000L);// 5w
@@ -155,8 +163,7 @@ public class ThingCollectorTest extends BeanTestSupporter{
 	public static List<PotionInstantMpThing> mockPotionInstantMpThing() {
 		List<PotionInstantMpThing> result = new LinkedList<PotionInstantMpThing>();
 		//
-		PotionInstantMpThing thing = new PotionInstantMpThingImpl(
-				"T_POTION_INSTANT_MP_G001");// T_道具類別
+		PotionInstantMpThing thing = new PotionInstantMpThingImpl("T_POTION_INSTANT_MP_G001");// T_道具類別
 		thing.setName("立即魔法藥水");
 		thing.setRate(1000);// 恢復比率
 		thing.setPrice(5 * 10000L);// 5w
@@ -211,8 +218,7 @@ public class ThingCollectorTest extends BeanTestSupporter{
 	public static List<BackInstantTownThing> mockBackInstantTownThing() {
 		List<BackInstantTownThing> result = new LinkedList<BackInstantTownThing>();
 		//
-		BackInstantTownThing thing = new BackInstantTownThingImpl(
-				"T_BACK_INSTANT_TOWN_G001");// T_道具類別
+		BackInstantTownThing thing = new BackInstantTownThingImpl("T_BACK_INSTANT_TOWN_G001");// T_道具類別
 		thing.setName("立即返回城鎮捲");
 		thing.setPrice(30 * 10000L);// 30w
 		thing.setCoin(6);
@@ -235,8 +241,7 @@ public class ThingCollectorTest extends BeanTestSupporter{
 		List<EnhanceArmorThing> result = new LinkedList<EnhanceArmorThing>();
 
 		// e防捲
-		EnhanceArmorThing thing = new EnhanceArmorThingImpl(
-				"T_ENHANCE_ARMOR_E_G001");// T_道具類別
+		EnhanceArmorThing thing = new EnhanceArmorThingImpl("T_ENHANCE_ARMOR_E_G001");// T_道具類別
 		thing.setName("E 級強化防具捲");
 		thing.setLevelType(LevelType.E);// 裝備等級
 		thing.setEnhanceType(EnhanceType.GENERAL);// 強化類型
@@ -371,8 +376,7 @@ public class ThingCollectorTest extends BeanTestSupporter{
 	public static List<EnhanceWeaponThing> mockEnhanceWeaponThing() {
 		List<EnhanceWeaponThing> result = new LinkedList<EnhanceWeaponThing>();
 		// e武捲
-		EnhanceWeaponThing thing = new EnhanceWeaponThingImpl(
-				"T_ENHANCE_WEAPON_E_G001");// T_道具類別
+		EnhanceWeaponThing thing = new EnhanceWeaponThingImpl("T_ENHANCE_WEAPON_E_G001");// T_道具類別
 		thing.setName("E 級強化武器捲");
 		thing.setLevelType(LevelType.E);// 裝備等級
 		thing.setEnhanceType(EnhanceType.GENERAL);// 強化類型
@@ -707,13 +711,12 @@ public class ThingCollectorTest extends BeanTestSupporter{
 	/**
 	 * 只是為了模擬用,有正式xml後,不應再使用,以免覆蓋掉正式的xml
 	 */
+	@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 	public void writeToXml() {
 		String result = null;
 		ThingCollector collector = ThingCollector.getInstance(false);
-		//
-		long beg = System.currentTimeMillis();
-		Thing thing = null;
 
+		Thing thing = null;
 		// 模擬治癒藥水道具
 		List<PotionHpThing> potionHpThings = mockPotionHpThing();
 		collector.addThings(potionHpThings);
@@ -829,221 +832,123 @@ public class ThingCollectorTest extends BeanTestSupporter{
 		thing.setCoin(40);
 		collector.getThings().put(thing.getId(), thing);
 		//
-		result = collector.writeToXml(ThingCollector.class, collector);
-		//
-		long end = System.currentTimeMillis();
-		System.out.println((end - beg) + " mills. ");
+		result = CollectorHelper.writeToXml(ThingCollector.class, collector);
 		//
 		System.out.println(result);
 		assertNotNull(result);
 	}
 
 	@Test
-	// 100 times: 1872 mills.
-	// 100 times: 1786 mills.
-	// 100 times: 1832 mills.
+	@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 	public void readFromXml() {
 		ThingCollector result = null;
 		//
-		int count = 1;
-		long beg = System.currentTimeMillis();
-		//
-		for (int i = 0; i < count; i++) {
-			result = beanCollector.readFromXml(ThingCollector.class);
-		}
-		//
-		long end = System.currentTimeMillis();
-		System.out.println(count + " times: " + (end - beg) + " mills. ");
+		result = CollectorHelper.readFromXml(ThingCollector.class);
 		//
 		System.out.println(result);
 		assertNotNull(result);
 	}
 
 	@Test
+	@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 	public void writeToSerFromXml() {
 		String result = null;
 		//
-		long beg = System.currentTimeMillis();
-		result = beanCollector.writeToSerFromXml(ThingCollector.class);
-		//
-		long end = System.currentTimeMillis();
-		System.out.println((end - beg) + " mills. ");
+		result = CollectorHelper.writeToSerFromXml(ThingCollector.class);
 		//
 		System.out.println(result);
 		assertNotNull(result);
 	}
 
 	@Test
-	// 100 times: 465 mills.
-	// 100 times: 474 mills.
-	// 100 times: 495 mills.
+	@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 	public void readFromSer() {
 		ThingCollector result = null;
 		//
-		int count = 1;
-		long beg = System.currentTimeMillis();
-		//
-		for (int i = 0; i < count; i++) {
-			result = beanCollector.readFromSer(ThingCollector.class);
-		}
-		//
-		long end = System.currentTimeMillis();
-		System.out.println(count + " times: " + (end - beg) + " mills. ");
+		result = CollectorHelper.readFromSer(ThingCollector.class);
 		//
 		System.out.println(result);
 		assertNotNull(result);
 	}
 
 	@Test
-	// 1000000 times: 399 mills.
-	// 1000000 times: 398 mills.
-	// 1000000 times: 401 mills.
-	public void initialize() {
-		boolean result = false;
-		//
-		int count = 1000000;
-		long beg = System.currentTimeMillis();
-		//
-		for (int i = 0; i < count; i++) {
-			ThingCollector.getInstance().initialize();
-		}
-		//
-		long end = System.currentTimeMillis();
-		System.out.println(count + " times: " + (end - beg) + " mills. ");
-
-		result = ThingCollector.getInstance().isInitialized();
-		System.out.println(result);
-		assertTrue(result);
-		//
-		System.out.println(ThingCollector.getInstance().getThingIds());
-	}
-
-	@Test
-	// 1000000 times: 400 mills.
-	// 1000000 times: 396 mills.
-	// 1000000 times: 399 mills.
+	@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 	public void getInstance() {
 		ThingCollector result = null;
 		//
-		int count = 1000000; // 100w
-		long beg = System.currentTimeMillis();
-		//
-		for (int i = 0; i < count; i++) {
-			result = ThingCollector.getInstance();
-		}
-		//
-		long end = System.currentTimeMillis();
-		System.out.println(count + " times: " + (end - beg) + " mills. ");
+		result = ThingCollector.getInstance();
 		//
 		System.out.println(result);
 		assertNotNull(result);
 	}
 
 	@Test
-	// 10000 times: 1587 mills.
-	// 10000 times: 1583 mills.
-	// 10000 times: 1683 mills.
-	public void reset() {
-		ThingCollector collector = ThingCollector.getInstance();
+	@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
+	public void shutdownInstance() {
+		ThingCollector instance = ThingCollector.getInstance();
+		System.out.println(instance);
+		assertNotNull(instance);
 		//
-		int count = 1;
-		long beg = System.currentTimeMillis();
-		//
-		for (int i = 0; i < count; i++) {
-			collector.reset();
-		}
-		//
-		long end = System.currentTimeMillis();
-		System.out.println(count + " times: " + (end - beg) + " mills. ");
-
-		assertFalse(collector.isInitialized());
-		//
-		assertEquals(0, collector.getThings().size());
+		instance = ThingCollector.shutdownInstance();
+		assertNull(instance);
+		// 多次,不會丟出ex
+		instance = ThingCollector.shutdownInstance();
+		assertNull(instance);
 	}
 
 	@Test
-	// 1000000 times: 396 mills.
-	// 1000000 times: 393 mills.
-	// 1000000 times: 434 mills.
-	// verified
+	@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
+	public void restartInstance() {
+		ThingCollector instance = ThingCollector.getInstance();
+		System.out.println(instance);
+		assertNotNull(instance);
+		//
+		instance = ThingCollector.restartInstance();
+		assertNotNull(instance);
+		// 多次,不會丟出ex
+		instance = ThingCollector.restartInstance();
+		assertNotNull(instance);
+	}
+
+	@Test
+	@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 	public void getThingTypes() {
 		Set<ThingType> result = null;
 		//
-		int count = 1000000; // 100w
-		long beg = System.currentTimeMillis();
-		//
-		for (int i = 0; i < count; i++) {
-			result = ThingCollector.getInstance().getThingTypes();
-		}
-		//
-		long end = System.currentTimeMillis();
-		System.out.println(count + " times: " + (end - beg) + " mills. ");
+		result = ThingCollector.getInstance().getThingTypes();
 		//
 		System.out.println(result);
 		assertTrue(result.size() > 0);
 	}
 
 	@Test
-	// 1000000 times: 443 mills.
-	// 1000000 times: 400 mills.
-	// 1000000 times: 403 mills.
-	// verified
+	@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 	public void getThings() {
 		Map<String, Thing> result = null;
 		//
-		int count = 1000000; // 100w
-		long beg = System.currentTimeMillis();
-		//
-		for (int i = 0; i < count; i++) {
-			result = ThingCollector.getInstance().getThings();
-		}
-		//
-		long end = System.currentTimeMillis();
-		System.out.println(count + " times: " + (end - beg) + " mills. ");
+		result = ThingCollector.getInstance().getThings();
 		//
 		System.out.println(result);
 		assertTrue(result.size() > 0);
 	}
 
 	@Test
-	// 1000000 times: 2589 mills.
-	// 1000000 times: 2585 mills.
-	// 1000000 times: 2533 mills.
-	// verified
+	@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 	public void getThing() {
 		Thing result = null;
 		//
-		int count = 1; // 100w
-		long beg = System.currentTimeMillis();
-		//
-		for (int i = 0; i < count; i++) {
-			result = ThingCollector.getInstance().getThing("T_POTION_HP_G001");
-		}
-		//
-		long end = System.currentTimeMillis();
-		System.out.println(count + " times: " + (end - beg) + " mills. ");
+		result = ThingCollector.getInstance().getThing("T_POTION_HP_G001");
 		//
 		System.out.println(result);
 		assertEquals(ThingType.POTION_HP, result.getThingType());
 	}
 
 	@Test
-	// 1000000 times: 443 mills.
-	// 1000000 times: 400 mills.
-	// 1000000 times: 403 mills.
-	// verified
+	@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 	public void createThing() {
 		Thing result = null;
 		//
-		int count = 1000000; // 100w
-		long beg = System.currentTimeMillis();
-		//
-		for (int i = 0; i < count; i++) {
-			result = ThingCollector.getInstance().createThing("T_PH_G001");
-		}
-		//
-		long end = System.currentTimeMillis();
-		System.out.println(count + " times: " + (end - beg) + " mills. ");
+		result = ThingCollector.getInstance().createThing("T_PH_G001");
 		//
 		System.out.println(result);
 		assertEquals(ThingType.POTION_HP, result.getThingType());
@@ -1053,45 +958,22 @@ public class ThingCollectorTest extends BeanTestSupporter{
 	}
 
 	@Test
-	// 1000000 times: 443 mills.
-	// 1000000 times: 400 mills.
-	// 1000000 times: 403 mills.
-	// verified
+	@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 	public void getThingsByThingType() {
 		List<Thing> result = null;
 		//
-		int count = 1; // 100w
-		long beg = System.currentTimeMillis();
-		//
-		for (int i = 0; i < count; i++) {
-			result = ThingCollector.getInstance()
-					.getThings(ThingType.POTION_HP);
-		}
-		//
-		long end = System.currentTimeMillis();
-		System.out.println(count + " times: " + (end - beg) + " mills. ");
+		result = ThingCollector.getInstance().getThings(ThingType.POTION_HP);
 		//
 		System.out.println(result);
 		assertTrue(result.size() > 0);
 	}
 
 	@Test
-	// 1000000 times: 443 mills.
-	// 1000000 times: 400 mills.
-	// 1000000 times: 403 mills.
-	// verified
+	@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 	public void containThing() {
 		boolean result = false;
 		//
-		int count = 1000000; // 100w
-		long beg = System.currentTimeMillis();
-		//
-		for (int i = 0; i < count; i++) {
-			result = ThingCollector.getInstance().containThing("T_PH_G001");
-		}
-		//
-		long end = System.currentTimeMillis();
-		System.out.println(count + " times: " + (end - beg) + " mills. ");
+		result = ThingCollector.getInstance().containThing("T_PH_G001");
 		//
 		System.out.println(result);
 		assertTrue(result);
@@ -1101,22 +983,11 @@ public class ThingCollectorTest extends BeanTestSupporter{
 	}
 
 	@Test
-	// 1000000 times: 443 mills.
-	// 1000000 times: 400 mills.
-	// 1000000 times: 403 mills.
-	// verified
+	@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 	public void getThingIds() {
 		List<String> result = null;
 		//
-		int count = 1000000; // 100w
-		long beg = System.currentTimeMillis();
-		//
-		for (int i = 0; i < count; i++) {
-			result = ThingCollector.getInstance().getThingIds();
-		}
-		//
-		long end = System.currentTimeMillis();
-		System.out.println(count + " times: " + (end - beg) + " mills. ");
+		result = ThingCollector.getInstance().getThingIds();
 		//
 		System.out.println(result);
 		assertTrue(result.size() > 0);

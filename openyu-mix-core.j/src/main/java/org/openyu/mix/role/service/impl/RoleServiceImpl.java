@@ -91,24 +91,15 @@ public class RoleServiceImpl extends AppServiceSupporter implements RoleService 
 	public RoleServiceImpl() {
 	}
 
-	/**
-	 * 初始化
-	 *
-	 * @throws Exception
-	 */
-	protected void init() throws Exception {
-		super.init();
-		//
-	}
 
 	public RoleDao getRoleDao() {
-		return (RoleDao) getOjDao();
+		return (RoleDao) getCommonDao();
 	}
 
 	@Autowired
 	@Qualifier("roleDao")
 	public void setRoleDao(RoleDao roleDao) {
-		setOjDao(roleDao);
+		setCommonDao(roleDao);
 	}
 
 	// --------------------------------------------------
@@ -423,7 +414,7 @@ public class RoleServiceImpl extends AppServiceSupporter implements RoleService 
 		// 行業
 		Industry industry = industryCollector.getIndustry(raceType, careerType);
 		if (industry == null) {
-			LOGGER.warn("no industry in race or career XML to be created");
+			LOGGER.warn("No industry in race or career XML to be created");
 			return result;
 		}
 

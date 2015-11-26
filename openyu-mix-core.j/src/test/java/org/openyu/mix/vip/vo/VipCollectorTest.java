@@ -4,23 +4,31 @@ import static org.junit.Assert.*;
 
 import java.util.Map;
 
+import org.junit.Rule;
 import org.junit.Test;
+import org.openyu.commons.collector.CollectorHelper;
+import org.openyu.commons.junit.supporter.BaseTestSupporter;
 import org.openyu.mix.manor.vo.ManorPen.FarmType;
 import org.openyu.mix.role.vo.BagPen.TabType;
-import org.openyu.commons.junit.supporter.BeanTestSupporter;
 
-public class VipCollectorTest extends BeanTestSupporter {
+import com.carrotsearch.junitbenchmarks.BenchmarkOptions;
+import com.carrotsearch.junitbenchmarks.BenchmarkRule;
+
+public class VipCollectorTest extends BaseTestSupporter {
+
+	@Rule
+	public BenchmarkRule benchmarkRule = new BenchmarkRule();
 
 	@Test
 	@Deprecated
 	/**
 	 * 只是為了模擬用,有正式xml後,不應再使用,以免覆蓋掉正式的xml
 	 */
+	@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 	public void writeToXml() {
 		String result = null;
 		VipCollector collector = VipCollector.getInstance(false);
 		//
-		long beg = System.currentTimeMillis();
 		// 包包頁應對的vip類型
 		collector.getBagTabTypes().put(TabType._0, VipType._0);
 		collector.getBagTabTypes().put(TabType._1, VipType._1);
@@ -39,92 +47,54 @@ public class VipCollectorTest extends BeanTestSupporter {
 		collector.setTrainCoinVipType(VipType._2);
 		collector.setWuxingCoinVipType(VipType._2);
 		//
-		result = collector.writeToXml(VipCollector.class, collector);
-		//
-		long end = System.currentTimeMillis();
-		System.out.println((end - beg) + " mills. ");
+		result = CollectorHelper.writeToXml(VipCollector.class, collector);
 		//
 		System.out.println(result);
 		assertNotNull(result);
 	}
 
 	@Test
-	// 100 times: 1872 mills.
-	// 100 times: 1786 mills.
-	// 100 times: 1832 mills.
+	@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 	public void readFromXml() {
 		VipCollector result = null;
 		//
-		int count = 1;
-		long beg = System.currentTimeMillis();
-		//
-		for (int i = 0; i < count; i++) {
-			result = beanCollector.readFromXml(VipCollector.class);
-		}
-		//
-		long end = System.currentTimeMillis();
-		System.out.println(count + " times: " + (end - beg) + " mills. ");
+		result = CollectorHelper.readFromXml(VipCollector.class);
 		//
 		System.out.println(result);
 		assertNotNull(result);
 	}
 
 	@Test
+	@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 	public void writeToSerFromXml() {
 		String result = null;
 		//
-		long beg = System.currentTimeMillis();
-		//
-		result = beanCollector.writeToSerFromXml(VipCollector.class);
-		//
-		long end = System.currentTimeMillis();
-		System.out.println((end - beg) + " mills. ");
+		result = CollectorHelper.writeToSerFromXml(VipCollector.class);
 		//
 		System.out.println(result);
 		assertNotNull(result);
 	}
 
 	@Test
-	// 100 times: 465 mills.
-	// 100 times: 474 mills.
-	// 100 times: 495 mills.
+	@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 	public void readFromSer() {
 		VipCollector result = null;
 		//
-		int count = 1;
-		long beg = System.currentTimeMillis();
-		//
-		for (int i = 0; i < count; i++) {
-			result = beanCollector.readFromSer(VipCollector.class);
-		}
-		//
-		long end = System.currentTimeMillis();
-		System.out.println(count + " times: " + (end - beg) + " mills. ");
+		result = CollectorHelper.readFromSer(VipCollector.class);
 		//
 		System.out.println(result);
 		assertNotNull(result);
 	}
 
 	@Test
-	// 1000000 times: 399 mills.
-	// 1000000 times: 398 mills.
-	// 1000000 times: 401 mills.
-	public void initialize() {
-		boolean result = false;
+	@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
+	public void getInstance() {
+		VipCollector result = null;
 		//
-		int count = 1000000;
-		long beg = System.currentTimeMillis();
+		result = VipCollector.getInstance();
 		//
-		for (int i = 0; i < count; i++) {
-			VipCollector.getInstance().initialize();
-		}
-		//
-		long end = System.currentTimeMillis();
-		System.out.println(count + " times: " + (end - beg) + " mills. ");
-
-		result = VipCollector.getInstance().isInitialized();
 		System.out.println(result);
-		assertTrue(result);
+		assertNotNull(result);
 		//
 		System.out.println(VipCollector.getInstance().getBagTabTypes());
 		//
@@ -135,42 +105,50 @@ public class VipCollectorTest extends BeanTestSupporter {
 	}
 
 	@Test
-	// 1000000 times: 268 mills.
-	// 1000000 times: 261 mills.
-	// 1000000 times: 267 mills.
+	@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
+	public void shutdownInstance() {
+		VipCollector instance = VipCollector.getInstance();
+		System.out.println(instance);
+		assertNotNull(instance);
+		//
+		instance = VipCollector.shutdownInstance();
+		assertNull(instance);
+		// 多次,不會丟出ex
+		instance = VipCollector.shutdownInstance();
+		assertNull(instance);
+	}
+
+	@Test
+	@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
+	public void restartInstance() {
+		VipCollector instance = VipCollector.getInstance();
+		System.out.println(instance);
+		assertNotNull(instance);
+		//
+		instance = VipCollector.restartInstance();
+		assertNotNull(instance);
+		// 多次,不會丟出ex
+		instance = VipCollector.restartInstance();
+		assertNotNull(instance);
+	}
+
+	@Test
+	@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 	public void getVipTypes() {
 		Map<VipType, Integer> result = null;
 		//
-		int count = 1000000; // 100w
-		long beg = System.currentTimeMillis();
-		//
-		for (int i = 0; i < count; i++) {
-			result = VipCollector.getInstance().getVipTypes();
-		}
-		//
-		long end = System.currentTimeMillis();
-		System.out.println(count + " times: " + (end - beg) + " mills. ");
+		result = VipCollector.getInstance().getVipTypes();
 		//
 		System.out.println(result);
 		assertTrue(result.size() > 0);
 	}
 
 	@Test
-	// 1000000 times: 268 mills.
-	// 1000000 times: 261 mills.
-	// 1000000 times: 267 mills.
+	@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 	public void getVipType() {
 		VipType result = null;
 		//
-		int count = 1; // 100w
-		long beg = System.currentTimeMillis();
-		//
-		for (int i = 0; i < count; i++) {
-			result = VipCollector.getInstance().getVipType(11);
-		}
-		//
-		long end = System.currentTimeMillis();
-		System.out.println(count + " times: " + (end - beg) + " mills. ");
+		result = VipCollector.getInstance().getVipType(11);
 		//
 		System.out.println(result);
 		assertEquals(VipType._1, result);
@@ -185,21 +163,12 @@ public class VipCollectorTest extends BeanTestSupporter {
 	}
 
 	@Test
-	// 1000000 times: 730 mills.
+	@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 	public void getMaxVipType() {
 		VipType result = null;
 		//
-		int count = 1000000; // 100w
-		long beg = System.currentTimeMillis();
-		//
-		for (int i = 0; i < count; i++) {
-			result = VipCollector.getInstance().getMaxVipType();
-		}
-		//
-		long end = System.currentTimeMillis();
-		System.out.println(count + " times: " + (end - beg) + " mills. ");
+		result = VipCollector.getInstance().getMaxVipType();
 		//
 		System.out.println(result);
 	}
-
 }

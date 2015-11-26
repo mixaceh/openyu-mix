@@ -2,8 +2,6 @@ package org.openyu.mix.item.vo;
 
 import static org.junit.Assert.*;
 
-import java.util.Map;
-
 import org.junit.Rule;
 import org.junit.Test;
 import org.openyu.commons.collector.CollectorHelper;
