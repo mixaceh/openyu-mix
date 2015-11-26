@@ -22,6 +22,8 @@ import org.openyu.commons.lang.ClassHelper;
  */
 public class ItemDecreaseItemInterceptor extends AppMethodInterceptorSupporter {
 
+	private static final long serialVersionUID = -6372664297794476330L;
+
 	private static transient final Logger LOGGER = LoggerFactory
 			.getLogger(ItemDecreaseItemInterceptor.class);
 
@@ -62,14 +64,14 @@ public class ItemDecreaseItemInterceptor extends AppMethodInterceptorSupporter {
 	public ItemDecreaseItemInterceptor() {
 	}
 
-	public Object invoke(MethodInvocation methodInvocation, Method method,
-			Class<?>[] paramTypes, Object[] args) {
-		// 傳回值
+	protected Object doInvoke(MethodInvocation methodInvocation) throws Throwable {
 		Object result = null;
 		try {
 			// --------------------------------------------------
 			// proceed前
 			// --------------------------------------------------
+			Method method = methodInvocation.getMethod();
+			Object[] args = methodInvocation.getArguments();
 
 			// --------------------------------------------------
 			result = methodInvocation.proceed();
@@ -122,8 +124,9 @@ public class ItemDecreaseItemInterceptor extends AppMethodInterceptorSupporter {
 			} else {
 				LOGGER.error(method.getName() + " not matched to record");
 			}
-		} catch (Throwable ex) {
-			ex.printStackTrace();
+		} catch (Throwable e) {
+			LOGGER.error(new StringBuilder("Exception encountered during doInvoke()").toString(), e);
+			// throw e;
 		}
 		return result;
 	}

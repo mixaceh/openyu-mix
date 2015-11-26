@@ -32,27 +32,26 @@ public class ItemTestSupporter extends AppTestSupporter {
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
-		applicationContext = new ClassPathXmlApplicationContext(new String[] {
-				"applicationContext-init.xml",//
-				"META-INF/applicationContext-commons-core.xml",//
-				"applicationContext-message.xml",//
-				"applicationContext-database.xml",//
-				"applicationContext-database-log.xml",//
+		applicationContext = new ClassPathXmlApplicationContext(new String[] { //
+				"applicationContext-init.xml", //
+				"applicationContext-bean.xml", //
+				"applicationContext-message.xml", //
+				"applicationContext-acceptor.xml", //
+				"applicationContext-database.xml", //
+				"applicationContext-database-log.xml", //
 				// "applicationContext-schedule.xml",// 排程
-				"META-INF/applicationContext-sls.xml",//
-				"org/openyu/mix/app/applicationContext-app.xml",//
+				"org/openyu/mix/app/applicationContext-app.xml", //
 				// biz
-//				"org/openyu/mix/account/applicationContext-account.xml",//
+				// "org/openyu/mix/account/applicationContext-account.xml",//
 				"org/openyu/mix/item/applicationContext-item.xml",//
-//				"org/openyu/mix/role/applicationContext-role.xml",//
+				// "org/openyu/mix/role/applicationContext-role.xml",//
 		});
 		// ---------------------------------------------------
 		initialize();
 		// ---------------------------------------------------
 		itemService = (ItemService) applicationContext.getBean("itemService");
 		itemLogDao = (ItemLogDao) applicationContext.getBean("itemLogDao");
-		itemLogService = (ItemLogService) applicationContext
-				.getBean("itemLogService");
+		itemLogService = (ItemLogService) applicationContext.getBean("itemLogService");
 		itemSocklet = (ItemSocklet) applicationContext.getBean("itemSocklet");
 	}
 

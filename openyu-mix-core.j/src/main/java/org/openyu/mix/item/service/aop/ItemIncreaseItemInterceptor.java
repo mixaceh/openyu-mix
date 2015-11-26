@@ -23,8 +23,9 @@ import org.openyu.commons.lang.ClassHelper;
  */
 public class ItemIncreaseItemInterceptor extends AppMethodInterceptorSupporter {
 
-	private static transient final Logger LOGGER = LoggerFactory
-			.getLogger(ItemIncreaseItemInterceptor.class);
+	private static final long serialVersionUID = -9002923759003474302L;
+
+	private static transient final Logger LOGGER = LoggerFactory.getLogger(ItemIncreaseItemInterceptor.class);
 
 	@Autowired
 	@Qualifier("itemLogService")
@@ -38,9 +39,8 @@ public class ItemIncreaseItemInterceptor extends AppMethodInterceptorSupporter {
 	 * List<IncreaseItemResult> increaseItem(boolean sendable, Role role, Item
 	 * item)
 	 */
-	private static final Method increaseItem = ClassHelper.getDeclaredMethod(
-			ItemService.class, "increaseItem", new Class[] { boolean.class,
-					Role.class, Item.class });
+	private static final Method increaseItem = ClassHelper.getDeclaredMethod(ItemService.class, "increaseItem",
+			new Class[] { boolean.class, Role.class, Item.class });
 
 	/**
 	 * 道具增加,by itemId
@@ -50,9 +50,8 @@ public class ItemIncreaseItemInterceptor extends AppMethodInterceptorSupporter {
 	 * List<IncreaseItemResult> increaseItem(boolean sendable, Role role, String
 	 * itemId, int amount)
 	 */
-	private static final Method increaseItemByItemId = ClassHelper
-			.getDeclaredMethod(ItemService.class, "increaseItem", new Class[] {
-					boolean.class, Role.class, String.class, int.class });
+	private static final Method increaseItemByItemId = ClassHelper.getDeclaredMethod(ItemService.class, "increaseItem",
+			new Class[] { boolean.class, Role.class, String.class, int.class });
 
 	/**
 	 * 增加多個道具,by items
@@ -62,21 +61,21 @@ public class ItemIncreaseItemInterceptor extends AppMethodInterceptorSupporter {
 	 * List<IncreaseItemResult> increaseItem(boolean sendable, Role role,
 	 * Map<String, Integer> items)
 	 */
-	private static final Method increaseItemByItems = ClassHelper
-			.getDeclaredMethod(ItemService.class, "increaseItem", new Class[] {
-					boolean.class, Role.class, Map.class });
+	private static final Method increaseItemByItems = ClassHelper.getDeclaredMethod(ItemService.class, "increaseItem",
+			new Class[] { boolean.class, Role.class, Map.class });
 
 	public ItemIncreaseItemInterceptor() {
 	}
 
-	public Object invoke(MethodInvocation methodInvocation, Method method,
-			Class<?>[] paramTypes, Object[] args) {
+	protected Object doInvoke(MethodInvocation methodInvocation) throws Throwable {
 		// 傳回值
 		Object result = null;
 		try {
 			// --------------------------------------------------
 			// proceed前
 			// --------------------------------------------------
+			Method method = methodInvocation.getMethod();
+			Object[] args = methodInvocation.getArguments();
 
 			// --------------------------------------------------
 			result = methodInvocation.proceed();
@@ -96,8 +95,7 @@ public class ItemIncreaseItemInterceptor extends AppMethodInterceptorSupporter {
 				Item item = (Item) args[2];
 				//
 				if (ret.size() > 0) {
-					itemLogService
-							.recordIncreaseItem(role, ActionType.BAG, ret);
+					itemLogService.recordIncreaseItem(role, ActionType.BAG, ret);
 				}
 			} else if (method.equals(increaseItemByItemId)) {
 				// 傳回值
@@ -110,8 +108,7 @@ public class ItemIncreaseItemInterceptor extends AppMethodInterceptorSupporter {
 				int amount = (Integer) args[3];
 				//
 				if (ret.size() > 0) {
-					itemLogService
-							.recordIncreaseItem(role, ActionType.BAG, ret);
+					itemLogService.recordIncreaseItem(role, ActionType.BAG, ret);
 				}
 			} else if (method.equals(increaseItemByItems)) {
 				// 傳回值
@@ -124,14 +121,14 @@ public class ItemIncreaseItemInterceptor extends AppMethodInterceptorSupporter {
 				Map<String, Integer> items = (Map<String, Integer>) args[2];
 				//
 				if (ret.size() > 0) {
-					itemLogService
-							.recordIncreaseItem(role, ActionType.BAG, ret);
+					itemLogService.recordIncreaseItem(role, ActionType.BAG, ret);
 				}
 			} else {
 				LOGGER.error(method.getName() + " not matched to record");
 			}
-		} catch (Throwable ex) {
-			ex.printStackTrace();
+		} catch (Throwable e) {
+			LOGGER.error(new StringBuilder("Exception encountered during doInvoke()").toString(), e);
+			// throw e;
 		}
 		return result;
 	}

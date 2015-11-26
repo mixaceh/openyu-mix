@@ -3,6 +3,8 @@ package org.openyu.mix.item.vo.impl;
 import static org.junit.Assert.assertNotNull;
 
 import org.junit.Test;
+import org.openyu.commons.collector.CollectorHelper;
+import org.openyu.commons.junit.supporter.BaseTestSupporter;
 import org.openyu.mix.flutter.vo.Attribute;
 import org.openyu.mix.flutter.vo.AttributeGroup;
 import org.openyu.mix.flutter.vo.AttributeType;
@@ -14,9 +16,8 @@ import org.openyu.mix.item.vo.PositionType;
 import org.openyu.mix.item.vo.SeriesType;
 import org.openyu.mix.item.vo.WeaponType;
 import org.openyu.mix.item.vo.impl.WeaponImpl;
-import org.openyu.commons.junit.supporter.BeanTestSupporter;
 
-public class WeaponImplTest extends BeanTestSupporter {
+public class WeaponImplTest extends BaseTestSupporter {
 	@Test
 	public void writeToXml() {
 		// 武器
@@ -66,14 +67,14 @@ public class WeaponImplTest extends BeanTestSupporter {
 		attribute.setPoint(50);
 		attributeGroup.addAttribute(attribute);
 		//
-		String result = beanCollector.writeToXml(WeaponImpl.class, weapon);
+		String result = CollectorHelper.writeToXml(WeaponImpl.class, weapon);
 		System.out.println(result);
 		assertNotNull(result);
 	}
 
 	@Test
 	public void readFromXml() {
-		Weapon result = beanCollector.readFromXml(WeaponImpl.class);
+		Weapon result = CollectorHelper.readFromXml(WeaponImpl.class);
 		System.out.println(result);
 		assertNotNull(result);
 	}

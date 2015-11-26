@@ -21,8 +21,9 @@ import org.openyu.commons.lang.ClassHelper;
  */
 public class ItemUseEnhanceInterceptor extends AppMethodInterceptorSupporter {
 
-	private static transient final Logger LOGGER = LoggerFactory
-			.getLogger(ItemUseEnhanceInterceptor.class);
+	private static final long serialVersionUID = -5869597744635175480L;
+
+	private static transient final Logger LOGGER = LoggerFactory.getLogger(ItemUseEnhanceInterceptor.class);
 
 	@Autowired
 	@Qualifier("itemLogService")
@@ -36,10 +37,8 @@ public class ItemUseEnhanceInterceptor extends AppMethodInterceptorSupporter {
 	 * ErrorType useEnhanceArmorThing(boolean sendable, String roleId, String
 	 * targetId, Item item);
 	 */
-	private static final Method useEnhanceArmorThing = ClassHelper
-			.getDeclaredMethod(ItemService.class, "useEnhanceArmorThing",
-					new Class[] { boolean.class, String.class, String.class,
-							Item.class });
+	private static final Method useEnhanceArmorThing = ClassHelper.getDeclaredMethod(ItemService.class,
+			"useEnhanceArmorThing", new Class[] { boolean.class, String.class, String.class, Item.class });
 
 	/**
 	 * 使用強化武器道具
@@ -49,10 +48,8 @@ public class ItemUseEnhanceInterceptor extends AppMethodInterceptorSupporter {
 	 * ErrorType useEnhanceWeaponThing(boolean sendable, String roleId, String
 	 * targetId, Item item);
 	 */
-	private static final Method useEnhanceWeaponThing = ClassHelper
-			.getDeclaredMethod(ItemService.class, "useEnhanceWeaponThing",
-					new Class[] { boolean.class, String.class, String.class,
-							Item.class });
+	private static final Method useEnhanceWeaponThing = ClassHelper.getDeclaredMethod(ItemService.class,
+			"useEnhanceWeaponThing", new Class[] { boolean.class, String.class, String.class, Item.class });
 
 	/**
 	 * 使用強化土地道具
@@ -62,25 +59,23 @@ public class ItemUseEnhanceInterceptor extends AppMethodInterceptorSupporter {
 	 * ErrorType useEnhanceLandThing(boolean sendable, String roleId, String
 	 * targetId, Item item);
 	 */
-	private static final Method useEnhanceLandThing = ClassHelper
-			.getDeclaredMethod(ItemService.class, "useEnhanceLandThing",
-					new Class[] { boolean.class, String.class, String.class,
-							Item.class });
+	private static final Method useEnhanceLandThing = ClassHelper.getDeclaredMethod(ItemService.class,
+			"useEnhanceLandThing", new Class[] { boolean.class, String.class, String.class, Item.class });
 
-	private static final Method getItem = ClassHelper.getDeclaredMethod(
-			ItemService.class, "getItem", new Class[] { Role.class,
-					String.class });
+	private static final Method getItem = ClassHelper.getDeclaredMethod(ItemService.class, "getItem",
+			new Class[] { Role.class, String.class });
 
 	public ItemUseEnhanceInterceptor() {
 	}
 
-	public Object invoke(MethodInvocation methodInvocation, Method method,
-			Class<?>[] paramTypes, Object[] args) {
+	protected Object doInvoke(MethodInvocation methodInvocation) throws Throwable {
 		// 傳回值
 		Object result = null;
 		try {
 			// 取得被代理的service
 			ItemService itemService = (ItemService) methodInvocation.getThis();
+			Method method = methodInvocation.getMethod();
+			Object[] args = methodInvocation.getArguments();
 
 			// --------------------------------------------------
 			// proceed前
@@ -103,21 +98,20 @@ public class ItemUseEnhanceInterceptor extends AppMethodInterceptorSupporter {
 			// proceed後
 			// --------------------------------------------------
 
-			if (method.equals(useEnhanceArmorThing)
-					|| method.equals(useEnhanceWeaponThing)
+			if (method.equals(useEnhanceArmorThing) || method.equals(useEnhanceWeaponThing)
 					|| method.equals(useEnhanceLandThing)) {
 				// 傳回值
 				ErrorType ret = (ErrorType) result;
 				//
 				if (ret == ErrorType.NO_ERROR) {
-					itemLogService.recordChangeEnhance(role,
-							ActionType.USE_ENHANCE, beforeItem, origItem, item);
+					itemLogService.recordChangeEnhance(role, ActionType.USE_ENHANCE, beforeItem, origItem, item);
 				}
 			} else {
 				LOGGER.error(method.getName() + " not matched to record");
 			}
-		} catch (Throwable ex) {
-			ex.printStackTrace();
+		} catch (Throwable e) {
+			LOGGER.error(new StringBuilder("Exception encountered during doInvoke()").toString(), e);
+			// throw e;
 		}
 		return result;
 	}
