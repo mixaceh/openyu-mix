@@ -15,6 +15,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import org.openyu.mix.activity.vo.ActivityType;
 import org.openyu.mix.activity.vo.adapter.ActivityTypeXmlAdapter;
 import org.openyu.mix.activity.vo.adapter.StringActivityXmlAdapter;
+import org.openyu.commons.collector.CollectorHelper;
 import org.openyu.commons.collector.supporter.BaseCollectorSupporter;
 import org.openyu.commons.enumz.EnumHelper;
 
@@ -31,14 +32,19 @@ public final class ActivityCollector extends BaseCollectorSupporter {
 
 	private static final long serialVersionUID = 8426904646201490231L;
 
-	private static ActivityCollector activityCollector;
-
+	private static ActivityCollector instance;
+	// --------------------------------------------------
+	// 此有系統值,只是為了轉出xml,並非給企劃編輯用
+	// --------------------------------------------------
 	/**
 	 * 活動類別
 	 */
 	@XmlJavaTypeAdapter(ActivityTypeXmlAdapter.class)
 	private Set<ActivityType> activityTypes = new LinkedHashSet<ActivityType>();
 
+	// --------------------------------------------------
+	// biz
+	// --------------------------------------------------
 	/**
 	 * 所有活動 <id,activity>
 	 */
@@ -55,42 +61,70 @@ public final class ActivityCollector extends BaseCollectorSupporter {
 		return getInstance(true);
 	}
 
-	public synchronized static ActivityCollector getInstance(boolean initial) {
-		if (activityCollector == null) {
-			activityCollector = new ActivityCollector();
-			if (initial) {
-				activityCollector.initialize();
+	public synchronized static ActivityCollector getInstance(boolean start) {
+		if (instance == null) {
+			instance = CollectorHelper.readFromSer(ActivityCollector.class);
+			// 此時有可能會沒有ser檔案,或舊的結構造成ex,只要再轉出一次ser,覆蓋原本ser即可
+			if (instance == null) {
+				instance = new ActivityCollector();
 			}
-
+			//
+			if (start) {
+				// 啟動
+				instance.start();
+			}
 			// 此有系統值,只是為了轉出xml,並非給企劃編輯用
-			activityCollector.activityTypes = EnumHelper
-					.valuesSet(ActivityType.class);
+			instance.activityTypes = EnumHelper.valuesSet(ActivityType.class);
 		}
-		return activityCollector;
+		return instance;
 	}
 
 	/**
-	 * 初始化
+	 * 單例關閉
 	 * 
+	 * @return
 	 */
-	public void initialize() {
-		if (!activityCollector.isInitialized()) {
-			activityCollector = readFromSer(ActivityCollector.class);
-			// 此時有可能會沒有ser檔案,或舊的結構造成ex,只要再轉出一次ser,覆蓋原本ser即可
-			if (activityCollector == null) {
-				activityCollector = new ActivityCollector();
-			}
+	public synchronized static ActivityCollector shutdownInstance() {
+		if (instance != null) {
+			ActivityCollector oldInstance = instance;
+			instance = null;
 			//
-			activityCollector.setInitialized(true);
+			if (oldInstance != null) {
+				oldInstance.shutdown();
+			}
 		}
+		return instance;
 	}
 
-	public void clear() {
+	/**
+	 * 單例重啟
+	 * 
+	 * @return
+	 */
+	public synchronized static ActivityCollector restartInstance() {
+		if (instance != null) {
+			instance.restart();
+		}
+		return instance;
+	}
+
+	/**
+	 * 內部啟動
+	 */
+	@Override
+	protected void doStart() throws Exception {
+
+	}
+
+	/**
+	 * 內部關閉
+	 */
+	@Override
+	protected void doShutdown() throws Exception {
 		activitys.clear();
-		// 設為可初始化
-		setInitialized(false);
 	}
 
+	// --------------------------------------------------
 	// --------------------------------------------------
 
 	public Set<ActivityType> getActivityTypes() {

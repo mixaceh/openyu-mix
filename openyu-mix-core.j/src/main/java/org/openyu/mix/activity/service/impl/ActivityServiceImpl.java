@@ -16,19 +16,27 @@ import org.openyu.mix.role.service.RoleSetService;
 import org.openyu.mix.role.vo.Role;
 import org.openyu.mix.vip.vo.VipCollector;
 import org.openyu.commons.thread.ThreadHelper;
+import org.openyu.commons.thread.ThreadService;
+import org.openyu.commons.thread.anno.DefaultThreadService;
 import org.openyu.commons.thread.supporter.BaseRunnableSupporter;
 import org.openyu.socklet.message.vo.Message;
 
 /**
  * 活動服務
  */
-public class ActivityServiceImpl extends AppServiceSupporter implements
-		ActivityService {
+public class ActivityServiceImpl extends AppServiceSupporter implements ActivityService {
 
 	private static final long serialVersionUID = -4584962342046502809L;
 
-	private static transient final Logger LOGGER = LoggerFactory
-			.getLogger(ActivityServiceImpl.class);
+	private static transient final Logger LOGGER = LoggerFactory.getLogger(ActivityServiceImpl.class);
+
+	/**
+	 * 線程服務
+	 */
+	// @Autowired
+	// @Qualifier("threadService")
+	@DefaultThreadService
+	private transient ThreadService threadService;
 
 	@Autowired
 	@Qualifier("accountService")
@@ -46,8 +54,7 @@ public class ActivityServiceImpl extends AppServiceSupporter implements
 	@Qualifier("roleSetService")
 	private transient RoleSetService roleSetService;
 
-	private transient ActivityCollector activityCollector = ActivityCollector
-			.getInstance();
+	private transient ActivityCollector activityCollector = ActivityCollector.getInstance();
 
 	private transient VipCollector vipCollector = VipCollector.getInstance();
 
@@ -56,44 +63,42 @@ public class ActivityServiceImpl extends AppServiceSupporter implements
 	 */
 	private long LISTEN_MILLS = 10 * 1000L;
 
-	private transient ListenRunner listenRunner = new ListenRunner();
+	private transient ListenRunner listenRunner;
 
 	public ActivityServiceImpl() {
 	}
 
 	/**
-	 * 初始化
-	 *
-	 * @throws Exception
+	 * 內部啟動
 	 */
-	protected void init() throws Exception {
-		super.init();
-		//
-		// 監聽
-		threadService.submit(listenRunner);
-	}
-	
-	/**
-	 * 銷毀化
-	 *
-	 * @throws Exception
-	 */
-	protected void uninit() throws Exception {
-		super.uninit();
-		//
-		listenRunner.setCancel(true);
+	@Override
+	protected void doStart() throws Exception {
+		listenRunner = new ListenRunner(threadService);
 	}
 
+	/**
+	 * 內部關閉
+	 */
+	@Override
+	protected void doShutdown() throws Exception {
+		listenRunner.shutdown();
+	}
 	// --------------------------------------------------
 
 	/**
 	 * 監聽
 	 */
 	protected class ListenRunner extends BaseRunnableSupporter {
-		public void execute() {
+
+		public ListenRunner(ThreadService threadService) {
+			super(threadService);
+		}
+
+		@Override
+		protected void doRun() throws Exception {
 			while (true) {
 				try {
-					if (isCancel()) {
+					if (isShutdown()) {
 						break;
 					}
 					listen();
@@ -102,8 +107,6 @@ public class ActivityServiceImpl extends AppServiceSupporter implements
 					// ex.printStackTrace();
 				}
 			}
-			//
-			LOGGER.info("Break off " + getClass().getSimpleName());
 		}
 	}
 
@@ -154,8 +157,7 @@ public class ActivityServiceImpl extends AppServiceSupporter implements
 	 * @return
 	 */
 	protected Message sendInitialize(Role role) {
-		Message message = messageService.createMessage(CoreModuleType.ACTIVITY,
-				CoreModuleType.CLIENT,
+		Message message = messageService.createMessage(CoreModuleType.ACTIVITY, CoreModuleType.CLIENT,
 				CoreMessageType.ACTIVITY_INITIALIZE_RESPONSE, role.getId());
 
 		messageService.addMessage(message);
