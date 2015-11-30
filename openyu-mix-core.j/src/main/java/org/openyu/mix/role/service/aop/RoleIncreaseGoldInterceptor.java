@@ -34,8 +34,7 @@ public class RoleIncreaseGoldInterceptor extends AppMethodInterceptorSupporter {
 	 * long increaseGold(boolean sendable, Role role, long gold, GoldReason
 	 * goldReason);
 	 */
-	public Object invoke(MethodInvocation methodInvocation, Method method,
-			Class<?>[] paramTypes, Object[] args) {
+	protected Object doInvoke(MethodInvocation methodInvocation) throws Throwable {
 		// 傳回值
 		Object result = null;
 		try {
@@ -43,6 +42,7 @@ public class RoleIncreaseGoldInterceptor extends AppMethodInterceptorSupporter {
 			// proceed前
 			// --------------------------------------------------
 			// 參數
+			Object[] args = methodInvocation.getArguments();
 			boolean sendable = (Boolean) args[0];
 			Role role = (Role) args[1];
 			long gold = (Long) args[2];
@@ -69,8 +69,9 @@ public class RoleIncreaseGoldInterceptor extends AppMethodInterceptorSupporter {
 				roleLogService.recordIncreaseGold(role, ret, beforeGold,
 						goldReason);
 			}
-		} catch (Throwable ex) {
-			ex.printStackTrace();
+		} catch (Throwable e) {
+			LOGGER.error(new StringBuilder("Exception encountered during doInvoke()").toString(), e);
+			// throw e;
 		}
 		return result;
 	}

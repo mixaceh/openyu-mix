@@ -26,10 +26,13 @@ import org.openyu.commons.io.FileHelper;
 import org.openyu.commons.io.IoHelper;
 import org.openyu.commons.nio.NioHelper;
 import org.openyu.commons.thread.ThreadHelper;
+import org.openyu.commons.thread.ThreadService;
+import org.openyu.commons.thread.anno.DefaultThreadService;
 import org.openyu.commons.thread.supporter.BaseRunnableSupporter;
 import org.openyu.commons.thread.supporter.TriggerQueueSupporter;
 import org.openyu.socklet.message.vo.Message;
 import org.openyu.commons.util.SerializeProcessor;
+import org.openyu.commons.util.AssertHelper;
 import org.openyu.commons.util.CompressProcessor;
 import org.openyu.commons.security.SecurityProcessor;
 
@@ -40,13 +43,14 @@ import org.openyu.commons.security.SecurityProcessor;
  * 
  * 2.若失敗,則序列化到檔案, 目錄, file:custom/role/unsave
  */
-public class StoreRoleServiceImpl extends AppServiceSupporter implements
-		StoreRoleService {
+public class StoreRoleServiceImpl extends AppServiceSupporter implements StoreRoleService {
 
 	private static final long serialVersionUID = 3975742001750821702L;
 
-	private static transient final Logger LOGGER = LoggerFactory
-			.getLogger(StoreRoleServiceImpl.class);
+	private static transient final Logger LOGGER = LoggerFactory.getLogger(StoreRoleServiceImpl.class);
+
+	@DefaultThreadService
+	private transient ThreadService threadService;
 
 	@Autowired
 	@Qualifier("roleSetService")
@@ -61,52 +65,69 @@ public class StoreRoleServiceImpl extends AppServiceSupporter implements
 	 */
 	private static RoleCollector roleCollector = RoleCollector.getInstance();
 
-	private static SerializeProcessor serializeProcessor = roleCollector
-			.getSerializeProcessor();
+	private static SerializeProcessor serializeProcessor = roleCollector.getSerializeProcessor();
 
-	private static SecurityProcessor securityProcessor = roleCollector
-			.getSecurityProcessor();
+	private static SecurityProcessor securityProcessor = roleCollector.getSecurityProcessor();
 
-	private static CompressProcessor compressProcessor = roleCollector
-			.getCompressProcessor();
+	private static CompressProcessor compressProcessor = roleCollector.getCompressProcessor();
+
+	/**
+	 * 監聽執行者
+	 */
+	protected transient ListenRunner listenRunner;
 
 	/**
 	 * 序列化佇列
 	 */
-	protected transient SerializeQueue<SerializeRole> serializeQueue = new SerializeQueue<SerializeRole>();
+	protected transient SerializeQueue<SerializeRole> serializeQueue;
 
 	public StoreRoleServiceImpl() {
 	}
 
 	/**
-	 * 初始化
-	 *
-	 * @throws Exception
+	 * 內部啟動
 	 */
-	protected void init() throws Exception {
-		super.init();
+	@Override
+	protected void doStart() throws Exception {
+		super.doStart();
 		//
-		// 監聽執行者
-		threadService.submit(new ListenRunner());
-		// 序列化佇列
-		threadService.submit(serializeQueue);
+		listenRunner = new ListenRunner(threadService);
+		listenRunner.start();
+		//
+		serializeQueue = new SerializeQueue<SerializeRole>(threadService);
+		serializeQueue.start();
+	}
+
+	/**
+	 * 內部關閉
+	 */
+	@Override
+	protected void doShutdown() throws Exception {
+		super.shutdown();
+		//
+		listenRunner.shutdown();
+		serializeQueue.shutdown();
 	}
 
 	/**
 	 * 監聽執行者
 	 */
 	protected class ListenRunner extends BaseRunnableSupporter {
-		public void execute() {
+
+		public ListenRunner(ThreadService threadService) {
+			super(threadService);
+		}
+
+		@Override
+		protected void doRun() throws Exception {
 			while (true) {
 				try {
 					// 自動儲存就不發訊息給client了
 					int count = storeRoles(false);
 					if (count > 0) {
-						LOGGER.info("Automatic save roles to DB, total count ["
-								+ count + "]");
+						LOGGER.info("Automatic save roles to DB, total count [" + count + "]");
 					}
 					ThreadHelper.sleep(roleCollector.getListenMills());
-					// ThreadHelper.sleep(10 * 1000);
 				} catch (Exception ex) {
 					// ex.printStackTrace();
 				}
@@ -162,8 +183,7 @@ public class StoreRoleServiceImpl extends AppServiceSupporter implements
 		int version = role.getVersion();
 		for (;;) {
 			try {
-				LOGGER.info("T[" + Thread.currentThread().getId()
-						+ "] Store the role [" + roleId + "]");
+				LOGGER.info("T[" + Thread.currentThread().getId() + "] Store the role [" + roleId + "]");
 				// 使用roleService來存檔
 				updated = roleService.update(role);
 				// 存檔成功
@@ -175,13 +195,11 @@ public class StoreRoleServiceImpl extends AppServiceSupporter implements
 					if (exist) {
 						// 刪除ser, 2014/10/08
 						FileHelper.delete(serName);
-						LOGGER.info("Deleted [" + roleId + "] ser file ["
-								+ serName + "]");
+						LOGGER.info("Deleted [" + roleId + "] ser file [" + serName + "]");
 					}
 					// 發訊息
 					if (sendable) {
-						sendStoreRole(ErrorType.NO_ERROR, role,
-								StoreType.DATABASE);
+						sendStoreRole(ErrorType.NO_ERROR, role, StoreType.DATABASE);
 					}
 					break;
 				}
@@ -189,13 +207,11 @@ public class StoreRoleServiceImpl extends AppServiceSupporter implements
 				// 失敗重試
 				++tries;
 				// [1/3] time(s) Failed to save the role
-				LOGGER.error("[" + tries + "/"
-						+ (retryNumber != 0 ? retryNumber : "N")
+				LOGGER.error("[" + tries + "/" + (retryNumber != 0 ? retryNumber : "N")
 						+ "] time(s) Failed to save the role to DB", ex);
 				// 發訊息
 				if (sendable) {
-					sendStoreRole(ErrorType.RETRYING_STORE_DATABASE, role,
-							StoreType.DATABASE, tries);
+					sendStoreRole(ErrorType.RETRYING_STORE_DATABASE, role, StoreType.DATABASE, tries);
 				}
 
 				// 0=無限
@@ -207,24 +223,21 @@ public class StoreRoleServiceImpl extends AppServiceSupporter implements
 				ThreadHelper.sleep(pauseMills);
 				// Retrying save the role [TEST_ROLE114805N4CEwYzbG]. Already
 				// tried [3/3] time(s)
-				LOGGER.info("Retrying save the role [" + roleId
-						+ "]. Already tried [" + (tries + 1) + "/"
+				LOGGER.info("Retrying save the role [" + roleId + "]. Already tried [" + (tries + 1) + "/"
 						+ (retryNumber != 0 ? retryNumber : "N") + "] time(s)");
 			}
 		}
 		// 重試失敗後,丟到queue,再把它序列化輸出
 		if (!result) {
 			// Trying serialize the role [TEST_ROLE114805N4CEwYzbG]
-			LOGGER.info("Coz save the role to DB fail. Trying serialize the role ["
-					+ roleId + "]");
+			LOGGER.info("Coz save the role to DB fail. Trying serialize the role [" + roleId + "]");
 			// 因update會導致version+1, 所以再將其還原為原本的version
 			role.setVersion(version);
 			SerializeRole serializeRole = new SerializeRoleImpl(sendable, role);
 			serializeQueue.offer(serializeRole);
 			// 發訊息
 			if (sendable) {
-				sendStoreRole(ErrorType.STORE_DATABASE_FAIL, role,
-						StoreType.DATABASE);
+				sendStoreRole(ErrorType.STORE_DATABASE_FAIL, role, StoreType.DATABASE);
 			}
 		}
 		return result;
@@ -240,8 +253,7 @@ public class StoreRoleServiceImpl extends AppServiceSupporter implements
 	 * @param storeType
 	 * @return
 	 */
-	public Message sendStoreRole(ErrorType errorType, Role role,
-			StoreType storeType) {
+	public Message sendStoreRole(ErrorType errorType, Role role, StoreType storeType) {
 		return sendStoreRole(errorType, role, storeType, 0);
 	}
 
@@ -257,10 +269,8 @@ public class StoreRoleServiceImpl extends AppServiceSupporter implements
 	 *            重試次數
 	 * @return
 	 */
-	public Message sendStoreRole(ErrorType errorType, Role role,
-			StoreType storeType, int tries) {
-		Message message = messageService.createMessage(CoreModuleType.ROLE,
-				CoreModuleType.CLIENT,
+	public Message sendStoreRole(ErrorType errorType, Role role, StoreType storeType, int tries) {
+		Message message = messageService.createMessage(CoreModuleType.ROLE, CoreModuleType.CLIENT,
 				CoreMessageType.ROLE_STORE_ROLE_RESPONSE, role.getId());
 
 		message.addInt(errorType);// 0, int, errorType 錯誤碼
@@ -277,8 +287,7 @@ public class StoreRoleServiceImpl extends AppServiceSupporter implements
 	/**
 	 * 序列化角色
 	 */
-	public static class SerializeRoleImpl extends AppResultSupporter implements
-			SerializeRole {
+	public static class SerializeRoleImpl extends AppResultSupporter implements SerializeRole {
 
 		private static final long serialVersionUID = 297156504951956534L;
 
@@ -308,8 +317,7 @@ public class StoreRoleServiceImpl extends AppServiceSupporter implements
 		}
 
 		public String toString() {
-			ToStringBuilder builder = new ToStringBuilder(this,
-					ToStringStyle.SIMPLE_STYLE);
+			ToStringBuilder builder = new ToStringBuilder(this, ToStringStyle.SIMPLE_STYLE);
 			builder.appendSuper(super.toString());
 			builder.append("sendable", sendable);
 			builder.append("role", role.getId());
@@ -327,12 +335,14 @@ public class StoreRoleServiceImpl extends AppServiceSupporter implements
 	/**
 	 * 序列化佇列
 	 */
-	protected class SerializeQueue<E> extends
-			TriggerQueueSupporter<SerializeRole> {
-		public SerializeQueue() {
+	protected class SerializeQueue<E> extends TriggerQueueSupporter<SerializeRole> {
+
+		public SerializeQueue(ThreadService threadService) {
+			super(threadService);
 		}
 
-		public void process(SerializeRole e) {
+		@Override
+		public void doExecute(SerializeRole e) throws Exception {
 			serializeRole(e.isSendable(), e.getRole());
 		}
 	}
@@ -350,11 +360,9 @@ public class StoreRoleServiceImpl extends AppServiceSupporter implements
 	 * @return 輸出檔名
 	 */
 	public String serializeRole(boolean sendable, Role role) {
+		AssertHelper.notNull(role, "The Role must not be null");
+
 		String result = null;
-		//
-		if (role == null) {
-			throw new IllegalArgumentException("The Role must not be null");
-		}
 		//
 		String roleId = role.getId();
 		if (!serializeProcessor.isSerialize()) {
@@ -383,8 +391,7 @@ public class StoreRoleServiceImpl extends AppServiceSupporter implements
 			//
 			if (writed) {
 				result = serName;
-				LOGGER.info("Serialized the role [" + roleId + "] to "
-						+ serName);
+				LOGGER.info("Serialized the role [" + roleId + "] to " + serName);
 				// 發訊息
 				if (sendable) {
 					sendStoreRole(ErrorType.NO_ERROR, role, StoreType.FILE);
@@ -393,12 +400,11 @@ public class StoreRoleServiceImpl extends AppServiceSupporter implements
 				LOGGER.error("Serialized the role [" + roleId + "] fail");
 				// 發訊息
 				if (sendable) {
-					sendStoreRole(ErrorType.STORE_FILE_FAIL, role,
-							StoreType.FILE);
+					sendStoreRole(ErrorType.STORE_FILE_FAIL, role, StoreType.FILE);
 				}
 			}
-		} catch (Exception ex) {
-			ex.printStackTrace();
+		} catch (Exception e) {
+			LOGGER.error(new StringBuilder("Exception encountered during serializeRole()").toString(), e);
 		} finally {
 			IoHelper.close(out);
 		}
@@ -416,10 +422,9 @@ public class StoreRoleServiceImpl extends AppServiceSupporter implements
 	 * @return
 	 */
 	public Role deserializeRole(String roleId) {
+		AssertHelper.notNull(roleId, "The RoleId must not be null");
+
 		Role result = null;
-		if (roleId == null) {
-			throw new IllegalArgumentException("The RoleId must not be null");
-		}
 		//
 		if (!serializeProcessor.isSerialize()) {
 			LOGGER.warn("No deserialized the role [" + roleId + "]");
@@ -452,13 +457,12 @@ public class StoreRoleServiceImpl extends AppServiceSupporter implements
 			result = serializeProcessor.deserialize(buff, RoleImpl.class);
 			//
 			if (result != null) {
-				LOGGER.info("Deserialized the role [" + roleId + "] from "
-						+ serName);
+				LOGGER.info("Deserialized the role [" + roleId + "] from " + serName);
 			} else {
 				LOGGER.error("Deserialized the role [" + roleId + "] fail");
 			}
-		} catch (Exception ex) {
-			ex.printStackTrace();
+		} catch (Exception e) {
+			LOGGER.error(new StringBuilder("Exception encountered during deserializeRole()").toString(), e);
 		} finally {
 			IoHelper.close(in);
 		}

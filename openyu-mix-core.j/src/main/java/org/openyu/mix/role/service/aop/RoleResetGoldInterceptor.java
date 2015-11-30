@@ -34,8 +34,7 @@ public class RoleResetGoldInterceptor extends AppMethodInterceptorSupporter {
 	 * boolean resetGold(boolean sendable, String roleId, GoldReason
 	 * goldReason);
 	 */
-	public Object invoke(MethodInvocation methodInvocation, Method method,
-			Class<?>[] paramTypes, Object[] args) {
+	protected Object doInvoke(MethodInvocation methodInvocation) throws Throwable {
 		// 傳回值
 		Object result = null;
 		try {
@@ -43,6 +42,7 @@ public class RoleResetGoldInterceptor extends AppMethodInterceptorSupporter {
 			// proceed前
 			// --------------------------------------------------
 			// 參數
+			Object[] args = methodInvocation.getArguments();
 			boolean sendable = (Boolean) args[0];
 			Role role = (Role) args[1];
 			GoldType goldReason = (GoldType) args[2];
@@ -68,8 +68,9 @@ public class RoleResetGoldInterceptor extends AppMethodInterceptorSupporter {
 				roleLogService.recordChangeGold(role, 0, beforeGold,
 						ActionType.RESET, goldReason);
 			}
-		} catch (Throwable ex) {
-			ex.printStackTrace();
+		} catch (Throwable e) {
+			LOGGER.error(new StringBuilder("Exception encountered during doInvoke()").toString(), e);
+			// throw e;
 		}
 		return result;
 	}

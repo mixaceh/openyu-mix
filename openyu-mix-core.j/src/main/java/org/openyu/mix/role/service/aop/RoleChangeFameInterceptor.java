@@ -16,9 +16,7 @@ import org.openyu.mix.role.vo.Role;
  */
 public class RoleChangeFameInterceptor extends AppMethodInterceptorSupporter {
 
-	private static transient final Logger LOGGER = LoggerFactory
-			.getLogger(RoleChangeFameInterceptor.class);
-
+	private static transient final Logger LOGGER = LoggerFactory.getLogger(RoleChangeFameInterceptor.class);
 
 	@Autowired
 	@Qualifier("roleLogService")
@@ -32,8 +30,7 @@ public class RoleChangeFameInterceptor extends AppMethodInterceptorSupporter {
 	 * 
 	 * int changeFame(boolean sendable, Role role, int fame);
 	 */
-	public Object invoke(MethodInvocation methodInvocation, Method method,
-			Class<?>[] paramTypes, Object[] args) {
+	protected Object doInvoke(MethodInvocation methodInvocation) throws Throwable {
 		// 傳回值
 		Object result = null;
 		try {
@@ -41,6 +38,7 @@ public class RoleChangeFameInterceptor extends AppMethodInterceptorSupporter {
 			// proceed前
 			// --------------------------------------------------
 			// 參數
+			Object[] args = methodInvocation.getArguments();
 			boolean sendable = (Boolean) args[0];
 			Role role = (Role) args[1];
 			int fame = (Integer) args[2];
@@ -65,8 +63,9 @@ public class RoleChangeFameInterceptor extends AppMethodInterceptorSupporter {
 			if (ret != 0) {
 				roleLogService.recordChangeFame(role, ret, beforeFame);
 			}
-		} catch (Throwable ex) {
-			ex.printStackTrace();
+		} catch (Throwable e) {
+			LOGGER.error(new StringBuilder("Exception encountered during doInvoke()").toString(), e);
+			// throw e;
 		}
 		return result;
 	}

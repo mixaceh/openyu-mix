@@ -31,8 +31,7 @@ public class RoleChangeLevelInterceptor extends AppMethodInterceptorSupporter {
 	 * 
 	 * int changeLevel(boolean sendable, Role role, int level);
 	 */
-	public Object invoke(MethodInvocation methodInvocation, Method method,
-			Class<?>[] paramTypes, Object[] args) {
+	protected Object doInvoke(MethodInvocation methodInvocation) throws Throwable {
 		// 傳回值
 		Object result = null;
 		try {
@@ -40,6 +39,7 @@ public class RoleChangeLevelInterceptor extends AppMethodInterceptorSupporter {
 			// proceed前
 			// --------------------------------------------------
 			// 參數
+			Object[] args = methodInvocation.getArguments();
 			boolean sendable = (Boolean) args[0];
 			Role role = (Role) args[1];
 			int level = (Integer) args[2];
@@ -65,8 +65,9 @@ public class RoleChangeLevelInterceptor extends AppMethodInterceptorSupporter {
 			if (ret != 0) {
 				roleLogService.recordChangeLevel(role, ret, beforeLevel);
 			}
-		} catch (Throwable ex) {
-			ex.printStackTrace();
+		} catch (Throwable e) {
+			LOGGER.error(new StringBuilder("Exception encountered during doInvoke()").toString(), e);
+			// throw e;
 		}
 		return result;
 	}

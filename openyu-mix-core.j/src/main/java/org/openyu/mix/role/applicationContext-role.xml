@@ -29,7 +29,7 @@
 			expression="bean(roleService)" />
 		<aop:advisor
 			id="roleServiceTxAdvisor"
-			advice-ref="txAdvice"
+			advice-ref="commonTx"
 			pointcut-ref="roleServiceTxPointcut" />
 	</aop:config>
 	

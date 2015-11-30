@@ -17,8 +17,7 @@ import org.openyu.mix.role.vo.Role;
  */
 public class RoleDecreaseGoldInterceptor extends AppMethodInterceptorSupporter {
 
-	private static transient final Logger LOGGER = LoggerFactory
-			.getLogger(RoleDecreaseGoldInterceptor.class);
+	private static transient final Logger LOGGER = LoggerFactory.getLogger(RoleDecreaseGoldInterceptor.class);
 
 	@Autowired
 	@Qualifier("roleLogService")
@@ -33,8 +32,7 @@ public class RoleDecreaseGoldInterceptor extends AppMethodInterceptorSupporter {
 	 * long decreaseGold(boolean sendable, Role role, long gold, GoldReason
 	 * goldReason);
 	 */
-	public Object invoke(MethodInvocation methodInvocation, Method method,
-			Class<?>[] paramTypes, Object[] args) {
+	protected Object doInvoke(MethodInvocation methodInvocation) throws Throwable {
 		// 傳回值
 		Object result = null;
 		try {
@@ -42,6 +40,7 @@ public class RoleDecreaseGoldInterceptor extends AppMethodInterceptorSupporter {
 			// proceed前
 			// --------------------------------------------------
 			// 參數
+			Object[] args = methodInvocation.getArguments();
 			boolean sendable = (Boolean) args[0];
 			Role role = (Role) args[1];
 			long gold = (Long) args[2];
@@ -65,11 +64,11 @@ public class RoleDecreaseGoldInterceptor extends AppMethodInterceptorSupporter {
 			long ret = (Long) result;
 			//
 			if (ret != 0 && goldReason != null) {
-				roleLogService.recordDecreaseGold(role, ret, beforeGold,
-						goldReason);
+				roleLogService.recordDecreaseGold(role, ret, beforeGold, goldReason);
 			}
-		} catch (Throwable ex) {
-			ex.printStackTrace();
+		} catch (Throwable e) {
+			LOGGER.error(new StringBuilder("Exception encountered during doInvoke()").toString(), e);
+			// throw e;
 		}
 		return result;
 	}
