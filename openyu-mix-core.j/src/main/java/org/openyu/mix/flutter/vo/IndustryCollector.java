@@ -8,6 +8,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
+import org.openyu.commons.collector.CollectorHelper;
 import org.openyu.commons.collector.supporter.BaseCollectorSupporter;
 import org.openyu.commons.lang.StringHelper;
 import org.openyu.mix.flutter.vo.AttributeType;
@@ -30,10 +31,9 @@ public final class IndustryCollector extends BaseCollectorSupporter {
 
 	private static final long serialVersionUID = 8011622155536265679L;
 
-	private static transient final Logger LOGGER = LoggerFactory
-			.getLogger(IndustryCollector.class);
+	private static transient final Logger LOGGER = LoggerFactory.getLogger(IndustryCollector.class);
 
-	private static IndustryCollector industryCollector;
+	private static IndustryCollector instance;
 
 	/**
 	 * 種族
@@ -104,48 +104,75 @@ public final class IndustryCollector extends BaseCollectorSupporter {
 		return getInstance(true);
 	}
 
-	public synchronized static IndustryCollector getInstance(boolean initial) {
-		if (industryCollector == null) {
-			industryCollector = new IndustryCollector();
-			if (initial) {
-				industryCollector.initialize();
+	public synchronized static IndustryCollector getInstance(boolean start) {
+		if (instance == null) {
+			raceCollector = RaceCollector.getInstance(start);
+			careerCollector = CareerCollector.getInstance(start);
+			//
+			instance = CollectorHelper.readFromSer(IndustryCollector.class);
+			// 此時有可能會沒有ser檔案,或舊的結構造成ex,只要再轉出一次ser,覆蓋原本ser即可
+			if (instance == null) {
+				instance = new IndustryCollector();
 			}
+			//
+			if (start) {
+				// 啟動
+				instance.start();
+			}
+			// 此有系統值,只是為了轉出xml,並非給企劃編輯用
 		}
-		return industryCollector;
+		return instance;
 	}
 
 	/**
-	 * 初始化
+	 * 單例關閉
 	 * 
+	 * @return
 	 */
-	public void initialize() {
-		if (!industryCollector.isInitialized()) {
-			raceCollector = RaceCollector.getInstance();
-			careerCollector = CareerCollector.getInstance();
+	public synchronized static IndustryCollector shutdownInstance() {
+		if (instance != null) {
+			IndustryCollector oldInstance = instance;
+			instance = null;
 			//
-			industryCollector = readFromSer(IndustryCollector.class);
-			// 此時有可能會沒有ser檔案,或舊的結構造成ex,只要再轉出一次ser,覆蓋原本ser即可
-			if (industryCollector == null) {
-				industryCollector = new IndustryCollector();
+			if (oldInstance != null) {
+				oldInstance.shutdown();
 			}
-
-			// 行業=種族+職業
-			industryCollector.industrys = buildIndestrys();
-			//
-			industryCollector.setInitialized(true);
 		}
+		return instance;
 	}
 
-	public void clear() {
+	/**
+	 * 單例重啟
+	 * 
+	 * @return
+	 */
+	public synchronized static IndustryCollector restartInstance() {
+		if (instance != null) {
+			instance.restart();
+		}
+		return instance;
+	}
+
+	/**
+	 * 內部啟動
+	 */
+	@Override
+	protected void doStart() throws Exception {
+		// 行業=種族+職業
+		instance.industrys = buildIndestrys();
+	}
+
+	/**
+	 * 內部關閉
+	 */
+	@Override
+	protected void doShutdown() throws Exception {
 		raceFactors.clear();
 		careerFactors.clear();
 		attributeFactors.clear();
 		industrys.clear();
 		exps.clear();
-		// 設為可初始化
-		setInitialized(false);
 	}
-
 	// --------------------------------------------------
 
 	/**
@@ -183,8 +210,7 @@ public final class IndustryCollector extends BaseCollectorSupporter {
 				industry.setRaceType(raceType);// 種族
 				industry.setCareerType(careerType);// 職業
 				//
-				Map<AttributeType, Attribute> attributes = buildAttrubutes(
-						race, career);
+				Map<AttributeType, Attribute> attributes = buildAttrubutes(race, career);
 				industry.getAttributeGroup().setAttributes(attributes);
 				//
 				result.put(industry.getId(), industry);
@@ -241,17 +267,14 @@ public final class IndustryCollector extends BaseCollectorSupporter {
 	 * @param career
 	 * @return
 	 */
-	protected Map<AttributeType, Attribute> buildAttrubutes(Race race,
-			Career career) {
+	protected Map<AttributeType, Attribute> buildAttrubutes(Race race, Career career) {
 		Map<AttributeType, Attribute> result = new LinkedHashMap<AttributeType, Attribute>();
 
 		if (race != null && career != null) {
 			// 種族因子
-			double raceFactor = ratio(industryCollector.getRaceFactor(race
-					.getId()));
+			double raceFactor = ratio(instance.getRaceFactor(race.getId()));
 			// 種族
-			for (Map.Entry<AttributeType, Attribute> entry : race
-					.getAttributeGroup().getAttributes().entrySet()) {
+			for (Map.Entry<AttributeType, Attribute> entry : race.getAttributeGroup().getAttributes().entrySet()) {
 				AttributeType key = entry.getKey();
 				Attribute value = entry.getValue();
 				Attribute industryAttrubute = (Attribute) value.clone();
@@ -259,11 +282,9 @@ public final class IndustryCollector extends BaseCollectorSupporter {
 			}
 
 			// 職業因子
-			double careerFactor = ratio(industryCollector
-					.getCareerFactor(career.getId()));
+			double careerFactor = ratio(instance.getCareerFactor(career.getId()));
 			// 職業
-			for (Map.Entry<AttributeType, Attribute> entry : career
-					.getAttributeGroup().getAttributes().entrySet()) {
+			for (Map.Entry<AttributeType, Attribute> entry : career.getAttributeGroup().getAttributes().entrySet()) {
 				AttributeType key = entry.getKey();
 				Attribute value = entry.getValue();
 				Attribute careerAttrubute = (Attribute) value.clone();
@@ -276,19 +297,16 @@ public final class IndustryCollector extends BaseCollectorSupporter {
 					// 若已有屬性,則種族與職業乘上因子後,累加屬性
 
 					// 初值
-					int point = (int) (industryAttrubute.getPoint()
-							* raceFactor + careerAttrubute.getPoint()
-							* careerFactor);
+					int point = (int) (industryAttrubute.getPoint() * raceFactor
+							+ careerAttrubute.getPoint() * careerFactor);
 					industryAttrubute.setPoint(point);
 					// 成長值
-					int addPoint = (int) (industryAttrubute.getAddPoint()
-							* raceFactor + careerAttrubute.getAddPoint()
-							* careerFactor);
+					int addPoint = (int) (industryAttrubute.getAddPoint() * raceFactor
+							+ careerAttrubute.getAddPoint() * careerFactor);
 					industryAttrubute.setAddPoint(addPoint);
 					// 成長率
-					int addRate = (int) (industryAttrubute.getAddRate()
-							* raceFactor + careerAttrubute.getAddRate()
-							* careerFactor);
+					int addRate = (int) (industryAttrubute.getAddRate() * raceFactor
+							+ careerAttrubute.getAddRate() * careerFactor);
 					industryAttrubute.setAddRate(addRate);
 				}
 			}
@@ -349,8 +367,7 @@ public final class IndustryCollector extends BaseCollectorSupporter {
 		return attributeFactors;
 	}
 
-	public void setAttributeFactors(
-			Map<AttributeType, AttributeFactor> attributeFactors) {
+	public void setAttributeFactors(Map<AttributeType, AttributeFactor> attributeFactors) {
 		this.attributeFactors = attributeFactors;
 	}
 

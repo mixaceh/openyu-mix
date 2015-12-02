@@ -26,13 +26,15 @@ import org.openyu.mix.flutter.vo.adapter.CareerTypeXmlAdapter;
 // --------------------------------------------------
 @XmlRootElement(name = "careerCollector")
 @XmlAccessorType(XmlAccessType.FIELD)
-public final class CareerCollector extends BaseCollectorSupporter
-{
+public final class CareerCollector extends BaseCollectorSupporter {
 
 	private static final long serialVersionUID = -366805549782373969L;
 
-	private static CareerCollector careerCollector;
+	private static CareerCollector instance;
 
+	// --------------------------------------------------
+	// 此有系統值,只是為了轉出xml,並非給企劃編輯用
+	// --------------------------------------------------
 	/**
 	 * 所有的職業類別
 	 */
@@ -45,107 +47,92 @@ public final class CareerCollector extends BaseCollectorSupporter
 	@XmlJavaTypeAdapter(AttributeTypeXmlAdapter.class)
 	private Set<AttributeType> attributeTypes = new LinkedHashSet<AttributeType>();
 
+	// --------------------------------------------------
+	// 企劃編輯用
+	// --------------------------------------------------
 	/**
 	 * 所有的職業
 	 */
 	@XmlJavaTypeAdapter(CareerTypeCareerXmlAdapter.class)
 	private Map<CareerType, Career> careers = new LinkedHashMap<CareerType, Career>();
 
-	public CareerCollector()
-	{
+	public CareerCollector() {
 		setId(CareerCollector.class.getName());
 	}
 
 	// --------------------------------------------------
-	public synchronized static CareerCollector getInstance()
-	{
+	public synchronized static CareerCollector getInstance() {
 		return getInstance(true);
 	}
 
-	public synchronized static CareerCollector getInstance(boolean initial)
-	{
-		if (careerCollector == null)
-		{
-			careerCollector = new CareerCollector();
-			if (initial)
-			{
-				careerCollector.initialize();
+	public synchronized static CareerCollector getInstance(boolean initial) {
+		if (instance == null) {
+			instance = new CareerCollector();
+			if (initial) {
+				instance.initialize();
 			}
 
 			// 此有系統值,只是為了轉出xml,並非給企劃編輯用
-			careerCollector.careerTypes = EnumHelper.valuesSet(CareerType.class);
-			careerCollector.attributeTypes = EnumHelper.valuesSet(AttributeType.class);
+			instance.careerTypes = EnumHelper.valuesSet(CareerType.class);
+			instance.attributeTypes = EnumHelper.valuesSet(AttributeType.class);
 		}
-		return careerCollector;
+		return instance;
 	}
 
 	/**
 	 * 初始化
 	 * 
 	 */
-	public void initialize()
-	{
-		if (!careerCollector.isInitialized())
-		{
-			careerCollector = readFromSer(CareerCollector.class);
+	public void initialize() {
+		if (!instance.isInitialized()) {
+			instance = readFromSer(CareerCollector.class);
 			// 此時有可能會沒有ser檔案,或舊的結構造成ex,只要再轉出一次ser,覆蓋原本ser即可
-			if (careerCollector == null)
-			{
-				careerCollector = new CareerCollector();
+			if (instance == null) {
+				instance = new CareerCollector();
 			}
 			//
-			careerCollector.setInitialized(true);
+			instance.setInitialized(true);
 		}
 	}
 
-	public void clear()
-	{
+	public void clear() {
 		careers.clear();
 		// 設為可初始化
 		setInitialized(false);
 	}
 
 	// --------------------------------------------------
-	public Set<CareerType> getCareerTypes()
-	{
-		if (careerTypes == null)
-		{
+	public Set<CareerType> getCareerTypes() {
+		if (careerTypes == null) {
 			careerTypes = new LinkedHashSet<CareerType>();
 		}
 		return careerTypes;
 	}
 
-	public void setCareerTypes(Set<CareerType> careerTypes)
-	{
+	public void setCareerTypes(Set<CareerType> careerTypes) {
 		this.careerTypes = careerTypes;
 	}
 
-	public Set<AttributeType> getAttributeTypes()
-	{
-		if (attributeTypes == null)
-		{
+	public Set<AttributeType> getAttributeTypes() {
+		if (attributeTypes == null) {
 			attributeTypes = new LinkedHashSet<AttributeType>();
 		}
 		return attributeTypes;
 	}
 
-	public void setAttributeTypes(Set<AttributeType> attributeTypes)
-	{
+	public void setAttributeTypes(Set<AttributeType> attributeTypes) {
 		this.attributeTypes = attributeTypes;
 	}
 
 	// --------------------------------------------------
-	public Map<CareerType, Career> getCareers()
-	{
-		if (careers == null)
-		{
+	public Map<CareerType, Career> getCareers() {
+		if (careers == null) {
 			careers = new LinkedHashMap<CareerType, Career>();
 		}
 		return careers;
 	}
 
-	public void setCareers(Map<CareerType, Career> careers)
-	{
+	public void setCareers(Map<CareerType, Career> careers) {
 		this.careers = careers;
 	}
 
@@ -155,11 +142,9 @@ public final class CareerCollector extends BaseCollectorSupporter
 	 * @param careerType
 	 * @return
 	 */
-	public Career getCareer(CareerType careerType)
-	{
+	public Career getCareer(CareerType careerType) {
 		Career result = null;
-		if (careerType != null)
-		{
+		if (careerType != null) {
 			result = careers.get(careerType);
 		}
 		return (result != null ? (Career) result.clone() : null);
