@@ -5,6 +5,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import org.openyu.mix.app.service.supporter.AppServiceSupporter;
 import org.openyu.mix.app.vo.Prize;
 import org.openyu.mix.sasang.service.SasangMachine;
 import org.openyu.mix.sasang.vo.Outcome;
@@ -20,8 +21,10 @@ import org.openyu.commons.util.CollectionHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class SasangMachineImpl extends BaseServiceSupporter implements
+public class SasangMachineImpl extends AppServiceSupporter implements
 		SasangMachine {
+
+	private static final long serialVersionUID = -6319750135831837024L;
 
 	private static transient final Logger LOGGER = LoggerFactory
 			.getLogger(SasangMachineImpl.class);
@@ -545,7 +548,7 @@ public class SasangMachineImpl extends BaseServiceSupporter implements
 	/**
 	 * 啟動,不clone了,直接拿
 	 */
-	public Outcome start() {
+	public Outcome play() {
 		Outcome result = null;
 		result = BeanHelper.probRandomOf(outcomes.values(), outcomesProbSum);
 		// return (result != null ? (Outcome) result.clone() : result);
@@ -558,10 +561,10 @@ public class SasangMachineImpl extends BaseServiceSupporter implements
 	 * @param times
 	 * @return
 	 */
-	public List<Outcome> start(int times) {
+	public List<Outcome> play(int times) {
 		List<Outcome> result = new LinkedList<Outcome>();
 		for (int i = 0; i < times; i++) {
-			Outcome outcome = start();
+			Outcome outcome = play();
 			if (outcome != null) {
 				result.add(outcome);
 			}

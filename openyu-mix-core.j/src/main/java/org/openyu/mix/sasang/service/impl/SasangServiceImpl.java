@@ -44,11 +44,11 @@ import org.openyu.commons.util.CollectionHelper;
 import org.openyu.commons.util.DateHelper;
 import org.openyu.socklet.message.vo.Message;
 
-public class SasangServiceImpl extends AppServiceSupporter implements
-		SasangService {
+public class SasangServiceImpl extends AppServiceSupporter implements SasangService {
 
-	private static transient final Logger LOGGER = LoggerFactory
-			.getLogger(SasangServiceImpl.class);
+	private static final long serialVersionUID = 9150221863120709874L;
+
+	private static transient final Logger LOGGER = LoggerFactory.getLogger(SasangServiceImpl.class);
 
 	@Autowired
 	@Qualifier("accountService")
@@ -70,8 +70,7 @@ public class SasangServiceImpl extends AppServiceSupporter implements
 	@Qualifier("sasangMachine")
 	protected transient SasangMachine sasangMachine;
 
-	private transient SasangCollector sasangCollector = SasangCollector
-			.getInstance();
+	private transient SasangCollector sasangCollector = SasangCollector.getInstance();
 
 	private transient VipCollector vipCollector = VipCollector.getInstance();
 
@@ -136,8 +135,7 @@ public class SasangServiceImpl extends AppServiceSupporter implements
 	 * @return
 	 */
 	protected Message sendInitialize(Role role) {
-		Message message = messageService.createMessage(CoreModuleType.SASANG,
-				CoreModuleType.CLIENT,
+		Message message = messageService.createMessage(CoreModuleType.SASANG, CoreModuleType.CLIENT,
 				CoreMessageType.SASANG_INITIALIZE_RESPONSE, role.getId());
 
 		// 四象欄位
@@ -186,9 +184,8 @@ public class SasangServiceImpl extends AppServiceSupporter implements
 	 * @return
 	 */
 	public Message sendSasangPen(Role role, SasangPen sasangPen) {
-		Message message = messageService.createMessage(CoreModuleType.SASANG,
-				CoreModuleType.CLIENT, CoreMessageType.SASANG_PEN_RESPONSE,
-				role.getId());
+		Message message = messageService.createMessage(CoreModuleType.SASANG, CoreModuleType.CLIENT,
+				CoreMessageType.SASANG_PEN_RESPONSE, role.getId());
 
 		fillSasangPen(message, sasangPen);
 		//
@@ -263,8 +260,7 @@ public class SasangServiceImpl extends AppServiceSupporter implements
 	/**
 	 * 玩的結果
 	 */
-	public static class PlayResultImpl extends AppResultSupporter implements
-			PlayResult {
+	public static class PlayResultImpl extends AppResultSupporter implements PlayResult {
 
 		private static final long serialVersionUID = -4323504616451837011L;
 
@@ -313,9 +309,8 @@ public class SasangServiceImpl extends AppServiceSupporter implements
 		 */
 		private int spendCoin;
 
-		public PlayResultImpl(PlayType playType, long playTime, int dailyTimes,
-				Outcome outcome, int totalTimes, long spendGold,
-				List<Item> spendItems, int spendCoin) {
+		public PlayResultImpl(PlayType playType, long playTime, int dailyTimes, Outcome outcome, int totalTimes,
+				long spendGold, List<Item> spendItems, int spendCoin) {
 			this.playType = playType;
 			this.playTime = playTime;
 			this.dailyTimes = dailyTimes;
@@ -339,10 +334,9 @@ public class SasangServiceImpl extends AppServiceSupporter implements
 		 * @param outcome
 		 * @param spendGold
 		 */
-		public PlayResultImpl(PlayType playType, long playTime, int dailyTimes,
-				Outcome outcome, int totalTimes, long spendGold) {
-			this(playType, playTime, dailyTimes, outcome, totalTimes,
-					spendGold, new LinkedList<Item>(), 0);
+		public PlayResultImpl(PlayType playType, long playTime, int dailyTimes, Outcome outcome, int totalTimes,
+				long spendGold) {
+			this(playType, playTime, dailyTimes, outcome, totalTimes, spendGold, new LinkedList<Item>(), 0);
 		}
 
 		/**
@@ -355,9 +349,8 @@ public class SasangServiceImpl extends AppServiceSupporter implements
 		 * @param spendItems
 		 * @param spendCoin
 		 */
-		public PlayResultImpl(PlayType playType, long playTime,
-				List<Outcome> outcomes, int totalTimes, List<Item> spendItems,
-				int spendCoin) {
+		public PlayResultImpl(PlayType playType, long playTime, List<Outcome> outcomes, int totalTimes,
+				List<Item> spendItems, int spendCoin) {
 			this.playType = playType;
 			this.playTime = playTime;
 			// 所有結果
@@ -450,14 +443,12 @@ public class SasangServiceImpl extends AppServiceSupporter implements
 		}
 
 		public String toString() {
-			ToStringBuilder builder = new ToStringBuilder(this,
-					ToStringStyle.SIMPLE_STYLE);
+			ToStringBuilder builder = new ToStringBuilder(this, ToStringStyle.SIMPLE_STYLE);
 			builder.appendSuper(super.toString());
 			builder.append("playType", playType);
 			builder.append("playTime", playTime);
 			builder.append("dailyTimes", dailyTimes);
-			builder.append("outcome",
-					(outcome != null ? outcome.getId() : null));
+			builder.append("outcome", (outcome != null ? outcome.getId() : null));
 			//
 			builder.append("totalTimes", totalTimes);
 			builder.append("spendGold", spendGold);
@@ -497,7 +488,7 @@ public class SasangServiceImpl extends AppServiceSupporter implements
 			result = goldPlay(sendable, role);
 			break;
 		}
-		// 用道具或儲值幣玩
+			// 用道具或儲值幣玩
 		case GALACTIC:
 		case GOLDEN:
 		case BLACK: {
@@ -535,7 +526,7 @@ public class SasangServiceImpl extends AppServiceSupporter implements
 			// 四象
 			sasangPen = role.getSasangPen();
 			// 先玩,為了檢查獎勵區空間是否足夠
-			Outcome outcome = sasangMachine.start();
+			Outcome outcome = sasangMachine.play();
 			// 沒結果,xml可能沒設定,壞掉了
 			if (outcome == null) {
 				errorType = ErrorType.OUTCOME_NOT_EXIST;
@@ -549,8 +540,7 @@ public class SasangServiceImpl extends AppServiceSupporter implements
 				long spendGold = sasangCollector.getPlayGold();
 				;
 				// 扣金幣
-				long decreaseGold = roleService.decreaseGold(true, role,
-						spendGold, GoldType.SASANG_PLAY);
+				long decreaseGold = roleService.decreaseGold(true, role, spendGold, GoldType.SASANG_PLAY);
 				// 成功
 				if (decreaseGold != 0) {
 					long now = System.currentTimeMillis();
@@ -570,8 +560,7 @@ public class SasangServiceImpl extends AppServiceSupporter implements
 					notice = addNotice(role, prize);
 
 					// 結果
-					result = new PlayResultImpl(PlayType.BRONZE, now,
-							sasangPen.getDailyTimes(), cloneOutcome, 1,
+					result = new PlayResultImpl(PlayType.BRONZE, now, sasangPen.getDailyTimes(), cloneOutcome, 1,
 							spendGold);
 				} else {
 					errorType = ErrorType.GOLD_NOT_ENOUGH;
@@ -629,8 +618,7 @@ public class SasangServiceImpl extends AppServiceSupporter implements
 
 		// 金幣不足
 		long spendGold = sasangCollector.getPlayGold();
-		boolean checkDecreaseGold = roleService.checkDecreaseGold(role,
-				spendGold);
+		boolean checkDecreaseGold = roleService.checkDecreaseGold(role, spendGold);
 		if (!checkDecreaseGold) {
 			errorType = ErrorType.GOLD_NOT_ENOUGH;
 			return errorType;
@@ -648,8 +636,7 @@ public class SasangServiceImpl extends AppServiceSupporter implements
 	 * @see PlayType
 	 * @return
 	 */
-	public PlayResult itemCoinPlay(boolean sendable, Role role,
-			PlayType playType) {
+	public PlayResult itemCoinPlay(boolean sendable, Role role, PlayType playType) {
 		PlayResult result = null;
 		SasangPen sasangPen = null;
 		int playTimes = playType.playTimes();// 玩的次數
@@ -662,7 +649,7 @@ public class SasangServiceImpl extends AppServiceSupporter implements
 			// 四象
 			sasangPen = role.getSasangPen();
 			// 先玩,為了檢查獎勵區空間是否足夠
-			List<Outcome> outcomes = sasangMachine.start(playTimes);
+			List<Outcome> outcomes = sasangMachine.play(playTimes);
 			// 沒結果,xml可能沒設定,壞掉了
 			if (outcomes.size() == 0) {
 				errorType = ErrorType.OUTCOME_NOT_EXIST;
@@ -673,9 +660,8 @@ public class SasangServiceImpl extends AppServiceSupporter implements
 			//
 			if (errorType == ErrorType.NO_ERROR) {
 				// 消耗道具或儲值幣
-				SpendResult spendResult = roleService.spendByItemCoin(sendable,
-						role, playTimes, sasangCollector.getPlayItem(), 1,
-						sasangCollector.getPlayCoin(), CoinType.SASANG_PLAY,
+				SpendResult spendResult = roleService.spendByItemCoin(sendable, role, playTimes,
+						sasangCollector.getPlayItem(), 1, sasangCollector.getPlayCoin(), CoinType.SASANG_PLAY,
 						vipCollector.getSasangCoinVipType());
 				//
 				RoleService.ErrorType spendError = spendResult.getErrorType();
@@ -689,8 +675,7 @@ public class SasangServiceImpl extends AppServiceSupporter implements
 					// clone玩的結果
 					List<Outcome> cloneOutcomes = clone(outcomes);
 					// 拿最後一個結果
-					Outcome cloneOutcome = cloneOutcomes.get(cloneOutcomes
-							.size() - 1);
+					Outcome cloneOutcome = cloneOutcomes.get(cloneOutcomes.size() - 1);
 					sasangPen.setOutcome(cloneOutcome);// 最後的結果
 
 					// 累計每日已玩的次數,不需每日重置
@@ -715,8 +700,7 @@ public class SasangServiceImpl extends AppServiceSupporter implements
 					}
 
 					// 玩的結果
-					result = new PlayResultImpl(playType, now, cloneOutcomes,
-							spendResult.getTotalTimes(),
+					result = new PlayResultImpl(playType, now, cloneOutcomes, spendResult.getTotalTimes(),
 							spendResult.getItems(), spendResult.getCoin());
 				} else {
 					errorType = roleErrorToSasangError(spendError);
@@ -875,11 +859,9 @@ public class SasangServiceImpl extends AppServiceSupporter implements
 	 * @param playResult
 	 * @return
 	 */
-	public Message sendPlay(ErrorType errorType, Role role,
-			PlayResult playResult) {
-		Message message = messageService.createMessage(CoreModuleType.SASANG,
-				CoreModuleType.CLIENT, CoreMessageType.SASANG_PLAY_RESPONSE,
-				role.getId());
+	public Message sendPlay(ErrorType errorType, Role role, PlayResult playResult) {
+		Message message = messageService.createMessage(CoreModuleType.SASANG, CoreModuleType.CLIENT,
+				CoreMessageType.SASANG_PLAY_RESPONSE, role.getId());
 
 		message.addInt(errorType);// 0, errorType 錯誤碼
 
@@ -948,9 +930,8 @@ public class SasangServiceImpl extends AppServiceSupporter implements
 		// 取所有角色id,只限本地
 		List<String> receivers = roleSetService.getRoleIds(false);
 		//
-		Message message = messageService.createMessage(CoreModuleType.SASANG,
-				CoreModuleType.CLIENT, CoreMessageType.SASANG_NOTICE_RESPONSE,
-				receivers);
+		Message message = messageService.createMessage(CoreModuleType.SASANG, CoreModuleType.CLIENT,
+				CoreMessageType.SASANG_NOTICE_RESPONSE, receivers);
 
 		fillNotice(message, notice);
 		//
@@ -969,9 +950,8 @@ public class SasangServiceImpl extends AppServiceSupporter implements
 		// 取所有角色id,只限本地
 		List<String> receivers = roleSetService.getRoleIds(false);
 		//
-		Message message = messageService.createMessage(CoreModuleType.SASANG,
-				CoreModuleType.CLIENT, CoreMessageType.SASANG_NOTICES_RESPONSE,
-				receivers);
+		Message message = messageService.createMessage(CoreModuleType.SASANG, CoreModuleType.CLIENT,
+				CoreMessageType.SASANG_NOTICES_RESPONSE, receivers);
 
 		message.addInt(notices.size());
 		for (Notice notice : notices) {
@@ -1004,9 +984,8 @@ public class SasangServiceImpl extends AppServiceSupporter implements
 	 * @param role
 	 */
 	protected void sendBoard(Role role) {
-		Message message = messageService.createMessage(CoreModuleType.SASANG,
-				CoreModuleType.CLIENT, CoreMessageType.SASANG_BOARD_RESPONSE,
-				role.getId());
+		Message message = messageService.createMessage(CoreModuleType.SASANG, CoreModuleType.CLIENT,
+				CoreMessageType.SASANG_BOARD_RESPONSE, role.getId());
 
 		message.addInt(board.size());
 		for (Notice notice : board) {
@@ -1029,8 +1008,7 @@ public class SasangServiceImpl extends AppServiceSupporter implements
 		// 取所有角色id
 		List<String> receivers = roleSetService.getRoleIds();
 		//
-		Message message = messageService.createMessage(CoreModuleType.SASANG,
-				CoreModuleType.CLIENT,
+		Message message = messageService.createMessage(CoreModuleType.SASANG, CoreModuleType.CLIENT,
 				CoreMessageType.SASANG_FAMOUS_PLAY_RESPONSE, receivers);
 
 		fillFamousPlay(message, role, prize);
@@ -1057,8 +1035,7 @@ public class SasangServiceImpl extends AppServiceSupporter implements
 		// 取所有角色id
 		List<String> receivers = roleSetService.getRoleIds();
 		//
-		Message message = messageService.createMessage(CoreModuleType.SASANG,
-				CoreModuleType.CLIENT,
+		Message message = messageService.createMessage(CoreModuleType.SASANG, CoreModuleType.CLIENT,
 				CoreMessageType.SASANG_FAMOUS_PLAYS_RESPONSE, receivers);
 
 		message.addInt(prizes.size());
@@ -1076,9 +1053,8 @@ public class SasangServiceImpl extends AppServiceSupporter implements
 	 * @param awards
 	 */
 	public Message sendAwards(Role role, Map<String, Integer> awards) {
-		Message message = messageService.createMessage(CoreModuleType.SASANG,
-				CoreModuleType.CLIENT, CoreMessageType.SASANG_AWARDS_RESPONSE,
-				role.getId());
+		Message message = messageService.createMessage(CoreModuleType.SASANG, CoreModuleType.CLIENT,
+				CoreMessageType.SASANG_AWARDS_RESPONSE, role.getId());
 
 		fillAwards(message, awards);
 		//
@@ -1090,8 +1066,7 @@ public class SasangServiceImpl extends AppServiceSupporter implements
 	/**
 	 * 放入包包的結果
 	 */
-	public static class PutResultImpl extends AppResultSupporter implements
-			PutResult {
+	public static class PutResultImpl extends AppResultSupporter implements PutResult {
 		private static final long serialVersionUID = -5914943285973752523L;
 
 		private Map<String, Integer> awards = new LinkedHashMap<String, Integer>();
@@ -1112,8 +1087,7 @@ public class SasangServiceImpl extends AppServiceSupporter implements
 		}
 
 		public String toString() {
-			ToStringBuilder builder = new ToStringBuilder(this,
-					ToStringStyle.SIMPLE_STYLE);
+			ToStringBuilder builder = new ToStringBuilder(this, ToStringStyle.SIMPLE_STYLE);
 			builder.appendSuper(super.toString());
 			builder.append("awards", awards);
 			return builder.toString();
@@ -1135,8 +1109,7 @@ public class SasangServiceImpl extends AppServiceSupporter implements
 	 * @param amount
 	 * @return
 	 */
-	public PutResult putOne(boolean sendable, Role role, String itemId,
-			int amount) {
+	public PutResult putOne(boolean sendable, Role role, String itemId, int amount) {
 		PutResult result = null;
 		// 檢查條件
 		ErrorType errorType = checkPutOne(role, itemId, amount);
@@ -1145,8 +1118,7 @@ public class SasangServiceImpl extends AppServiceSupporter implements
 			SasangPen sasangPen = role.getSasangPen();
 
 			// 再判斷放入包包是否成功
-			List<IncreaseItemResult> increaseResults = itemService
-					.increaseItem(true, role, itemId, amount);
+			List<IncreaseItemResult> increaseResults = itemService.increaseItem(true, role, itemId, amount);
 			if (increaseResults.size() >= 0) {
 				sasangPen.removeAward(itemId);
 				// 結果
@@ -1216,12 +1188,10 @@ public class SasangServiceImpl extends AppServiceSupporter implements
 	 * @param amount
 	 * @return
 	 */
-	public Message sendPutOne(ErrorType errorType, Role role, String itemId,
-			int amount) {
+	public Message sendPutOne(ErrorType errorType, Role role, String itemId, int amount) {
 
-		Message message = messageService.createMessage(CoreModuleType.SASANG,
-				CoreModuleType.CLIENT, CoreMessageType.SASANG_PUT_ONE_RESPONSE,
-				role.getId());
+		Message message = messageService.createMessage(CoreModuleType.SASANG, CoreModuleType.CLIENT,
+				CoreMessageType.SASANG_PUT_ONE_RESPONSE, role.getId());
 
 		message.addInt(errorType);// 0,錯誤類別
 		switch (errorType) {
@@ -1271,8 +1241,7 @@ public class SasangServiceImpl extends AppServiceSupporter implements
 					break;
 				}
 				// 再判斷放入包包是否成功
-				List<IncreaseItemResult> increaseResults = itemService
-						.increaseItem(true, role, itemId, amount);
+				List<IncreaseItemResult> increaseResults = itemService.increaseItem(true, role, itemId, amount);
 				if (increaseResults.size() >= 0) {
 					// 結果
 					if (result == null) {
@@ -1306,11 +1275,9 @@ public class SasangServiceImpl extends AppServiceSupporter implements
 	 * @param putResult
 	 * @return
 	 */
-	public Message sendPutAll(ErrorType errorType, Role role,
-			PutResult putResult) {
-		Message message = messageService.createMessage(CoreModuleType.SASANG,
-				CoreModuleType.CLIENT, CoreMessageType.SASANG_PUT_ALL_RESPONSE,
-				role.getId());
+	public Message sendPutAll(ErrorType errorType, Role role, PutResult putResult) {
+		Message message = messageService.createMessage(CoreModuleType.SASANG, CoreModuleType.CLIENT,
+				CoreMessageType.SASANG_PUT_ALL_RESPONSE, role.getId());
 
 		message.addInt(errorType);// 0,錯誤類別
 		switch (errorType) {
@@ -1381,8 +1348,7 @@ public class SasangServiceImpl extends AppServiceSupporter implements
 
 		// 玩的時間
 		long playTime = sasangPen.getPlayTime();
-		boolean overTime = DateHelper.isOverTime(playTime,
-				System.currentTimeMillis(), today.getTimeInMillis(),
+		boolean overTime = DateHelper.isOverTime(playTime, System.currentTimeMillis(), today.getTimeInMillis(),
 				tomorrow.getTimeInMillis());
 		// 超過重置時間
 		if (overTime) {
@@ -1400,9 +1366,8 @@ public class SasangServiceImpl extends AppServiceSupporter implements
 	 * @param sasangPen
 	 */
 	public Message sendReset(Role role, SasangPen sasangPen) {
-		Message message = messageService.createMessage(CoreModuleType.SASANG,
-				CoreModuleType.CLIENT, CoreMessageType.SASANG_RESET_RESPONSE,
-				role.getId());
+		Message message = messageService.createMessage(CoreModuleType.SASANG, CoreModuleType.CLIENT,
+				CoreMessageType.SASANG_RESET_RESPONSE, role.getId());
 
 		fillSasangPen(message, sasangPen);
 		//

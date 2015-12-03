@@ -34,7 +34,7 @@ public interface SasangMachine extends BaseService
 	 * 
 	 * @return
 	 */
-	Outcome start();
+	Outcome play();
 
 	/**
 	 * 啟動
@@ -42,6 +42,6 @@ public interface SasangMachine extends BaseService
 	 * @param times
 	 * @return
 	 */
-	List<Outcome> start(int times);
+	List<Outcome> play(int times);
 
 }

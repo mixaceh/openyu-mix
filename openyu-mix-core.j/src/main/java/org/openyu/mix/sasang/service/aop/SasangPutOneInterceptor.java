@@ -1,6 +1,5 @@
 package org.openyu.mix.sasang.service.aop;
 
-import java.lang.reflect.Method;
 
 import org.aopalliance.intercept.MethodInvocation;
 import org.slf4j.Logger;
@@ -18,6 +17,8 @@ import org.openyu.mix.sasang.service.SasangService.PutType;
  */
 public class SasangPutOneInterceptor extends AppMethodInterceptorSupporter {
 
+	private static final long serialVersionUID = 6776586270397964192L;
+
 	private static transient final Logger LOGGER = LoggerFactory
 			.getLogger(SasangPutOneInterceptor.class);
 	
@@ -33,15 +34,14 @@ public class SasangPutOneInterceptor extends AppMethodInterceptorSupporter {
 	 * 
 	 * PutResult putOne(boolean sendable, Role role, String itemId, int amount)
 	 */
-	public Object invoke(MethodInvocation methodInvocation, Method method,
-			Class<?>[] paramTypes, Object[] args) {
-		// 傳回值
+	protected Object doInvoke(MethodInvocation methodInvocation) throws Throwable {
 		Object result = null;
 		try {
 			// --------------------------------------------------
 			// proceed前
 			// --------------------------------------------------
 			// 參數
+			Object[] args = methodInvocation.getArguments();
 			boolean sendable = (Boolean) args[0];
 			Role role = (Role) args[1];
 			String itemId = (String) args[2];
@@ -62,8 +62,9 @@ public class SasangPutOneInterceptor extends AppMethodInterceptorSupporter {
 			if (ret != null) {
 				sasangLogService.recordPut(role, PutType.ONE, ret.getAwards());
 			}
-		} catch (Throwable ex) {
-			ex.printStackTrace();
+		} catch (Throwable e) {
+			LOGGER.error(new StringBuilder("Exception encountered during doInvoke()").toString(), e);
+			// throw e;
 		}
 		return result;
 	}

@@ -18,6 +18,7 @@ import org.openyu.mix.sasang.vo.impl.SasangImpl;
 import org.openyu.commons.bean.LocaleNameBean;
 import org.openyu.commons.bean.NamesBean;
 import org.openyu.commons.bean.supporter.LocaleNameBeanSupporter;
+import org.openyu.commons.collector.CollectorHelper;
 import org.openyu.commons.editor.ex.EditorException;
 import org.openyu.commons.editor.supporter.BaseEditorSupporter;
 import org.openyu.commons.enumz.EnumHelper;
@@ -91,7 +92,7 @@ public class SasangEditor extends BaseEditorSupporter {
 	protected WritableSheet writeToSheet_0(WritableWorkbook workbook) {
 		WritableSheet result = null;
 		try {
-			SasangCollector collector = beanCollector
+			SasangCollector collector = CollectorHelper
 					.readFromXml(SasangCollector.class);
 			//
 			result = workbook.createSheet("資料", 0);
@@ -426,7 +427,7 @@ public class SasangEditor extends BaseEditorSupporter {
 				}
 			}
 			//
-			result = beanCollector.writeToXml(SasangCollector.class, collector);
+			result = CollectorHelper.writeToXml(SasangCollector.class, collector);
 		} catch (Exception ex) {
 			throw new EditorException(ex);
 		} finally {

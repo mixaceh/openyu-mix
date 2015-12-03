@@ -1,6 +1,5 @@
 package org.openyu.mix.sasang.service.aop;
 
-import java.lang.reflect.Method;
 
 import org.aopalliance.intercept.MethodInvocation;
 import org.slf4j.Logger;
@@ -17,6 +16,8 @@ import org.openyu.mix.sasang.service.SasangLogService;
  */
 public class SasangPlayInterceptor extends AppMethodInterceptorSupporter {
 
+	private static final long serialVersionUID = -8510371894911249679L;
+
 	private static transient final Logger LOGGER = LoggerFactory
 			.getLogger(SasangPlayInterceptor.class);
 
@@ -32,15 +33,14 @@ public class SasangPlayInterceptor extends AppMethodInterceptorSupporter {
 	 * 
 	 * PlayResult play(boolean sendable, Role role, int playValue)
 	 */
-	public Object invoke(MethodInvocation methodInvocation, Method method,
-			Class<?>[] paramTypes, Object[] args) {
-		// 傳回值
+	protected Object doInvoke(MethodInvocation methodInvocation) throws Throwable {
 		Object result = null;
 		try {
 			// --------------------------------------------------
 			// proceed前
 			// --------------------------------------------------
 			// 參數
+			Object[] args = methodInvocation.getArguments();
 			boolean sendable = (Boolean) args[0];
 			Role role = (Role) args[1];
 			int playValue = (Integer) args[2];
@@ -67,8 +67,9 @@ public class SasangPlayInterceptor extends AppMethodInterceptorSupporter {
 				sasangLogService.recordFamous(role, ret.getPlayType(),
 						ret.getPlayTime(), ret.getOutcomes());
 			}
-		} catch (Throwable ex) {
-			ex.printStackTrace();
+		} catch (Throwable e) {
+			LOGGER.error(new StringBuilder("Exception encountered during doInvoke()").toString(), e);
+			// throw e;
 		}
 		return result;
 	}
