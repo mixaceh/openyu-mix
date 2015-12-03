@@ -45,17 +45,15 @@ import org.openyu.socklet.message.vo.Message;
 /**
  * 秘寶服務
  */
-public class TreasureServiceImpl extends AppServiceSupporter implements
-		TreasureService {
+public class TreasureServiceImpl extends AppServiceSupporter implements TreasureService {
 
 	private static final long serialVersionUID = -6406783662997385343L;
 
-	private static transient final Logger LOGGER = LoggerFactory
-			.getLogger(TreasureServiceImpl.class);
+	private static transient final Logger LOGGER = LoggerFactory.getLogger(TreasureServiceImpl.class);
 
 	@DefaultThreadService
 	private transient ThreadService threadService;
-	
+
 	@Autowired
 	@Qualifier("accountService")
 	protected transient AccountService accountService;
@@ -72,8 +70,7 @@ public class TreasureServiceImpl extends AppServiceSupporter implements
 	@Qualifier("roleSetService")
 	protected transient RoleSetService roleSetService;
 
-	private transient TreasureCollector treasureCollector = TreasureCollector
-			.getInstance();
+	private transient TreasureCollector treasureCollector = TreasureCollector.getInstance();
 
 	private transient VipCollector vipCollector = VipCollector.getInstance();
 
@@ -91,18 +88,21 @@ public class TreasureServiceImpl extends AppServiceSupporter implements
 	 * 監聽毫秒
 	 */
 	private long LISTEN_MILLS = 10 * 1000L;
-	
+
+	/**
+	 * 監聽
+	 */
 	private transient ListenRunner listenRunner;
 
 	public TreasureServiceImpl() {
 	}
-	
+
 	/**
 	 * 內部啟動
 	 */
 	@Override
 	protected void doStart() throws Exception {
-		listenRunner = new ListenRunner(threadService);
+		this.listenRunner = new ListenRunner(threadService);
 	}
 
 	/**
@@ -110,14 +110,14 @@ public class TreasureServiceImpl extends AppServiceSupporter implements
 	 */
 	@Override
 	protected void doShutdown() throws Exception {
-		listenRunner.shutdown();
+		this.listenRunner.shutdown();
 	}
 
 	/**
 	 * 監聽
 	 */
 	protected class ListenRunner extends BaseRunnableSupporter {
-		
+
 		public ListenRunner(ThreadService threadService) {
 			super(threadService);
 		}
@@ -230,8 +230,7 @@ public class TreasureServiceImpl extends AppServiceSupporter implements
 	}
 
 	protected Message sendInitialize(Role role) {
-		Message message = messageService.createMessage(CoreModuleType.TREASURE,
-				CoreModuleType.CLIENT,
+		Message message = messageService.createMessage(CoreModuleType.TREASURE, CoreModuleType.CLIENT,
 				CoreMessageType.TREASURE_INITIALIZE_RESPONSE, role.getId());
 
 		// 祕寶欄位
@@ -282,9 +281,8 @@ public class TreasureServiceImpl extends AppServiceSupporter implements
 	 * @return
 	 */
 	public Message sendTreasurePen(Role role, TreasurePen treasurePen) {
-		Message message = messageService.createMessage(CoreModuleType.TREASURE,
-				CoreModuleType.CLIENT, CoreMessageType.TREASURE_PEN_RESPONSE,
-				role.getId());
+		Message message = messageService.createMessage(CoreModuleType.TREASURE, CoreModuleType.CLIENT,
+				CoreMessageType.TREASURE_PEN_RESPONSE, role.getId());
 
 		fillTreasurePen(message, treasurePen);
 		//
@@ -328,8 +326,7 @@ public class TreasureServiceImpl extends AppServiceSupporter implements
 	 * @return
 	 */
 	public Message sendTreasure(Role role, Treasure treasure) {
-		Message message = messageService.createMessage(CoreModuleType.TREASURE,
-				CoreModuleType.CLIENT,
+		Message message = messageService.createMessage(CoreModuleType.TREASURE, CoreModuleType.CLIENT,
 				CoreMessageType.TREASURE_TREASURE_RESPONSE, role.getId());
 
 		fillTreasure(message, treasure);
@@ -442,8 +439,7 @@ public class TreasureServiceImpl extends AppServiceSupporter implements
 	/**
 	 * 刷新結果
 	 */
-	public static class RefreshResultImpl extends AppResultSupporter implements
-			RefreshResult {
+	public static class RefreshResultImpl extends AppResultSupporter implements RefreshResult {
 		private static final long serialVersionUID = -4944071242185614145L;
 
 		/**
@@ -476,8 +472,7 @@ public class TreasureServiceImpl extends AppServiceSupporter implements
 		 */
 		private int spendCoin;
 
-		public RefreshResultImpl(long refreshTime, long residualMills,
-				Map<Integer, Treasure> treasures, int totalTimes,
+		public RefreshResultImpl(long refreshTime, long residualMills, Map<Integer, Treasure> treasures, int totalTimes,
 				List<Item> spendItems, int spendCoin) {
 			this.refreshTime = refreshTime;
 			this.residualMills = residualMills;
@@ -497,11 +492,9 @@ public class TreasureServiceImpl extends AppServiceSupporter implements
 		 * @param totalTimes
 		 * @param spendItems
 		 */
-		public RefreshResultImpl(long refreshTime, long residualMills,
-				Map<Integer, Treasure> treasures, int totalTimes,
+		public RefreshResultImpl(long refreshTime, long residualMills, Map<Integer, Treasure> treasures, int totalTimes,
 				List<Item> spendItems) {
-			this(refreshTime, residualMills, treasures, totalTimes, spendItems,
-					0);
+			this(refreshTime, residualMills, treasures, totalTimes, spendItems, 0);
 		}
 
 		/**
@@ -512,10 +505,9 @@ public class TreasureServiceImpl extends AppServiceSupporter implements
 		 * @param treasures
 		 * @param spendCoin
 		 */
-		public RefreshResultImpl(long refreshTime, long residualMills,
-				Map<Integer, Treasure> treasures, int totalTimes, int spendCoin) {
-			this(refreshTime, residualMills, treasures, totalTimes,
-					new LinkedList<Item>(), spendCoin);
+		public RefreshResultImpl(long refreshTime, long residualMills, Map<Integer, Treasure> treasures, int totalTimes,
+				int spendCoin) {
+			this(refreshTime, residualMills, treasures, totalTimes, new LinkedList<Item>(), spendCoin);
 
 		}
 
@@ -572,8 +564,7 @@ public class TreasureServiceImpl extends AppServiceSupporter implements
 		}
 
 		public String toString() {
-			ToStringBuilder builder = new ToStringBuilder(this,
-					ToStringStyle.SIMPLE_STYLE);
+			ToStringBuilder builder = new ToStringBuilder(this, ToStringStyle.SIMPLE_STYLE);
 			builder.appendSuper(super.toString());
 			builder.append("refreshTime", refreshTime);
 			builder.append("residualMills", residualMills);
@@ -627,10 +618,8 @@ public class TreasureServiceImpl extends AppServiceSupporter implements
 			treasurePen = role.getTreasurePen();
 
 			// 消耗道具或儲值幣
-			SpendResult spendResult = roleService.spendByItemCoin(sendable,
-					role, treasureCollector.getRefreshItem(), 1,
-					treasureCollector.getRefreshCoin(),
-					CoinType.TREASURE_REFRESH,
+			SpendResult spendResult = roleService.spendByItemCoin(sendable, role, treasureCollector.getRefreshItem(), 1,
+					treasureCollector.getRefreshCoin(), CoinType.TREASURE_REFRESH,
 					vipCollector.getTreasureCoinVipType());
 			RoleService.ErrorType spendError = spendResult.getErrorType();
 			// System.out.println("spendError: " + spendError);
@@ -647,14 +636,12 @@ public class TreasureServiceImpl extends AppServiceSupporter implements
 
 				// 消耗道具
 				if (spendResult.getItemTimes() > 0) {
-					result = new RefreshResultImpl(now, residualMills,
-							treasures, spendResult.getTotalTimes(),
+					result = new RefreshResultImpl(now, residualMills, treasures, spendResult.getTotalTimes(),
 							spendResult.getItems());
 				}
 				// 消耗儲值幣
 				else {
-					result = new RefreshResultImpl(now, residualMills,
-							treasures, spendResult.getTotalTimes(),
+					result = new RefreshResultImpl(now, residualMills, treasures, spendResult.getTotalTimes(),
 							spendResult.getCoin());
 				}
 			} else {
@@ -739,8 +726,7 @@ public class TreasureServiceImpl extends AppServiceSupporter implements
 	 * @return
 	 */
 	public Message sendRefresh(ErrorType errorType, Role role) {
-		Message message = messageService.createMessage(CoreModuleType.TREASURE,
-				CoreModuleType.CLIENT,
+		Message message = messageService.createMessage(CoreModuleType.TREASURE, CoreModuleType.CLIENT,
 				CoreMessageType.TREASURE_REFRESH_RESPONSE, role.getId());
 
 		message.addInt(errorType);// 0, errorType 錯誤碼
@@ -763,8 +749,7 @@ public class TreasureServiceImpl extends AppServiceSupporter implements
 	/**
 	 * 購買秘寶結果
 	 */
-	public static class BuyResultImpl extends AppResultSupporter implements
-			BuyResult {
+	public static class BuyResultImpl extends AppResultSupporter implements BuyResult {
 
 		private static final long serialVersionUID = 9098649255414545945L;
 
@@ -798,8 +783,7 @@ public class TreasureServiceImpl extends AppServiceSupporter implements
 		 */
 		private int spendCoin;
 
-		public BuyResultImpl(BuyType buyType, int index, Treasure treasure,
-				Item item, long spendGold, int spendCoin) {
+		public BuyResultImpl(BuyType buyType, int index, Treasure treasure, Item item, long spendGold, int spendCoin) {
 			this.buyType = buyType;
 			this.index = index;
 			this.treasure = treasure;
@@ -818,8 +802,7 @@ public class TreasureServiceImpl extends AppServiceSupporter implements
 		 * @param item
 		 * @param spendGold
 		 */
-		public BuyResultImpl(BuyType buyType, int index, Treasure treasure,
-				Item item, long spendGold) {
+		public BuyResultImpl(BuyType buyType, int index, Treasure treasure, Item item, long spendGold) {
 			this(buyType, index, treasure, item, spendGold, 0);
 		}
 
@@ -832,8 +815,7 @@ public class TreasureServiceImpl extends AppServiceSupporter implements
 		 * @param item
 		 * @param spendCoin
 		 */
-		public BuyResultImpl(BuyType buyType, int index, Treasure treasure,
-				Item item, int spendCoin) {
+		public BuyResultImpl(BuyType buyType, int index, Treasure treasure, Item item, int spendCoin) {
 			this(buyType, index, treasure, item, 0L, spendCoin);
 		}
 
@@ -890,16 +872,12 @@ public class TreasureServiceImpl extends AppServiceSupporter implements
 		}
 
 		public String toString() {
-			ToStringBuilder builder = new ToStringBuilder(this,
-					ToStringStyle.SIMPLE_STYLE);
+			ToStringBuilder builder = new ToStringBuilder(this, ToStringStyle.SIMPLE_STYLE);
 			builder.appendSuper(super.toString());
 			builder.append("buyType", buyType);
 			builder.append("index", index);
-			builder.append("treasure", (treasure != null ? treasure.getId()
-					: null));
-			builder.append("item",
-					(item != null ? item.getId() + ", " + item.getUniqueId()
-							: null));
+			builder.append("treasure", (treasure != null ? treasure.getId() : null));
+			builder.append("item", (item != null ? item.getId() + ", " + item.getUniqueId() : null));
 			builder.append("spendGold", spendGold);
 			builder.append("spendCoin", spendCoin);
 			return builder.toString();
@@ -974,19 +952,16 @@ public class TreasureServiceImpl extends AppServiceSupporter implements
 			// 祕寶
 			TreasurePen treasurePen = role.getTreasurePen();
 			Treasure treasure = treasurePen.getTreasures().get(index);
-			Item item = itemService.createItem(treasure.getId(),
-					treasure.getAmount());
+			Item item = itemService.createItem(treasure.getId(), treasure.getAmount());
 
 			// 花費的金幣
 			long spendGold = treasure.getAmount() * item.getPrice();
 			// 扣金幣
-			long decreaseGold = roleService.decreaseGold(true, role, spendGold,
-					GoldType.TREASURE_BUY);
+			long decreaseGold = roleService.decreaseGold(true, role, spendGold, GoldType.TREASURE_BUY);
 			// 成功
 			if (decreaseGold != 0) {
 				// 增加多個道具
-				List<IncreaseItemResult> increaseResults = itemService
-						.increaseItem(sendable, role, item);
+				List<IncreaseItemResult> increaseResults = itemService.increaseItem(sendable, role, item);
 				// 成功
 				if (increaseResults.size() > 0) {
 					treasure.setBought(true);// 已購買
@@ -1005,8 +980,7 @@ public class TreasureServiceImpl extends AppServiceSupporter implements
 					notice = addNotice(role, treasure, item);
 
 					// 結果
-					result = new BuyResultImpl(BuyType.GOLD, index, treasure,
-							item, spendGold);
+					result = new BuyResultImpl(BuyType.GOLD, index, treasure, item, spendGold);
 				} else {
 					errorType = ErrorType.CAN_NOT_INCREASE_ITEM;
 				}
@@ -1067,8 +1041,7 @@ public class TreasureServiceImpl extends AppServiceSupporter implements
 		}
 
 		// 道具不存在
-		Item item = itemService.createItem(treasure.getId(),
-				treasure.getAmount());
+		Item item = itemService.createItem(treasure.getId(), treasure.getAmount());
 		if (item == null) {
 			errorType = ErrorType.ITEM_NOT_EXIST;
 			return errorType;
@@ -1083,8 +1056,7 @@ public class TreasureServiceImpl extends AppServiceSupporter implements
 
 		// 金幣不足
 		long spendGold = treasure.getAmount() * price;
-		boolean checkDecreaseGold = roleService.checkDecreaseGold(role,
-				spendGold);
+		boolean checkDecreaseGold = roleService.checkDecreaseGold(role, spendGold);
 		if (!checkDecreaseGold) {
 			errorType = ErrorType.GOLD_NOT_ENOUGH;
 			return errorType;
@@ -1119,20 +1091,17 @@ public class TreasureServiceImpl extends AppServiceSupporter implements
 			// 祕寶
 			TreasurePen treasurePen = role.getTreasurePen();
 			Treasure treasure = treasurePen.getTreasures().get(index);
-			Item item = itemService.createItem(treasure.getId(),
-					treasure.getAmount());
+			Item item = itemService.createItem(treasure.getId(), treasure.getAmount());
 
 			// 花費的儲值幣
 			int spendCoin = treasure.getAmount() * item.getCoin();
 			// 扣儲值幣
-			int decrease = accountService
-					.decreaseCoin(sendable, role.getAccountId(), role,
-							spendCoin, CoinType.TREASURE_BUY);
+			int decrease = accountService.decreaseCoin(sendable, role.getAccountId(), role, spendCoin,
+					CoinType.TREASURE_BUY);
 			// 成功
 			if (decrease != 0) {
 				// 增加多個道具
-				List<IncreaseItemResult> increaseResults = itemService
-						.increaseItem(sendable, role, item);
+				List<IncreaseItemResult> increaseResults = itemService.increaseItem(sendable, role, item);
 				// 成功
 				if (increaseResults.size() > 0) {
 					treasure.setBought(true);// 已購買
@@ -1150,8 +1119,7 @@ public class TreasureServiceImpl extends AppServiceSupporter implements
 					notice = addNotice(role, treasure, item);
 
 					// 結果
-					result = new BuyResultImpl(BuyType.COIN, index, treasure,
-							item, spendCoin);
+					result = new BuyResultImpl(BuyType.COIN, index, treasure, item, spendCoin);
 				} else {
 					errorType = ErrorType.CAN_NOT_INCREASE_ITEM;
 				}
@@ -1212,8 +1180,7 @@ public class TreasureServiceImpl extends AppServiceSupporter implements
 		}
 
 		// 道具不存在
-		Item item = itemService.createItem(treasure.getId(),
-				treasure.getAmount());
+		Item item = itemService.createItem(treasure.getId(), treasure.getAmount());
 		if (item == null) {
 			errorType = ErrorType.ITEM_NOT_EXIST;
 			return errorType;
@@ -1227,16 +1194,14 @@ public class TreasureServiceImpl extends AppServiceSupporter implements
 		}
 
 		// vip不足
-		if (role.getVipType().getValue() < vipCollector
-				.getTreasureCoinVipType().getValue()) {
+		if (role.getVipType().getValue() < vipCollector.getTreasureCoinVipType().getValue()) {
 			errorType = ErrorType.VIP_NOT_ENOUGH;
 			return errorType;
 		}
 
 		// 儲值幣不足
 		int spendCoin = treasure.getAmount() * coin;
-		boolean checkDecrease = accountService.checkDecreaseCoin(
-				role.getAccountId(), spendCoin);
+		boolean checkDecrease = accountService.checkDecreaseCoin(role.getAccountId(), spendCoin);
 		if (!checkDecrease) {
 			errorType = ErrorType.COIN_NOT_ENOUGH;
 			return errorType;
@@ -1261,9 +1226,8 @@ public class TreasureServiceImpl extends AppServiceSupporter implements
 	 * @return
 	 */
 	public Message sendBuy(ErrorType errorType, Role role, BuyResult buyResult) {
-		Message message = messageService.createMessage(CoreModuleType.TREASURE,
-				CoreModuleType.CLIENT, CoreMessageType.TREASURE_BUY_RESPONSE,
-				role.getId());
+		Message message = messageService.createMessage(CoreModuleType.TREASURE, CoreModuleType.CLIENT,
+				CoreMessageType.TREASURE_BUY_RESPONSE, role.getId());
 
 		message.addInt(errorType);// 0, errorType 錯誤碼
 
@@ -1299,8 +1263,7 @@ public class TreasureServiceImpl extends AppServiceSupporter implements
 		// 取所有角色id
 		List<String> receivers = roleSetService.getRoleIds();
 		//
-		Message message = messageService.createMessage(CoreModuleType.TREASURE,
-				CoreModuleType.CLIENT,
+		Message message = messageService.createMessage(CoreModuleType.TREASURE, CoreModuleType.CLIENT,
 				CoreMessageType.TREASURE_FAMOUS_BUY_RESPONSE, receivers);
 
 		message.addString(role.getName());// 角色名稱
@@ -1358,8 +1321,7 @@ public class TreasureServiceImpl extends AppServiceSupporter implements
 		// 取所有角色id,只限本地
 		List<String> receivers = roleSetService.getRoleIds(false);
 		//
-		Message message = messageService.createMessage(CoreModuleType.TREASURE,
-				CoreModuleType.CLIENT,
+		Message message = messageService.createMessage(CoreModuleType.TREASURE, CoreModuleType.CLIENT,
 				CoreMessageType.TREASURE_NOTICE_RESPONSE, receivers);
 
 		fillNotice(message, notice);
@@ -1399,9 +1361,8 @@ public class TreasureServiceImpl extends AppServiceSupporter implements
 	 * @return
 	 */
 	protected Message sendBoard(Role role) {
-		Message message = messageService.createMessage(CoreModuleType.TREASURE,
-				CoreModuleType.CLIENT, CoreMessageType.TREASURE_BOARD_RESPONSE,
-				role.getId());
+		Message message = messageService.createMessage(CoreModuleType.TREASURE, CoreModuleType.CLIENT,
+				CoreMessageType.TREASURE_BOARD_RESPONSE, role.getId());
 
 		message.addInt(board.size());
 		for (Notice notice : board) {

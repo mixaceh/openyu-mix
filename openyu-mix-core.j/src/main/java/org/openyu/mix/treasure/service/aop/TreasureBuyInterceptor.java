@@ -1,7 +1,5 @@
 package org.openyu.mix.treasure.service.aop;
 
-import java.lang.reflect.Method;
-
 import org.aopalliance.intercept.MethodInvocation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,6 +14,8 @@ import org.openyu.mix.treasure.service.TreasureService.BuyResult;
  * 祕寶購買攔截器
  */
 public class TreasureBuyInterceptor extends AppMethodInterceptorSupporter {
+
+	private static final long serialVersionUID = 6260420634235652046L;
 
 	private static transient final Logger LOGGER = LoggerFactory.getLogger(TreasureBuyInterceptor.class);
 
