@@ -17,8 +17,7 @@ import org.openyu.mix.treasure.service.TreasureService.BuyResult;
  */
 public class TreasureBuyInterceptor extends AppMethodInterceptorSupporter {
 
-	private static transient final Logger LOGGER = LoggerFactory
-			.getLogger(TreasureBuyInterceptor.class);
+	private static transient final Logger LOGGER = LoggerFactory.getLogger(TreasureBuyInterceptor.class);
 
 	@Autowired
 	@Qualifier("treasureLogService")
@@ -32,15 +31,14 @@ public class TreasureBuyInterceptor extends AppMethodInterceptorSupporter {
 	 * 
 	 * BuyResult buy(boolean sendable, Role role, int buyValue, int index)
 	 */
-	public Object invoke(MethodInvocation methodInvocation, Method method,
-			Class<?>[] paramTypes, Object[] args) {
-		// 傳回值
+	protected Object doInvoke(MethodInvocation methodInvocation) throws Throwable {
 		Object result = null;
 		try {
 			// --------------------------------------------------
 			// proceed前
 			// --------------------------------------------------
 			// 參數
+			Object[] args = methodInvocation.getArguments();
 			boolean sendable = (Boolean) args[0];
 			Role role = (Role) args[1];
 			int buyValue = (Integer) args[2];
@@ -58,12 +56,12 @@ public class TreasureBuyInterceptor extends AppMethodInterceptorSupporter {
 			BuyResult ret = (BuyResult) result;
 			//
 			if (ret != null) {
-				treasureLogService.recordBuy(role, ret.getBuyType(),
-						ret.getIndex(), ret.getTreasure(), ret.getItem(),
+				treasureLogService.recordBuy(role, ret.getBuyType(), ret.getIndex(), ret.getTreasure(), ret.getItem(),
 						ret.getSpendGold(), ret.getSpendCoin());
 			}
-		} catch (Throwable ex) {
-			ex.printStackTrace();
+		} catch (Throwable e) {
+			LOGGER.error(new StringBuilder("Exception encountered during doInvoke()").toString(), e);
+			// throw e;
 		}
 		return result;
 	}

@@ -17,8 +17,7 @@ import org.openyu.mix.treasure.service.TreasureService.RefreshResult;
  */
 public class TreasureRefreshInterceptor extends AppMethodInterceptorSupporter {
 
-	private static transient final Logger LOGGER = LoggerFactory
-			.getLogger(TreasureRefreshInterceptor.class);
+	private static transient final Logger LOGGER = LoggerFactory.getLogger(TreasureRefreshInterceptor.class);
 
 	@Autowired
 	@Qualifier("treasureLogService")
@@ -32,15 +31,14 @@ public class TreasureRefreshInterceptor extends AppMethodInterceptorSupporter {
 	 * 
 	 * RefreshResult refresh(boolean sendable, Role role)
 	 */
-	public Object invoke(MethodInvocation methodInvocation, Method method,
-			Class<?>[] paramTypes, Object[] args) {
-		// 傳回值
+	protected Object doInvoke(MethodInvocation methodInvocation) throws Throwable {
 		Object result = null;
 		try {
 			// --------------------------------------------------
 			// proceed前
 			// --------------------------------------------------
 			// 參數
+			Object[] args = methodInvocation.getArguments();
 			boolean sendable = (Boolean) args[0];
 			Role role = (Role) args[1];
 
@@ -56,12 +54,12 @@ public class TreasureRefreshInterceptor extends AppMethodInterceptorSupporter {
 			RefreshResult ret = (RefreshResult) result;
 			//
 			if (ret != null) {
-				treasureLogService.recordRefresh(role, ret.getRefreshTime(),
-						ret.getTreasures(), ret.getSpendItems(),
+				treasureLogService.recordRefresh(role, ret.getRefreshTime(), ret.getTreasures(), ret.getSpendItems(),
 						ret.getSpendCoin());
 			}
-		} catch (Throwable ex) {
-			ex.printStackTrace();
+		} catch (Throwable e) {
+			LOGGER.error(new StringBuilder("Exception encountered during doInvoke()").toString(), e);
+			// throw e;
 		}
 		return result;
 	}

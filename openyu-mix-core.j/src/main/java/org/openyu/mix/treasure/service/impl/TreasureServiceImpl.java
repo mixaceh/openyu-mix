@@ -37,6 +37,8 @@ import org.openyu.mix.role.vo.Role;
 import org.openyu.mix.vip.vo.VipCollector;
 import org.openyu.commons.enumz.EnumHelper;
 import org.openyu.commons.thread.ThreadHelper;
+import org.openyu.commons.thread.ThreadService;
+import org.openyu.commons.thread.anno.DefaultThreadService;
 import org.openyu.commons.thread.supporter.BaseRunnableSupporter;
 import org.openyu.socklet.message.vo.Message;
 
@@ -51,6 +53,9 @@ public class TreasureServiceImpl extends AppServiceSupporter implements
 	private static transient final Logger LOGGER = LoggerFactory
 			.getLogger(TreasureServiceImpl.class);
 
+	@DefaultThreadService
+	private transient ThreadService threadService;
+	
 	@Autowired
 	@Qualifier("accountService")
 	protected transient AccountService accountService;
@@ -86,27 +91,39 @@ public class TreasureServiceImpl extends AppServiceSupporter implements
 	 * 監聽毫秒
 	 */
 	private long LISTEN_MILLS = 10 * 1000L;
+	
+	private transient ListenRunner listenRunner;
 
 	public TreasureServiceImpl() {
 	}
+	
+	/**
+	 * 內部啟動
+	 */
+	@Override
+	protected void doStart() throws Exception {
+		listenRunner = new ListenRunner(threadService);
+	}
 
 	/**
-	 * 初始化
-	 *
-	 * @throws Exception
+	 * 內部關閉
 	 */
-	protected void init() throws Exception {
-		super.init();
-		//
-		// 監聽
-		threadService.submit(new ListenRunner());
+	@Override
+	protected void doShutdown() throws Exception {
+		listenRunner.shutdown();
 	}
 
 	/**
 	 * 監聽
 	 */
 	protected class ListenRunner extends BaseRunnableSupporter {
-		public void execute() {
+		
+		public ListenRunner(ThreadService threadService) {
+			super(threadService);
+		}
+
+		@Override
+		protected void doRun() throws Exception {
 			while (true) {
 				try {
 					listen();
