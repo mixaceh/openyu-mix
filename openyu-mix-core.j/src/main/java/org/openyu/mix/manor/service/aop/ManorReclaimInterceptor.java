@@ -1,7 +1,5 @@
 package org.openyu.mix.manor.service.aop;
 
-import java.lang.reflect.Method;
-
 import org.aopalliance.intercept.MethodInvocation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,8 +15,9 @@ import org.openyu.mix.role.vo.Role;
  */
 public class ManorReclaimInterceptor extends AppMethodInterceptorSupporter {
 
-	private static transient final Logger LOGGER = LoggerFactory
-			.getLogger(ManorReclaimInterceptor.class);
+	private static final long serialVersionUID = 1901322964362004603L;
+
+	private static transient final Logger LOGGER = LoggerFactory.getLogger(ManorReclaimInterceptor.class);
 
 	@Autowired
 	@Qualifier("manorLogService")
@@ -33,15 +32,14 @@ public class ManorReclaimInterceptor extends AppMethodInterceptorSupporter {
 	 * ReclaimResult reclaim(boolean sendable, Role role, int farmIndex, String
 	 * landUniqueId);
 	 */
-	public Object invoke(MethodInvocation methodInvocation, Method method,
-			Class<?>[] paramTypes, Object[] args) {
-		// 傳回值
+	protected Object doInvoke(MethodInvocation methodInvocation) throws Throwable {
 		Object result = null;
 		try {
 			// --------------------------------------------------
 			// proceed前
 			// --------------------------------------------------
 			// 參數
+			Object[] args = methodInvocation.getArguments();
 			boolean sendable = (Boolean) args[0];
 			Role role = (Role) args[1];
 			int farmIndex = (Integer) args[2];
@@ -59,11 +57,11 @@ public class ManorReclaimInterceptor extends AppMethodInterceptorSupporter {
 			ReclaimResult ret = (ReclaimResult) result;
 			//
 			if (ret != null) {
-				manorLogService.recordReclaim(role, ret.getFarmIndex(),
-						ret.getLand(), ret.getSpendGold());
+				manorLogService.recordReclaim(role, ret.getFarmIndex(), ret.getLand(), ret.getSpendGold());
 			}
-		} catch (Throwable ex) {
-			ex.printStackTrace();
+		} catch (Throwable e) {
+			LOGGER.error(new StringBuilder("Exception encountered during doInvoke()").toString(), e);
+			// throw e;
 		}
 		return result;
 	}

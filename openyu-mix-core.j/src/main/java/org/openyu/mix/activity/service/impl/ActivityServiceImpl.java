@@ -63,7 +63,10 @@ public class ActivityServiceImpl extends AppServiceSupporter implements Activity
 	 */
 	private long LISTEN_MILLS = 10 * 1000L;
 
-	private transient ListenRunner listenRunner;
+	/**
+	 * 監聽
+	 */
+	private transient ActivityListenRunner activityListenRunner;
 
 	public ActivityServiceImpl() {
 	}
@@ -73,7 +76,8 @@ public class ActivityServiceImpl extends AppServiceSupporter implements Activity
 	 */
 	@Override
 	protected void doStart() throws Exception {
-		listenRunner = new ListenRunner(threadService);
+		super.doStart();
+		this.activityListenRunner = new ActivityListenRunner(threadService);
 	}
 
 	/**
@@ -81,16 +85,18 @@ public class ActivityServiceImpl extends AppServiceSupporter implements Activity
 	 */
 	@Override
 	protected void doShutdown() throws Exception {
-		listenRunner.shutdown();
+		super.doShutdown();
+		this.activityListenRunner.shutdown();
 	}
+	
 	// --------------------------------------------------
 
 	/**
 	 * 監聽
 	 */
-	protected class ListenRunner extends BaseRunnableSupporter {
+	protected class ActivityListenRunner extends BaseRunnableSupporter {
 
-		public ListenRunner(ThreadService threadService) {
+		public ActivityListenRunner(ThreadService threadService) {
 			super(threadService);
 		}
 

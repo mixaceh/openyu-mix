@@ -42,16 +42,24 @@ import org.openyu.mix.vip.vo.VipType;
 import org.openyu.commons.enumz.EnumHelper;
 import org.openyu.commons.lang.NumberHelper;
 import org.openyu.commons.thread.ThreadHelper;
+import org.openyu.commons.thread.ThreadService;
+import org.openyu.commons.thread.anno.DefaultThreadService;
 import org.openyu.commons.thread.supporter.BaseRunnableSupporter;
 import org.openyu.socklet.message.vo.Message;
 
-public class ManorServiceImpl extends AppServiceSupporter implements
-		ManorService {
+public class ManorServiceImpl extends AppServiceSupporter implements ManorService {
 
 	private static final long serialVersionUID = -1082911837246717368L;
 
-	private static transient final Logger LOGGER = LoggerFactory
-			.getLogger(ManorServiceImpl.class);
+	private static transient final Logger LOGGER = LoggerFactory.getLogger(ManorServiceImpl.class);
+	
+	/**
+	 * 線程服務
+	 */
+	// @Autowired
+	// @Qualifier("threadService")
+	@DefaultThreadService
+	private transient ThreadService threadService;
 
 	@Autowired
 	@Qualifier("accountService")
@@ -69,8 +77,7 @@ public class ManorServiceImpl extends AppServiceSupporter implements
 	@Qualifier("roleSetService")
 	protected transient RoleSetService roleSetService;
 
-	private transient ManorCollector manorCollector = ManorCollector
-			.getInstance();
+	private transient ManorCollector manorCollector = ManorCollector.getInstance();
 
 	private transient VipCollector vipCollector = VipCollector.getInstance();
 
@@ -79,39 +86,53 @@ public class ManorServiceImpl extends AppServiceSupporter implements
 	 */
 	private long LISTEN_MILLS = 10 * 1000L;
 
+	/**
+	 * 監聽
+	 */
+	private transient ManorListenRunner manorListenRunner;
+
 	public ManorServiceImpl() {
 	}
 
 	/**
-	 * 初始化
-	 *
-	 * @throws Exception
+	 * 內部啟動
 	 */
-	protected void init() throws Exception {
-		super.init();
-		//
-		// 監聽
-		threadService.submit(new ManorListenRunner());
+	@Override
+	protected void doStart() throws Exception {
+		super.doStart();
+		this.manorListenRunner = new ManorListenRunner(threadService);
 	}
+
+	/**
+	 * 內部關閉
+	 */
+	@Override
+	protected void doShutdown() throws Exception {
+		super.doShutdown();
+		this.manorListenRunner.shutdown();
+	}
+
+	// --------------------------------------------------
 
 	/**
 	 * 監聽
 	 */
 	protected class ManorListenRunner extends BaseRunnableSupporter {
-		public void execute() {
+
+		public ManorListenRunner(ThreadService threadService) {
+			super(threadService);
+		}
+
+		@Override
+		protected void doRun() throws Exception {
 			while (true) {
 				try {
-					if (isCancel()) {
-						break;
-					}
 					listen();
 					ThreadHelper.sleep(LISTEN_MILLS);
 				} catch (Exception ex) {
 					// ex.printStackTrace();
 				}
 			}
-			//
-			LOGGER.warn("Break off " + getClass().getSimpleName());
 		}
 	}
 
@@ -172,9 +193,8 @@ public class ManorServiceImpl extends AppServiceSupporter implements
 						seed.setMatureType(MatureType.MATURE);
 						seed.setMatureTime(now);
 						// 發訊息
-						CultureResult cultureResult = new CultureResultImpl(
-								CultureType.PLANT, farmIndex, gridIndex, seed,
-								residualMills);
+						CultureResult cultureResult = new CultureResultImpl(CultureType.PLANT, farmIndex, gridIndex,
+								seed, residualMills);
 						sendCulture(ErrorType.NO_ERROR, role, cultureResult);
 					}
 					break;
@@ -186,9 +206,8 @@ public class ManorServiceImpl extends AppServiceSupporter implements
 					if (matureMills >= seed.getReapMills()) {
 						seed.setMatureType(MatureType.WITHER);
 						// 發訊息
-						CultureResult cultureResult = new CultureResultImpl(
-								CultureType.PLANT, farmIndex, gridIndex, seed,
-								0L);
+						CultureResult cultureResult = new CultureResultImpl(CultureType.PLANT, farmIndex, gridIndex,
+								seed, 0L);
 						sendCulture(ErrorType.NO_ERROR, role, cultureResult);
 					}
 					break;
@@ -239,8 +258,7 @@ public class ManorServiceImpl extends AppServiceSupporter implements
 	}
 
 	protected Message sendInitialize(Role role) {
-		Message message = messageService.createMessage(CoreModuleType.MANOR,
-				CoreModuleType.CLIENT,
+		Message message = messageService.createMessage(CoreModuleType.MANOR, CoreModuleType.CLIENT,
 				CoreMessageType.MANOR_INITIALIZE_RESPONSE, role.getId());
 
 		// 莊園
@@ -298,8 +316,7 @@ public class ManorServiceImpl extends AppServiceSupporter implements
 			int index = farmType.getValue();
 			// 由農場頁類型,取得vip類型
 			VipType vipType = vipCollector.getVipType(farmType);
-			if (vipType == null
-					|| role.getVipType().getValue() >= vipType.getValue()) {
+			if (vipType == null || role.getVipType().getValue() >= vipType.getValue()) {
 				manorPen.unLock(index);
 			} else {
 				manorPen.lock(index);
@@ -322,8 +339,7 @@ public class ManorServiceImpl extends AppServiceSupporter implements
 	 * @param tab
 	 */
 	protected void sendFarmLocked(String roleId, Farm farm) {
-		Message message = messageService.createMessage(CoreModuleType.MANOR,
-				CoreModuleType.CLIENT,
+		Message message = messageService.createMessage(CoreModuleType.MANOR, CoreModuleType.CLIENT,
 				CoreMessageType.MANOR_FARM_LOCKED_RESPONSE, roleId);
 
 		fillFarmLocked(message, farm);
@@ -349,8 +365,7 @@ public class ManorServiceImpl extends AppServiceSupporter implements
 	 * @param bagPen
 	 */
 	protected void sendFarmsLocked(String roleId, ManorPen manorPen) {
-		Message message = messageService.createMessage(CoreModuleType.MANOR,
-				CoreModuleType.CLIENT,
+		Message message = messageService.createMessage(CoreModuleType.MANOR, CoreModuleType.CLIENT,
 				CoreMessageType.MANOR_FARMS_LOCKED_RESPONSE, roleId);
 
 		Map<Integer, Farm> tabs = manorPen.getFarms();// 包含被鎖定的農場頁
@@ -369,9 +384,8 @@ public class ManorServiceImpl extends AppServiceSupporter implements
 	 * @param bagPen
 	 */
 	public Message sendManorPen(Role role, ManorPen manorPen) {
-		Message message = messageService.createMessage(CoreModuleType.MANOR,
-				CoreModuleType.CLIENT, CoreMessageType.MANOR_PEN_RESPONSE,
-				role.getId());
+		Message message = messageService.createMessage(CoreModuleType.MANOR, CoreModuleType.CLIENT,
+				CoreMessageType.MANOR_PEN_RESPONSE, role.getId());
 
 		fillManorPen(message, manorPen);
 		//
@@ -412,9 +426,8 @@ public class ManorServiceImpl extends AppServiceSupporter implements
 	 * @param farm
 	 */
 	public Message sendFarm(Role role, Farm farm) {
-		Message message = messageService.createMessage(CoreModuleType.MANOR,
-				CoreModuleType.CLIENT, CoreMessageType.MANOR_FARM_RESPONSE,
-				role.getId());
+		Message message = messageService.createMessage(CoreModuleType.MANOR, CoreModuleType.CLIENT,
+				CoreMessageType.MANOR_FARM_RESPONSE, role.getId());
 
 		fillFarm(message, farm);
 		//
@@ -469,8 +482,7 @@ public class ManorServiceImpl extends AppServiceSupporter implements
 	/**
 	 * 開墾結果
 	 */
-	public static class ReclaimResultImpl extends AppResultSupporter implements
-			ReclaimResult {
+	public static class ReclaimResultImpl extends AppResultSupporter implements ReclaimResult {
 
 		private static final long serialVersionUID = -7956428086169764989L;
 
@@ -524,13 +536,10 @@ public class ManorServiceImpl extends AppServiceSupporter implements
 		}
 
 		public String toString() {
-			ToStringBuilder builder = new ToStringBuilder(this,
-					ToStringStyle.SIMPLE_STYLE);
+			ToStringBuilder builder = new ToStringBuilder(this, ToStringStyle.SIMPLE_STYLE);
 			builder.appendSuper(super.toString());
 			builder.append("farmIndex", farmIndex);
-			builder.append("land",
-					(land != null ? land.getId() + ", " + land.getUniqueId()
-							: null));
+			builder.append("land", (land != null ? land.getId() + ", " + land.getUniqueId() : null));
 			builder.append("spendGold", spendGold);
 			return builder.toString();
 		}
@@ -550,8 +559,7 @@ public class ManorServiceImpl extends AppServiceSupporter implements
 	 * @param farmIndex
 	 * @param landUniqueId
 	 */
-	public ReclaimResult reclaim(boolean sendable, Role role, int farmIndex,
-			String landUniqueId) {
+	public ReclaimResult reclaim(boolean sendable, Role role, int farmIndex, String landUniqueId) {
 		ReclaimResult result = null;
 		Land land = null;
 		// 檢查條件
@@ -564,13 +572,11 @@ public class ManorServiceImpl extends AppServiceSupporter implements
 
 			// 扣金幣
 			long spendGold = manorCollector.getReclaimGold();
-			long decreaseGold = roleService.decreaseGold(sendable, role,
-					spendGold, GoldType.MANOR_RECLAIM);
+			long decreaseGold = roleService.decreaseGold(sendable, role, spendGold, GoldType.MANOR_RECLAIM);
 			// 成功
 			if (decreaseGold != 0) {
 				// 把土地從包包扣除
-				List<DecreaseItemResult> decreaseResults = itemService
-						.decreaseItem(sendable, role, land);
+				List<DecreaseItemResult> decreaseResults = itemService.decreaseItem(sendable, role, land);
 				// 成功
 				if (decreaseResults.size() > 0) {
 					// 農場
@@ -613,8 +619,7 @@ public class ManorServiceImpl extends AppServiceSupporter implements
 
 		// 金幣不足
 		long spendGold = manorCollector.getReclaimGold();
-		boolean checkDecreaseGold = roleService.checkDecreaseGold(role,
-				spendGold);
+		boolean checkDecreaseGold = roleService.checkDecreaseGold(role, spendGold);
 		if (!checkDecreaseGold) {
 			errorType = ErrorType.GOLD_NOT_ENOUGH;
 			return errorType;
@@ -669,11 +674,9 @@ public class ManorServiceImpl extends AppServiceSupporter implements
 	 * @param farmIndex
 	 * @param land
 	 */
-	public Message sendReclaim(ErrorType errorType, Role role, int farmIndex,
-			Land land) {
-		Message message = messageService.createMessage(CoreModuleType.MANOR,
-				CoreModuleType.CLIENT, CoreMessageType.MANOR_RECLAIM_RESPONSE,
-				role.getId());
+	public Message sendReclaim(ErrorType errorType, Role role, int farmIndex, Land land) {
+		Message message = messageService.createMessage(CoreModuleType.MANOR, CoreModuleType.CLIENT,
+				CoreMessageType.MANOR_RECLAIM_RESPONSE, role.getId());
 
 		message.addInt(errorType);// 0, errorType 錯誤碼
 
@@ -697,8 +700,7 @@ public class ManorServiceImpl extends AppServiceSupporter implements
 	/**
 	 * 休耕結果
 	 */
-	public static class DisuseResultImpl extends ReclaimResultImpl implements
-			DisuseResult {
+	public static class DisuseResultImpl extends ReclaimResultImpl implements DisuseResult {
 
 		private static final long serialVersionUID = 4804066996834416637L;
 
@@ -730,13 +732,11 @@ public class ManorServiceImpl extends AppServiceSupporter implements
 
 			// 扣金幣
 			long spendGold = manorCollector.getDisuseGold();
-			long decreaseGold = roleService.decreaseGold(sendable, role,
-					spendGold, GoldType.MANOR_DISUSE);
+			long decreaseGold = roleService.decreaseGold(sendable, role, spendGold, GoldType.MANOR_DISUSE);
 			// 成功
 			if (decreaseGold != 0) {
 				// 把土地放回包包
-				List<IncreaseItemResult> increaseResults = itemService
-						.increaseItem(sendable, role, land);
+				List<IncreaseItemResult> increaseResults = itemService.increaseItem(sendable, role, land);
 				// 成功
 				if (increaseResults.size() > 0) {
 					farm.setLand(null);// 移除土地
@@ -779,8 +779,7 @@ public class ManorServiceImpl extends AppServiceSupporter implements
 
 		// 金幣不足
 		long spendGold = manorCollector.getDisuseGold();
-		boolean checkDecreaseGold = roleService.checkDecreaseGold(role,
-				spendGold);
+		boolean checkDecreaseGold = roleService.checkDecreaseGold(role, spendGold);
 		if (!checkDecreaseGold) {
 			errorType = ErrorType.GOLD_NOT_ENOUGH;
 			return errorType;
@@ -821,9 +820,8 @@ public class ManorServiceImpl extends AppServiceSupporter implements
 	 * @param farmIndex
 	 */
 	public Message sendDisuse(ErrorType errorType, Role role, int farmIndex) {
-		Message message = messageService.createMessage(CoreModuleType.MANOR,
-				CoreModuleType.CLIENT, CoreMessageType.MANOR_DISUSE_RESPONSE,
-				role.getId());
+		Message message = messageService.createMessage(CoreModuleType.MANOR, CoreModuleType.CLIENT,
+				CoreMessageType.MANOR_DISUSE_RESPONSE, role.getId());
 
 		message.addInt(errorType);// 0, errorType 錯誤碼
 
@@ -845,8 +843,7 @@ public class ManorServiceImpl extends AppServiceSupporter implements
 	/**
 	 * 耕種結果
 	 */
-	public static class CultureResultImpl extends AppResultSupporter implements
-			CultureResult {
+	public static class CultureResultImpl extends AppResultSupporter implements CultureResult {
 		private static final long serialVersionUID = -7816000021627261466L;
 
 		private CultureType cultureType;
@@ -872,8 +869,7 @@ public class ManorServiceImpl extends AppServiceSupporter implements
 		 */
 		private int spendCoin;
 
-		public CultureResultImpl(CultureType cultureType, int farmIndex,
-				int gridIndex, Seed seed, long residualMills,
+		public CultureResultImpl(CultureType cultureType, int farmIndex, int gridIndex, Seed seed, long residualMills,
 				List<Item> spendItems, int spendCoin) {
 			this.cultureType = cultureType;
 			this.farmIndex = farmIndex;
@@ -895,11 +891,9 @@ public class ManorServiceImpl extends AppServiceSupporter implements
 		 * @param residualMills
 		 * @param spendItems
 		 */
-		public CultureResultImpl(CultureType cultureType, int farmIndex,
-				int gridIndex, Seed seed, long residualMills,
+		public CultureResultImpl(CultureType cultureType, int farmIndex, int gridIndex, Seed seed, long residualMills,
 				List<Item> spendItems) {
-			this(cultureType, farmIndex, gridIndex, seed, residualMills,
-					spendItems, 0);
+			this(cultureType, farmIndex, gridIndex, seed, residualMills, spendItems, 0);
 		}
 
 		/**
@@ -912,16 +906,13 @@ public class ManorServiceImpl extends AppServiceSupporter implements
 		 * @param residualMills
 		 * @param spendCoin
 		 */
-		public CultureResultImpl(CultureType cultureType, int farmIndex,
-				int gridIndex, Seed seed, long residualMills, int spendCoin) {
-			this(cultureType, farmIndex, gridIndex, seed, residualMills,
-					new LinkedList<Item>(), spendCoin);
+		public CultureResultImpl(CultureType cultureType, int farmIndex, int gridIndex, Seed seed, long residualMills,
+				int spendCoin) {
+			this(cultureType, farmIndex, gridIndex, seed, residualMills, new LinkedList<Item>(), spendCoin);
 		}
 
-		public CultureResultImpl(CultureType cultureType, int farmIndex,
-				int gridIndex, Seed seed, long residualMills) {
-			this(cultureType, farmIndex, gridIndex, seed, residualMills,
-					new LinkedList<Item>(), 0);
+		public CultureResultImpl(CultureType cultureType, int farmIndex, int gridIndex, Seed seed, long residualMills) {
+			this(cultureType, farmIndex, gridIndex, seed, residualMills, new LinkedList<Item>(), 0);
 		}
 
 		public CultureResultImpl() {
@@ -985,15 +976,12 @@ public class ManorServiceImpl extends AppServiceSupporter implements
 		}
 
 		public String toString() {
-			ToStringBuilder builder = new ToStringBuilder(this,
-					ToStringStyle.SIMPLE_STYLE);
+			ToStringBuilder builder = new ToStringBuilder(this, ToStringStyle.SIMPLE_STYLE);
 			builder.appendSuper(super.toString());
 			builder.append("cultureType", cultureType);
 			builder.append("farmIndex", farmIndex);
 			builder.append("gridIndex", gridIndex);
-			builder.append("seed",
-					(seed != null ? seed.getId() + ", " + seed.getUniqueId()
-							: null));
+			builder.append("seed", (seed != null ? seed.getId() + ", " + seed.getUniqueId() : null));
 			builder.append("residualMills", residualMills);
 			//
 			append(builder, "spendItems", spendItems);
@@ -1020,12 +1008,11 @@ public class ManorServiceImpl extends AppServiceSupporter implements
 	 * @param gridIndex
 	 * @param seedUniqueId
 	 */
-	public CultureResult culture(boolean sendable, Role role, int cultureValue,
-			int farmIndex, int gridIndex, String seedUniqueId) {
+	public CultureResult culture(boolean sendable, Role role, int cultureValue, int farmIndex, int gridIndex,
+			String seedUniqueId) {
 		CultureResult result = null;
 		// 耕種類別
-		CultureType cultureType = EnumHelper.valueOf(CultureType.class,
-				cultureValue);
+		CultureType cultureType = EnumHelper.valueOf(CultureType.class, cultureValue);
 		if (cultureType == null) {
 			return result;
 		}
@@ -1114,8 +1101,7 @@ public class ManorServiceImpl extends AppServiceSupporter implements
 		// 若土地有成長速度,AttributeType.MANOR_SPEED_RATE
 		AttributeGroup attributeGroup = land.getAttributeGroup();
 		// 成長速度比例,如:0.2
-		double speedRatio = ratio(waterRate
-				+ attributeGroup.getFinal(AttributeType.MANOR_SPEED_RATE));
+		double speedRatio = ratio(waterRate + attributeGroup.getFinal(AttributeType.MANOR_SPEED_RATE));
 		if (speedRatio > 0) {
 			result = (long) ((1 - speedRatio) * result);
 			// System.out.println("有增加成長速度, 剩餘毫秒: " + result);
@@ -1139,10 +1125,8 @@ public class ManorServiceImpl extends AppServiceSupporter implements
 		AttributeGroup attributeGroup = land.getAttributeGroup();
 		int output = attributeGroup.getFinal(AttributeType.MANOR_OUTPUT);// 2
 
-		double criticalRatio = ratio(attributeGroup
-				.getFinal(AttributeType.MANOR_CRITICAL_RATE));// 0.3
-		double criticalQutputRatio = ratio(attributeGroup
-				.getFinal(AttributeType.MANOR_CRITICAL_OUTPUT_RATE));// 0.3
+		double criticalRatio = ratio(attributeGroup.getFinal(AttributeType.MANOR_CRITICAL_RATE));// 0.3
+		double criticalQutputRatio = ratio(attributeGroup.getFinal(AttributeType.MANOR_CRITICAL_OUTPUT_RATE));// 0.3
 		//
 		for (Map.Entry<String, Integer> entry : origItems.entrySet()) {
 			String itemId = entry.getKey();
@@ -1150,8 +1134,7 @@ public class ManorServiceImpl extends AppServiceSupporter implements
 			int newQuality = 0;
 			// 暴擊
 			if (NumberHelper.randomWin(criticalRatio)) {
-				newQuality = amount
-						+ (int) (output * (1 + criticalQutputRatio));
+				newQuality = amount + (int) (output * (1 + criticalQutputRatio));
 			} else {
 				newQuality = amount + output;
 			}
@@ -1171,8 +1154,7 @@ public class ManorServiceImpl extends AppServiceSupporter implements
 	protected boolean isGrowing(Seed seed) {
 		boolean result = false;
 		// 成長中
-		if (seed.getPlantTime() > 0
-				&& seed.getMatureType() == MatureType.GROWING) {
+		if (seed.getPlantTime() > 0 && seed.getMatureType() == MatureType.GROWING) {
 			result = true;
 		}
 		return result;
@@ -1187,8 +1169,7 @@ public class ManorServiceImpl extends AppServiceSupporter implements
 	protected boolean isMature(Seed seed) {
 		boolean result = false;
 		// 成熟了
-		if (seed.getMatureTime() > 0
-				&& seed.getMatureType() == MatureType.MATURE) {
+		if (seed.getMatureTime() > 0 && seed.getMatureType() == MatureType.MATURE) {
 			result = true;
 		}
 		return result;
@@ -1203,8 +1184,7 @@ public class ManorServiceImpl extends AppServiceSupporter implements
 	protected boolean isWither(Seed seed) {
 		boolean result = false;
 		// 枯萎了
-		if (seed.getMatureTime() > 0
-				&& seed.getMatureType() == MatureType.WITHER) {
+		if (seed.getMatureTime() > 0 && seed.getMatureType() == MatureType.WITHER) {
 			result = true;
 		}
 		return result;
@@ -1220,8 +1200,7 @@ public class ManorServiceImpl extends AppServiceSupporter implements
 	 * @param seedUniqueId
 	 * @return
 	 */
-	public CultureResult plant(boolean sendable, Role role, int farmIndex,
-			int gridIndex, String seedUniqueId) {
+	public CultureResult plant(boolean sendable, Role role, int farmIndex, int gridIndex, String seedUniqueId) {
 		CultureResult result = null;
 		ErrorType errorType = ErrorType.NO_ERROR;
 		// 檢查條件
@@ -1236,13 +1215,11 @@ public class ManorServiceImpl extends AppServiceSupporter implements
 			// 種子
 			Seed seed = (Seed) itemService.getItem(role, seedUniqueId);
 			// 把種子從包包扣除,扣1個種子
-			DecreaseItemResult decreaseResult = itemService
-					.decreaseItemByUniqueId(sendable, role, seedUniqueId, 1);
+			DecreaseItemResult decreaseResult = itemService.decreaseItemByUniqueId(sendable, role, seedUniqueId, 1);
 			// 成功
 			if (decreaseResult != null) {
 				// clone 1個種子,因包包內種子可能堆疊很多個,不要直接拿來用
-				Seed cloneSeed = (Seed) itemService.createSeed(seed.getId(),
-						seed.getUniqueId(), 1);
+				Seed cloneSeed = (Seed) itemService.createSeed(seed.getId(), seed.getUniqueId(), 1);
 				long now = System.currentTimeMillis();
 				cloneSeed.setPlantTime(now);// 種植時間
 				cloneSeed.setMatureType(MatureType.GROWING);// 成熟類別
@@ -1251,8 +1228,7 @@ public class ManorServiceImpl extends AppServiceSupporter implements
 				// 剩餘毫秒
 				long residualMills = calcResidual(land, cloneSeed);
 				// 耕種結果
-				result = new CultureResultImpl(CultureType.PLANT, farmIndex,
-						gridIndex, cloneSeed, residualMills);
+				result = new CultureResultImpl(CultureType.PLANT, farmIndex, gridIndex, cloneSeed, residualMills);
 			} else {
 				errorType = ErrorType.CAN_NOT_DECREASE_SEED;
 			}
@@ -1274,8 +1250,7 @@ public class ManorServiceImpl extends AppServiceSupporter implements
 	 * @param seedUniqueId
 	 * @return
 	 */
-	public ErrorType checkPlant(Role role, int farmIndex, int gridIndex,
-			String seedUniqueId) {
+	public ErrorType checkPlant(Role role, int farmIndex, int gridIndex, String seedUniqueId) {
 		ErrorType errorType = ErrorType.NO_ERROR;
 		//
 		// 角色不存在
@@ -1294,8 +1269,7 @@ public class ManorServiceImpl extends AppServiceSupporter implements
 		Seed seed = (Seed) item;
 
 		// 包包是否減少種子,扣1個種子
-		BagPen.ErrorType bagError = itemService.checkDecreaseItemByUniqueId(
-				role, seedUniqueId, 1);
+		BagPen.ErrorType bagError = itemService.checkDecreaseItemByUniqueId(role, seedUniqueId, 1);
 		if (bagError != BagPen.ErrorType.NO_ERROR) {
 			errorType = ErrorType.CAN_NOT_DECREASE_SEED;
 			return errorType;
@@ -1342,8 +1316,7 @@ public class ManorServiceImpl extends AppServiceSupporter implements
 	 * @param gridIndex
 	 * @return
 	 */
-	public CultureResult water(boolean sendable, Role role, int farmIndex,
-			int gridIndex) {
+	public CultureResult water(boolean sendable, Role role, int farmIndex, int gridIndex) {
 		CultureResult result = null;
 		ErrorType errorType = ErrorType.NO_ERROR;
 		// 檢查條件
@@ -1359,10 +1332,8 @@ public class ManorServiceImpl extends AppServiceSupporter implements
 			Seed seed = manorPen.getSeed(farmIndex, gridIndex);
 
 			// 消耗道具或儲值幣
-			SpendResult spendResult = roleService.spendByItemCoin(sendable,
-					role, manorCollector.getWaterItem(), 1,
-					manorCollector.getWaterCoin(), CoinType.MANOR_WATER,
-					vipCollector.getManorCoinVipType());
+			SpendResult spendResult = roleService.spendByItemCoin(sendable, role, manorCollector.getWaterItem(), 1,
+					manorCollector.getWaterCoin(), CoinType.MANOR_WATER, vipCollector.getManorCoinVipType());
 			RoleService.ErrorType spendError = spendResult.getErrorType();
 			// System.out.println("spendError: " + spendError);
 
@@ -1374,14 +1345,12 @@ public class ManorServiceImpl extends AppServiceSupporter implements
 
 				// 消耗道具
 				if (spendResult.getItemTimes() > 0) {
-					result = new CultureResultImpl(CultureType.WATER,
-							farmIndex, gridIndex, seed, residualMills,
+					result = new CultureResultImpl(CultureType.WATER, farmIndex, gridIndex, seed, residualMills,
 							spendResult.getItems());
 				}
 				// 消耗儲值幣
 				else {
-					result = new CultureResultImpl(CultureType.WATER,
-							farmIndex, gridIndex, seed, residualMills,
+					result = new CultureResultImpl(CultureType.WATER, farmIndex, gridIndex, seed, residualMills,
 							spendResult.getCoin());
 				}
 			} else {
@@ -1454,8 +1423,7 @@ public class ManorServiceImpl extends AppServiceSupporter implements
 	 * @param gridIndex
 	 * @return
 	 */
-	public CultureResult pray(boolean sendable, Role role, int farmIndex,
-			int gridIndex) {
+	public CultureResult pray(boolean sendable, Role role, int farmIndex, int gridIndex) {
 		CultureResult result = null;
 		ErrorType errorType = ErrorType.NO_ERROR;
 		// 檢查條件
@@ -1471,10 +1439,8 @@ public class ManorServiceImpl extends AppServiceSupporter implements
 			Seed seed = manorPen.getSeed(farmIndex, gridIndex);
 
 			// 消耗道具或儲值幣
-			SpendResult spendResult = roleService.spendByItemCoin(sendable,
-					role, manorCollector.getPrayItem(), 1,
-					manorCollector.getPrayCoin(), CoinType.MANOR_PRAY,
-					vipCollector.getManorCoinVipType());
+			SpendResult spendResult = roleService.spendByItemCoin(sendable, role, manorCollector.getPrayItem(), 1,
+					manorCollector.getPrayCoin(), CoinType.MANOR_PRAY, vipCollector.getManorCoinVipType());
 			RoleService.ErrorType spendError = spendResult.getErrorType();
 			// System.out.println("spendError: " + spendError);
 
@@ -1486,14 +1452,12 @@ public class ManorServiceImpl extends AppServiceSupporter implements
 
 				// 消耗道具
 				if (spendResult.getItemTimes() > 0) {
-					result = new CultureResultImpl(CultureType.PRAY, farmIndex,
-							gridIndex, seed, residualMills,
+					result = new CultureResultImpl(CultureType.PRAY, farmIndex, gridIndex, seed, residualMills,
 							spendResult.getItems());
 				}
 				// 消耗儲值幣
 				else {
-					result = new CultureResultImpl(CultureType.PRAY, farmIndex,
-							gridIndex, seed, residualMills,
+					result = new CultureResultImpl(CultureType.PRAY, farmIndex, gridIndex, seed, residualMills,
 							spendResult.getItems());
 				}
 			} else {
@@ -1566,8 +1530,7 @@ public class ManorServiceImpl extends AppServiceSupporter implements
 	 * @param gridIndex
 	 * @return
 	 */
-	public CultureResult speed(boolean sendable, Role role, int farmIndex,
-			int gridIndex) {
+	public CultureResult speed(boolean sendable, Role role, int farmIndex, int gridIndex) {
 		CultureResult result = null;
 		ErrorType errorType = ErrorType.NO_ERROR;
 		// 檢查條件
@@ -1583,10 +1546,8 @@ public class ManorServiceImpl extends AppServiceSupporter implements
 			Seed seed = manorPen.getSeed(farmIndex, gridIndex);
 
 			// 消耗道具或儲值幣
-			SpendResult spendResult = roleService.spendByItemCoin(sendable,
-					role, manorCollector.getSpeedItem(), 1,
-					manorCollector.getSpeedCoin(), CoinType.MANOR_SPEED,
-					vipCollector.getManorCoinVipType());
+			SpendResult spendResult = roleService.spendByItemCoin(sendable, role, manorCollector.getSpeedItem(), 1,
+					manorCollector.getSpeedCoin(), CoinType.MANOR_SPEED, vipCollector.getManorCoinVipType());
 			RoleService.ErrorType spendError = spendResult.getErrorType();
 			// System.out.println("spendError: " + spendError);
 
@@ -1598,14 +1559,12 @@ public class ManorServiceImpl extends AppServiceSupporter implements
 				// 加速將無法感受到土地強化的效果,不增加產量
 				Map<String, Integer> awardItems = seed.getProducts();
 				// 檢查包包增加多個不同道具
-				BagPen.ErrorType bagError = itemService.checkIncreaseItem(role,
-						awardItems);
+				BagPen.ErrorType bagError = itemService.checkIncreaseItem(role, awardItems);
 				if (bagError != BagPen.ErrorType.NO_ERROR) {
 					errorType = ErrorType.CAN_NOT_INCREASE_ITEM;
 				} else {
 					// 增加多個道具
-					List<IncreaseItemResult> increaseResults = itemService
-							.increaseItem(sendable, role, awardItems);
+					List<IncreaseItemResult> increaseResults = itemService.increaseItem(sendable, role, awardItems);
 					// 成功
 					if (increaseResults.size() > 0) {
 						// 移除種子
@@ -1613,14 +1572,12 @@ public class ManorServiceImpl extends AppServiceSupporter implements
 
 						// 消耗道具
 						if (spendResult.getItemTimes() > 0) {
-							result = new CultureResultImpl(CultureType.SPEED,
-									farmIndex, gridIndex, seed, 0,
+							result = new CultureResultImpl(CultureType.SPEED, farmIndex, gridIndex, seed, 0,
 									spendResult.getItems());
 						}
 						// 消耗儲值幣
 						else {
-							result = new CultureResultImpl(CultureType.SPEED,
-									farmIndex, gridIndex, seed, 0,
+							result = new CultureResultImpl(CultureType.SPEED, farmIndex, gridIndex, seed, 0,
 									spendResult.getCoin());
 						}
 					} else {
@@ -1698,8 +1655,7 @@ public class ManorServiceImpl extends AppServiceSupporter implements
 	 * @param gridIndex
 	 * @return
 	 */
-	public CultureResult harvest(boolean sendable, Role role, int farmIndex,
-			int gridIndex) {
+	public CultureResult harvest(boolean sendable, Role role, int farmIndex, int gridIndex) {
 		CultureResult result = null;
 		ErrorType errorType = ErrorType.NO_ERROR;
 		// 檢查條件
@@ -1717,21 +1673,18 @@ public class ManorServiceImpl extends AppServiceSupporter implements
 			// 計算種子產出數量
 			Map<String, Integer> awardItems = calcProducts(land, seed);
 			// 檢查包包增加多個不同道具
-			BagPen.ErrorType bagError = itemService.checkIncreaseItem(role,
-					awardItems);
+			BagPen.ErrorType bagError = itemService.checkIncreaseItem(role, awardItems);
 			if (bagError != BagPen.ErrorType.NO_ERROR) {
 				errorType = ErrorType.CAN_NOT_INCREASE_ITEM;
 			} else {
 				// 增加多個道具
-				List<IncreaseItemResult> increaseResults = itemService
-						.increaseItem(sendable, role, awardItems);
+				List<IncreaseItemResult> increaseResults = itemService.increaseItem(sendable, role, awardItems);
 				// 成功
 				if (increaseResults.size() > 0) {
 					// 移除種子
 					manorPen.removeSeed(farmIndex, gridIndex);
 					// 耕種結果
-					result = new CultureResultImpl(CultureType.HARVEST,
-							farmIndex, gridIndex, seed, 0);
+					result = new CultureResultImpl(CultureType.HARVEST, farmIndex, gridIndex, seed, 0);
 				} else {
 					errorType = ErrorType.CAN_NOT_INCREASE_ITEM;
 				}
@@ -1804,8 +1757,7 @@ public class ManorServiceImpl extends AppServiceSupporter implements
 	 * @param gridIndex
 	 * @return
 	 */
-	public CultureResult revive(boolean sendable, Role role, int farmIndex,
-			int gridIndex) {
+	public CultureResult revive(boolean sendable, Role role, int farmIndex, int gridIndex) {
 		CultureResult result = null;
 		ErrorType errorType = ErrorType.NO_ERROR;
 		// 檢查條件
@@ -1821,10 +1773,8 @@ public class ManorServiceImpl extends AppServiceSupporter implements
 			Seed seed = manorPen.getSeed(farmIndex, gridIndex);
 
 			// 消耗道具或儲值幣
-			SpendResult spendResult = roleService.spendByItemCoin(sendable,
-					role, manorCollector.getReviveItem(), 1,
-					manorCollector.getReviveCoin(), CoinType.MANOR_REVIVE,
-					vipCollector.getManorCoinVipType());
+			SpendResult spendResult = roleService.spendByItemCoin(sendable, role, manorCollector.getReviveItem(), 1,
+					manorCollector.getReviveCoin(), CoinType.MANOR_REVIVE, vipCollector.getManorCoinVipType());
 			RoleService.ErrorType spendError = spendResult.getErrorType();
 			// System.out.println("spendError: " + spendError);
 
@@ -1836,14 +1786,12 @@ public class ManorServiceImpl extends AppServiceSupporter implements
 				// 復活將無法感受到土地強化的效果,不增加產量
 				Map<String, Integer> awardItems = seed.getProducts();
 				// 檢查包包增加多個不同道具
-				BagPen.ErrorType bagError = itemService.checkIncreaseItem(role,
-						awardItems);
+				BagPen.ErrorType bagError = itemService.checkIncreaseItem(role, awardItems);
 				if (bagError != BagPen.ErrorType.NO_ERROR) {
 					errorType = ErrorType.CAN_NOT_INCREASE_ITEM;
 				} else {
 					// 增加多個道具
-					List<IncreaseItemResult> increaseResults = itemService
-							.increaseItem(sendable, role, awardItems);
+					List<IncreaseItemResult> increaseResults = itemService.increaseItem(sendable, role, awardItems);
 					// 成功
 					if (increaseResults.size() > 0) {
 						// 移除種子
@@ -1851,14 +1799,12 @@ public class ManorServiceImpl extends AppServiceSupporter implements
 
 						// 消耗道具
 						if (spendResult.getItemTimes() > 0) {
-							result = new CultureResultImpl(CultureType.REVIVE,
-									farmIndex, gridIndex, seed, 0,
+							result = new CultureResultImpl(CultureType.REVIVE, farmIndex, gridIndex, seed, 0,
 									spendResult.getItems());
 						}
 						// 消耗儲值幣
 						else {
-							result = new CultureResultImpl(CultureType.REVIVE,
-									farmIndex, gridIndex, seed, 0,
+							result = new CultureResultImpl(CultureType.REVIVE, farmIndex, gridIndex, seed, 0,
 									spendResult.getCoin());
 						}
 					} else {
@@ -1934,8 +1880,7 @@ public class ManorServiceImpl extends AppServiceSupporter implements
 	 * @param gridIndex
 	 * @return
 	 */
-	public CultureResult clear(boolean sendable, Role role, int farmIndex,
-			int gridIndex) {
+	public CultureResult clear(boolean sendable, Role role, int farmIndex, int gridIndex) {
 		CultureResult result = null;
 		ErrorType errorType = ErrorType.NO_ERROR;
 		// 檢查條件
@@ -1946,12 +1891,10 @@ public class ManorServiceImpl extends AppServiceSupporter implements
 			// 種子
 			Seed seed = manorPen.getSeed(farmIndex, gridIndex);
 			// 移除種子
-			ManorPen.ErrorType manorError = manorPen.removeSeed(farmIndex,
-					gridIndex);
+			ManorPen.ErrorType manorError = manorPen.removeSeed(farmIndex, gridIndex);
 			if (manorError == ManorPen.ErrorType.NO_ERROR) {
 				// 耕種結果
-				result = new CultureResultImpl(CultureType.CLEAR, farmIndex,
-						gridIndex, seed, 0);
+				result = new CultureResultImpl(CultureType.CLEAR, farmIndex, gridIndex, seed, 0);
 			}
 		}
 
@@ -2005,11 +1948,9 @@ public class ManorServiceImpl extends AppServiceSupporter implements
 	 * @param role
 	 * @param cultureResult
 	 */
-	public Message sendCulture(ErrorType errorType, Role role,
-			CultureResult cultureResult) {
-		Message message = messageService.createMessage(CoreModuleType.MANOR,
-				CoreModuleType.CLIENT, CoreMessageType.MANOR_CULTURE_RESPONSE,
-				role.getId());
+	public Message sendCulture(ErrorType errorType, Role role, CultureResult cultureResult) {
+		Message message = messageService.createMessage(CoreModuleType.MANOR, CoreModuleType.CLIENT,
+				CoreMessageType.MANOR_CULTURE_RESPONSE, role.getId());
 
 		message.addInt(errorType);// 0, errorType 錯誤碼
 
@@ -2034,8 +1975,7 @@ public class ManorServiceImpl extends AppServiceSupporter implements
 	 * @param message
 	 * @param cultureResult
 	 */
-	protected void fillCultureResult(Message message,
-			CultureResult cultureResult) {
+	protected void fillCultureResult(Message message, CultureResult cultureResult) {
 		message.addInt(cultureResult.getCultureType());
 		message.addInt(cultureResult.getFarmIndex());
 		message.addInt(cultureResult.getGridIndex());
@@ -2060,10 +2000,8 @@ public class ManorServiceImpl extends AppServiceSupporter implements
 	 * @param role
 	 * @param cultureResults
 	 */
-	public Message sendCultureAll(ErrorType errorType, Role role,
-			CultureAllResult cultureAllResult) {
-		Message message = messageService.createMessage(CoreModuleType.MANOR,
-				CoreModuleType.CLIENT,
+	public Message sendCultureAll(ErrorType errorType, Role role, CultureAllResult cultureAllResult) {
+		Message message = messageService.createMessage(CoreModuleType.MANOR, CoreModuleType.CLIENT,
 				CoreMessageType.MANOR_CULTURE_ALL_RESPONSE, role.getId());
 
 		message.addInt(errorType);// 0, errorType 錯誤碼
@@ -2071,8 +2009,7 @@ public class ManorServiceImpl extends AppServiceSupporter implements
 		switch (errorType) {
 		// 沒有錯誤,才發其他欄位訊息
 		case NO_ERROR: {
-			List<CultureResult> cultureResults = cultureAllResult
-					.getCultureResults();
+			List<CultureResult> cultureResults = cultureAllResult.getCultureResults();
 			message.addInt(cultureResults.size());
 			for (CultureResult cultureResult : cultureResults) {
 				fillCultureResult(message, cultureResult);
@@ -2088,8 +2025,7 @@ public class ManorServiceImpl extends AppServiceSupporter implements
 		return message;
 	}
 
-	public static class SeedResultImpl extends AppResultSupporter implements
-			SeedResult {
+	public static class SeedResultImpl extends AppResultSupporter implements SeedResult {
 
 		private static final long serialVersionUID = -1396419886151130049L;
 
@@ -2103,8 +2039,7 @@ public class ManorServiceImpl extends AppServiceSupporter implements
 
 		private Seed seed;
 
-		public SeedResultImpl(int farmIndex, int gridIndex, Farm farm,
-				Land land, Seed seed) {
+		public SeedResultImpl(int farmIndex, int gridIndex, Farm farm, Land land, Seed seed) {
 			this.farmIndex = farmIndex;
 			this.gridIndex = gridIndex;
 			this.farm = farm;
@@ -2157,18 +2092,13 @@ public class ManorServiceImpl extends AppServiceSupporter implements
 		}
 
 		public String toString() {
-			ToStringBuilder builder = new ToStringBuilder(this,
-					ToStringStyle.SIMPLE_STYLE);
+			ToStringBuilder builder = new ToStringBuilder(this, ToStringStyle.SIMPLE_STYLE);
 			builder.appendSuper(super.toString());
 			builder.append("farmIndex", farmIndex);
 			builder.append("gridIndex", gridIndex);
 			builder.append("farm", (farm != null ? farm.getId() : null));
-			builder.append("land",
-					(land != null ? land.getId() + ", " + land.getUniqueId()
-							: null));
-			builder.append("seed",
-					(seed != null ? seed.getId() + ", " + seed.getUniqueId()
-							: null));
+			builder.append("land", (land != null ? land.getId() + ", " + land.getUniqueId() : null));
+			builder.append("seed", (seed != null ? seed.getId() + ", " + seed.getUniqueId() : null));
 			return builder.toString();
 		}
 
@@ -2199,8 +2129,7 @@ public class ManorServiceImpl extends AppServiceSupporter implements
 			boolean growing = isGrowing(seed);
 			// 成長中
 			if (growing) {
-				SeedResult buffResult = new SeedResultImpl(farmIndex,
-						gridIndex, farm, land, seed);
+				SeedResult buffResult = new SeedResultImpl(farmIndex, gridIndex, farm, land, seed);
 				result.add(buffResult);
 			}
 		}
@@ -2224,8 +2153,7 @@ public class ManorServiceImpl extends AppServiceSupporter implements
 			boolean growing = isGrowing(seed);
 			// 成長中,還沒澆水
 			if (growing && seed.getWaterTime() == 0) {
-				SeedResult buffResult = new SeedResultImpl(farmIndex,
-						gridIndex, farm, land, seed);
+				SeedResult buffResult = new SeedResultImpl(farmIndex, gridIndex, farm, land, seed);
 				result.add(buffResult);
 			}
 		}
@@ -2249,8 +2177,7 @@ public class ManorServiceImpl extends AppServiceSupporter implements
 			boolean growing = isGrowing(seed);
 			// 成長中,還沒祈禱
 			if (growing && seed.getPrayTime() == 0) {
-				SeedResult buffResult = new SeedResultImpl(farmIndex,
-						gridIndex, farm, land, seed);
+				SeedResult buffResult = new SeedResultImpl(farmIndex, gridIndex, farm, land, seed);
 				result.add(buffResult);
 			}
 		}
@@ -2284,8 +2211,7 @@ public class ManorServiceImpl extends AppServiceSupporter implements
 			boolean mature = isMature(seed);
 			// 已成熟
 			if (mature) {
-				SeedResult buffResult = new SeedResultImpl(farmIndex,
-						gridIndex, farm, land, seed);
+				SeedResult buffResult = new SeedResultImpl(farmIndex, gridIndex, farm, land, seed);
 				result.add(buffResult);
 			}
 		}
@@ -2309,8 +2235,7 @@ public class ManorServiceImpl extends AppServiceSupporter implements
 			boolean wither = isWither(seed);
 			// 已枯萎
 			if (wither) {
-				SeedResult buffResult = new SeedResultImpl(farmIndex,
-						gridIndex, farm, land, seed);
+				SeedResult buffResult = new SeedResultImpl(farmIndex, gridIndex, farm, land, seed);
 				result.add(buffResult);
 			}
 		}
@@ -2320,8 +2245,7 @@ public class ManorServiceImpl extends AppServiceSupporter implements
 	/**
 	 * 耕種結果
 	 */
-	public static class CultureResultAllImpl extends AppResultSupporter
-			implements CultureAllResult {
+	public static class CultureResultAllImpl extends AppResultSupporter implements CultureAllResult {
 		private static final long serialVersionUID = -7816000021627261466L;
 
 		private CultureType cultureType;
@@ -2341,8 +2265,7 @@ public class ManorServiceImpl extends AppServiceSupporter implements
 		 */
 		private List<CultureResult> cultureResults = new LinkedList<CultureResult>();
 
-		public CultureResultAllImpl(CultureType cultureType,
-				List<Item> spendItems, int spendCoin) {
+		public CultureResultAllImpl(CultureType cultureType, List<Item> spendItems, int spendCoin) {
 			this.cultureType = cultureType;
 			this.spendItems = spendItems;
 			this.spendCoin = spendCoin;
@@ -2354,8 +2277,7 @@ public class ManorServiceImpl extends AppServiceSupporter implements
 		 * @param cultureType
 		 * @param spendItems
 		 */
-		public CultureResultAllImpl(CultureType cultureType,
-				List<Item> spendItems) {
+		public CultureResultAllImpl(CultureType cultureType, List<Item> spendItems) {
 			this(cultureType, spendItems, 0);
 		}
 
@@ -2406,8 +2328,7 @@ public class ManorServiceImpl extends AppServiceSupporter implements
 		}
 
 		public String toString() {
-			ToStringBuilder builder = new ToStringBuilder(this,
-					ToStringStyle.SIMPLE_STYLE);
+			ToStringBuilder builder = new ToStringBuilder(this, ToStringStyle.SIMPLE_STYLE);
 			builder.appendSuper(super.toString());
 			builder.append("cultureType", cultureType);
 			append(builder, "spendItems", spendItems);
@@ -2433,12 +2354,10 @@ public class ManorServiceImpl extends AppServiceSupporter implements
 	 * @param cultureValue
 	 * @return
 	 */
-	public CultureAllResult cultureAll(boolean sendable, Role role,
-			int cultureValue) {
+	public CultureAllResult cultureAll(boolean sendable, Role role, int cultureValue) {
 		CultureAllResult result = null;
 		// 耕種類別
-		CultureType cultureType = EnumHelper.valueOf(CultureType.class,
-				cultureValue);
+		CultureType cultureType = EnumHelper.valueOf(CultureType.class, cultureValue);
 		if (cultureType == null) {
 			return result;
 		}
@@ -2510,17 +2429,14 @@ public class ManorServiceImpl extends AppServiceSupporter implements
 			// 有種子可以澆水的次數
 			else {
 				// 消耗道具或儲值幣
-				SpendResult spendResult = roleService.spendByItemCoin(sendable,
-						role, spendTimes, manorCollector.getWaterItem(), 1,
-						manorCollector.getWaterCoin(),
-						CoinType.MANOR_WATER_ALL,
+				SpendResult spendResult = roleService.spendByItemCoin(sendable, role, spendTimes,
+						manorCollector.getWaterItem(), 1, manorCollector.getWaterCoin(), CoinType.MANOR_WATER_ALL,
 						vipCollector.getManorCoinVipType());
 				RoleService.ErrorType spendError = spendResult.getErrorType();
 				// System.out.println("spendError: "+spendError);
 				// 扣成功
 				if (spendError == RoleService.ErrorType.NO_ERROR) {
-					result = new CultureResultAllImpl(CultureType.WATER,
-							spendResult.getItems(), spendResult.getCoin());
+					result = new CultureResultAllImpl(CultureType.WATER, spendResult.getItems(), spendResult.getCoin());
 					//
 					int i = 0;
 					for (SeedResult seedResult : canWaters) {
@@ -2535,9 +2451,8 @@ public class ManorServiceImpl extends AppServiceSupporter implements
 						long residualMills = calcResidual(land, seed);
 						// System.out.println("剩餘毫秒: " + residualMills);
 						//
-						CultureResult cultureResult = new CultureResultImpl(
-								CultureType.WATER, seedResult.getFarmIndex(),
-								seedResult.getGridIndex(), seed, residualMills);
+						CultureResult cultureResult = new CultureResultImpl(CultureType.WATER,
+								seedResult.getFarmIndex(), seedResult.getGridIndex(), seed, residualMills);
 						//
 						result.getCultureResults().add(cultureResult);
 						//
@@ -2625,16 +2540,14 @@ public class ManorServiceImpl extends AppServiceSupporter implements
 			// 有種子可以祈禱的次數
 			else {
 				// 消耗道具或儲值幣
-				SpendResult spendResult = roleService.spendByItemCoin(sendable,
-						role, spendTimes, manorCollector.getPrayItem(), 1,
-						manorCollector.getPrayCoin(), CoinType.MANOR_PRAY_ALL,
+				SpendResult spendResult = roleService.spendByItemCoin(sendable, role, spendTimes,
+						manorCollector.getPrayItem(), 1, manorCollector.getPrayCoin(), CoinType.MANOR_PRAY_ALL,
 						vipCollector.getManorCoinVipType());
 				RoleService.ErrorType spendError = spendResult.getErrorType();
 				// System.out.println("spendError: "+spendError);
 				// 扣成功
 				if (spendError == RoleService.ErrorType.NO_ERROR) {
-					result = new CultureResultAllImpl(CultureType.PRAY,
-							spendResult.getItems(), spendResult.getCoin());
+					result = new CultureResultAllImpl(CultureType.PRAY, spendResult.getItems(), spendResult.getCoin());
 					//
 					int i = 0;
 					for (SeedResult seedResult : canPrays) {
@@ -2649,8 +2562,7 @@ public class ManorServiceImpl extends AppServiceSupporter implements
 						long residualMills = calcResidual(land, seed);
 						// System.out.println("剩餘毫秒: " + residualMills);
 
-						CultureResult cultureResult = new CultureResultImpl(
-								CultureType.PRAY, seedResult.getFarmIndex(),
+						CultureResult cultureResult = new CultureResultImpl(CultureType.PRAY, seedResult.getFarmIndex(),
 								seedResult.getGridIndex(), seed, residualMills);
 						//
 						result.getCultureResults().add(cultureResult);

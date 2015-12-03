@@ -1,7 +1,5 @@
 package org.openyu.mix.manor.service.aop;
 
-import java.lang.reflect.Method;
-
 import org.aopalliance.intercept.MethodInvocation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,8 +15,9 @@ import org.openyu.mix.role.vo.Role;
  */
 public class ManorDisuseInterceptor extends AppMethodInterceptorSupporter {
 
-	private static transient final Logger LOGGER = LoggerFactory
-			.getLogger(ManorDisuseInterceptor.class);
+	private static final long serialVersionUID = -8779897326476699636L;
+
+	private static transient final Logger LOGGER = LoggerFactory.getLogger(ManorDisuseInterceptor.class);
 
 	@Autowired
 	@Qualifier("manorLogService")
@@ -32,8 +31,7 @@ public class ManorDisuseInterceptor extends AppMethodInterceptorSupporter {
 	 * 
 	 * DisuseResult disuse(boolean sendable, Role role, int farmIndex);
 	 */
-	public Object invoke(MethodInvocation methodInvocation, Method method,
-			Class<?>[] paramTypes, Object[] args) {
+	protected Object doInvoke(MethodInvocation methodInvocation) throws Throwable {
 		// 傳回值
 		Object result = null;
 		try {
@@ -41,6 +39,7 @@ public class ManorDisuseInterceptor extends AppMethodInterceptorSupporter {
 			// proceed前
 			// --------------------------------------------------
 			// 參數
+			Object[] args = methodInvocation.getArguments();
 			boolean sendable = (Boolean) args[0];
 			Role role = (Role) args[1];
 			int farmIndex = (Integer) args[2];
@@ -57,11 +56,11 @@ public class ManorDisuseInterceptor extends AppMethodInterceptorSupporter {
 			DisuseResult ret = (DisuseResult) result;
 			//
 			if (ret != null) {
-				manorLogService.recordDisuse(role, ret.getFarmIndex(),
-						ret.getLand(), ret.getSpendGold());
+				manorLogService.recordDisuse(role, ret.getFarmIndex(), ret.getLand(), ret.getSpendGold());
 			}
-		} catch (Throwable ex) {
-			ex.printStackTrace();
+		} catch (Throwable e) {
+			LOGGER.error(new StringBuilder("Exception encountered during doInvoke()").toString(), e);
+			// throw e;
 		}
 		return result;
 	}

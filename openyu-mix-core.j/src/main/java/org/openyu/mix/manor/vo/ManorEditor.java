@@ -11,6 +11,7 @@ import jxl.write.WritableWorkbook;
 
 import org.openyu.commons.bean.LocaleNameBean;
 import org.openyu.commons.bean.NamesBean;
+import org.openyu.commons.collector.CollectorHelper;
 import org.openyu.commons.editor.ex.EditorException;
 import org.openyu.commons.editor.supporter.BaseEditorSupporter;
 
@@ -83,8 +84,7 @@ public class ManorEditor extends BaseEditorSupporter {
 	protected WritableSheet writeToSheet_0(WritableWorkbook workbook) {
 		WritableSheet result = null;
 		try {
-			ManorCollector collector = beanCollector
-					.readFromXml(ManorCollector.class);
+			ManorCollector collector = CollectorHelper.readFromXml(ManorCollector.class);
 			//
 			result = workbook.createSheet("資料", 0);
 			int dataRow = BEG_DATA_ROW;
@@ -223,8 +223,7 @@ public class ManorEditor extends BaseEditorSupporter {
 	protected WritableSheet writeToSheet_2(WritableWorkbook workbook) {
 		WritableSheet result = null;
 		try {
-			ManorCollector collector = ManorCollector.getInstance(false);
-			collector = collector.readFromXml(ManorCollector.class);
+			ManorCollector collector = CollectorHelper.readFromXml(ManorCollector.class);
 			//
 			result = workbook.createSheet("種子", 2);
 			int dataRow = BEG_DATA_ROW;
@@ -367,8 +366,7 @@ public class ManorEditor extends BaseEditorSupporter {
 	protected WritableSheet writeToSheet_3(WritableWorkbook workbook) {
 		WritableSheet result = null;
 		try {
-			ManorCollector collector = ManorCollector.getInstance(false);
-			collector = collector.readFromXml(ManorCollector.class);
+			ManorCollector collector = CollectorHelper.readFromXml(ManorCollector.class);
 			//
 			result = workbook.createSheet("土地", 3);
 			int dataRow = BEG_DATA_ROW;
@@ -377,22 +375,19 @@ public class ManorEditor extends BaseEditorSupporter {
 			addDef(result, col, 0, "maxEnhanceLevel");
 			result.setColumnView(col, 15);
 			addHeader(result, col, BEG_HEADER_ROW, "最高強化等級");
-			addNumber(result, col, BEG_DATA_ROW, collector.getMaxEnhanceLevel()
-					.getValue());
+			addNumber(result, col, BEG_DATA_ROW, collector.getMaxEnhanceLevel().getValue());
 			//
 			col = 1;
 			addDef(result, col, 0, "safeEnhanceLevel");
 			result.setColumnView(col, 15);
 			addHeader(result, col, BEG_HEADER_ROW, "安全強化等級");
-			addNumber(result, col, BEG_DATA_ROW, collector
-					.getSafeEnhanceLevel().getValue());
+			addNumber(result, col, BEG_DATA_ROW, collector.getSafeEnhanceLevel().getValue());
 			//
 			col = 2;
 			addDef(result, col, 0, "fantasyEnhanceLevel");
 			result.setColumnView(col, 15);
 			addHeader(result, col, BEG_HEADER_ROW, "幻想強化等級");
-			addNumber(result, col, BEG_DATA_ROW, collector
-					.getFantasyEnhanceLevel().getValue());
+			addNumber(result, col, BEG_DATA_ROW, collector.getFantasyEnhanceLevel().getValue());
 		} catch (Exception ex) {
 			throw new EditorException(ex);
 		}

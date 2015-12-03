@@ -74,7 +74,7 @@ public class TrainServiceImpl extends AppServiceSupporter implements TrainServic
 	/**
 	 * 監聽
 	 */
-	private transient ListenRunner listenRunner;
+	private transient TrainListenRunner trainListenRunner;
 
 	public TrainServiceImpl() {
 	}
@@ -84,7 +84,8 @@ public class TrainServiceImpl extends AppServiceSupporter implements TrainServic
 	 */
 	@Override
 	protected void doStart() throws Exception {
-		this.listenRunner = new ListenRunner(threadService);
+		super.doStart();
+		this.trainListenRunner = new TrainListenRunner(threadService);
 	}
 
 	/**
@@ -92,14 +93,15 @@ public class TrainServiceImpl extends AppServiceSupporter implements TrainServic
 	 */
 	@Override
 	protected void doShutdown() throws Exception {
-		this.listenRunner.shutdown();
+		super.doShutdown();
+		this.trainListenRunner.shutdown();
 	}
 
 	/**
 	 * 監聽
 	 */
-	protected class ListenRunner extends BaseRunnableSupporter {
-		public ListenRunner(ThreadService threadService) {
+	protected class TrainListenRunner extends BaseRunnableSupporter {
+		public TrainListenRunner(ThreadService threadService) {
 			super(threadService);
 		}
 

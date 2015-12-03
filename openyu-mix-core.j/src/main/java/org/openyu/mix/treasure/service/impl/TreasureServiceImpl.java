@@ -92,7 +92,7 @@ public class TreasureServiceImpl extends AppServiceSupporter implements Treasure
 	/**
 	 * 監聽
 	 */
-	private transient ListenRunner listenRunner;
+	private transient TreasureListenRunner treasureListenRunner;
 
 	public TreasureServiceImpl() {
 	}
@@ -102,7 +102,8 @@ public class TreasureServiceImpl extends AppServiceSupporter implements Treasure
 	 */
 	@Override
 	protected void doStart() throws Exception {
-		this.listenRunner = new ListenRunner(threadService);
+		super.doStart();
+		this.treasureListenRunner = new TreasureListenRunner(threadService);
 	}
 
 	/**
@@ -110,15 +111,16 @@ public class TreasureServiceImpl extends AppServiceSupporter implements Treasure
 	 */
 	@Override
 	protected void doShutdown() throws Exception {
-		this.listenRunner.shutdown();
+		super.doShutdown();
+		this.treasureListenRunner.shutdown();
 	}
 
 	/**
 	 * 監聽
 	 */
-	protected class ListenRunner extends BaseRunnableSupporter {
+	protected class TreasureListenRunner extends BaseRunnableSupporter {
 
-		public ListenRunner(ThreadService threadService) {
+		public TreasureListenRunner(ThreadService threadService) {
 			super(threadService);
 		}
 

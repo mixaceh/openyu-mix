@@ -20,8 +20,9 @@ import org.openyu.commons.lang.ClassHelper;
  */
 public class ManorCultureInterceptor extends AppMethodInterceptorSupporter {
 
-	private static transient final Logger LOGGER = LoggerFactory
-			.getLogger(ManorCultureInterceptor.class);
+	private static final long serialVersionUID = -8666906155488242300L;
+
+	private static transient final Logger LOGGER = LoggerFactory.getLogger(ManorCultureInterceptor.class);
 
 	@Autowired
 	@Qualifier("manorLogService")
@@ -33,10 +34,8 @@ public class ManorCultureInterceptor extends AppMethodInterceptorSupporter {
 	 * CultureResult culture(boolean sendable, Role role, int cultureValue, int
 	 * farmIndex, int gridIndex, String seedUniqueId);
 	 */
-	private static final Method culture = ClassHelper.getDeclaredMethod(
-			ManorService.class, "culture",
-			new Class[] { boolean.class, Role.class, int.class, int.class,
-					int.class, String.class });
+	private static final Method culture = ClassHelper.getDeclaredMethod(ManorService.class, "culture",
+			new Class[] { boolean.class, Role.class, int.class, int.class, int.class, String.class });
 
 	/**
 	 * 耕種所有
@@ -44,9 +43,8 @@ public class ManorCultureInterceptor extends AppMethodInterceptorSupporter {
 	 * CultureAllResult cultureAll(boolean sendable, Role role, int
 	 * cultureValue);
 	 */
-	private static final Method cultureAll = ClassHelper.getDeclaredMethod(
-			ManorService.class, "cultureAll", new Class[] { boolean.class,
-				Role.class, int.class });
+	private static final Method cultureAll = ClassHelper.getDeclaredMethod(ManorService.class, "cultureAll",
+			new Class[] { boolean.class, Role.class, int.class });
 
 	public ManorCultureInterceptor() {
 	}
@@ -57,14 +55,14 @@ public class ManorCultureInterceptor extends AppMethodInterceptorSupporter {
 	 * CultureResult culture(boolean sendable, Role role, int cultureValue, int
 	 * farmIndex, int gridIndex, String seedUniqueId);
 	 */
-	public Object invoke(MethodInvocation methodInvocation, Method method,
-			Class<?>[] paramTypes, Object[] args) {
-		// 傳回值
+	protected Object doInvoke(MethodInvocation methodInvocation) throws Throwable {
 		Object result = null;
 		try {
 			// --------------------------------------------------
 			// proceed前
 			// --------------------------------------------------
+			Object[] args = methodInvocation.getArguments();
+			Method method = methodInvocation.getMethod();
 
 			// --------------------------------------------------
 			result = methodInvocation.proceed();
@@ -85,8 +83,7 @@ public class ManorCultureInterceptor extends AppMethodInterceptorSupporter {
 				String seedUniqueId = (String) args[5];
 				//
 				if (ret != null) {
-					manorLogService.recordCulture(role, ret.getCultureType(),
-							farmIndex, gridIndex, ret.getSeed(),
+					manorLogService.recordCulture(role, ret.getCultureType(), farmIndex, gridIndex, ret.getSeed(),
 							ret.getSpendItems(), ret.getSpendCoin());
 				}
 
@@ -102,8 +99,9 @@ public class ManorCultureInterceptor extends AppMethodInterceptorSupporter {
 					// TODO 有分不同耕種類型
 				}
 			}
-		} catch (Throwable ex) {
-			ex.printStackTrace();
+		} catch (Throwable e) {
+			LOGGER.error(new StringBuilder("Exception encountered during doInvoke()").toString(), e);
+			// throw e;
 		}
 		return result;
 	}
