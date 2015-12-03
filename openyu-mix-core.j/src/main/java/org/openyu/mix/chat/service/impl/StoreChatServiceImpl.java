@@ -29,6 +29,7 @@ import org.openyu.commons.nio.NioHelper;
 import org.openyu.commons.security.SecurityProcessor;
 import org.openyu.commons.thread.ThreadHelper;
 import org.openyu.commons.thread.ThreadService;
+import org.openyu.commons.thread.anno.DefaultThreadService;
 import org.openyu.commons.thread.supporter.BaseRunnableSupporter;
 import org.openyu.commons.thread.supporter.TriggerQueueSupporter;
 import org.openyu.commons.util.CompressProcessor;
@@ -47,6 +48,14 @@ public class StoreChatServiceImpl extends AppServiceSupporter implements StoreCh
 	private static final long serialVersionUID = -5119832212938784272L;
 
 	private static transient final Logger LOGGER = LoggerFactory.getLogger(StoreChatServiceImpl.class);
+
+	/**
+	 * 線程服務
+	 */
+	// @Autowired
+	// @Qualifier("threadService")
+	@DefaultThreadService
+	private transient ThreadService threadService;
 
 	@Autowired
 	@Qualifier("chatSetService")
@@ -68,25 +77,39 @@ public class StoreChatServiceImpl extends AppServiceSupporter implements StoreCh
 	private static CompressProcessor compressProcessor = chatCollector.getCompressProcessor();
 
 	/**
+	 * 監聽儲存chat
+	 */
+	private transient StoreChatsRunner storeChatsRunner;
+	/**
 	 * 序列化佇列
 	 */
-	protected transient SerializeQueue<SerializeChat> serializeQueue = new SerializeQueue<SerializeChat>();
+	protected transient SerializeQueue<SerializeChat> serializeQueue;
 
 	public StoreChatServiceImpl() {
 	}
 
 	/**
-	 * 初始化
-	 *
-	 * @throws Exception
+	 * 內部啟動
 	 */
-	protected void init() throws Exception {
-		super.init();
-		//
-		// 監聽執行者
-		threadService.submit(new StoreChatsRunner());
+	@Override
+	protected void doStart() throws Exception {
+		super.doStart();
+		// 監聽儲存chat
+		this.storeChatsRunner = new StoreChatsRunner(threadService);
+		this.storeChatsRunner.start();
 		// 序列化佇列
-		threadService.submit(serializeQueue);
+		this.serializeQueue = new SerializeQueue<SerializeChat>(threadService);
+		this.serializeQueue.start();
+	}
+
+	/**
+	 * 內部關閉
+	 */
+	@Override
+	protected void doShutdown() throws Exception {
+		super.doShutdown();
+		this.storeChatsRunner.shutdown();
+		this.serializeQueue.shutdown();
 	}
 
 	/**
@@ -312,10 +335,12 @@ public class StoreChatServiceImpl extends AppServiceSupporter implements StoreCh
 	 * 序列化佇列
 	 */
 	protected class SerializeQueue<E> extends TriggerQueueSupporter<SerializeChat> {
-		public SerializeQueue() {
+
+		public SerializeQueue(ThreadService threadService) {
 		}
 
-		public void process(SerializeChat e) {
+		@Override
+		public void doExecute(SerializeChat e) {
 			serializeChat(e.isSendable(), e.getChat());
 		}
 	}

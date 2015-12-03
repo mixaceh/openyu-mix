@@ -78,6 +78,7 @@ public class ActivityServiceImpl extends AppServiceSupporter implements Activity
 	protected void doStart() throws Exception {
 		super.doStart();
 		this.activityListenRunner = new ActivityListenRunner(threadService);
+		this.activityListenRunner.start();
 	}
 
 	/**

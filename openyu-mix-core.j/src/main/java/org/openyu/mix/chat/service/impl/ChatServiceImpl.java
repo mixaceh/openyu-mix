@@ -37,8 +37,7 @@ public class ChatServiceImpl extends AppServiceSupporter implements ChatService 
 
 	private static final long serialVersionUID = -2552742044657566534L;
 
-	private static transient final Logger LOGGER = LoggerFactory
-			.getLogger(ChatServiceImpl.class);
+	private static transient final Logger LOGGER = LoggerFactory.getLogger(ChatServiceImpl.class);
 
 	@Autowired
 	@Qualifier("roleService")
@@ -64,24 +63,14 @@ public class ChatServiceImpl extends AppServiceSupporter implements ChatService 
 	public ChatServiceImpl() {
 	}
 
-	/**
-	 * 初始化
-	 *
-	 * @throws Exception
-	 */
-	protected void init() throws Exception {
-		super.init();
-		//
-	}
-
 	public ChatDao getChatDao() {
-		return (ChatDao) getOjDao();
+		return (ChatDao) getCommonDao();
 	}
 
 	@Autowired
 	@Qualifier("chatDao")
 	public void setChatDao(ChatDao chatDao) {
-		setOjDao(chatDao);
+		setCommonDao(chatDao);
 	}
 
 	// --------------------------------------------------
@@ -197,14 +186,12 @@ public class ChatServiceImpl extends AppServiceSupporter implements ChatService 
 	 * @return
 	 */
 	protected Message sendInitialize(Role role, Chat chat) {
-		Message message = messageService.createMessage(CoreModuleType.CHAT,
-				CoreModuleType.CLIENT,
+		Message message = messageService.createMessage(CoreModuleType.CHAT, CoreModuleType.CLIENT,
 				CoreMessageType.CHAT_INITIALIZE_RESPONSE, role.getId());
 
 		// 1.聊天設定
 		message.addInt(chat.getChannels().size());
-		for (Map.Entry<ChannelType, Channel> entry : chat.getChannels()
-				.entrySet()) {
+		for (Map.Entry<ChannelType, Channel> entry : chat.getChannels().entrySet()) {
 			ChannelType key = entry.getKey();
 			Channel value = entry.getValue();
 			message.addInt(key);
@@ -230,8 +217,7 @@ public class ChatServiceImpl extends AppServiceSupporter implements ChatService 
 	 * @param chat
 	 * @param isOnline
 	 */
-	protected void fillChat(Message message, Role role, Chat chat,
-			boolean isOnline) {
+	protected void fillChat(Message message, Role role, Chat chat, boolean isOnline) {
 		message.addBoolean(isOnline);// 是否在線
 		//
 		message.addString(chat.getId());// id=roleId
@@ -292,8 +278,7 @@ public class ChatServiceImpl extends AppServiceSupporter implements ChatService 
 	 * @param message
 	 * @param friendGroup
 	 */
-	protected void fillSimpleFriendGroup(Message message,
-			FriendGroup friendGroup) {
+	protected void fillSimpleFriendGroup(Message message, FriendGroup friendGroup) {
 		int size = (friendGroup != null ? friendGroup.getFriends().size() : 0);
 		message.addInt(size);
 		for (Friend friend : friendGroup.getFriends().values()) {
@@ -378,8 +363,7 @@ public class ChatServiceImpl extends AppServiceSupporter implements ChatService 
 	 * @see ChannelType=3-8
 	 */
 	public void speak(Role role, int channelValue, String text, String html) {
-		ChannelType channelType = EnumHelper.valueOf(ChannelType.class,
-				channelValue);
+		ChannelType channelType = EnumHelper.valueOf(ChannelType.class, channelValue);
 		// 秘技
 		debugService.cheat(role.getId(), text);
 		//
@@ -425,8 +409,7 @@ public class ChatServiceImpl extends AppServiceSupporter implements ChatService 
 	 * @param text
 	 * @param html
 	 */
-	protected void localSpeak(ChannelType channelType, Role role, String text,
-			String html) {
+	protected void localSpeak(ChannelType channelType, Role role, String text, String html) {
 		if (role == null) {
 			return;
 		}
@@ -437,8 +420,7 @@ public class ChatServiceImpl extends AppServiceSupporter implements ChatService 
 
 		// TODO 隔絕
 
-		sendSpeak(ErrorType.NO_ERROR, receivers, channelType, role,
-				role.getName(), text, html);
+		sendSpeak(ErrorType.NO_ERROR, receivers, channelType, role, role.getName(), text, html);
 	}
 
 	/**
@@ -449,8 +431,7 @@ public class ChatServiceImpl extends AppServiceSupporter implements ChatService 
 	 * @param text
 	 * @param html
 	 */
-	protected void worldSpeak(ChannelType channelType, Role role, String text,
-			String html) {
+	protected void worldSpeak(ChannelType channelType, Role role, String text, String html) {
 		if (role == null) {
 			return;
 		}
@@ -461,8 +442,7 @@ public class ChatServiceImpl extends AppServiceSupporter implements ChatService 
 
 		// TODO 隔絕
 
-		sendSpeak(ErrorType.NO_ERROR, receivers, channelType, role,
-				role.getName(), text, html);
+		sendSpeak(ErrorType.NO_ERROR, receivers, channelType, role, role.getName(), text, html);
 	}
 
 	/**
@@ -473,8 +453,7 @@ public class ChatServiceImpl extends AppServiceSupporter implements ChatService 
 	 * @param text
 	 * @param html
 	 */
-	protected void tradeSpeak(ChannelType channelType, Role role, String text,
-			String html) {
+	protected void tradeSpeak(ChannelType channelType, Role role, String text, String html) {
 		if (role == null) {
 			return;
 		}
@@ -485,8 +464,7 @@ public class ChatServiceImpl extends AppServiceSupporter implements ChatService 
 
 		// TODO 隔絕
 
-		sendSpeak(ErrorType.NO_ERROR, receivers, channelType, role,
-				role.getName(), text, html);
+		sendSpeak(ErrorType.NO_ERROR, receivers, channelType, role, role.getName(), text, html);
 	}
 
 	/**
@@ -500,12 +478,10 @@ public class ChatServiceImpl extends AppServiceSupporter implements ChatService 
 	 * @param text
 	 * @param html
 	 */
-	public Message sendSpeak(ErrorType errorType, List<String> receivers,
-			ChannelType channelType, Role role, String roleName, String text,
-			String html) {
-		Message message = messageService.createMessage(CoreModuleType.CHAT,
-				CoreModuleType.CLIENT, CoreMessageType.CHAT_SPEAK_RESPONSE,
-				receivers);
+	public Message sendSpeak(ErrorType errorType, List<String> receivers, ChannelType channelType, Role role,
+			String roleName, String text, String html) {
+		Message message = messageService.createMessage(CoreModuleType.CHAT, CoreModuleType.CLIENT,
+				CoreMessageType.CHAT_SPEAK_RESPONSE, receivers);
 
 		message.addInt(errorType);// 錯誤碼
 

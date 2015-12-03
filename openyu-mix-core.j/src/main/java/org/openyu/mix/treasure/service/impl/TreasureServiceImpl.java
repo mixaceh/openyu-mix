@@ -104,6 +104,7 @@ public class TreasureServiceImpl extends AppServiceSupporter implements Treasure
 	protected void doStart() throws Exception {
 		super.doStart();
 		this.treasureListenRunner = new TreasureListenRunner(threadService);
+		this.treasureListenRunner.start();
 	}
 
 	/**

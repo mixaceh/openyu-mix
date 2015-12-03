@@ -13,8 +13,7 @@ import org.slf4j.LoggerFactory;
  */
 public class DebugCheatInterceptor extends AppMethodInterceptorSupporter {
 
-	private static transient final Logger LOGGER = LoggerFactory
-			.getLogger(DebugCheatInterceptor.class);
+	private static transient final Logger LOGGER = LoggerFactory.getLogger(DebugCheatInterceptor.class);
 
 	public DebugCheatInterceptor() {
 	}
@@ -24,14 +23,13 @@ public class DebugCheatInterceptor extends AppMethodInterceptorSupporter {
 	 * 
 	 * cheat(String roleId, String text);
 	 */
-	public Object invoke(MethodInvocation methodInvocation, Method method,
-			Class<?>[] paramTypes, Object[] args) {
-		// 傳回值
+	protected Object doInvoke(MethodInvocation methodInvocation) throws Throwable {
 		Object result = null;
 		try {
 			// --------------------------------------------------
 			// proceed前
 			// --------------------------------------------------
+			Object[] args = methodInvocation.getArguments();
 			// 參數
 			String roleId = (String) args[0];
 			String text = (String) args[1];
@@ -41,8 +39,7 @@ public class DebugCheatInterceptor extends AppMethodInterceptorSupporter {
 			// 2.roleId="TEST_ROLE"+xxx
 			final String TEST_ROLE = "TEST_ROLE";
 			if (ConfigHelper.isDebug()
-					|| (roleId != null && roleId.length() >= 9 && TEST_ROLE
-							.equals(roleId.substring(0, 9)))) {
+					|| (roleId != null && roleId.length() >= 9 && TEST_ROLE.equals(roleId.substring(0, 9)))) {
 				result = methodInvocation.proceed();
 			}
 			// --------------------------------------------------
@@ -50,8 +47,9 @@ public class DebugCheatInterceptor extends AppMethodInterceptorSupporter {
 			// --------------------------------------------------
 			// proceed後
 			// --------------------------------------------------
-		} catch (Throwable ex) {
-			ex.printStackTrace();
+		} catch (Throwable e) {
+			LOGGER.error(new StringBuilder("Exception encountered during doInvoke()").toString(), e);
+			// throw e;
 		}
 		return result;
 	}

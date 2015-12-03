@@ -101,6 +101,7 @@ public class ManorServiceImpl extends AppServiceSupporter implements ManorServic
 	protected void doStart() throws Exception {
 		super.doStart();
 		this.manorListenRunner = new ManorListenRunner(threadService);
+		this.manorListenRunner.start();
 	}
 
 	/**

@@ -72,7 +72,7 @@ public class StoreRoleServiceImpl extends AppServiceSupporter implements StoreRo
 	private static CompressProcessor compressProcessor = roleCollector.getCompressProcessor();
 
 	/**
-	 * 監聽執行者
+	 * 監聽儲存role
 	 */
 	protected transient StoreRolesRunner storeRolesRunner;
 
@@ -90,10 +90,10 @@ public class StoreRoleServiceImpl extends AppServiceSupporter implements StoreRo
 	@Override
 	protected void doStart() throws Exception {
 		super.doStart();
-		//
+		// 監聽儲存role
 		storeRolesRunner = new StoreRolesRunner(threadService);
 		storeRolesRunner.start();
-		//
+		// 序列化佇列
 		serializeQueue = new SerializeQueue<SerializeRole>(threadService);
 		serializeQueue.start();
 	}

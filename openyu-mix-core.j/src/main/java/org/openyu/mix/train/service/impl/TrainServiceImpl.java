@@ -86,6 +86,7 @@ public class TrainServiceImpl extends AppServiceSupporter implements TrainServic
 	protected void doStart() throws Exception {
 		super.doStart();
 		this.trainListenRunner = new TrainListenRunner(threadService);
+		this.trainListenRunner.start();
 	}
 
 	/**
