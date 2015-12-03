@@ -15,6 +15,7 @@ import org.openyu.mix.treasure.vo.impl.TreasureImpl;
 import org.openyu.commons.bean.LocaleNameBean;
 import org.openyu.commons.bean.NamesBean;
 import org.openyu.commons.bean.supporter.LocaleNameBeanSupporter;
+import org.openyu.commons.collector.CollectorHelper;
 import org.openyu.commons.editor.ex.EditorException;
 import org.openyu.commons.editor.supporter.BaseEditorSupporter;
 import org.openyu.commons.lang.BooleanHelper;
@@ -87,8 +88,7 @@ public class TreasureEditor extends BaseEditorSupporter {
 	protected WritableSheet writeToSheet_0(WritableWorkbook workbook) {
 		WritableSheet result = null;
 		try {
-			TreasureCollector collector = beanCollector
-					.readFromXml(TreasureCollector.class);
+			TreasureCollector collector = CollectorHelper.readFromXml(TreasureCollector.class);
 			//
 			result = workbook.createSheet("資料", 0);
 			int dataRow = BEG_DATA_ROW;
@@ -338,8 +338,7 @@ public class TreasureEditor extends BaseEditorSupporter {
 							String weight = sheet.getCell(11, i).getContents();
 							treasure.setWeight(NumberHelper.toInt(weight));
 							//
-							stock.getTreasures()
-									.put(treasure.getId(), treasure);
+							stock.getTreasures().put(treasure.getId(), treasure);
 						}
 					}
 				}
@@ -350,13 +349,11 @@ public class TreasureEditor extends BaseEditorSupporter {
 				String index = sheet.getCell(12, i).getContents();
 				if (StringHelper.notBlank(index)) {
 					String stockId = sheet.getCell(13, i).getContents();
-					collector.getProducts().put(NumberHelper.toInt(index),
-							stockId);
+					collector.getProducts().put(NumberHelper.toInt(index), stockId);
 				}
 			}
 			//
-			result = beanCollector.writeToXml(TreasureCollector.class,
-					collector);
+			result = CollectorHelper.writeToXml(TreasureCollector.class, collector);
 		} catch (Exception ex) {
 			throw new EditorException(ex);
 		} finally {

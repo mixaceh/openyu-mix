@@ -43,6 +43,7 @@ public final class ArmorCollector extends BaseCollectorSupporter {
 	private static transient final Logger LOGGER = LoggerFactory.getLogger(ArmorCollector.class);
 
 	private static ArmorCollector instance;
+
 	// --------------------------------------------------
 	// 此有系統值,只是為了轉出xml,並非給企劃編輯用
 	// --------------------------------------------------

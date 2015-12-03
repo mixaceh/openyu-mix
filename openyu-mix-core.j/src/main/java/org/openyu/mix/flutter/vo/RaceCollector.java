@@ -10,6 +10,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
+import org.openyu.commons.collector.CollectorHelper;
 import org.openyu.commons.collector.supporter.BaseCollectorSupporter;
 import org.openyu.commons.enumz.EnumHelper;
 import org.openyu.mix.flutter.vo.AttributeType;
@@ -30,8 +31,11 @@ public final class RaceCollector extends BaseCollectorSupporter {
 
 	private static final long serialVersionUID = -366805549782373969L;
 
-	private static RaceCollector raceCollector;
+	private static RaceCollector instance;
 
+	// --------------------------------------------------
+	// 此有系統值,只是為了轉出xml,並非給企劃編輯用
+	// --------------------------------------------------
 	/**
 	 * 所有的種族類別
 	 */
@@ -44,6 +48,9 @@ public final class RaceCollector extends BaseCollectorSupporter {
 	@XmlJavaTypeAdapter(AttributeTypeXmlAdapter.class)
 	private Set<AttributeType> attributeTypes = new LinkedHashSet<AttributeType>();
 
+	// --------------------------------------------------
+	// 企劃編輯用
+	// --------------------------------------------------
 	/**
 	 * 所有的種族
 	 */
@@ -59,41 +66,67 @@ public final class RaceCollector extends BaseCollectorSupporter {
 		return getInstance(true);
 	}
 
-	public synchronized static RaceCollector getInstance(boolean initial) {
-		if (raceCollector == null) {
-			raceCollector = new RaceCollector();
-			if (initial) {
-				raceCollector.initialize();
+	public synchronized static RaceCollector getInstance(boolean start) {
+		if (instance == null) {
+			instance = CollectorHelper.readFromSer(RaceCollector.class);
+			// 此時有可能會沒有ser檔案,或舊的結構造成ex,只要再轉出一次ser,覆蓋原本ser即可
+			if (instance == null) {
+				instance = new RaceCollector();
 			}
-
+			//
+			if (start) {
+				// 啟動
+				instance.start();
+			}
 			// 此有系統值,只是為了轉出xml,並非給企劃編輯用
-			raceCollector.raceTypes = EnumHelper.valuesSet(RaceType.class);
-			raceCollector.attributeTypes = EnumHelper
-					.valuesSet(AttributeType.class);
+			instance.raceTypes = EnumHelper.valuesSet(RaceType.class);
+			instance.attributeTypes = EnumHelper.valuesSet(AttributeType.class);
 		}
-		return raceCollector;
+		return instance;
 	}
 
 	/**
-	 * 初始化
+	 * 單例關閉
 	 * 
+	 * @return
 	 */
-	public void initialize() {
-		if (!raceCollector.isInitialized()) {
-			raceCollector = readFromSer(RaceCollector.class);
-			// 此時有可能會沒有ser檔案,或舊的結構造成ex,只要再轉出一次ser,覆蓋原本ser即可
-			if (raceCollector == null) {
-				raceCollector = new RaceCollector();
-			}
+	public synchronized static RaceCollector shutdownInstance() {
+		if (instance != null) {
+			RaceCollector oldInstance = instance;
+			instance = null;
 			//
-			raceCollector.setInitialized(true);
+			if (oldInstance != null) {
+				oldInstance.shutdown();
+			}
 		}
+		return instance;
 	}
 
-	public void clear() {
+	/**
+	 * 單例重啟
+	 * 
+	 * @return
+	 */
+	public synchronized static RaceCollector restartInstance() {
+		if (instance != null) {
+			instance.restart();
+		}
+		return instance;
+	}
+
+	/**
+	 * 內部啟動
+	 */
+	@Override
+	protected void doStart() throws Exception {
+	}
+
+	/**
+	 * 內部關閉
+	 */
+	@Override
+	protected void doShutdown() throws Exception {
 		races.clear();
-		// 設為可初始化
-		setInitialized(false);
 	}
 
 	// --------------------------------------------------
