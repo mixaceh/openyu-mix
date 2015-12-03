@@ -17,6 +17,8 @@ import org.openyu.mix.wuxing.service.WuxingLogService;
  */
 public class WuxingPlayInterceptor extends AppMethodInterceptorSupporter {
 
+	private static final long serialVersionUID = 3244885022032659905L;
+
 	private static transient final Logger LOGGER = LoggerFactory
 			.getLogger(WuxingPlayInterceptor.class);
 
@@ -32,15 +34,14 @@ public class WuxingPlayInterceptor extends AppMethodInterceptorSupporter {
 	 * 
 	 * PlayResult play(boolean sendable, Role role, int playValue)
 	 */
-	public Object invoke(MethodInvocation methodInvocation, Method method,
-			Class<?>[] paramTypes, Object[] args) {
-		// 傳回值
+	protected Object doInvoke(MethodInvocation methodInvocation) throws Throwable {
 		Object result = null;
 		try {
 			// --------------------------------------------------
 			// proceed前
 			// --------------------------------------------------
 			// 參數
+			Object[] args = methodInvocation.getArguments();
 			boolean sendable = (Boolean) args[0];
 			Role role = (Role) args[1];
 			int playValue = (Integer) args[2];
@@ -67,8 +68,9 @@ public class WuxingPlayInterceptor extends AppMethodInterceptorSupporter {
 				wuxingLogService.recordFamous(role, ret.getPlayType(),
 						ret.getPlayTime(), ret.getOutcomes());
 			}
-		} catch (Throwable ex) {
-			ex.printStackTrace();
+		} catch (Throwable e) {
+			LOGGER.error(new StringBuilder("Exception encountered during doInvoke()").toString(), e);
+			// throw e;
 		}
 		return result;
 	}

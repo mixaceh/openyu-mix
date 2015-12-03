@@ -20,9 +20,9 @@ import org.openyu.commons.bean.LocaleNameBean;
 import org.openyu.commons.bean.NamesBean;
 import org.openyu.commons.bean.supporter.LocaleNameBeanSupporter;
 import org.openyu.commons.bean.supporter.NamesBeanSupporter;
+import org.openyu.commons.collector.CollectorHelper;
 import org.openyu.commons.editor.ex.EditorException;
 import org.openyu.commons.editor.supporter.BaseEditorSupporter;
-import org.openyu.commons.io.IoHelper;
 import org.openyu.commons.lang.ClassHelper;
 import org.openyu.commons.lang.StringHelper;
 
@@ -94,7 +94,7 @@ public class WuxingEditorBak extends BaseEditorSupporter {
 	protected WritableSheet writeToSheet_0(WritableWorkbook workbook) {
 		WritableSheet result = null;
 		try {
-			WuxingCollector collector = beanCollector
+			WuxingCollector collector = CollectorHelper
 					.readFromXml(WuxingCollector.class);
 			//
 			result = workbook.createSheet("資料", 0);
@@ -668,7 +668,7 @@ public class WuxingEditorBak extends BaseEditorSupporter {
 				}
 			}
 			//
-			result = beanCollector.writeToXml(WuxingCollector.class, collector);
+			result = CollectorHelper.writeToXml(WuxingCollector.class, collector);
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		} finally {

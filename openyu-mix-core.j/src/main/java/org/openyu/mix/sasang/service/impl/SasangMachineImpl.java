@@ -16,7 +16,6 @@ import org.openyu.mix.sasang.vo.SasangCollector;
 import org.openyu.mix.sasang.vo.impl.OutcomeImpl;
 import org.openyu.commons.bean.BeanHelper;
 import org.openyu.commons.lang.NumberHelper;
-import org.openyu.commons.service.supporter.BaseServiceSupporter;
 import org.openyu.commons.util.CollectionHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -47,6 +47,8 @@ import org.openyu.socklet.message.vo.Message;
 public class WuxingServiceImpl extends AppServiceSupporter implements
 		WuxingService {
 
+	private static final long serialVersionUID = 1449172726555774863L;
+
 	private static transient final Logger LOGGER = LoggerFactory
 			.getLogger(WuxingServiceImpl.class);
 
@@ -535,7 +537,7 @@ public class WuxingServiceImpl extends AppServiceSupporter implements
 			// 五行
 			wuxingPen = role.getWuxingPen();
 			// 先玩,為了檢查獎勵區空間是否足夠
-			Outcome outcome = wuxingMachine.start();
+			Outcome outcome = wuxingMachine.play();
 			// 沒結果,xml可能沒設定,壞掉了
 			if (outcome == null) {
 				errorType = ErrorType.OUTCOME_NOT_EXIST;
@@ -666,7 +668,7 @@ public class WuxingServiceImpl extends AppServiceSupporter implements
 			// 五行
 			wuxingPen = role.getWuxingPen();
 			// 先玩,為了檢查獎勵區空間是否足夠
-			List<Outcome> outcomes = wuxingMachine.start(playTimes);
+			List<Outcome> outcomes = wuxingMachine.play(playTimes);
 			// 沒結果,xml可能沒設定,壞掉了
 			if (outcomes.size() == 0) {
 				errorType = ErrorType.OUTCOME_NOT_EXIST;

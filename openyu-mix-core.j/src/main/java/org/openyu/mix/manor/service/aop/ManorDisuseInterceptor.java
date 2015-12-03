@@ -32,7 +32,6 @@ public class ManorDisuseInterceptor extends AppMethodInterceptorSupporter {
 	 * DisuseResult disuse(boolean sendable, Role role, int farmIndex);
 	 */
 	protected Object doInvoke(MethodInvocation methodInvocation) throws Throwable {
-		// 傳回值
 		Object result = null;
 		try {
 			// --------------------------------------------------

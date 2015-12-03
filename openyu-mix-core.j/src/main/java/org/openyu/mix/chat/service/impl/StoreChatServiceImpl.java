@@ -28,6 +28,7 @@ import org.openyu.commons.lang.StringHelper;
 import org.openyu.commons.nio.NioHelper;
 import org.openyu.commons.security.SecurityProcessor;
 import org.openyu.commons.thread.ThreadHelper;
+import org.openyu.commons.thread.ThreadService;
 import org.openyu.commons.thread.supporter.BaseRunnableSupporter;
 import org.openyu.commons.thread.supporter.TriggerQueueSupporter;
 import org.openyu.commons.util.CompressProcessor;
@@ -41,13 +42,11 @@ import org.openyu.socklet.message.vo.Message;
  * 
  * 2.若失敗,則序列化到檔案, 目錄, file:custom/chat/unsave
  */
-public class StoreChatServiceImpl extends AppServiceSupporter implements
-		StoreChatService {
+public class StoreChatServiceImpl extends AppServiceSupporter implements StoreChatService {
 
 	private static final long serialVersionUID = -5119832212938784272L;
 
-	private static transient final Logger LOGGER = LoggerFactory
-			.getLogger(StoreChatServiceImpl.class);
+	private static transient final Logger LOGGER = LoggerFactory.getLogger(StoreChatServiceImpl.class);
 
 	@Autowired
 	@Qualifier("chatSetService")
@@ -62,21 +61,16 @@ public class StoreChatServiceImpl extends AppServiceSupporter implements
 	 */
 	private static ChatCollector chatCollector = ChatCollector.getInstance();
 
-	private static SerializeProcessor serializeProcessor = chatCollector
-			.getSerializeProcessor();
+	private static SerializeProcessor serializeProcessor = chatCollector.getSerializeProcessor();
 
-	private static SecurityProcessor securityProcessor = chatCollector
-			.getSecurityProcessor();
+	private static SecurityProcessor securityProcessor = chatCollector.getSecurityProcessor();
 
-	private static CompressProcessor compressProcessor = chatCollector
-			.getCompressProcessor();
+	private static CompressProcessor compressProcessor = chatCollector.getCompressProcessor();
 
 	/**
 	 * 序列化佇列
 	 */
 	protected transient SerializeQueue<SerializeChat> serializeQueue = new SerializeQueue<SerializeChat>();
-	
-	
 
 	public StoreChatServiceImpl() {
 	}
@@ -99,12 +93,15 @@ public class StoreChatServiceImpl extends AppServiceSupporter implements
 	 * 監聽執行者
 	 */
 	protected class StoreChatsRunner extends BaseRunnableSupporter {
-		public void execute() {
+
+		public StoreChatsRunner(ThreadService threadService) {
+			super(threadService);
+		}
+
+		@Override
+		protected void doRun() throws Exception {
 			while (true) {
 				try {
-					if (isCancel()) {
-						break;
-					}
 					// 自動儲存就不發訊息給client了
 					storeChats(false);
 					ThreadHelper.sleep(chatCollector.getListenMills());
@@ -113,8 +110,6 @@ public class StoreChatServiceImpl extends AppServiceSupporter implements
 					// ex.printStackTrace();
 				}
 			}
-			//
-			LOGGER.warn("Break off " + getClass().getSimpleName());
 		}
 	}
 
@@ -139,8 +134,7 @@ public class StoreChatServiceImpl extends AppServiceSupporter implements
 		}
 		//
 		if (result > 0) {
-			LOGGER.info("Automatic save chats to DB, total count [" + result
-					+ "]");
+			LOGGER.info("Automatic save chats to DB, total count [" + result + "]");
 		}
 		return result;
 	}
@@ -169,8 +163,7 @@ public class StoreChatServiceImpl extends AppServiceSupporter implements
 		int version = chat.getVersion();
 		for (;;) {
 			try {
-				LOGGER.info("T[" + Thread.currentThread().getId()
-						+ "] Store the chat [" + chat.getId() + "]");
+				LOGGER.info("T[" + Thread.currentThread().getId() + "] Store the chat [" + chat.getId() + "]");
 				// 使用chatService來存檔
 				updated = chatService.update(chat);
 				// 存檔成功
@@ -182,13 +175,11 @@ public class StoreChatServiceImpl extends AppServiceSupporter implements
 					if (exist) {
 						// 刪除ser, 2014/10/08
 						FileHelper.delete(serName);
-						LOGGER.info("Deleted [" + chatId + "] ser file ["
-								+ serName + "]");
+						LOGGER.info("Deleted [" + chatId + "] ser file [" + serName + "]");
 					}
 					// 發訊息
 					if (sendable) {
-						sendStoreChat(ErrorType.NO_ERROR, chat,
-								StoreType.DATABASE);
+						sendStoreChat(ErrorType.NO_ERROR, chat, StoreType.DATABASE);
 					}
 					break;
 				}
@@ -196,13 +187,11 @@ public class StoreChatServiceImpl extends AppServiceSupporter implements
 				// 失敗重試
 				++tries;
 				// [1/3] time(s) Failed to save the chat
-				LOGGER.error("[" + tries + "/"
-						+ (retryNumber != 0 ? retryNumber : "N")
+				LOGGER.error("[" + tries + "/" + (retryNumber != 0 ? retryNumber : "N")
 						+ "] time(s) Failed to save the chat to DB", ex);
 				// 發訊息
 				if (sendable) {
-					sendStoreChat(ErrorType.RETRYING_STORE_DATABASE, chat,
-							StoreType.DATABASE, tries);
+					sendStoreChat(ErrorType.RETRYING_STORE_DATABASE, chat, StoreType.DATABASE, tries);
 				}
 
 				// 0=無限
@@ -214,24 +203,21 @@ public class StoreChatServiceImpl extends AppServiceSupporter implements
 				ThreadHelper.sleep(pauseMills);
 				// Retrying save the chat [TEST_ROLE114805N4CEwYzbG]. Already
 				// tried [3/3] time(s)
-				LOGGER.info("Retrying save the chat [" + chatId
-						+ "]. Already tried [" + (tries + 1) + "/"
+				LOGGER.info("Retrying save the chat [" + chatId + "]. Already tried [" + (tries + 1) + "/"
 						+ (retryNumber != 0 ? retryNumber : "N") + "] time(s)");
 			}
 		}
 		// 重試失敗後,丟到queue,再把它序列化輸出
 		if (!result) {
 			// Trying serialize the chat [TEST_ROLE114805N4CEwYzbG]
-			LOGGER.info("Coz save the chat to DB fail. Trying serialize the chat ["
-					+ chatId + "]");
+			LOGGER.info("Coz save the chat to DB fail. Trying serialize the chat [" + chatId + "]");
 			// 因update會導致version+1, 所以再將其還原為原本的version
 			chat.setVersion(version);
 			SerializeChat serializeChat = new SerializeChatImpl(sendable, chat);
 			serializeQueue.offer(serializeChat);
 			// 發訊息
 			if (sendable) {
-				sendStoreChat(ErrorType.STORE_DATABASE_FAIL, chat,
-						StoreType.DATABASE);
+				sendStoreChat(ErrorType.STORE_DATABASE_FAIL, chat, StoreType.DATABASE);
 			}
 		}
 		return result;
@@ -245,8 +231,7 @@ public class StoreChatServiceImpl extends AppServiceSupporter implements
 	 * @param storeType
 	 * @return
 	 */
-	public Message sendStoreChat(ErrorType errorType, Chat chat,
-			StoreType storeType) {
+	public Message sendStoreChat(ErrorType errorType, Chat chat, StoreType storeType) {
 		return sendStoreChat(errorType, chat, storeType, 0);
 	}
 
@@ -260,10 +245,8 @@ public class StoreChatServiceImpl extends AppServiceSupporter implements
 	 *            重試次數
 	 * @return
 	 */
-	public Message sendStoreChat(ErrorType errorType, Chat chat,
-			StoreType storeType, int tries) {
-		Message message = messageService.createMessage(CoreModuleType.CHAT,
-				CoreModuleType.CLIENT,
+	public Message sendStoreChat(ErrorType errorType, Chat chat, StoreType storeType, int tries) {
+		Message message = messageService.createMessage(CoreModuleType.CHAT, CoreModuleType.CLIENT,
 				CoreMessageType.CHAT_STORE_CHAT_RESPONSE, chat.getId());
 
 		message.addInt(errorType);// 0, int, errorType 錯誤碼
@@ -280,8 +263,7 @@ public class StoreChatServiceImpl extends AppServiceSupporter implements
 	/**
 	 * 序列化聊天角色
 	 */
-	public static class SerializeChatImpl extends AppResultSupporter implements
-			SerializeChat {
+	public static class SerializeChatImpl extends AppResultSupporter implements SerializeChat {
 
 		private static final long serialVersionUID = 7332039566995783929L;
 
@@ -311,8 +293,7 @@ public class StoreChatServiceImpl extends AppServiceSupporter implements
 		}
 
 		public String toString() {
-			ToStringBuilder builder = new ToStringBuilder(this,
-					ToStringStyle.SIMPLE_STYLE);
+			ToStringBuilder builder = new ToStringBuilder(this, ToStringStyle.SIMPLE_STYLE);
 			builder.appendSuper(super.toString());
 			builder.append("sendable", sendable);
 			builder.append("chat", chat.getId());
@@ -330,8 +311,7 @@ public class StoreChatServiceImpl extends AppServiceSupporter implements
 	/**
 	 * 序列化佇列
 	 */
-	protected class SerializeQueue<E> extends
-			TriggerQueueSupporter<SerializeChat> {
+	protected class SerializeQueue<E> extends TriggerQueueSupporter<SerializeChat> {
 		public SerializeQueue() {
 		}
 
@@ -373,8 +353,7 @@ public class StoreChatServiceImpl extends AppServiceSupporter implements
 			//
 			if (writed) {
 				result = serName;
-				LOGGER.info("Serialized the chat [" + chat.getId() + "] to "
-						+ serName);
+				LOGGER.info("Serialized the chat [" + chat.getId() + "] to " + serName);
 				// 發訊息
 				if (sendable) {
 					sendStoreChat(ErrorType.NO_ERROR, chat, StoreType.FILE);
@@ -383,8 +362,7 @@ public class StoreChatServiceImpl extends AppServiceSupporter implements
 				LOGGER.error("Serialized the chat [" + chat.getId() + "] fail");
 				// 發訊息
 				if (sendable) {
-					sendStoreChat(ErrorType.STORE_FILE_FAIL, chat,
-							StoreType.FILE);
+					sendStoreChat(ErrorType.STORE_FILE_FAIL, chat, StoreType.FILE);
 				}
 			}
 		} catch (Exception ex) {

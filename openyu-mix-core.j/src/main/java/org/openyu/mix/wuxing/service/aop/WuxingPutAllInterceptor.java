@@ -18,6 +18,8 @@ import org.openyu.mix.wuxing.service.WuxingService.PutType;
  */
 public class WuxingPutAllInterceptor extends AppMethodInterceptorSupporter {
 
+	private static final long serialVersionUID = 4741121694715451195L;
+
 	private static transient final Logger LOGGER = LoggerFactory
 			.getLogger(WuxingPutAllInterceptor.class);
 
@@ -33,15 +35,14 @@ public class WuxingPutAllInterceptor extends AppMethodInterceptorSupporter {
 	 * 
 	 * PutResult putAll(boolean sendable, Role role)
 	 */
-	public Object invoke(MethodInvocation methodInvocation, Method method,
-			Class<?>[] paramTypes, Object[] args) {
-		// 傳回值
+	protected Object doInvoke(MethodInvocation methodInvocation) throws Throwable {
 		Object result = null;
 		try {
 			// --------------------------------------------------
 			// proceed前
 			// --------------------------------------------------
 			// 參數
+			Object[] args = methodInvocation.getArguments();
 			boolean sendable = (Boolean) args[0];
 			Role role = (Role) args[1];
 
@@ -59,8 +60,9 @@ public class WuxingPutAllInterceptor extends AppMethodInterceptorSupporter {
 			if (ret != null) {
 				wuxingLogService.recordPut(role, PutType.ALL, ret.getAwards());
 			}
-		} catch (Throwable ex) {
-			ex.printStackTrace();
+		} catch (Throwable e) {
+			LOGGER.error(new StringBuilder("Exception encountered during doInvoke()").toString(), e);
+			// throw e;
 		}
 		return result;
 	}

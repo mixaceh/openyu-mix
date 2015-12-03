@@ -5,6 +5,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import org.openyu.mix.app.service.supporter.AppServiceSupporter;
 import org.openyu.mix.app.vo.Prize;
 import org.openyu.mix.wuxing.service.WuxingMachine;
 import org.openyu.mix.wuxing.vo.Outcome;
@@ -14,20 +15,18 @@ import org.openyu.mix.wuxing.vo.WuxingCollector;
 import org.openyu.mix.wuxing.vo.impl.OutcomeImpl;
 import org.openyu.commons.enumz.EnumHelper;
 import org.openyu.commons.lang.NumberHelper;
-import org.openyu.commons.service.supporter.BaseServiceSupporter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class WuxingMachineImpl extends BaseServiceSupporter implements
-		WuxingMachine {
+public class WuxingMachineImpl extends AppServiceSupporter implements WuxingMachine {
 
-	private static transient final Logger LOGGER = LoggerFactory
-			.getLogger(WuxingMachineImpl.class);
+	private static final long serialVersionUID = -503439741660304084L;
 
-	private static WuxingMachineImpl wuxingMachineImpl;
+	private static transient final Logger LOGGER = LoggerFactory.getLogger(WuxingMachineImpl.class);
 
-	private transient WuxingCollector wuxingCollector = WuxingCollector
-			.getInstance();
+	private static WuxingMachineImpl instance;
+
+	private transient WuxingCollector wuxingCollector = WuxingCollector.getInstance();
 
 	/**
 	 * 五行勝負結果
@@ -39,10 +38,10 @@ public class WuxingMachineImpl extends BaseServiceSupporter implements
 	}
 
 	public synchronized static WuxingMachine getInstance() {
-		if (wuxingMachineImpl == null) {
-			wuxingMachineImpl = new WuxingMachineImpl();
+		if (instance == null) {
+			instance = new WuxingMachineImpl();
 		}
-		return wuxingMachineImpl;
+		return instance;
 	}
 
 	/**
@@ -124,8 +123,7 @@ public class WuxingMachineImpl extends BaseServiceSupporter implements
 	 * @param playerId
 	 * @return
 	 */
-	public Outcome createOutcome(String outcomeId, String bankerId,
-			String playerId) {
+	public Outcome createOutcome(String outcomeId, String bankerId, String playerId) {
 		Outcome result = new OutcomeImpl(outcomeId, bankerId, playerId);
 		// clone prize
 		List<Prize> prizes = clone(calcPrizes(outcomeId));
@@ -146,8 +144,7 @@ public class WuxingMachineImpl extends BaseServiceSupporter implements
 		int length = WuxingType.values().length;
 		for (int i = 0; i < length; i++) {
 			int wuxingValue = NumberHelper.randomInt(1, length + 1);
-			WuxingType wuxingType = EnumHelper.valueOf(WuxingType.class,
-					wuxingValue);
+			WuxingType wuxingType = EnumHelper.valueOf(WuxingType.class, wuxingValue);
 			wuxings.add(wuxingType);
 		}
 		return wuxings;
@@ -186,7 +183,7 @@ public class WuxingMachineImpl extends BaseServiceSupporter implements
 	/**
 	 * 啟動,不clone了,直接拿
 	 */
-	public Outcome start() {
+	public Outcome play() {
 		Outcome result = null;
 		// banker
 		List<WuxingType> bankerWuxingTypes = randomWuxingTypes();
@@ -199,10 +196,8 @@ public class WuxingMachineImpl extends BaseServiceSupporter implements
 			WuxingType bankerWuxingType = bankerWuxingTypes.get(i);
 			WuxingType playerWuxingType = playerWuxingTypes.get(i);
 			//
-			int diffValue = bankerWuxingType.getValue()
-					- playerWuxingType.getValue();
-			OutcomeType outcomeType = outcomeTypes.get(bankerWuxingType).get(
-					diffValue);
+			int diffValue = bankerWuxingType.getValue() - playerWuxingType.getValue();
+			OutcomeType outcomeType = outcomeTypes.get(bankerWuxingType).get(diffValue);
 			outcomes.add(outcomeType);
 		}
 		//
@@ -223,6 +218,23 @@ public class WuxingMachineImpl extends BaseServiceSupporter implements
 	}
 
 	/**
+	 * 啟動,不clone了,直接拿
+	 * 
+	 * @param times
+	 * @return
+	 */
+	public List<Outcome> play(int times) {
+		List<Outcome> result = new LinkedList<Outcome>();
+		for (int i = 0; i < times; i++) {
+			Outcome outcome = play();
+			if (outcome != null) {
+				result.add(outcome);
+			}
+		}
+		return result;
+	}
+
+	/**
 	 * 計算獎勵,final,birth,tie
 	 * 
 	 * @param outcomeTypes
@@ -235,16 +247,14 @@ public class WuxingMachineImpl extends BaseServiceSupporter implements
 		int loseTimes = calcTimes(outcomeTypes, OutcomeType.LOSE);
 		int finalTimes = winTimes - loseTimes;
 		finalTimes = (finalTimes < 0 ? 0 : finalTimes);
-		Prize finalPrize = wuxingCollector.getFinalPrize(String
-				.valueOf(finalTimes));
+		Prize finalPrize = wuxingCollector.getFinalPrize(String.valueOf(finalTimes));
 		if (finalPrize != null) {
 			result.add(finalPrize);
 		}
 
 		// birth
 		int birthTimes = calcTimes(outcomeTypes, OutcomeType.BIRTH);
-		Prize birthPrize = wuxingCollector.getBirthPrize(String
-				.valueOf(birthTimes));
+		Prize birthPrize = wuxingCollector.getBirthPrize(String.valueOf(birthTimes));
 		if (birthPrize != null) {
 			result.add(birthPrize);
 		}
@@ -276,16 +286,14 @@ public class WuxingMachineImpl extends BaseServiceSupporter implements
 		int loseTimes = calcTimes(outcomeId, OutcomeType.LOSE);
 		int finalTimes = winTimes - loseTimes;
 		finalTimes = (finalTimes < 0 ? 0 : finalTimes);
-		Prize finalPrize = wuxingCollector.getFinalPrize(String
-				.valueOf(finalTimes));
+		Prize finalPrize = wuxingCollector.getFinalPrize(String.valueOf(finalTimes));
 		if (finalPrize != null) {
 			result.add(finalPrize);
 		}
 
 		// birth
 		int birthTimes = calcTimes(outcomeId, OutcomeType.BIRTH);
-		Prize birthPrize = wuxingCollector.getBirthPrize(String
-				.valueOf(birthTimes));
+		Prize birthPrize = wuxingCollector.getBirthPrize(String.valueOf(birthTimes));
 		if (birthPrize != null) {
 			result.add(birthPrize);
 		}
@@ -307,8 +315,7 @@ public class WuxingMachineImpl extends BaseServiceSupporter implements
 	 * @param outcomeType
 	 * @return
 	 */
-	protected int calcTimes(List<OutcomeType> outcomeTypes,
-			OutcomeType outcomeType) {
+	protected int calcTimes(List<OutcomeType> outcomeTypes, OutcomeType outcomeType) {
 		int result = 0;
 		for (OutcomeType entry : outcomeTypes) {
 			if (entry == outcomeType) {
@@ -330,28 +337,10 @@ public class WuxingMachineImpl extends BaseServiceSupporter implements
 		int length = outcomeId.length();
 		for (int i = 0; i < length; i++) {
 			char buff = outcomeId.charAt(i);
-			if (String.valueOf(buff).equals(
-					String.valueOf(outcomeType.getValue()))) {
+			if (String.valueOf(buff).equals(String.valueOf(outcomeType.getValue()))) {
 				result += 1;
 			}
 
-		}
-		return result;
-	}
-
-	/**
-	 * 啟動,不clone了,直接拿
-	 * 
-	 * @param times
-	 * @return
-	 */
-	public List<Outcome> start(int times) {
-		List<Outcome> result = new LinkedList<Outcome>();
-		for (int i = 0; i < times; i++) {
-			Outcome outcome = start();
-			if (outcome != null) {
-				result.add(outcome);
-			}
 		}
 		return result;
 	}

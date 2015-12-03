@@ -34,7 +34,7 @@ public class ManorCultureInterceptor extends AppMethodInterceptorSupporter {
 	 * CultureResult culture(boolean sendable, Role role, int cultureValue, int
 	 * farmIndex, int gridIndex, String seedUniqueId);
 	 */
-	private static final Method culture = ClassHelper.getDeclaredMethod(ManorService.class, "culture",
+	private static final Method CULTURE = ClassHelper.getDeclaredMethod(ManorService.class, "culture",
 			new Class[] { boolean.class, Role.class, int.class, int.class, int.class, String.class });
 
 	/**
@@ -43,7 +43,7 @@ public class ManorCultureInterceptor extends AppMethodInterceptorSupporter {
 	 * CultureAllResult cultureAll(boolean sendable, Role role, int
 	 * cultureValue);
 	 */
-	private static final Method cultureAll = ClassHelper.getDeclaredMethod(ManorService.class, "cultureAll",
+	private static final Method CULTURE_ALL = ClassHelper.getDeclaredMethod(ManorService.class, "cultureAll",
 			new Class[] { boolean.class, Role.class, int.class });
 
 	public ManorCultureInterceptor() {
@@ -71,7 +71,7 @@ public class ManorCultureInterceptor extends AppMethodInterceptorSupporter {
 			// --------------------------------------------------
 			// proceed後
 			// --------------------------------------------------
-			if (method.equals(culture)) {
+			if (method.equals(CULTURE)) {
 				// 傳回值
 				CultureResult ret = (CultureResult) result;
 				// 參數
@@ -87,7 +87,7 @@ public class ManorCultureInterceptor extends AppMethodInterceptorSupporter {
 							ret.getSpendItems(), ret.getSpendCoin());
 				}
 
-			} else if (method.equals(cultureAll)) {
+			} else if (method.equals(CULTURE_ALL)) {
 				// 傳回值
 				CultureAllResult ret = (CultureAllResult) result;
 				// 參數

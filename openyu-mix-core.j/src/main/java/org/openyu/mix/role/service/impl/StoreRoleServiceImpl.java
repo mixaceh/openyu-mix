@@ -74,7 +74,7 @@ public class StoreRoleServiceImpl extends AppServiceSupporter implements StoreRo
 	/**
 	 * 監聽執行者
 	 */
-	protected transient ListenRunner listenRunner;
+	protected transient StoreRolesRunner storeRolesRunner;
 
 	/**
 	 * 序列化佇列
@@ -91,8 +91,8 @@ public class StoreRoleServiceImpl extends AppServiceSupporter implements StoreRo
 	protected void doStart() throws Exception {
 		super.doStart();
 		//
-		listenRunner = new ListenRunner(threadService);
-		listenRunner.start();
+		storeRolesRunner = new StoreRolesRunner(threadService);
+		storeRolesRunner.start();
 		//
 		serializeQueue = new SerializeQueue<SerializeRole>(threadService);
 		serializeQueue.start();
@@ -105,16 +105,16 @@ public class StoreRoleServiceImpl extends AppServiceSupporter implements StoreRo
 	protected void doShutdown() throws Exception {
 		super.shutdown();
 		//
-		listenRunner.shutdown();
+		storeRolesRunner.shutdown();
 		serializeQueue.shutdown();
 	}
 
 	/**
 	 * 監聽執行者
 	 */
-	protected class ListenRunner extends BaseRunnableSupporter {
+	protected class StoreRolesRunner extends BaseRunnableSupporter {
 
-		public ListenRunner(ThreadService threadService) {
+		public StoreRolesRunner(ThreadService threadService) {
 			super(threadService);
 		}
 
