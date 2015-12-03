@@ -12,6 +12,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import org.openyu.commons.bean.NamesBean;
 import org.openyu.commons.bean.adapter.NamesBeanXmlAdapter;
 import org.openyu.commons.bean.supporter.NamesBeanSupporter;
+import org.openyu.commons.collector.CollectorHelper;
 import org.openyu.commons.collector.supporter.BaseCollectorSupporter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,10 +29,9 @@ public final class TrainCollector extends BaseCollectorSupporter {
 
 	private static final long serialVersionUID = -2873453625412211811L;
 
-	private static transient final Logger LOGGER = LoggerFactory
-			.getLogger(TrainCollector.class);
+	private static transient final Logger LOGGER = LoggerFactory.getLogger(TrainCollector.class);
 
-	private static TrainCollector trainCollector;
+	private static TrainCollector instance;
 
 	/**
 	 * 說明
@@ -95,37 +95,67 @@ public final class TrainCollector extends BaseCollectorSupporter {
 		return getInstance(true);
 	}
 
-	public synchronized static TrainCollector getInstance(boolean initial) {
-		if (trainCollector == null) {
-			trainCollector = new TrainCollector();
-			if (initial) {
-				trainCollector.initialize();
+	public synchronized static TrainCollector getInstance(boolean start) {
+		if (instance == null) {
+			instance = CollectorHelper.readFromSer(TrainCollector.class);
+			// 此時有可能會沒有ser檔案,或舊的結構造成ex,只要再轉出一次ser,覆蓋原本ser即可
+			if (instance == null) {
+				instance = new TrainCollector();
+			}
+			//
+			if (start) {
+				// 啟動
+				instance.start();
 			}
 			// 此有系統值,只是為了轉出xml,並非給企劃編輯用
+
 		}
-		return trainCollector;
+		return instance;
 	}
 
 	/**
-	 * 初始化
+	 * 單例關閉
 	 * 
+	 * @return
 	 */
-	public void initialize() {
-		if (!trainCollector.isInitialized()) {
-			trainCollector = readFromSer(TrainCollector.class);
-			// 此時有可能會沒有ser檔案,或舊的結構造成ex,只要再轉出一次ser,覆蓋原本ser即可
-			if (trainCollector == null) {
-				trainCollector = new TrainCollector();
-			}
+	public synchronized static TrainCollector shutdownInstance() {
+		if (instance != null) {
+			TrainCollector oldInstance = instance;
+			instance = null;
 			//
-			trainCollector.setInitialized(true);
+			if (oldInstance != null) {
+				oldInstance.shutdown();
+			}
 		}
+		return instance;
 	}
 
-	public void clear() {
+	/**
+	 * 單例重啟
+	 * 
+	 * @return
+	 */
+	public synchronized static TrainCollector restartInstance() {
+		if (instance != null) {
+			instance.restart();
+		}
+		return instance;
+	}
+
+	/**
+	 * 內部啟動
+	 */
+	@Override
+	protected void doStart() throws Exception {
+
+	}
+
+	/**
+	 * 內部關閉
+	 */
+	@Override
+	protected void doShutdown() throws Exception {
 		exps.clear();
-		// 設為可初始化
-		setInitialized(false);
 	}
 
 	/**

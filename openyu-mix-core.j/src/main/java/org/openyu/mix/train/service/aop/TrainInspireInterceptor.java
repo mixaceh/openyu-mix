@@ -1,7 +1,5 @@
 package org.openyu.mix.train.service.aop;
 
-import java.lang.reflect.Method;
-
 import org.aopalliance.intercept.MethodInvocation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,8 +15,9 @@ import org.openyu.mix.train.service.TrainService.InspireResult;
  */
 public class TrainInspireInterceptor extends AppMethodInterceptorSupporter {
 
-	private static transient final Logger LOGGER = LoggerFactory
-			.getLogger(TrainInspireInterceptor.class);
+	private static final long serialVersionUID = -3463487277608619783L;
+
+	private static transient final Logger LOGGER = LoggerFactory.getLogger(TrainInspireInterceptor.class);
 
 	@Autowired
 	@Qualifier("trainLogService")
@@ -32,8 +31,7 @@ public class TrainInspireInterceptor extends AppMethodInterceptorSupporter {
 	 * 
 	 * InspireResult inspire(boolean sendable, Role role);
 	 */
-	public Object invoke(MethodInvocation methodInvocation, Method method,
-			Class<?>[] paramTypes, Object[] args) {
+	protected Object doInvoke(MethodInvocation methodInvocation) throws Throwable {
 		// 傳回值
 		Object result = null;
 		try {
@@ -41,6 +39,7 @@ public class TrainInspireInterceptor extends AppMethodInterceptorSupporter {
 			// proceed前
 			// --------------------------------------------------
 			// 參數
+			Object[] args = methodInvocation.getArguments();
 			boolean sendable = (Boolean) args[0];
 			Role role = (Role) args[1];
 
@@ -56,11 +55,11 @@ public class TrainInspireInterceptor extends AppMethodInterceptorSupporter {
 			InspireResult ret = (InspireResult) result;
 			//
 			if (ret != null) {
-				trainLogService.recordInspire(role, ret.getInspireTime(),
-						ret.getSpendItems(), ret.getSpendCoin());
+				trainLogService.recordInspire(role, ret.getInspireTime(), ret.getSpendItems(), ret.getSpendCoin());
 			}
-		} catch (Throwable ex) {
-			ex.printStackTrace();
+		} catch (Throwable e) {
+			LOGGER.error(new StringBuilder("Exception encountered during doInvoke()").toString(), e);
+			// throw e;
 		}
 		return result;
 	}

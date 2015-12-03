@@ -28,6 +28,8 @@ import org.openyu.mix.train.vo.TrainCollector;
 import org.openyu.mix.train.vo.TrainPen;
 import org.openyu.mix.vip.vo.VipCollector;
 import org.openyu.commons.thread.ThreadHelper;
+import org.openyu.commons.thread.ThreadService;
+import org.openyu.commons.thread.anno.DefaultThreadService;
 import org.openyu.commons.thread.supporter.BaseRunnableSupporter;
 import org.openyu.commons.util.CalendarHelper;
 import org.openyu.commons.util.DateHelper;
@@ -36,13 +38,14 @@ import org.openyu.socklet.message.vo.Message;
 /**
  * 訓練服務
  */
-public class TrainServiceImpl extends AppServiceSupporter implements
-		TrainService {
+public class TrainServiceImpl extends AppServiceSupporter implements TrainService {
 
 	private static final long serialVersionUID = -4308347953505176980L;
 
-	private static transient final Logger LOGGER = LoggerFactory
-			.getLogger(TrainServiceImpl.class);
+	private static transient final Logger LOGGER = LoggerFactory.getLogger(TrainServiceImpl.class);
+
+	@DefaultThreadService
+	private transient ThreadService threadService;
 
 	@Autowired
 	@Qualifier("accountService")
@@ -64,31 +67,44 @@ public class TrainServiceImpl extends AppServiceSupporter implements
 	@Qualifier("trainSetService")
 	protected transient TrainSetService trainSetService;
 
-	private transient TrainCollector trainCollector = TrainCollector
-			.getInstance();
+	private transient TrainCollector trainCollector = TrainCollector.getInstance();
 
 	private transient VipCollector vipCollector = VipCollector.getInstance();
+
+	/**
+	 * 監聽
+	 */
+	private transient ListenRunner listenRunner;
 
 	public TrainServiceImpl() {
 	}
 
 	/**
-	 * 初始化
-	 *
-	 * @throws Exception
+	 * 內部啟動
 	 */
-	protected void init() throws Exception {
-		super.init();
-		//
-		// 監聽
-		threadService.submit(new ListenRunner());
+	@Override
+	protected void doStart() throws Exception {
+		this.listenRunner = new ListenRunner(threadService);
+	}
+
+	/**
+	 * 內部關閉
+	 */
+	@Override
+	protected void doShutdown() throws Exception {
+		this.listenRunner.shutdown();
 	}
 
 	/**
 	 * 監聽
 	 */
 	protected class ListenRunner extends BaseRunnableSupporter {
-		public void execute() {
+		public ListenRunner(ThreadService threadService) {
+			super(threadService);
+		}
+
+		@Override
+		protected void doRun() throws Exception {
 			while (true) {
 				try {
 					listen();
@@ -128,8 +144,7 @@ public class TrainServiceImpl extends AppServiceSupporter implements
 					trainPen.addDailyMills(trainCollector.getIntervalMills());
 					// exp=exp * (1 + 活動增加的比率+ 鼓舞增加的比率);
 					// 等級經驗
-					long levelExp = trainCollector.getExps().get(
-							role.getLevel());
+					long levelExp = trainCollector.getExps().get(role.getLevel());
 
 					// 活動增加的經驗
 					int activityRate = trainCollector.getActivityRate();
@@ -214,8 +229,7 @@ public class TrainServiceImpl extends AppServiceSupporter implements
 	}
 
 	protected Message sendInitialize(Role role) {
-		Message message = messageService.createMessage(CoreModuleType.TRAIN,
-				CoreModuleType.CLIENT,
+		Message message = messageService.createMessage(CoreModuleType.TRAIN, CoreModuleType.CLIENT,
 				CoreMessageType.TRAIN_INITIALIZE_RESPONSE, role.getId());
 
 		// 訓練欄位
@@ -277,9 +291,8 @@ public class TrainServiceImpl extends AppServiceSupporter implements
 	 * @param trainPen
 	 */
 	public void sendTrainPen(Role role, TrainPen trainPen) {
-		Message message = messageService.createMessage(CoreModuleType.TRAIN,
-				CoreModuleType.CLIENT, CoreMessageType.TRAIN_PEN_RESPONSE,
-				role.getId());
+		Message message = messageService.createMessage(CoreModuleType.TRAIN, CoreModuleType.CLIENT,
+				CoreMessageType.TRAIN_PEN_RESPONSE, role.getId());
 
 		fillTrainPen(message, trainPen);
 		//
@@ -320,8 +333,7 @@ public class TrainServiceImpl extends AppServiceSupporter implements
 	/**
 	 * 加入訓練結果
 	 */
-	public static class JoinResultImpl extends AppResultSupporter implements
-			JoinResult {
+	public static class JoinResultImpl extends AppResultSupporter implements JoinResult {
 
 		private static final long serialVersionUID = -4672126667914443523L;
 
@@ -375,8 +387,7 @@ public class TrainServiceImpl extends AppServiceSupporter implements
 		}
 
 		public String toString() {
-			ToStringBuilder builder = new ToStringBuilder(this,
-					ToStringStyle.SIMPLE_STYLE);
+			ToStringBuilder builder = new ToStringBuilder(this, ToStringStyle.SIMPLE_STYLE);
 			builder.appendSuper(super.toString());
 			builder.append("joinTime", joinTime);
 			builder.append("quitTime", quitTime);
@@ -480,9 +491,8 @@ public class TrainServiceImpl extends AppServiceSupporter implements
 	 * @param role
 	 */
 	public void sendJoin(ErrorType errorType, Role role) {
-		Message message = messageService.createMessage(CoreModuleType.TRAIN,
-				CoreModuleType.CLIENT, CoreMessageType.TRAIN_JOIN_RESPONSE,
-				role.getId());
+		Message message = messageService.createMessage(CoreModuleType.TRAIN, CoreModuleType.CLIENT,
+				CoreMessageType.TRAIN_JOIN_RESPONSE, role.getId());
 
 		message.addInt(errorType);// 0, errorType 錯誤碼
 
@@ -503,8 +513,7 @@ public class TrainServiceImpl extends AppServiceSupporter implements
 	/**
 	 * 離開訓練結果
 	 */
-	public static class QuitResultImpl extends JoinResultImpl implements
-			QuitResult {
+	public static class QuitResultImpl extends JoinResultImpl implements QuitResult {
 		private static final long serialVersionUID = -847990980872370073L;
 
 		public QuitResultImpl(long joinTime, long quitTime, long residualMills) {
@@ -542,8 +551,7 @@ public class TrainServiceImpl extends AppServiceSupporter implements
 					// 剩餘毫秒
 					long residualMills = calcResidual(trainPen);
 					// 結果
-					result = new QuitResultImpl(trainPen.getJoinTime(), now,
-							residualMills);
+					result = new QuitResultImpl(trainPen.getJoinTime(), now, residualMills);
 				}
 				// 無法離開
 				else {
@@ -592,9 +600,8 @@ public class TrainServiceImpl extends AppServiceSupporter implements
 	 * @param role
 	 */
 	public void sendQuit(ErrorType errorType, Role role, long quitTime) {
-		Message message = messageService.createMessage(CoreModuleType.TRAIN,
-				CoreModuleType.CLIENT, CoreMessageType.TRAIN_QUIT_RESPONSE,
-				role.getId());
+		Message message = messageService.createMessage(CoreModuleType.TRAIN, CoreModuleType.CLIENT,
+				CoreMessageType.TRAIN_QUIT_RESPONSE, role.getId());
 
 		message.addInt(errorType);// 0, errorType 錯誤碼
 
@@ -615,8 +622,7 @@ public class TrainServiceImpl extends AppServiceSupporter implements
 	/**
 	 * 鼓舞訓練結果
 	 */
-	public static class InspireResultImpl extends JoinResultImpl implements
-			InspireResult {
+	public static class InspireResultImpl extends JoinResultImpl implements InspireResult {
 
 		private static final long serialVersionUID = -5194549511933383673L;
 
@@ -635,8 +641,7 @@ public class TrainServiceImpl extends AppServiceSupporter implements
 		 */
 		private int spendCoin;
 
-		public InspireResultImpl(long inspireTime, List<Item> spendItems,
-				int spendCoin) {
+		public InspireResultImpl(long inspireTime, List<Item> spendItems, int spendCoin) {
 			this.inspireTime = inspireTime;
 			//
 			this.spendItems = spendItems;
@@ -676,8 +681,7 @@ public class TrainServiceImpl extends AppServiceSupporter implements
 		}
 
 		public String toString() {
-			ToStringBuilder builder = new ToStringBuilder(this,
-					ToStringStyle.SIMPLE_STYLE);
+			ToStringBuilder builder = new ToStringBuilder(this, ToStringStyle.SIMPLE_STYLE);
 			builder.appendSuper(super.toString());
 			builder.append("inspireTime", inspireTime);
 			//
@@ -710,10 +714,8 @@ public class TrainServiceImpl extends AppServiceSupporter implements
 			TrainPen trainPen = role.getTrainPen();
 
 			// 消耗道具或儲值幣
-			SpendResult spendResult = roleService.spendByItemCoin(sendable,
-					role, trainCollector.getInspireItem(), 1,
-					trainCollector.getInspireCoin(), CoinType.TRAIN_INSPIRE,
-					vipCollector.getTrainCoinVipType());
+			SpendResult spendResult = roleService.spendByItemCoin(sendable, role, trainCollector.getInspireItem(), 1,
+					trainCollector.getInspireCoin(), CoinType.TRAIN_INSPIRE, vipCollector.getTrainCoinVipType());
 			RoleService.ErrorType spendError = spendResult.getErrorType();
 			// System.out.println("spendError: " + spendError);
 
@@ -820,9 +822,8 @@ public class TrainServiceImpl extends AppServiceSupporter implements
 	 * @param role
 	 */
 	public void sendInspire(ErrorType errorType, Role role, long inspireTime) {
-		Message message = messageService.createMessage(CoreModuleType.TRAIN,
-				CoreModuleType.CLIENT, CoreMessageType.TRAIN_INSPIRE_RESPONSE,
-				role.getId());
+		Message message = messageService.createMessage(CoreModuleType.TRAIN, CoreModuleType.CLIENT,
+				CoreMessageType.TRAIN_INSPIRE_RESPONSE, role.getId());
 
 		message.addInt(errorType);// 0, errorType 錯誤碼
 
@@ -891,8 +892,7 @@ public class TrainServiceImpl extends AppServiceSupporter implements
 
 		// 訓練加入時間
 		long joinTime = trainPen.getJoinTime();
-		boolean overTime = DateHelper.isOverTime(joinTime,
-				System.currentTimeMillis(), today.getTimeInMillis(),
+		boolean overTime = DateHelper.isOverTime(joinTime, System.currentTimeMillis(), today.getTimeInMillis(),
 				tomorrow.getTimeInMillis());
 		// 超過重置時間
 		if (overTime) {
@@ -910,9 +910,8 @@ public class TrainServiceImpl extends AppServiceSupporter implements
 	 * @param trainPen
 	 */
 	public void sendReset(Role role, TrainPen trainPen) {
-		Message message = messageService.createMessage(CoreModuleType.TRAIN,
-				CoreModuleType.CLIENT, CoreMessageType.TRAIN_RESET_RESPONSE,
-				role.getId());
+		Message message = messageService.createMessage(CoreModuleType.TRAIN, CoreModuleType.CLIENT,
+				CoreMessageType.TRAIN_RESET_RESPONSE, role.getId());
 
 		fillTrainPen(message, trainPen);
 		//
