@@ -4,6 +4,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 import org.junit.Test;
+import org.openyu.commons.collector.CollectorHelper;
+import org.openyu.commons.junit.supporter.BaseTestSupporter;
 import org.openyu.mix.item.vo.Armor;
 import org.openyu.mix.item.vo.PositionType;
 import org.openyu.mix.item.vo.ItemType;
@@ -11,23 +13,21 @@ import org.openyu.mix.item.vo.Weapon;
 import org.openyu.mix.item.vo.impl.ArmorImpl;
 import org.openyu.mix.item.vo.impl.WeaponImpl;
 import org.openyu.mix.role.vo.EquipmentPen;
-import org.openyu.commons.junit.supporter.BeanTestSupporter;
 
-public class EquipmentPenImplTest extends BeanTestSupporter {
+public class EquipmentPenImplTest extends BaseTestSupporter {
 
 	@Test
 	public void writeToXml() {
 		EquipmentPen equipmentPen = new EquipmentPenImpl();
 		//
-		String result = beanCollector.writeToXml(EquipmentPenImpl.class,
-				equipmentPen);
+		String result = CollectorHelper.writeToXml(EquipmentPenImpl.class, equipmentPen);
 		System.out.println(result);
 		assertNotNull(result);
 	}
 
 	@Test
 	public void readFromXml() {
-		EquipmentPen result = beanCollector.readFromXml(EquipmentPenImpl.class);
+		EquipmentPen result = CollectorHelper.readFromXml(EquipmentPenImpl.class);
 		System.out.println(result);
 		assertNotNull(result);
 	}

@@ -3,12 +3,13 @@ package org.openyu.mix.role.vo.impl;
 import static org.junit.Assert.assertNotNull;
 
 import org.junit.Test;
+import org.openyu.commons.collector.CollectorHelper;
+import org.openyu.commons.junit.supporter.BaseTestSupporter;
 import org.openyu.mix.account.vo.Account;
 import org.openyu.mix.account.vo.impl.AccountImpl;
 import org.openyu.mix.role.vo.Role;
-import org.openyu.commons.junit.supporter.BeanTestSupporter;
 
-public class RoleImplTest extends BeanTestSupporter {
+public class RoleImplTest extends BaseTestSupporter {
 	@Test
 	public void writeToXml() {
 		final String ACCOUNT_ID = "TEST_ACCOUNT";
@@ -31,14 +32,14 @@ public class RoleImplTest extends BeanTestSupporter {
 		account.setAccuCoin(999);
 		role.setAccountId(account.getId());
 		//
-		String result = beanCollector.writeToXml(RoleImpl.class, role);
+		String result = CollectorHelper.writeToXml(RoleImpl.class, role);
 		System.out.println(result);
 		assertNotNull(result);
 	}
 
 	@Test
 	public void readFromXml() {
-		Role result = beanCollector.readFromXml(RoleImpl.class);
+		Role result = CollectorHelper.readFromXml(RoleImpl.class);
 		System.out.println(result);
 		assertNotNull(result);
 	}

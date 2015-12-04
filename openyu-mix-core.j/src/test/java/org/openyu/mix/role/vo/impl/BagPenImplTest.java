@@ -18,23 +18,24 @@ import org.openyu.mix.role.vo.BagPen;
 import org.openyu.mix.role.vo.BagPen.Tab;
 import org.openyu.mix.role.vo.BagPen.TabType;
 import org.openyu.mix.role.vo.Role;
-import org.openyu.commons.junit.supporter.BeanTestSupporter;
+import org.openyu.commons.collector.CollectorHelper;
+import org.openyu.commons.junit.supporter.BaseTestSupporter;
 import org.openyu.commons.lang.SystemHelper;
 
-public class BagPenImplTest extends BeanTestSupporter {
+public class BagPenImplTest extends BaseTestSupporter {
 
 	@Test
 	public void writeToXml() {
 		BagPen bagPen = new BagPenImpl();
 		//
-		String result = beanCollector.writeToXml(BagPenImpl.class, bagPen);
+		String result = CollectorHelper.writeToXml(BagPenImpl.class, bagPen);
 		System.out.println(result);
 		assertNotNull(result);
 	}
 
 	@Test
 	public void readFromXml() {
-		BagPen result = beanCollector.readFromXml(BagPenImpl.class);
+		BagPen result = CollectorHelper.readFromXml(BagPenImpl.class);
 		System.out.println(result);
 		assertNotNull(result);
 	}
@@ -363,8 +364,7 @@ public class BagPenImplTest extends BeanTestSupporter {
 		assertEquals(BagPen.ErrorType.ITEM_NOT_EXIST, result);
 
 		// 包包頁滿了
-		assertEquals((int) Tab.MAX_GRID_SIZE, (int) bagPen.getTab(0)
-				.getItemSize());
+		assertEquals((int) Tab.MAX_GRID_SIZE, (int) bagPen.getTab(0).getItemSize());
 		result = bagPen.addItem(0, 0, item);
 		System.out.println(result);
 		assertEquals(BagPen.ErrorType.TAB_FULL, result);

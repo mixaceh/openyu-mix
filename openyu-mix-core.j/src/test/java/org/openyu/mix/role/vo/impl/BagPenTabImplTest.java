@@ -9,6 +9,8 @@ import static org.junit.Assert.assertTrue;
 import java.util.List;
 
 import org.junit.Test;
+import org.openyu.commons.collector.CollectorHelper;
+import org.openyu.commons.junit.supporter.BaseTestSupporter;
 import org.openyu.mix.item.vo.Item;
 import org.openyu.mix.item.vo.ItemType;
 import org.openyu.mix.item.vo.Thing;
@@ -16,22 +18,21 @@ import org.openyu.mix.item.vo.ThingType;
 import org.openyu.mix.item.vo.impl.ThingImpl;
 import org.openyu.mix.role.vo.BagPen;
 import org.openyu.mix.role.vo.BagPen.Tab;
-import org.openyu.commons.junit.supporter.BeanTestSupporter;
 
-public class BagPenTabImplTest extends BeanTestSupporter {
+public class BagPenTabImplTest extends BaseTestSupporter {
 
 	@Test
 	public void writeToXml() {
 		BagPen bagPen = new BagPenImpl();
 		//
-		String result = beanCollector.writeToXml(BagPenImpl.class, bagPen);
+		String result = CollectorHelper.writeToXml(BagPenImpl.class, bagPen);
 		System.out.println(result);
 		assertNotNull(result);
 	}
 
 	@Test
 	public void readFromXml() {
-		BagPen result = beanCollector.readFromXml(BagPenImpl.class);
+		BagPen result = CollectorHelper.readFromXml(BagPenImpl.class);
 		System.out.println(result);
 		assertNotNull(result);
 	}
