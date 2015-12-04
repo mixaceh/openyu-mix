@@ -10,6 +10,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.openyu.mix.mail.vo.MailType;
 import org.openyu.mix.mail.vo.adapter.MailTypeXmlAdapter;
+import org.openyu.commons.collector.CollectorHelper;
 import org.openyu.commons.collector.supporter.BaseCollectorSupporter;
 import org.openyu.commons.enumz.EnumHelper;
 
@@ -25,7 +26,7 @@ public final class MailCollector extends BaseCollectorSupporter {
 
 	private static final long serialVersionUID = -366805549782373969L;
 
-	private static MailCollector mailCollector;
+	private static MailCollector instance;
 
 	/**
 	 * 郵件類別
@@ -52,39 +53,66 @@ public final class MailCollector extends BaseCollectorSupporter {
 		return getInstance(true);
 	}
 
-	public synchronized static MailCollector getInstance(boolean initial) {
-		if (mailCollector == null) {
-			mailCollector = new MailCollector();
-			if (initial) {
-				mailCollector.initialize();
+	public synchronized static MailCollector getInstance(boolean start) {
+		if (instance == null) {
+			instance = CollectorHelper.readFromSer(MailCollector.class);
+			// 此時有可能會沒有ser檔案,或舊的結構造成ex,只要再轉出一次ser,覆蓋原本ser即可
+			if (instance == null) {
+				instance = new MailCollector();
 			}
-
+			//
+			if (start) {
+				// 啟動
+				instance.start();
+			}
 			// 此有系統值,只是為了轉出xml,並非給企劃編輯用
-			mailCollector.mailTypes = EnumHelper.valuesSet(MailType.class);
+			instance.mailTypes = EnumHelper.valuesSet(MailType.class);
 
 		}
-		return mailCollector;
+		return instance;
 	}
 
 	/**
-	 * 初始化
+	 * 單例關閉
 	 * 
+	 * @return
 	 */
-	public void initialize() {
-		if (!mailCollector.isInitialized()) {
-			mailCollector = readFromSer(MailCollector.class);
-			// 此時有可能會沒有ser檔案,或舊的結構造成ex,只要再轉出一次ser,覆蓋原本ser即可
-			if (mailCollector == null) {
-				mailCollector = new MailCollector();
-			}
+	public synchronized static MailCollector shutdownInstance() {
+		if (instance != null) {
+			MailCollector oldInstance = instance;
+			instance = null;
 			//
-			mailCollector.setInitialized(true);
+			if (oldInstance != null) {
+				oldInstance.shutdown();
+			}
 		}
+		return instance;
 	}
 
-	public void clear() {
-		// 設為可初始化
-		setInitialized(false);
+	/**
+	 * 單例重啟
+	 * 
+	 * @return
+	 */
+	public synchronized static MailCollector restartInstance() {
+		if (instance != null) {
+			instance.restart();
+		}
+		return instance;
+	}
+
+	/**
+	 * 內部啟動
+	 */
+	@Override
+	protected void doStart() throws Exception {
+	}
+
+	/**
+	 * 內部關閉
+	 */
+	@Override
+	protected void doShutdown() throws Exception {
 	}
 
 	public int getExpiredDay() {

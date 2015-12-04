@@ -32,8 +32,7 @@ public class MailServiceImpl extends AppServiceSupporter implements MailService 
 
 	private static final long serialVersionUID = -5637721590046550228L;
 
-	private static transient final Logger LOGGER = LoggerFactory
-			.getLogger(MailServiceImpl.class);
+	private static transient final Logger LOGGER = LoggerFactory.getLogger(MailServiceImpl.class);
 
 	@Autowired
 	@Qualifier("accountService")
@@ -57,16 +56,6 @@ public class MailServiceImpl extends AppServiceSupporter implements MailService 
 	}
 
 	/**
-	 * 初始化
-	 *
-	 * @throws Exception
-	 */
-	protected void init() throws Exception {
-		super.init();
-		//
-	}
-
-	/**
 	 * 建構郵件
 	 * 
 	 * @param mailType
@@ -80,11 +69,9 @@ public class MailServiceImpl extends AppServiceSupporter implements MailService 
 	 * @param items
 	 * @return
 	 */
-	public Mail createMail(MailType mailType, String senderId,
-			String senderName, String title, String content, String receiverId,
-			String receiverName, long gold, List<Item> items) {
-		Mail result = new MailImpl(Mail.UNIQUE_ID_PREFIX
-				+ StringHelper.randomUnique());
+	public Mail createMail(MailType mailType, String senderId, String senderName, String title, String content,
+			String receiverId, String receiverName, long gold, List<Item> items) {
+		Mail result = new MailImpl(Mail.UNIQUE_ID_PREFIX + StringHelper.randomUnique());
 		result.setMailType(mailType);
 		result.setTitle(title);
 		result.setContent(content);
@@ -92,8 +79,7 @@ public class MailServiceImpl extends AppServiceSupporter implements MailService 
 		result.setSenderName(senderName);
 		result.setSendTime(System.currentTimeMillis());
 		// 到期時間
-		result.setExpiredTime(result.getSendTime()
-				+ mailCollector.getExpiredDay() * CalendarHelper.MILLIS_IN_DAY);
+		result.setExpiredTime(result.getSendTime() + mailCollector.getExpiredDay() * CalendarHelper.MILLIS_IN_DAY);
 		//
 		result.setReceiverId(receiverId);
 		result.setReceiverName(receiverName);
@@ -108,8 +94,7 @@ public class MailServiceImpl extends AppServiceSupporter implements MailService 
 	/**
 	 * 郵件的結果
 	 */
-	public static class MailResultImpl extends AppResultSupporter implements
-			MailResult {
+	public static class MailResultImpl extends AppResultSupporter implements MailResult {
 
 		private static final long serialVersionUID = -8927307172367893124L;
 
@@ -117,8 +102,7 @@ public class MailServiceImpl extends AppServiceSupporter implements MailService 
 		}
 
 		public String toString() {
-			ToStringBuilder builder = new ToStringBuilder(this,
-					ToStringStyle.SIMPLE_STYLE);
+			ToStringBuilder builder = new ToStringBuilder(this, ToStringStyle.SIMPLE_STYLE);
 			builder.appendSuper(super.toString());
 			return builder.toString();
 		}
@@ -158,8 +142,7 @@ public class MailServiceImpl extends AppServiceSupporter implements MailService 
 	/**
 	 * 新郵件的結果
 	 */
-	public static class NewMailResultImpl extends AppResultSupporter implements
-			NewMailResult {
+	public static class NewMailResultImpl extends AppResultSupporter implements NewMailResult {
 
 		private static final long serialVersionUID = -8927307172367893124L;
 
@@ -167,8 +150,7 @@ public class MailServiceImpl extends AppServiceSupporter implements MailService 
 		}
 
 		public String toString() {
-			ToStringBuilder builder = new ToStringBuilder(this,
-					ToStringStyle.SIMPLE_STYLE);
+			ToStringBuilder builder = new ToStringBuilder(this, ToStringStyle.SIMPLE_STYLE);
 			builder.appendSuper(super.toString());
 			return builder.toString();
 		}
@@ -191,8 +173,7 @@ public class MailServiceImpl extends AppServiceSupporter implements MailService 
 	 * @param gold
 	 * @return
 	 */
-	public NewMailResult newMail(boolean sendable, Role role,
-			MailType mailType, String title, String content,
+	public NewMailResult newMail(boolean sendable, Role role, MailType mailType, String title, String content,
 			String receiverName, long gold, String[]... itemUniqueIds) {
 
 		NewMailResult result = null;
@@ -208,8 +189,8 @@ public class MailServiceImpl extends AppServiceSupporter implements MailService 
 		// TODO itemUniqueIds
 		List<Item> items = new LinkedList<Item>();
 		// TODO
-		Mail mail = createMail(mailType, role.getId(), senderName, title,
-				content, receiverId, receiverName, gold, items);
+		Mail mail = createMail(mailType, role.getId(), senderName, title, content, receiverId, receiverName, gold,
+				items);
 
 		// TODO NewMailResult
 
@@ -223,9 +204,8 @@ public class MailServiceImpl extends AppServiceSupporter implements MailService 
 	 * @param role
 	 */
 	public Message sendNewMail(ErrorType errorType, Role role) {
-		Message message = messageService.createMessage(CoreModuleType.MAIL,
-				CoreModuleType.CLIENT, CoreMessageType.MAIL_NEW_RESPONSE,
-				role.getId());
+		Message message = messageService.createMessage(CoreModuleType.MAIL, CoreModuleType.CLIENT,
+				CoreMessageType.MAIL_NEW_RESPONSE, role.getId());
 
 		message.addInt(errorType);// 錯誤碼
 
