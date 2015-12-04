@@ -167,11 +167,12 @@ public final class IndustryCollector extends BaseCollectorSupporter {
 	 */
 	@Override
 	protected void doShutdown() throws Exception {
-		raceFactors.clear();
-		careerFactors.clear();
-		attributeFactors.clear();
-		industrys.clear();
-		exps.clear();
+		instance.raceFactors.clear();
+		instance.careerFactors.clear();
+		instance.attributeFactors.clear();
+		instance.exps.clear();
+		//
+		instance.industrys.clear();
 	}
 	// --------------------------------------------------
 

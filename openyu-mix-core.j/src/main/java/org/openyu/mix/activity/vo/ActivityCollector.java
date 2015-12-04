@@ -121,7 +121,7 @@ public final class ActivityCollector extends BaseCollectorSupporter {
 	 */
 	@Override
 	protected void doShutdown() throws Exception {
-		activitys.clear();
+		instance.activitys.clear();
 	}
 
 	// --------------------------------------------------

@@ -123,7 +123,7 @@ public final class MaterialCollector extends BaseCollectorSupporter {
 	 */
 	@Override
 	protected void doShutdown() throws Exception {
-		materials.clear();
+		instance.materials.clear();
 	}
 
 	// --------------------------------------------------

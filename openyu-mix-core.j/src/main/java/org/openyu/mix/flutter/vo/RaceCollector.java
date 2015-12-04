@@ -126,7 +126,7 @@ public final class RaceCollector extends BaseCollectorSupporter {
 	 */
 	@Override
 	protected void doShutdown() throws Exception {
-		races.clear();
+		instance.races.clear();
 	}
 
 	// --------------------------------------------------

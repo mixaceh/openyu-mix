@@ -125,7 +125,7 @@ public final class CareerCollector extends BaseCollectorSupporter {
 	 */
 	@Override
 	protected void doShutdown() throws Exception {
-		careers.clear();
+		instance.careers.clear();
 	}
 
 	// --------------------------------------------------

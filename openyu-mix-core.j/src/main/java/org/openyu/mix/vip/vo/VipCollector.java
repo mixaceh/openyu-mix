@@ -161,7 +161,7 @@ public final class VipCollector extends BaseCollectorSupporter {
 	 */
 	@Override
 	protected void doShutdown() throws Exception {
-		vipTypes.clear();
+		instance.vipTypes.clear();
 	}
 	// --------------------------------------------------
 

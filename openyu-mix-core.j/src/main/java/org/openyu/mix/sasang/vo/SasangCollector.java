@@ -167,8 +167,8 @@ public final class SasangCollector extends BaseCollectorSupporter {
 	 */
 	@Override
 	protected void doShutdown() throws Exception {
-		sasangs.clear();
-		prizes.clear();
+		instance.sasangs.clear();
+		instance.prizes.clear();
 	}
 
 	// --------------------------------------------------

@@ -185,7 +185,6 @@ public final class WeaponCollector extends BaseCollectorSupporter {
 	 */
 	@Override
 	protected void doStart() throws Exception {
-
 		// 累計土地強化因子
 		instance.accuEnhanceFactors = buildAccuEnhanceFactors();
 	}
@@ -195,8 +194,8 @@ public final class WeaponCollector extends BaseCollectorSupporter {
 	 */
 	@Override
 	protected void doShutdown() throws Exception {
-		weapons.clear();
-		accuEnhanceFactors.clear();
+		instance.weapons.clear();
+		instance.accuEnhanceFactors.clear();
 	}
 	// --------------------------------------------------
 

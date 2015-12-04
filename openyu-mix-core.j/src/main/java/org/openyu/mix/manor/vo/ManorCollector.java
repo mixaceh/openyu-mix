@@ -172,15 +172,6 @@ public final class ManorCollector extends BaseCollectorSupporter {
 	@XmlJavaTypeAdapter(StringSeedXmlAdapter.class)
 	private Map<String, Seed> seeds = new LinkedHashMap<String, Seed>();
 
-	// /**
-	// * 種子因子,用來加乘屬性值
-	// *
-	// * <種子id,萬分位數=1000,2000...n>
-	// */
-	// @XmlJavaTypeAdapter(StringSeedFactorXmlAdapter.class)
-	// private Map<String, SeedFactor> seedFactors = new LinkedHashMap<String,
-	// SeedFactor>();
-
 	/**
 	 * 土地
 	 * 
@@ -188,15 +179,6 @@ public final class ManorCollector extends BaseCollectorSupporter {
 	 */
 	@XmlJavaTypeAdapter(StringLandXmlAdapter.class)
 	private Map<String, Land> lands = new LinkedHashMap<String, Land>();
-
-	// /**
-	// * 土地因子,用來加乘屬性值
-	// *
-	// * <土地id,萬分位數=1000,2000...n>
-	// */
-	// @XmlJavaTypeAdapter(StringLandFactorXmlAdapter.class)
-	// private Map<String, LandFactor> landFactors = new LinkedHashMap<String,
-	// LandFactor>();
 
 	/**
 	 * 強化因子,用來增加土地屬性
@@ -286,12 +268,10 @@ public final class ManorCollector extends BaseCollectorSupporter {
 	 */
 	@Override
 	protected void doShutdown() throws Exception {
-		seeds.clear();
-		// seedFactors.clear();
-		lands.clear();
-		// landFactors.clear();
-		enhanceFactors.clear();
-		accuEnhanceFactors.clear();
+		instance.seeds.clear();
+		instance.lands.clear();
+		instance.enhanceFactors.clear();
+		instance.accuEnhanceFactors.clear();
 	}
 
 	protected Map<EnhanceLevel, EnhanceFactor> buildAccuEnhanceFactors() {

@@ -167,9 +167,9 @@ public final class WuxingCollector extends BaseCollectorSupporter {
 	 */
 	@Override
 	protected void doShutdown() throws Exception {
-		finalPrizes.clear();
-		birthPrizes.clear();
-		tiePrizes.clear();
+		instance.finalPrizes.clear();
+		instance.birthPrizes.clear();
+		instance.tiePrizes.clear();
 	}
 
 	// --------------------------------------------------

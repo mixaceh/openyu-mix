@@ -124,8 +124,7 @@ public final class ThingCollector extends BaseCollectorSupporter {
 	 */
 	@Override
 	protected void doShutdown() throws Exception {
-		things.clear();
-
+		instance.things.clear();
 	}
 
 	// --------------------------------------------------

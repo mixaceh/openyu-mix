@@ -24,13 +24,11 @@ import org.springframework.beans.factory.annotation.Qualifier;
 /**
  * 系統服務
  */
-public class SystemServiceImpl extends AppServiceSupporter implements
-		SystemService {
+public class SystemServiceImpl extends AppServiceSupporter implements SystemService {
 
 	private static final long serialVersionUID = 4448768239462292756L;
 
-	private static transient final Logger LOGGER = LoggerFactory
-			.getLogger(SystemServiceImpl.class);
+	private static transient final Logger LOGGER = LoggerFactory.getLogger(SystemServiceImpl.class);
 
 	@Autowired
 	@Qualifier("roleService")
@@ -52,16 +50,6 @@ public class SystemServiceImpl extends AppServiceSupporter implements
 	private Context context;
 
 	public SystemServiceImpl() {
-	}
-
-	/**
-	 * 初始化
-	 *
-	 * @throws Exception
-	 */
-	protected void init() throws Exception {
-		super.init();
-		//
 	}
 
 	/**
@@ -102,8 +90,7 @@ public class SystemServiceImpl extends AppServiceSupporter implements
 	 * @return
 	 */
 	protected Message sendInitialize(Role role) {
-		Message message = messageService.createMessage(CoreModuleType.SYSTEM,
-				CoreModuleType.CLIENT,
+		Message message = messageService.createMessage(CoreModuleType.SYSTEM, CoreModuleType.CLIENT,
 				CoreMessageType.SYSTEM_INITIALIZE_RESPONSE, role.getId());
 
 		// 當CoreContextAdapter無註冊到acceptor時, context會是null, 參考setContext()所呼叫的代碼
@@ -111,8 +98,7 @@ public class SystemServiceImpl extends AppServiceSupporter implements
 		message.addString((context != null ? this.context.getId() : ""));
 
 		// 取得所有註冊的伺服器關連
-		Map<String, Relation> registerRelations = relationSetService
-				.getRegisterRelations();
+		Map<String, Relation> registerRelations = relationSetService.getRegisterRelations();
 		int size = registerRelations.size();
 		message.addInt(size);// 1, int, size
 		//
@@ -168,8 +154,7 @@ public class SystemServiceImpl extends AppServiceSupporter implements
 	 */
 	public <T> Context contextConnect(String contextId, T attatch) {
 		Context result = getContext();
-		if (contextId == null || result == null
-				|| !contextId.equals(result.getId())) {
+		if (contextId == null || result == null || !contextId.equals(result.getId())) {
 			return null;
 		}
 		// acceptor
@@ -208,8 +193,7 @@ public class SystemServiceImpl extends AppServiceSupporter implements
 		// 發送給所有client
 		List<String> receivers = roleSetService.getRoleIds();
 		//
-		Message message = messageService.createMessage(CoreModuleType.SYSTEM,
-				CoreModuleType.CLIENT,
+		Message message = messageService.createMessage(CoreModuleType.SYSTEM, CoreModuleType.CLIENT,
 				CoreMessageType.SYSTEM_CONTEXT_CONNECT_RESPONSE, receivers);
 
 		message.addString(context.getId());// 0, String, contextId 本文id
@@ -229,8 +213,7 @@ public class SystemServiceImpl extends AppServiceSupporter implements
 	 */
 	public <T> Context contextDisconnect(String contextId, T attatch) {
 		Context result = getContext();
-		if (contextId == null || result == null
-				|| !contextId.equals(result.getId())) {
+		if (contextId == null || result == null || !contextId.equals(result.getId())) {
 			return null;
 		}
 		// 離線時間
@@ -255,8 +238,7 @@ public class SystemServiceImpl extends AppServiceSupporter implements
 		// 發送給所有client
 		List<String> receivers = roleSetService.getRoleIds();
 		//
-		Message message = messageService.createMessage(CoreModuleType.SYSTEM,
-				CoreModuleType.CLIENT,
+		Message message = messageService.createMessage(CoreModuleType.SYSTEM, CoreModuleType.CLIENT,
 				CoreMessageType.SYSTEM_CONTEXT_DISCONNECT_RESPONSE, receivers);
 
 		message.addString(context.getId());// 0, String, contextId 本文id
@@ -286,8 +268,7 @@ public class SystemServiceImpl extends AppServiceSupporter implements
 		// 已連線
 		result.setConnected(true);
 		//
-		Relation registerRelation = relationSetService
-				.getRegisterRelation(relationId);
+		Relation registerRelation = relationSetService.getRegisterRelation(relationId);
 		if (registerRelation != null) {
 			registerRelation.setEnterTime(result.getEnterTime());
 			registerRelation.setConnected(result.isConnected());
@@ -310,8 +291,7 @@ public class SystemServiceImpl extends AppServiceSupporter implements
 		// 發送給所有client
 		List<String> receivers = roleSetService.getRoleIds();
 		//
-		Message message = messageService.createMessage(CoreModuleType.SYSTEM,
-				CoreModuleType.CLIENT,
+		Message message = messageService.createMessage(CoreModuleType.SYSTEM, CoreModuleType.CLIENT,
 				CoreMessageType.SYSTEM_RELATION_CONNECT_RESPONSE, receivers);
 
 		message.addString(relation.getId());// 0, String, relationId 伺服器關連id
@@ -339,8 +319,7 @@ public class SystemServiceImpl extends AppServiceSupporter implements
 		// 已斷線
 		result.setConnected(false);
 		//
-		Relation registerRelation = relationSetService
-				.getRegisterRelation(relationId);
+		Relation registerRelation = relationSetService.getRegisterRelation(relationId);
 		if (registerRelation != null) {
 			registerRelation.setLeaveTime(result.getLeaveTime());
 			registerRelation.setConnected(result.isConnected());
@@ -363,8 +342,7 @@ public class SystemServiceImpl extends AppServiceSupporter implements
 		// 發送給所有client
 		List<String> receivers = roleSetService.getRoleIds();
 		//
-		Message message = messageService.createMessage(CoreModuleType.SYSTEM,
-				CoreModuleType.CLIENT,
+		Message message = messageService.createMessage(CoreModuleType.SYSTEM, CoreModuleType.CLIENT,
 				CoreMessageType.SYSTEM_RELATION_DISCONNECT_RESPONSE, receivers);
 
 		message.addString(relation.getId());// 0, String, relationId 伺服器關連id
@@ -402,8 +380,7 @@ public class SystemServiceImpl extends AppServiceSupporter implements
 		// 發送給所有client
 		List<String> receivers = roleSetService.getRoleIds();
 		//
-		Message message = messageService.createMessage(CoreModuleType.SYSTEM,
-				CoreModuleType.CLIENT,
+		Message message = messageService.createMessage(CoreModuleType.SYSTEM, CoreModuleType.CLIENT,
 				CoreMessageType.SYSTEM_RELATION_REFUSED_RESPONSE, receivers);
 
 		message.addString(relation.getId());// 0, String, relationId 伺服器關連id

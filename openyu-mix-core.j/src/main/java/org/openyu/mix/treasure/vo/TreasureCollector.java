@@ -152,8 +152,8 @@ public final class TreasureCollector extends BaseCollectorSupporter {
 	 */
 	@Override
 	protected void doShutdown() throws Exception {
-		stocks.clear();
-		products.clear();
+		instance.stocks.clear();
+		instance.products.clear();
 	}
 
 	// --------------------------------------------------

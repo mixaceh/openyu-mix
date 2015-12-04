@@ -155,7 +155,7 @@ public final class TrainCollector extends BaseCollectorSupporter {
 	 */
 	@Override
 	protected void doShutdown() throws Exception {
-		exps.clear();
+		instance.exps.clear();
 	}
 
 	/**
