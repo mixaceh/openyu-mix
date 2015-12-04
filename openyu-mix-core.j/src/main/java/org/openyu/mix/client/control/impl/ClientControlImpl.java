@@ -55,15 +55,6 @@ public class ClientControlImpl extends BaseControlSupporter implements
 	public ClientControlImpl() {
 	}
 
-	/**
-	 * 初始化
-	 *
-	 * @throws Exception
-	 */
-	protected void init() throws Exception {
-		super.init();
-		//
-	}
 
 	public ClientService getClientService() {
 		return clientService;
