@@ -6,9 +6,11 @@ import java.util.Locale;
 
 import org.junit.Rule;
 import org.junit.Test;
+import org.openyu.commons.collector.CollectorHelper;
 import org.openyu.commons.junit.supporter.BaseTestSupporter;
 import org.openyu.mix.flutter.vo.IndustryCollector;
 
+import com.carrotsearch.junitbenchmarks.BenchmarkOptions;
 import com.carrotsearch.junitbenchmarks.BenchmarkRule;
 
 public class TrainCollectorTest extends BaseTestSupporter {
@@ -21,11 +23,11 @@ public class TrainCollectorTest extends BaseTestSupporter {
 	/**
 	 * 只是為了模擬用,有正式xml後,不應再使用,以免覆蓋掉正式的xml
 	 */
+	@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 	public void writeToXml() {
 		String result = null;
 		TrainCollector collector = TrainCollector.getInstance(false);
 		//
-		long beg = System.currentTimeMillis();
 		// 說明
 		collector.setDescription("在間斷的空閒時間，不需打怪或解任務，就能獲得經驗，每日利用特定的方式，更可以加倍獲得經驗。");
 		collector.getDescriptions().addName(Locale.SIMPLIFIED_CHINESE, "在间断的空闲时间，不需打怪或解任务，就能获得经验，每日利用特定的方式，更可以加倍获得经验。");
@@ -53,138 +55,83 @@ public class TrainCollectorTest extends BaseTestSupporter {
 			// 100級=10e/1w=10w周期/3=33w分/1440=229天
 		}
 		//
-		result = collector.writeToXml(TrainCollector.class, collector);
-		//
-		long end = System.currentTimeMillis();
-		System.out.println((end - beg) + " mills. ");
+		result = CollectorHelper.writeToXml(TrainCollector.class, collector);
 		//
 		System.out.println(result);
 		assertNotNull(result);
 	}
 
 	@Test
-	// 100 times: 1872 mills.
-	// 100 times: 1786 mills.
-	// 100 times: 1832 mills.
+	@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 	public void readFromXml() {
 		TrainCollector result = null;
 		//
-		int count = 1;
-		long beg = System.currentTimeMillis();
-		//
-		for (int i = 0; i < count; i++) {
-			result = beanCollector.readFromXml(TrainCollector.class);
-		}
-		//
-		long end = System.currentTimeMillis();
-		System.out.println(count + " times: " + (end - beg) + " mills. ");
+		result = CollectorHelper.readFromXml(TrainCollector.class);
 		//
 		System.out.println(result);
 		assertNotNull(result);
 	}
 
 	@Test
+	@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 	public void writeToSerFromXml() {
 		String result = null;
 		//
-		long beg = System.currentTimeMillis();
-		//
-		result = beanCollector.writeToSerFromXml(TrainCollector.class);
-		//
-		long end = System.currentTimeMillis();
-		System.out.println((end - beg) + " mills. ");
+		result = CollectorHelper.writeToSerFromXml(TrainCollector.class);
 		//
 		System.out.println(result);
 		assertNotNull(result);
 	}
 
 	@Test
-	// 100 times: 465 mills.
-	// 100 times: 474 mills.
-	// 100 times: 495 mills.
+	@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 	public void readFromSer() {
 		TrainCollector result = null;
 		//
-		int count = 1;
-		long beg = System.currentTimeMillis();
-		//
-		for (int i = 0; i < count; i++) {
-			result = beanCollector.readFromSer(TrainCollector.class);
-		}
-		//
-		long end = System.currentTimeMillis();
-		System.out.println(count + " times: " + (end - beg) + " mills. ");
+		result = CollectorHelper.readFromSer(TrainCollector.class);
 		//
 		System.out.println(result);
 		assertNotNull(result);
 	}
 
 	@Test
-	// 1000000 times: 399 mills.
-	// 1000000 times: 398 mills.
-	// 1000000 times: 401 mills.
-	public void initialize() {
-		boolean result = false;
-		//
-		TrainCollector collector = TrainCollector.getInstance();
-		int count = 1;
-		long beg = System.currentTimeMillis();
-		//
-		for (int i = 0; i < count; i++) {
-			collector.initialize();
-		}
-		//
-		long end = System.currentTimeMillis();
-		System.out.println(count + " times: " + (end - beg) + " mills. ");
-		//
-		result = collector.isInitialized();
-		System.out.println(result);
-		assertTrue(result);
-		//
-		System.out.println(collector.getExps());
-	}
-
-	@Test
-	// 1000000 times: 400 mills.
-	// 1000000 times: 396 mills.
-	// 1000000 times: 399 mills.
+	@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 	public void getInstance() {
 		TrainCollector result = null;
 		//
-		int count = 1000000; // 100w
-		long beg = System.currentTimeMillis();
-		//
-		for (int i = 0; i < count; i++) {
-			result = TrainCollector.getInstance();
-		}
-		//
-		long end = System.currentTimeMillis();
-		System.out.println(count + " times: " + (end - beg) + " mills. ");
+		result = TrainCollector.getInstance();
 		//
 		System.out.println(result);
 		assertNotNull(result);
+
+		System.out.println(result.getExps());
 	}
 
 	@Test
-	// 10000 times: 1587 mills.
-	// 10000 times: 1583 mills.
-	// 10000 times: 1683 mills.
-	public void reset() {
-		TrainCollector collector = TrainCollector.getInstance();
+	@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
+	public void shutdownInstance() {
+		TrainCollector instance = TrainCollector.getInstance();
+		System.out.println(instance);
+		assertNotNull(instance);
 		//
-		int count = 1;
-		long beg = System.currentTimeMillis();
-		//
-		for (int i = 0; i < count; i++) {
-			collector.reset();
-		}
-		//
-		long end = System.currentTimeMillis();
-		System.out.println(count + " times: " + (end - beg) + " mills. ");
-
-		assertFalse(collector.isInitialized());
-		//
-		assertEquals(0, collector.getExps().size());
+		instance = TrainCollector.shutdownInstance();
+		assertNull(instance);
+		// 多次,不會丟出ex
+		instance = TrainCollector.shutdownInstance();
+		assertNull(instance);
 	}
 
+	@Test
+	@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
+	public void restartInstance() {
+		TrainCollector instance = TrainCollector.getInstance();
+		System.out.println(instance);
+		assertNotNull(instance);
+		//
+		instance = TrainCollector.restartInstance();
+		assertNotNull(instance);
+		// 多次,不會丟出ex
+		instance = TrainCollector.restartInstance();
+		assertNotNull(instance);
+	}
 }
