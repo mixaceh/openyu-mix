@@ -3,12 +3,13 @@ package org.openyu.mix.flutter.vo.impl;
 import static org.junit.Assert.assertNotNull;
 
 import org.junit.Test;
+import org.openyu.commons.collector.CollectorHelper;
+import org.openyu.commons.junit.supporter.BaseTestSupporter;
 import org.openyu.mix.flutter.vo.Attribute;
 import org.openyu.mix.flutter.vo.AttributeType;
 import org.openyu.mix.flutter.vo.impl.AttributeImpl;
-import org.openyu.commons.junit.supporter.BeanTestSupporter;
 
-public class AttributeImplTest extends BeanTestSupporter {
+public class AttributeImplTest extends BaseTestSupporter {
 
 	@Test
 	public void writeToXml() {
@@ -18,14 +19,14 @@ public class AttributeImplTest extends BeanTestSupporter {
 		value.setAddPoint(4);
 		value.setAddRate(10);
 
-		String result = beanCollector.writeToXml(AttributeImpl.class, value);
+		String result = CollectorHelper.writeToXml(AttributeImpl.class, value);
 		System.out.println(result);
 		assertNotNull(result);
 	}
 
 	@Test
 	public void readFromXml() {
-		Attribute result = beanCollector.readFromXml(AttributeImpl.class);
+		Attribute result = CollectorHelper.readFromXml(AttributeImpl.class);
 		System.out.println(result);
 		assertNotNull(result);
 	}

@@ -7,10 +7,10 @@ import org.openyu.mix.flutter.vo.Attribute;
 import org.openyu.mix.flutter.vo.AttributeType;
 import org.openyu.mix.flutter.vo.AttributeGroup;
 import org.openyu.mix.flutter.vo.impl.AttributeImpl;
-import org.openyu.commons.bean.BeanCollector;
-import org.openyu.commons.junit.supporter.BeanTestSupporter;
+import org.openyu.commons.collector.CollectorHelper;
+import org.openyu.commons.junit.supporter.BaseTestSupporter;
 
-public class AttributeGroupImplTest extends BeanTestSupporter {
+public class AttributeGroupImplTest extends BaseTestSupporter {
 
 	@Test
 	public void writeToXml() {
@@ -30,16 +30,14 @@ public class AttributeGroupImplTest extends BeanTestSupporter {
 		attribute.setAddRate(5);
 		value.addAttribute(attribute);
 		//
-		String result = beanCollector.writeToXml(AttributeGroupImpl.class,
-				value);
+		String result = CollectorHelper.writeToXml(AttributeGroupImpl.class, value);
 		System.out.println(result);
 		assertNotNull(result);
 	}
 
 	@Test
 	public void readFromXml() {
-		AttributeGroup result = beanCollector
-				.readFromXml(AttributeGroupImpl.class);
+		AttributeGroup result = CollectorHelper.readFromXml(AttributeGroupImpl.class);
 		System.out.println(result);
 		assertNotNull(result);
 	}

@@ -8,6 +8,8 @@ import java.util.Map;
 import java.util.Set;
 
 import org.junit.Test;
+import org.openyu.commons.collector.CollectorHelper;
+import org.openyu.commons.junit.supporter.BaseTestSupporter;
 import org.openyu.mix.activity.vo.ActivityType;
 import org.openyu.mix.activity.vo.target.AccuCoinTargetActivity;
 import org.openyu.mix.activity.vo.target.CoinTarget;
@@ -24,9 +26,10 @@ import org.openyu.mix.activity.vo.target.impl.FameTargetImpl;
 import org.openyu.mix.activity.vo.target.impl.VipTargetActivityImpl;
 import org.openyu.mix.activity.vo.target.impl.VipTargetImpl;
 import org.openyu.mix.vip.vo.VipType;
-import org.openyu.commons.junit.supporter.BeanTestSupporter;
 
-public class ActivityCollectorTest extends BeanTestSupporter {
+import com.carrotsearch.junitbenchmarks.BenchmarkOptions;
+
+public class ActivityCollectorTest extends BaseTestSupporter {
 
 	/**
 	 * 模擬每日消費儲值幣活動
@@ -36,8 +39,7 @@ public class ActivityCollectorTest extends BeanTestSupporter {
 	public static List<DailyCoinTargetActivity> mockDailyCoinTargetActivity() {
 		List<DailyCoinTargetActivity> result = new LinkedList<DailyCoinTargetActivity>();
 		//
-		DailyCoinTargetActivity activity = new DailyCoinTargetActivityImpl(
-				ActivityType.DAILY_COIN_TARGET + "_001");
+		DailyCoinTargetActivity activity = new DailyCoinTargetActivityImpl(ActivityType.DAILY_COIN_TARGET + "_001");
 		activity.setName("每日消費儲值幣目標活動");
 		activity.setDescription("每日消費儲值幣可達成不同階段目標,每日00:00將會重置,可獲得豐碩的獎勵");
 		activity.setBegDate("2013/01/01");
@@ -96,8 +98,7 @@ public class ActivityCollectorTest extends BeanTestSupporter {
 	public static List<AccuCoinTargetActivity> mockAccuCoinTargetActivity() {
 		List<AccuCoinTargetActivity> result = new LinkedList<AccuCoinTargetActivity>();
 		//
-		AccuCoinTargetActivity activity = new AccuCoinTargetActivityImpl(
-				ActivityType.ACCU_COIN_TARGET + "_001");
+		AccuCoinTargetActivity activity = new AccuCoinTargetActivityImpl(ActivityType.ACCU_COIN_TARGET + "_001");
 		activity.setName("累計消費儲值幣目標活動");
 		activity.setDescription("累計消費儲值幣可達成不同階段目標,可獲得豐碩的獎勵");
 		activity.setBegDate("2013/01/01");
@@ -163,8 +164,7 @@ public class ActivityCollectorTest extends BeanTestSupporter {
 	public static List<FameTargetActivity> mockFameTargetActivity() {
 		List<FameTargetActivity> result = new LinkedList<FameTargetActivity>();
 		//
-		FameTargetActivity activity = new FameTargetActivityImpl(
-				ActivityType.FAME_TARGET + "_001");
+		FameTargetActivity activity = new FameTargetActivityImpl(ActivityType.FAME_TARGET + "_001");
 		activity.setName("聲望目標活動");
 		activity.setDescription("提升聲望達成不同階段目標,可獲得豐碩的獎勵");
 		// activity.setBegDate("2013/01/01");
@@ -223,8 +223,7 @@ public class ActivityCollectorTest extends BeanTestSupporter {
 	public static List<VipTargetActivity> mockVipTargetActivity() {
 		List<VipTargetActivity> result = new LinkedList<VipTargetActivity>();
 		//
-		VipTargetActivity activity = new VipTargetActivityImpl(
-				ActivityType.VIP_TARGET + "_001");
+		VipTargetActivity activity = new VipTargetActivityImpl(ActivityType.VIP_TARGET + "_001");
 		activity.setName("vip目標活動");
 		activity.setDescription("提升vip達成不同階段目標,可獲得豐碩的獎勵");
 		// activity.setBegDate("2013/01/01");
@@ -280,227 +279,133 @@ public class ActivityCollectorTest extends BeanTestSupporter {
 	/**
 	 * 只是為了模擬用,有正式xml後,不應再使用,以免覆蓋掉正式的xml
 	 */
+	@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 	public void writeToXml() {
 		String result = null;
 		ActivityCollector collector = ActivityCollector.getInstance(false);
 		//
-		int count = 1;
-		long beg = System.currentTimeMillis();
-		for (int i = 0; i < count; i++) {
-			// 模擬每日消費儲值幣目標活動
-			List<DailyCoinTargetActivity> dailyCoinActivity = mockDailyCoinTargetActivity();
-			collector.addActivitys(dailyCoinActivity);
+		// 模擬每日消費儲值幣目標活動
+		List<DailyCoinTargetActivity> dailyCoinActivity = mockDailyCoinTargetActivity();
+		collector.addActivitys(dailyCoinActivity);
 
-			// 模擬累計消費儲值幣目標活動
-			List<AccuCoinTargetActivity> accuCoinActivity = mockAccuCoinTargetActivity();
-			collector.addActivitys(accuCoinActivity);
+		// 模擬累計消費儲值幣目標活動
+		List<AccuCoinTargetActivity> accuCoinActivity = mockAccuCoinTargetActivity();
+		collector.addActivitys(accuCoinActivity);
 
-			// 模擬聲望目標活動
-			List<FameTargetActivity> fameCoinActivity = mockFameTargetActivity();
-			collector.addActivitys(fameCoinActivity);
+		// 模擬聲望目標活動
+		List<FameTargetActivity> fameCoinActivity = mockFameTargetActivity();
+		collector.addActivitys(fameCoinActivity);
 
-			// 模擬vip目標活動
-			List<VipTargetActivity> vipCoinActivity = mockVipTargetActivity();
-			collector.addActivitys(vipCoinActivity);
-			//
-			result = collector.writeToXml(ActivityCollector.class, collector);
-		}
+		// 模擬vip目標活動
+		List<VipTargetActivity> vipCoinActivity = mockVipTargetActivity();
+		collector.addActivitys(vipCoinActivity);
 		//
-		long end = System.currentTimeMillis();
-		System.out.println(count + " times: " + (end - beg) + " mills. ");
+		result = CollectorHelper.writeToXml(ActivityCollector.class, collector);
 		//
 		System.out.println(result);
 		assertNotNull(result);
 	}
 
 	@Test
-	// 100 times: 1872 mills.
-	// 100 times: 1786 mills.
-	// 100 times: 1832 mills.
+	@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 	public void readFromXml() {
 		ActivityCollector result = null;
 		//
-		int count = 1;
-		long beg = System.currentTimeMillis();
-		//
-		for (int i = 0; i < count; i++) {
-			result = beanCollector.readFromXml(ActivityCollector.class);
-		}
-		//
-		long end = System.currentTimeMillis();
-		System.out.println(count + " times: " + (end - beg) + " mills. ");
+		result = CollectorHelper.readFromXml(ActivityCollector.class);
 		//
 		System.out.println(result);
 		assertNotNull(result);
 	}
 
 	@Test
+	@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 	public void writeToSerFromXml() {
 		String result = null;
 		//
-		int count = 1;
-		long beg = System.currentTimeMillis();
-		for (int i = 0; i < count; i++) {
-			result = beanCollector.writeToSerFromXml(ActivityCollector.class);
-		}
-		//
-		long end = System.currentTimeMillis();
-		System.out.println(count + " times: " + (end - beg) + " mills. ");
+		result = CollectorHelper.writeToSerFromXml(ActivityCollector.class);
 		//
 		System.out.println(result);
 		assertNotNull(result);
 	}
 
 	@Test
-	// 100 times: 465 mills.
-	// 100 times: 474 mills.
-	// 100 times: 495 mills.
+	@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 	public void readFromSer() {
 		ActivityCollector result = null;
 		//
-		int count = 1;
-		long beg = System.currentTimeMillis();
-		//
-		for (int i = 0; i < count; i++) {
-			result = beanCollector.readFromSer(ActivityCollector.class);
-		}
-		//
-		long end = System.currentTimeMillis();
-		System.out.println(count + " times: " + (end - beg) + " mills. ");
+		result = CollectorHelper.readFromSer(ActivityCollector.class);
 		//
 		System.out.println(result);
 		assertNotNull(result);
 	}
 
 	@Test
-	// 1000000 times: 399 mills.
-	// 1000000 times: 398 mills.
-	// 1000000 times: 401 mills.
-	public void initialize() {
-		boolean result = false;
-		//
-		int count = 1000000;
-		long beg = System.currentTimeMillis();
-		//
-		for (int i = 0; i < count; i++) {
-			ActivityCollector.getInstance().initialize();
-		}
-		//
-		long end = System.currentTimeMillis();
-		System.out.println(count + " times: " + (end - beg) + " mills. ");
-
-		result = ActivityCollector.getInstance().isInitialized();
-		System.out.println(result);
-		assertTrue(result);
-		//
-		System.out.println(ActivityCollector.getInstance().getActivityIds());
-	}
-
-	@Test
-	// 1000000 times: 400 mills.
-	// 1000000 times: 396 mills.
-	// 1000000 times: 399 mills.
+	@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 	public void getInstance() {
 		ActivityCollector result = null;
 		//
-		int count = 1000000; // 100w
-		long beg = System.currentTimeMillis();
-		//
-		for (int i = 0; i < count; i++) {
-			result = ActivityCollector.getInstance();
-		}
-		//
-		long end = System.currentTimeMillis();
-		System.out.println(count + " times: " + (end - beg) + " mills. ");
+		result = ActivityCollector.getInstance();
 		//
 		System.out.println(result);
 		assertNotNull(result);
 	}
 
 	@Test
-	// 10000 times: 1587 mills.
-	// 10000 times: 1583 mills.
-	// 10000 times: 1683 mills.
-	public void reset() {
-		ActivityCollector collector = ActivityCollector.getInstance();
+	@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
+	public void shutdownInstance() {
+		ActivityCollector instance = ActivityCollector.getInstance();
+		System.out.println(instance);
+		assertNotNull(instance);
 		//
-		int count = 1;
-		long beg = System.currentTimeMillis();
-		//
-		for (int i = 0; i < count; i++) {
-			collector.reset();
-		}
-		//
-		long end = System.currentTimeMillis();
-		System.out.println(count + " times: " + (end - beg) + " mills. ");
-
-		assertFalse(collector.isInitialized());
-		//
-		assertEquals(0, collector.getActivitys().size());
+		instance = ActivityCollector.shutdownInstance();
+		assertNull(instance);
+		// 多次,不會丟出ex
+		instance = ActivityCollector.shutdownInstance();
+		assertNull(instance);
 	}
 
 	@Test
-	// 1000000 times: 396 mills.
-	// 1000000 times: 393 mills.
-	// 1000000 times: 434 mills.
-	// verified
+	@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
+	public void restartInstance() {
+		ActivityCollector instance = ActivityCollector.getInstance();
+		System.out.println(instance);
+		assertNotNull(instance);
+		//
+		instance = ActivityCollector.restartInstance();
+		assertNotNull(instance);
+		// 多次,不會丟出ex
+		instance = ActivityCollector.restartInstance();
+		assertNotNull(instance);
+	}
+
+	@Test
+	@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 	public void getActivityTypes() {
 		Set<ActivityType> result = null;
 		//
-		int count = 1000000; // 100w
-		long beg = System.currentTimeMillis();
-		//
-		for (int i = 0; i < count; i++) {
-			result = ActivityCollector.getInstance().getActivityTypes();
-		}
-		//
-		long end = System.currentTimeMillis();
-		System.out.println(count + " times: " + (end - beg) + " mills. ");
+		result = ActivityCollector.getInstance().getActivityTypes();
 		//
 		System.out.println(result);
 		assertTrue(result.size() > 0);
 	}
 
 	@Test
-	// 1000000 times: 443 mills.
-	// 1000000 times: 400 mills.
-	// 1000000 times: 403 mills.
-	// verified
+	@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 	public void getActivitys() {
 		Map<String, Activity> result = null;
 		//
-		int count = 1000000; // 100w
-		long beg = System.currentTimeMillis();
-		//
-		for (int i = 0; i < count; i++) {
-			result = ActivityCollector.getInstance().getActivitys();
-		}
-		//
-		long end = System.currentTimeMillis();
-		System.out.println(count + " times: " + (end - beg) + " mills. ");
+		result = ActivityCollector.getInstance().getActivitys();
 		//
 		System.out.println(result);
 		assertTrue(result.size() > 0);
 	}
 
 	@Test
-	// 1000000 times: 2589 mills.
-	// 1000000 times: 2585 mills.
-	// 1000000 times: 2533 mills.
-	// verified
+	@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 	public void getActivity() {
 		Activity result = null;
 		//
-		int count = 1000000; // 100w
-		long beg = System.currentTimeMillis();
-		//
-		for (int i = 0; i < count; i++) {
-			result = ActivityCollector.getInstance().getActivity(
-					"DailyCoinActivity_001");
-		}
-		//
-		long end = System.currentTimeMillis();
-		System.out.println(count + " times: " + (end - beg) + " mills. ");
+		result = ActivityCollector.getInstance().getActivity("DailyCoinActivity_001");
 		//
 		System.out.println(result);
 		assertEquals(ActivityType.DAILY_COIN_TARGET, result.getActivityType());
@@ -510,46 +415,22 @@ public class ActivityCollectorTest extends BeanTestSupporter {
 	}
 
 	@Test
-	// 1000000 times: 443 mills.
-	// 1000000 times: 400 mills.
-	// 1000000 times: 403 mills.
-	// verified
+	@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 	public void getActivitysByActivityType() {
 		List<Activity> result = null;
 		//
-		int count = 1; // 100w
-		long beg = System.currentTimeMillis();
-		//
-		for (int i = 0; i < count; i++) {
-			result = ActivityCollector.getInstance().getActivitys(
-					ActivityType.DAILY_COIN_TARGET);
-		}
-		//
-		long end = System.currentTimeMillis();
-		System.out.println(count + " times: " + (end - beg) + " mills. ");
+		result = ActivityCollector.getInstance().getActivitys(ActivityType.DAILY_COIN_TARGET);
 		//
 		System.out.println(result);
 		assertTrue(result.size() > 0);
 	}
 
 	@Test
-	// 1000000 times: 443 mills.
-	// 1000000 times: 400 mills.
-	// 1000000 times: 403 mills.
-	// verified
+	@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 	public void containActivity() {
 		boolean result = false;
 		//
-		int count = 1000000; // 100w
-		long beg = System.currentTimeMillis();
-		//
-		for (int i = 0; i < count; i++) {
-			result = ActivityCollector.getInstance().containActivity(
-					"DailyCoinActivity_001");
-		}
-		//
-		long end = System.currentTimeMillis();
-		System.out.println(count + " times: " + (end - beg) + " mills. ");
+		result = ActivityCollector.getInstance().containActivity("DailyCoinActivity_001");
 		//
 		System.out.println(result);
 		assertTrue(result);
@@ -559,22 +440,11 @@ public class ActivityCollectorTest extends BeanTestSupporter {
 	}
 
 	@Test
-	// 1000000 times: 443 mills.
-	// 1000000 times: 400 mills.
-	// 1000000 times: 403 mills.
-	// verified
+	@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 	public void getActivityIds() {
 		List<String> result = null;
 		//
-		int count = 1000000; // 100w
-		long beg = System.currentTimeMillis();
-		//
-		for (int i = 0; i < count; i++) {
-			result = ActivityCollector.getInstance().getActivityIds();
-		}
-		//
-		long end = System.currentTimeMillis();
-		System.out.println(count + " times: " + (end - beg) + " mills. ");
+		result = ActivityCollector.getInstance().getActivityIds();
 		//
 		System.out.println(result);
 		assertTrue(result.size() > 0);
