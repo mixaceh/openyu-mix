@@ -185,8 +185,8 @@ public final class ArmorCollector extends BaseCollectorSupporter {
 	 */
 	@Override
 	protected void doShutdown() throws Exception {
-		armors.clear();
-		accuEnhanceFactors.clear();
+		instance.armors.clear();
+		instance.accuEnhanceFactors.clear();
 	}
 	// --------------------------------------------------
 

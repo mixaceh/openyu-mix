@@ -63,38 +63,34 @@ import org.slf4j.LoggerFactory;
  */
 public class ItemServiceImpl extends AppServiceSupporter implements ItemService {
 
-	private static transient final Logger LOGGER = LoggerFactory
-			.getLogger(ItemServiceImpl.class);
+	private static final long serialVersionUID = 7093694572704829166L;
+
+	private static transient final Logger LOGGER = LoggerFactory.getLogger(ItemServiceImpl.class);
 
 	/**
 	 * 物品收集器
 	 */
-	protected transient ThingCollector thingCollector = ThingCollector
-			.getInstance();
+	protected transient ThingCollector thingCollector = ThingCollector.getInstance();
 
 	/**
 	 * 材料收集器
 	 */
-	protected transient MaterialCollector materialCollector = MaterialCollector
-			.getInstance();
+	protected transient MaterialCollector materialCollector = MaterialCollector.getInstance();
 
 	/**
 	 * 防具收集器
 	 */
-	protected transient ArmorCollector armorCollector = ArmorCollector
-			.getInstance();
+	protected transient ArmorCollector armorCollector = ArmorCollector.getInstance();
 
 	/**
 	 * 武器收集器
 	 */
-	protected transient WeaponCollector weaponCollector = WeaponCollector
-			.getInstance();
+	protected transient WeaponCollector weaponCollector = WeaponCollector.getInstance();
 
 	/**
 	 * 莊園收集器
 	 */
-	protected transient ManorCollector manorCollector = ManorCollector
-			.getInstance();
+	protected transient ManorCollector manorCollector = ManorCollector.getInstance();
 
 	/**
 	 * vip收集器
@@ -137,8 +133,7 @@ public class ItemServiceImpl extends AppServiceSupporter implements ItemService 
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
-	public <T extends Item> T createItem(String itemId, String uniqueId,
-			int amount) {
+	public <T extends Item> T createItem(String itemId, String uniqueId, int amount) {
 		T result = null;
 		// 物品
 		if (thingCollector.containThing(itemId)) {
@@ -189,8 +184,7 @@ public class ItemServiceImpl extends AppServiceSupporter implements ItemService 
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
-	public <T extends Equipment> T createEquipment(String equipmentId,
-			String uniqueId) {
+	public <T extends Equipment> T createEquipment(String equipmentId, String uniqueId) {
 		T result = null;
 		// 防具
 		if (armorCollector.containArmor(equipmentId)) {
@@ -255,8 +249,7 @@ public class ItemServiceImpl extends AppServiceSupporter implements ItemService 
 	 * @param amount
 	 * @return
 	 */
-	public Material createMaterial(String materialId, String uniqueId,
-			int amount) {
+	public Material createMaterial(String materialId, String uniqueId, int amount) {
 		Material result = null;
 		if (materialCollector.containMaterial(materialId)) {
 			result = materialCollector.createMaterial(materialId);
@@ -436,9 +429,8 @@ public class ItemServiceImpl extends AppServiceSupporter implements ItemService 
 			return;
 		}
 		//
-		Message message = messageService.createMessage(CoreModuleType.ITEM,
-				CoreModuleType.CLIENT, CoreMessageType.ITEM_GET_ITEM_RESPONSE,
-				role.getId());
+		Message message = messageService.createMessage(CoreModuleType.ITEM, CoreModuleType.CLIENT,
+				CoreMessageType.ITEM_GET_ITEM_RESPONSE, role.getId());
 		//
 		fillItem(message, item);
 		//
@@ -551,8 +543,7 @@ public class ItemServiceImpl extends AppServiceSupporter implements ItemService 
 			int index = tabType.getValue();
 			// 由包包頁類型,取得vip類型
 			VipType vipType = vipCollector.getVipType(tabType);
-			if (vipType == null
-					|| role.getVipType().getValue() >= vipType.getValue()) {
+			if (vipType == null || role.getVipType().getValue() >= vipType.getValue()) {
 				bagPen.unLock(index);
 			} else {
 				bagPen.lock(index);
@@ -575,8 +566,7 @@ public class ItemServiceImpl extends AppServiceSupporter implements ItemService 
 	 * @param tab
 	 */
 	public void sendTabLocked(String roleId, Tab tab) {
-		Message message = messageService.createMessage(CoreModuleType.ITEM,
-				CoreModuleType.CLIENT,
+		Message message = messageService.createMessage(CoreModuleType.ITEM, CoreModuleType.CLIENT,
 				CoreMessageType.ITEM_TAB_LOCKED_RESPONSE, roleId);
 
 		fillTabLocked(message, tab);
@@ -591,8 +581,7 @@ public class ItemServiceImpl extends AppServiceSupporter implements ItemService 
 	 * @param bagPen
 	 */
 	public void sendTabsLocked(String roleId, BagPen bagPen) {
-		Message message = messageService.createMessage(CoreModuleType.ITEM,
-				CoreModuleType.CLIENT,
+		Message message = messageService.createMessage(CoreModuleType.ITEM, CoreModuleType.CLIENT,
 				CoreMessageType.ITEM_TABS_LOCKED_RESPONSE, roleId);
 
 		Map<Integer, Tab> tabs = bagPen.getTabs();// 包含被鎖定的包包頁
@@ -622,9 +611,8 @@ public class ItemServiceImpl extends AppServiceSupporter implements ItemService 
 	 * @param bagPen
 	 */
 	public void sendBagPen(String roleId, BagPen bagPen) {
-		Message message = messageService.createMessage(CoreModuleType.ITEM,
-				CoreModuleType.CLIENT, CoreMessageType.ITEM_BAG_RESPONSE,
-				roleId);
+		Message message = messageService.createMessage(CoreModuleType.ITEM, CoreModuleType.CLIENT,
+				CoreMessageType.ITEM_BAG_RESPONSE, roleId);
 
 		fillBagPen(message, bagPen);
 		//
@@ -659,9 +647,8 @@ public class ItemServiceImpl extends AppServiceSupporter implements ItemService 
 	 * @param tab
 	 */
 	public void sendTab(String roleId, Tab tab) {
-		Message message = messageService.createMessage(CoreModuleType.ITEM,
-				CoreModuleType.CLIENT, CoreMessageType.ITEM_TAB_RESPONSE,
-				roleId);
+		Message message = messageService.createMessage(CoreModuleType.ITEM, CoreModuleType.CLIENT,
+				CoreMessageType.ITEM_TAB_RESPONSE, roleId);
 
 		fillTab(message, tab);
 		//
@@ -703,8 +690,7 @@ public class ItemServiceImpl extends AppServiceSupporter implements ItemService 
 	 * @param amount
 	 * @return
 	 */
-	public BagPen.ErrorType checkIncreaseItem(Role role, String itemId,
-			int amount) {
+	public BagPen.ErrorType checkIncreaseItem(Role role, String itemId, int amount) {
 		Item item = createItem(itemId, amount);
 		return checkIncreaseItem(role, item);
 	}
@@ -753,8 +739,7 @@ public class ItemServiceImpl extends AppServiceSupporter implements ItemService 
 
 			// 1.原道具綁定(束缚),新道具綁定(束缚),才可堆疊
 			// 2.原道具非綁定(非束缚),新道具非綁定(非束缚),才可堆疊
-			if ((origItem.isTied() && item.isTied())
-					|| (!origItem.isTied() && !item.isTied())) {
+			if ((origItem.isTied() && item.isTied()) || (!origItem.isTied() && !item.isTied())) {
 				// 當有堆疊數量限制時,maxAmount!=0
 				if (maxAmount != 0) {
 					residualAmount += (maxAmount - origAmount);
@@ -781,8 +766,7 @@ public class ItemServiceImpl extends AppServiceSupporter implements ItemService 
 				// residualAmount += (maxAmount * emptySize);//有可能會溢位
 				for (int i = 0; i < emptySize; i++) {
 					// 溢位了
-					boolean overflow = NumberHelper.isAddOverflow(
-							residualAmount, maxAmount);
+					boolean overflow = NumberHelper.isAddOverflow(residualAmount, maxAmount);
 					if (overflow) {
 						residualAmount = Integer.MAX_VALUE;// 就取最大值,作為剩餘可放數量
 						break;
@@ -812,8 +796,7 @@ public class ItemServiceImpl extends AppServiceSupporter implements ItemService 
 	 * @param items
 	 * @return
 	 */
-	public BagPen.ErrorType checkIncreaseItem(Role role,
-			Map<String, Integer> items) {
+	public BagPen.ErrorType checkIncreaseItem(Role role, Map<String, Integer> items) {
 		BagPen.ErrorType errorType = BagPen.ErrorType.NO_ERROR;
 		// TODO 未實作
 		return errorType;
@@ -822,8 +805,7 @@ public class ItemServiceImpl extends AppServiceSupporter implements ItemService 
 	/**
 	 * 增加道具結果
 	 */
-	public static class IncreaseResultImpl extends AppResultSupporter implements
-			IncreaseItemResult {
+	public static class IncreaseResultImpl extends AppResultSupporter implements IncreaseItemResult {
 
 		private static final long serialVersionUID = 6149235756950195199L;
 
@@ -852,8 +834,7 @@ public class ItemServiceImpl extends AppServiceSupporter implements ItemService 
 		 */
 		private boolean newable;
 
-		public IncreaseResultImpl(int tabIndex, int gridIndex, Item item,
-				int origAmount, boolean newable) {
+		public IncreaseResultImpl(int tabIndex, int gridIndex, Item item, int origAmount, boolean newable) {
 			this.tabIndex = tabIndex;
 			this.gridIndex = gridIndex;
 			this.item = item;
@@ -906,14 +887,12 @@ public class ItemServiceImpl extends AppServiceSupporter implements ItemService 
 		}
 
 		public String toString() {
-			ToStringBuilder builder = new ToStringBuilder(this,
-					ToStringStyle.SIMPLE_STYLE);
+			ToStringBuilder builder = new ToStringBuilder(this, ToStringStyle.SIMPLE_STYLE);
 			builder.appendSuper(super.toString());
 			builder.append("tabIndex", tabIndex);
 			builder.append("gridIndex", gridIndex);
 			builder.append("item",
-					(item != null ? item.getId() + ", " + item.getUniqueId()
-							+ ", " + item.getAmount() : null));
+					(item != null ? item.getId() + ", " + item.getUniqueId() + ", " + item.getAmount() : null));
 			builder.append("amount", origAmount);
 			builder.append("newable", newable);
 			return builder.toString();
@@ -928,8 +907,7 @@ public class ItemServiceImpl extends AppServiceSupporter implements ItemService 
 	 * @param item
 	 * @return
 	 */
-	public List<IncreaseItemResult> increaseItem(boolean sendable, Role role,
-			Item item) {
+	public List<IncreaseItemResult> increaseItem(boolean sendable, Role role, Item item) {
 		List<IncreaseItemResult> result = new LinkedList<IncreaseItemResult>();
 		//
 		if (item == null) {
@@ -952,8 +930,7 @@ public class ItemServiceImpl extends AppServiceSupporter implements ItemService 
 
 			// 1.原道具綁定(束缚),新道具綁定(束缚),才可堆疊
 			// 2.原道具非綁定(非束缚),新道具非綁定(非束缚),才可堆疊
-			if ((origItem.isTied() && item.isTied())
-					|| (!origItem.isTied() && !item.isTied())) {
+			if ((origItem.isTied() && item.isTied()) || (!origItem.isTied() && !item.isTied())) {
 				// 當有堆疊數量限制時,maxAmount!=0
 				if (maxAmount != 0) {
 					// 本格還能放
@@ -963,9 +940,8 @@ public class ItemServiceImpl extends AppServiceSupporter implements ItemService 
 						Item cloneItem = clone(origItem);// 增加的道具
 						cloneItem.setAmount(amount);// 增加的數量
 						// 增加結果
-						IncreaseItemResult buffResult = new IncreaseResultImpl(
-								tabIndex, gridIndex, cloneItem, origAmount,
-								false);
+						IncreaseItemResult buffResult = new IncreaseResultImpl(tabIndex, gridIndex, cloneItem,
+								origAmount, false);
 						result.add(buffResult);
 						//
 						amount = 0;// 一次放完
@@ -979,9 +955,8 @@ public class ItemServiceImpl extends AppServiceSupporter implements ItemService 
 							Item cloneItem = clone(origItem);// 增加的道具
 							cloneItem.setAmount(residualAmount);// 增加的數量
 							// 增加結果
-							IncreaseItemResult buffResult = new IncreaseResultImpl(
-									tabIndex, gridIndex, cloneItem, origAmount,
-									false);
+							IncreaseItemResult buffResult = new IncreaseResultImpl(tabIndex, gridIndex, cloneItem,
+									origAmount, false);
 							result.add(buffResult);
 							//
 							amount -= residualAmount;// 還有要放的
@@ -995,8 +970,8 @@ public class ItemServiceImpl extends AppServiceSupporter implements ItemService 
 					Item cloneItem = clone(origItem);// 增加的道具
 					cloneItem.setAmount(amount);// 增加的數量
 					// 增加結果
-					IncreaseItemResult buffResult = new IncreaseResultImpl(
-							tabIndex, gridIndex, cloneItem, origAmount, false);
+					IncreaseItemResult buffResult = new IncreaseResultImpl(tabIndex, gridIndex, cloneItem, origAmount,
+							false);
 					result.add(buffResult);
 					//
 					amount = 0;// 一次放完
@@ -1028,8 +1003,7 @@ public class ItemServiceImpl extends AppServiceSupporter implements ItemService 
 					//
 					Item cloneItem = clone(item);// 增加的道具
 					// 增加結果
-					IncreaseItemResult buffResult = new IncreaseResultImpl(
-							tabIndex, gridIndex, cloneItem, 0, true);
+					IncreaseItemResult buffResult = new IncreaseResultImpl(tabIndex, gridIndex, cloneItem, 0, true);
 					result.add(buffResult);
 
 				}
@@ -1046,8 +1020,7 @@ public class ItemServiceImpl extends AppServiceSupporter implements ItemService 
 
 				// 非新的格子時,還原原本數量
 				if (!buffResult.isNewable()) {
-					bagPen.setItemAmount(tabIndex, gridIndex,
-							buffResult.getOrigAmount());
+					bagPen.setItemAmount(tabIndex, gridIndex, buffResult.getOrigAmount());
 				}
 				// 若新的格子,則刪掉剛放入的
 				else {
@@ -1074,8 +1047,7 @@ public class ItemServiceImpl extends AppServiceSupporter implements ItemService 
 	 * @param amount
 	 * @return
 	 */
-	public List<IncreaseItemResult> increaseItem(boolean sendable, Role role,
-			String itemId, int amount) {
+	public List<IncreaseItemResult> increaseItem(boolean sendable, Role role, String itemId, int amount) {
 		Item item = createItem(itemId, amount);
 		return increaseItem(sendable, role, item);
 	}
@@ -1088,14 +1060,12 @@ public class ItemServiceImpl extends AppServiceSupporter implements ItemService 
 	 * @param items
 	 * @return
 	 */
-	public List<IncreaseItemResult> increaseItem(boolean sendable, Role role,
-			Map<String, Integer> items) {
+	public List<IncreaseItemResult> increaseItem(boolean sendable, Role role, Map<String, Integer> items) {
 		List<IncreaseItemResult> result = new LinkedList<IncreaseItemResult>();
 		//
 		for (Map.Entry<String, Integer> entry : items.entrySet()) {
 			// 增加1個道具的結果
-			List<IncreaseItemResult> buffResult = increaseItem(false, role,
-					entry.getKey(), entry.getValue());
+			List<IncreaseItemResult> buffResult = increaseItem(false, role, entry.getKey(), entry.getValue());
 			result.addAll(buffResult);
 		}
 
@@ -1113,15 +1083,13 @@ public class ItemServiceImpl extends AppServiceSupporter implements ItemService 
 	 * @param roleId
 	 * @param increaseItemResults
 	 */
-	public void sendIncreaseItem(Role role,
-			List<IncreaseItemResult> increaseItemResults) {
+	public void sendIncreaseItem(Role role, List<IncreaseItemResult> increaseItemResults) {
 		if (role == null) {
 			return;
 		}
 		//
-		Message message = messageService.createMessage(CoreModuleType.ITEM,
-				CoreModuleType.CLIENT, CoreMessageType.ITEM_INCREASE_RESPONSE,
-				role.getId());
+		Message message = messageService.createMessage(CoreModuleType.ITEM, CoreModuleType.CLIENT,
+				CoreMessageType.ITEM_INCREASE_RESPONSE, role.getId());
 		//
 		BagPen bagPen = role.getBagPen();
 		message.addInt(increaseItemResults.size());// 道具個數
@@ -1145,8 +1113,7 @@ public class ItemServiceImpl extends AppServiceSupporter implements ItemService 
 	 * @param gridIndex
 	 * @param item
 	 */
-	public void fillIncreaseItem(Message message, int tabIndex, int gridIndex,
-			Item item) {
+	public void fillIncreaseItem(Message message, int tabIndex, int gridIndex, Item item) {
 		message.addInt(tabIndex);
 		message.addInt(gridIndex);
 		//
@@ -1161,8 +1128,7 @@ public class ItemServiceImpl extends AppServiceSupporter implements ItemService 
 	 * @param amount
 	 * @return
 	 */
-	public BagPen.ErrorType checkDecreaseItem(Role role, String itemId,
-			int amount) {
+	public BagPen.ErrorType checkDecreaseItem(Role role, String itemId, int amount) {
 		Item item = createItem(itemId, amount);
 		return checkDecreaseItem(role, item);
 	}
@@ -1214,8 +1180,7 @@ public class ItemServiceImpl extends AppServiceSupporter implements ItemService 
 	 * @param amount
 	 * @return
 	 */
-	public BagPen.ErrorType checkDecreaseItemByUniqueId(Role role,
-			String uniqueId, int amount) {
+	public BagPen.ErrorType checkDecreaseItemByUniqueId(Role role, String uniqueId, int amount) {
 		BagPen.ErrorType errorType = BagPen.ErrorType.NO_ERROR;
 		// 檢查條件
 		if (role == null) {
@@ -1248,8 +1213,7 @@ public class ItemServiceImpl extends AppServiceSupporter implements ItemService 
 	/**
 	 * 減少道具結果
 	 */
-	public static class DecreaseResultImpl extends AppResultSupporter implements
-			DecreaseItemResult {
+	public static class DecreaseResultImpl extends AppResultSupporter implements DecreaseItemResult {
 
 		private static final long serialVersionUID = 2174402077967444166L;
 
@@ -1303,14 +1267,12 @@ public class ItemServiceImpl extends AppServiceSupporter implements ItemService 
 		}
 
 		public String toString() {
-			ToStringBuilder builder = new ToStringBuilder(this,
-					ToStringStyle.SIMPLE_STYLE);
+			ToStringBuilder builder = new ToStringBuilder(this, ToStringStyle.SIMPLE_STYLE);
 			builder.appendSuper(super.toString());
 			builder.append("tabIndex", tabIndex);
 			builder.append("gridIndex", gridIndex);
 			builder.append("item",
-					(item != null ? item.getId() + ", " + item.getUniqueId()
-							+ ", " + item.getAmount() : null));
+					(item != null ? item.getId() + ", " + item.getUniqueId() + ", " + item.getAmount() : null));
 			return builder.toString();
 		}
 
@@ -1324,8 +1286,7 @@ public class ItemServiceImpl extends AppServiceSupporter implements ItemService 
 	 * @param item
 	 * @return
 	 */
-	public List<DecreaseItemResult> decreaseItem(boolean sendable, Role role,
-			Item item) {
+	public List<DecreaseItemResult> decreaseItem(boolean sendable, Role role, Item item) {
 		List<DecreaseItemResult> result = new LinkedList<DecreaseItemResult>();
 		if (item == null) {
 			return result;
@@ -1342,8 +1303,8 @@ public class ItemServiceImpl extends AppServiceSupporter implements ItemService 
 			//
 			// 大於一格的數量時
 			if (amount > origAmount) {
-				DecreaseItemResult buffResult = decreaseItemByUniqueId(
-						sendable, role, origItem.getUniqueId(), origAmount);
+				DecreaseItemResult buffResult = decreaseItemByUniqueId(sendable, role, origItem.getUniqueId(),
+						origAmount);
 				if (buffResult != null) {
 					// result.getItems().put(origItem.getUniqueId(),
 					// origAmount);
@@ -1354,8 +1315,7 @@ public class ItemServiceImpl extends AppServiceSupporter implements ItemService 
 			}
 			// 一格就能扣玩的數量
 			else {
-				DecreaseItemResult buffResult = decreaseItemByUniqueId(
-						sendable, role, origItem.getUniqueId(), amount);
+				DecreaseItemResult buffResult = decreaseItemByUniqueId(sendable, role, origItem.getUniqueId(), amount);
 				if (buffResult != null) {
 					// result.getItems().put(origItem.getUniqueId(), amount);
 					result.add(buffResult);
@@ -1379,8 +1339,7 @@ public class ItemServiceImpl extends AppServiceSupporter implements ItemService 
 	 * @param amount
 	 * @return
 	 */
-	public List<DecreaseItemResult> decreaseItem(boolean sendable, Role role,
-			String itemId, int amount) {
+	public List<DecreaseItemResult> decreaseItem(boolean sendable, Role role, String itemId, int amount) {
 		Item item = createItem(itemId, amount);
 		return decreaseItem(sendable, role, item);
 	}
@@ -1394,8 +1353,7 @@ public class ItemServiceImpl extends AppServiceSupporter implements ItemService 
 	 * @param amount
 	 * @return
 	 */
-	public DecreaseItemResult decreaseItemByUniqueId(boolean sendable,
-			Role role, String uniqueId, int amount) {
+	public DecreaseItemResult decreaseItemByUniqueId(boolean sendable, Role role, String uniqueId, int amount) {
 		DecreaseItemResult result = null;
 		//
 		BagPen bagPen = role.getBagPen();// 包包欄
@@ -1436,11 +1394,9 @@ public class ItemServiceImpl extends AppServiceSupporter implements ItemService 
 	 * @param role
 	 * @param decreaseItemResults
 	 */
-	public void sendDecreaseItem(Role role,
-			List<DecreaseItemResult> decreaseItemResults) {
-		Message message = messageService.createMessage(CoreModuleType.ITEM,
-				CoreModuleType.CLIENT, CoreMessageType.ITEM_DECREASE_RESPONSE,
-				role.getId());
+	public void sendDecreaseItem(Role role, List<DecreaseItemResult> decreaseItemResults) {
+		Message message = messageService.createMessage(CoreModuleType.ITEM, CoreModuleType.CLIENT,
+				CoreMessageType.ITEM_DECREASE_RESPONSE, role.getId());
 		//
 		message.addInt(decreaseItemResults.size());// 道具個數
 		for (DecreaseItemResult itemResult : decreaseItemResults) {
@@ -1475,8 +1431,7 @@ public class ItemServiceImpl extends AppServiceSupporter implements ItemService 
 	/**
 	 * 強化裝備結果
 	 */
-	public static class EnhanceResultImpl extends AppResultSupporter implements
-			EnhanceResult {
+	public static class EnhanceResultImpl extends AppResultSupporter implements EnhanceResult {
 
 		private static final long serialVersionUID = 4771450693493495692L;
 
@@ -1510,8 +1465,7 @@ public class ItemServiceImpl extends AppServiceSupporter implements ItemService 
 		}
 
 		public String toString() {
-			ToStringBuilder builder = new ToStringBuilder(this,
-					ToStringStyle.SIMPLE_STYLE);
+			ToStringBuilder builder = new ToStringBuilder(this, ToStringStyle.SIMPLE_STYLE);
 			builder.appendSuper(super.toString());
 			builder.append("success", success);
 			builder.append("disappear", disappear);
@@ -1529,8 +1483,7 @@ public class ItemServiceImpl extends AppServiceSupporter implements ItemService 
 	 *            強化類型
 	 * @return
 	 */
-	public EnhanceResult enhanceEquipment(boolean sendable, Role role,
-			Equipment equipment, EnhanceType enhanceType) {
+	public EnhanceResult enhanceEquipment(boolean sendable, Role role, Equipment equipment, EnhanceType enhanceType) {
 		EnhanceResult result = null;
 		//
 		if (equipment != null && enhanceType != null) {
@@ -1545,8 +1498,7 @@ public class ItemServiceImpl extends AppServiceSupporter implements ItemService 
 			// return result;
 			// }
 			// 下一級的強化因子
-			EnhanceFactor nextEnhanceFactor = getEnhanceFactor(equipment,
-					nextEnhanceValue);
+			EnhanceFactor nextEnhanceFactor = getEnhanceFactor(equipment, nextEnhanceValue);
 
 			// 強化結果
 			result = new EnhanceResultImpl();
@@ -1557,8 +1509,7 @@ public class ItemServiceImpl extends AppServiceSupporter implements ItemService 
 				// 強化等級
 				equipment.setEnhanceLevel(nextEnhanceFactor.getId());
 				// 增加屬性
-				changeAttributes(equipment.getAttributeGroup(),
-						nextEnhanceFactor);
+				changeAttributes(equipment.getAttributeGroup(), nextEnhanceFactor);
 			}
 			// 失敗,依照不同強化類型處理
 			else {
@@ -1570,13 +1521,13 @@ public class ItemServiceImpl extends AppServiceSupporter implements ItemService 
 					result.setDisappear(true);// 消失
 					break;
 				}
-				// 祝福強化,失敗強化歸0,裝備還在
+					// 祝福強化,失敗強化歸0,裝備還在
 				case BLESS: {
 					// 清除強化,不發訊息
 					unenhance(false, role, equipment);
 					break;
 				}
-				// 幻想強化,失敗強化保有原本強化,強化不歸0,且裝備還在
+					// 幻想強化,失敗強化保有原本強化,強化不歸0,且裝備還在
 				case FANTASY: {
 					break;
 				}
@@ -1594,8 +1545,7 @@ public class ItemServiceImpl extends AppServiceSupporter implements ItemService 
 	 * @param enhanceType
 	 * @return
 	 */
-	public ErrorType checkEnhance(Item item, int enhanceValue,
-			EnhanceType enhanceType) {
+	public ErrorType checkEnhance(Item item, int enhanceValue, EnhanceType enhanceType) {
 		ErrorType errorType = ErrorType.NO_ERROR;
 
 		// 是否超過最高強化等級
@@ -1613,8 +1563,7 @@ public class ItemServiceImpl extends AppServiceSupporter implements ItemService 
 		}
 
 		// 是否超過幻想強化等級
-		boolean overFantasy = isOverFantasyEnhanceLevel(item, enhanceValue,
-				enhanceType);
+		boolean overFantasy = isOverFantasyEnhanceLevel(item, enhanceValue, enhanceType);
 		if (overFantasy) {
 			errorType = ErrorType.OVER_FANTASY_ENHANCE_LEVEL;
 			return errorType;
@@ -1629,11 +1578,9 @@ public class ItemServiceImpl extends AppServiceSupporter implements ItemService 
 	 * @param attributeGroup
 	 * @param enhanceFactor
 	 */
-	protected void changeAttributes(AttributeGroup attributeGroup,
-			EnhanceFactor enhanceFactor) {
+	protected void changeAttributes(AttributeGroup attributeGroup, EnhanceFactor enhanceFactor) {
 		// 屬性群
-		Map<AttributeType, Attribute> attributes = attributeGroup
-				.getAttributes();
+		Map<AttributeType, Attribute> attributes = attributeGroup.getAttributes();
 		for (Attribute attribute : attributes.values()) {
 			// 增加強化所提升的屬性值,所有屬性增加的屬性值都一樣
 			attribute.changeAddPoint(enhanceFactor.getPoint());
@@ -1667,8 +1614,7 @@ public class ItemServiceImpl extends AppServiceSupporter implements ItemService 
 
 			// 屬性群
 			if (attributeGroup != null) {
-				Map<AttributeType, Attribute> attributes = attributeGroup
-						.getAttributes();
+				Map<AttributeType, Attribute> attributes = attributeGroup.getAttributes();
 				for (Attribute attribute : attributes.values()) {
 					attribute.setAddPoint(enhanceFactor.getPoint());
 					attribute.setAddRate(enhanceFactor.getRate());
@@ -1715,8 +1661,7 @@ public class ItemServiceImpl extends AppServiceSupporter implements ItemService 
 	protected boolean isOverMaxEnhanceLevel(Item item, int enhanceValue) {
 		boolean result = false;
 		EnhanceLevel maxEnhanceLevel = getMaxEnhanceLevel(item);
-		if (maxEnhanceLevel != null
-				&& enhanceValue > maxEnhanceLevel.getValue()) {
+		if (maxEnhanceLevel != null && enhanceValue > maxEnhanceLevel.getValue()) {
 			result = true;
 		}
 		return result;
@@ -1729,8 +1674,7 @@ public class ItemServiceImpl extends AppServiceSupporter implements ItemService 
 	 * @param item
 	 * @return
 	 */
-	protected boolean isOverFantasyEnhanceLevel(Item item, int enhanceValue,
-			EnhanceType enhanceType) {
+	protected boolean isOverFantasyEnhanceLevel(Item item, int enhanceValue, EnhanceType enhanceType) {
 		boolean result = false;
 		EnhanceLevel fantasyEnhanceLevel = getFantasyEnhanceLevel(item);
 		if (enhanceType == EnhanceType.FANTASY && fantasyEnhanceLevel != null
@@ -1827,20 +1771,17 @@ public class ItemServiceImpl extends AppServiceSupporter implements ItemService 
 		// 防具
 		if (item instanceof Armor) {
 			Armor armor = (Armor) item;
-			result = armorCollector.getAccuEnhanceFactor(armor
-					.getEnhanceLevel());
+			result = armorCollector.getAccuEnhanceFactor(armor.getEnhanceLevel());
 		}
 		// 武器
 		else if (item instanceof Weapon) {
 			Weapon weapon = (Weapon) item;
-			result = weaponCollector.getAccuEnhanceFactor(weapon
-					.getEnhanceLevel());
+			result = weaponCollector.getAccuEnhanceFactor(weapon.getEnhanceLevel());
 		}
 		// 土地
 		else if (item instanceof Land) {
 			Land land = (Land) item;
-			result = manorCollector
-					.getAccuEnhanceFactor(land.getEnhanceLevel());
+			result = manorCollector.getAccuEnhanceFactor(land.getEnhanceLevel());
 		} else {
 			// jest for pretty
 		}
@@ -1865,9 +1806,7 @@ public class ItemServiceImpl extends AppServiceSupporter implements ItemService 
 		EnhanceLevel safeEnhanceLevel = getSafeEnhanceLevel(item);
 
 		// 機率強化,當強化> +3 以上,會有機率性失敗
-		if (safeEnhanceLevel == null
-				|| enhanceFactor.getId().getValue() > safeEnhanceLevel
-						.getValue()) {
+		if (safeEnhanceLevel == null || enhanceFactor.getId().getValue() > safeEnhanceLevel.getValue()) {
 			result = NumberHelper.randomWin(enhanceFactor.getProbability());
 		}
 		// 安全強化,當強化<= +3,一定會成功,此為+3為強化安定值
@@ -1885,9 +1824,8 @@ public class ItemServiceImpl extends AppServiceSupporter implements ItemService 
 	 * @param enhanceResult
 	 */
 	public void sendEnhance(Role role, Item item, EnhanceResult enhanceResult) {
-		Message message = messageService.createMessage(CoreModuleType.ITEM,
-				CoreModuleType.CLIENT, CoreMessageType.ITEM_ENHANCE_RESPONSE,
-				role.getId());
+		Message message = messageService.createMessage(CoreModuleType.ITEM, CoreModuleType.CLIENT,
+				CoreMessageType.ITEM_ENHANCE_RESPONSE, role.getId());
 
 		message.addBoolean(enhanceResult.isSuccess());// 是否成功
 		message.addBoolean(enhanceResult.isDisappear());// 裝備是否消失
@@ -1923,11 +1861,9 @@ public class ItemServiceImpl extends AppServiceSupporter implements ItemService 
 
 		// 屬性群
 		if (attributeGroup != null) {
-			Map<AttributeType, Attribute> attributes = attributeGroup
-					.getAttributes();
+			Map<AttributeType, Attribute> attributes = attributeGroup.getAttributes();
 			message.addInt(attributes.size());
-			for (Map.Entry<AttributeType, Attribute> entry : attributes
-					.entrySet()) {
+			for (Map.Entry<AttributeType, Attribute> entry : attributes.entrySet()) {
 				message.addInt(entry.getKey());// 屬性類別,key
 				message.addInt(entry.getValue().getPoint());// 屬性值
 				message.addInt(entry.getValue().getAddPoint());// 強化所提升的屬性值
@@ -1983,9 +1919,8 @@ public class ItemServiceImpl extends AppServiceSupporter implements ItemService 
 	 * @param item
 	 */
 	public void sendUnenhance(Role role, Item item) {
-		Message message = messageService.createMessage(CoreModuleType.ITEM,
-				CoreModuleType.CLIENT, CoreMessageType.ITEM_UNENHANCE_RESPONSE,
-				role.getId());
+		Message message = messageService.createMessage(CoreModuleType.ITEM, CoreModuleType.CLIENT,
+				CoreMessageType.ITEM_UNENHANCE_RESPONSE, role.getId());
 
 		message.addString(item.getId());// id
 		message.addString(item.getUniqueId());// uniqueId
@@ -2003,8 +1938,7 @@ public class ItemServiceImpl extends AppServiceSupporter implements ItemService 
 	 *            強化類型
 	 * @return
 	 */
-	public EnhanceResult enhanceLand(boolean sendable, Role role, Land land,
-			EnhanceType enhanceType) {
+	public EnhanceResult enhanceLand(boolean sendable, Role role, Land land, EnhanceType enhanceType) {
 		EnhanceResult result = null;
 		//
 		if (land != null && enhanceType != null) {
@@ -2019,8 +1953,7 @@ public class ItemServiceImpl extends AppServiceSupporter implements ItemService 
 			// return result;
 			// }
 			// 下一級的強化因子
-			EnhanceFactor nextEnhanceFactor = getEnhanceFactor(land,
-					nextEnhanceValue);
+			EnhanceFactor nextEnhanceFactor = getEnhanceFactor(land, nextEnhanceValue);
 
 			// 強化結果
 			result = new EnhanceResultImpl();
@@ -2043,13 +1976,13 @@ public class ItemServiceImpl extends AppServiceSupporter implements ItemService 
 					result.setDisappear(true);// 消失
 					break;
 				}
-				// 祝福強化,失敗強化歸0,土地還在
+					// 祝福強化,失敗強化歸0,土地還在
 				case BLESS: {
 					// 清除強化,不發訊息
 					unenhance(false, role, land);
 					break;
 				}
-				// 幻想強化,失敗強化保有原本強化,強化不歸0,且土地還在
+					// 幻想強化,失敗強化保有原本強化,強化不歸0,且土地還在
 				case FANTASY: {
 					break;
 				}
@@ -2068,8 +2001,7 @@ public class ItemServiceImpl extends AppServiceSupporter implements ItemService 
 	 * @param enhanceValue
 	 * @return
 	 */
-	public int changeEnhance(boolean sendable, Role role, Item item,
-			int enhanceValue) {
+	public int changeEnhance(boolean sendable, Role role, Item item, int enhanceValue) {
 		// 增減的強化等級
 		int result = 0;
 		// 檢查條件
@@ -2099,8 +2031,7 @@ public class ItemServiceImpl extends AppServiceSupporter implements ItemService 
 		}
 
 		// 原強化等級
-		origEnhanceLevel = (origEnhanceLevel != null ? origEnhanceLevel
-				: EnhanceLevel._0);
+		origEnhanceLevel = (origEnhanceLevel != null ? origEnhanceLevel : EnhanceLevel._0);
 		int origEnhanceValue = origEnhanceLevel.getValue();
 
 		// 新的強化等級
@@ -2132,8 +2063,7 @@ public class ItemServiceImpl extends AppServiceSupporter implements ItemService 
 				newEnhanceValue = maxEnhanceLevel.getValue();
 			}
 			// 新的強化等級
-			newEnhanceLevel = EnumHelper.valueOf(EnhanceLevel.class,
-					newEnhanceValue);
+			newEnhanceLevel = EnumHelper.valueOf(EnhanceLevel.class, newEnhanceValue);
 			//
 			if (newEnhanceLevel != null) {
 				boolean changed = false;
@@ -2198,8 +2128,7 @@ public class ItemServiceImpl extends AppServiceSupporter implements ItemService 
 	 *            數量
 	 * @return
 	 */
-	public void useItem(boolean sendable, Role role, String targetId,
-			String itemUniqueId, int amount) {
+	public void useItem(boolean sendable, Role role, String targetId, String itemUniqueId, int amount) {
 		ErrorType errorType = ErrorType.NO_ERROR;
 		// 檢查條件
 		errorType = checkUseItem(role, itemUniqueId, amount);
@@ -2236,18 +2165,15 @@ public class ItemServiceImpl extends AppServiceSupporter implements ItemService 
 					break;
 				}
 				case ENHANCE_ARMOR: {
-					errorType = useEnhanceArmorThing(sendable, role, targetId,
-							item);
+					errorType = useEnhanceArmorThing(sendable, role, targetId, item);
 					break;
 				}
 				case ENHANCE_WEAPON: {
-					errorType = useEnhanceWeaponThing(sendable, role, targetId,
-							item);
+					errorType = useEnhanceWeaponThing(sendable, role, targetId, item);
 					break;
 				}
 				case ENHANCE_LAND: {
-					errorType = useEnhanceLandThing(sendable, role, targetId,
-							item);
+					errorType = useEnhanceLandThing(sendable, role, targetId, item);
 					break;
 				}
 				case ROLE_EXP: {
@@ -2321,8 +2247,7 @@ public class ItemServiceImpl extends AppServiceSupporter implements ItemService 
 		}
 
 		// 檢查減少道具
-		BagPen.ErrorType bagError = checkDecreaseItemByUniqueId(role,
-				item.getUniqueId(), amount);
+		BagPen.ErrorType bagError = checkDecreaseItemByUniqueId(role, item.getUniqueId(), amount);
 		if (bagError != BagPen.ErrorType.NO_ERROR) {
 			errorType = ErrorType.CAN_NOT_DECREASE_ITEM;
 			return errorType;
@@ -2342,8 +2267,7 @@ public class ItemServiceImpl extends AppServiceSupporter implements ItemService 
 	 *            道具
 	 * @return
 	 */
-	public ErrorType useEnhanceArmorThing(boolean sendable, Role role,
-			String targetId, Item item) {
+	public ErrorType useEnhanceArmorThing(boolean sendable, Role role, String targetId, Item item) {
 		ErrorType errorType = ErrorType.NO_ERROR;
 
 		// 1.目前只從包包拿目標道具,未來考慮拿已裝備後的道具再強化
@@ -2373,8 +2297,7 @@ public class ItemServiceImpl extends AppServiceSupporter implements ItemService 
 			int nextEnhanceValue = armor.getEnhanceLevel().getValue() + 1;
 
 			// 檢查強化
-			errorType = checkEnhance(armor, nextEnhanceValue,
-					thing.getEnhanceType());
+			errorType = checkEnhance(armor, nextEnhanceValue, thing.getEnhanceType());
 			if (errorType != ErrorType.NO_ERROR) {
 				return errorType;
 			}
@@ -2386,8 +2309,7 @@ public class ItemServiceImpl extends AppServiceSupporter implements ItemService 
 			}
 
 			// 使用道具強化
-			EnhanceResult enhanceResult = enhanceEquipment(sendable, role,
-					armor, thing.getEnhanceType());
+			EnhanceResult enhanceResult = enhanceEquipment(sendable, role, armor, thing.getEnhanceType());
 
 			// 強化結果
 			if (enhanceResult != null) {
@@ -2396,8 +2318,7 @@ public class ItemServiceImpl extends AppServiceSupporter implements ItemService 
 
 				// 防具爆掉了,移除武器
 				if (enhanceResult.isDisappear()) {
-					decreaseItemByUniqueId(sendable, role, armor.getUniqueId(),
-							1);
+					decreaseItemByUniqueId(sendable, role, armor.getUniqueId(), 1);
 				}
 
 				// 發訊息
@@ -2420,8 +2341,7 @@ public class ItemServiceImpl extends AppServiceSupporter implements ItemService 
 	 *            道具
 	 * @return
 	 */
-	public ErrorType useEnhanceWeaponThing(boolean sendable, Role role,
-			String targetId, Item item) {
+	public ErrorType useEnhanceWeaponThing(boolean sendable, Role role, String targetId, Item item) {
 		ErrorType errorType = ErrorType.NO_ERROR;
 
 		// 1.目前只從包包拿目標道具,未來考慮拿已裝備後的道具再強化
@@ -2451,8 +2371,7 @@ public class ItemServiceImpl extends AppServiceSupporter implements ItemService 
 			int nextEnhanceValue = weapon.getEnhanceLevel().getValue() + 1;
 
 			// 檢查強化
-			errorType = checkEnhance(weapon, nextEnhanceValue,
-					thing.getEnhanceType());
+			errorType = checkEnhance(weapon, nextEnhanceValue, thing.getEnhanceType());
 			if (errorType != ErrorType.NO_ERROR) {
 				return errorType;
 			}
@@ -2464,8 +2383,7 @@ public class ItemServiceImpl extends AppServiceSupporter implements ItemService 
 			}
 
 			// 使用道具強化
-			EnhanceResult enhanceResult = enhanceEquipment(sendable, role,
-					weapon, thing.getEnhanceType());
+			EnhanceResult enhanceResult = enhanceEquipment(sendable, role, weapon, thing.getEnhanceType());
 
 			// 強化結果
 			if (enhanceResult != null) {
@@ -2474,8 +2392,7 @@ public class ItemServiceImpl extends AppServiceSupporter implements ItemService 
 
 				// 武器爆掉了,移除武器
 				if (enhanceResult.isDisappear()) {
-					decreaseItemByUniqueId(sendable, role,
-							weapon.getUniqueId(), 1);
+					decreaseItemByUniqueId(sendable, role, weapon.getUniqueId(), 1);
 				}
 
 				// 發訊息
@@ -2498,8 +2415,7 @@ public class ItemServiceImpl extends AppServiceSupporter implements ItemService 
 	 *            道具
 	 * @return
 	 */
-	public ErrorType useEnhanceLandThing(boolean sendable, Role role,
-			String targetId, Item item) {
+	public ErrorType useEnhanceLandThing(boolean sendable, Role role, String targetId, Item item) {
 		ErrorType errorType = ErrorType.NO_ERROR;
 
 		// 1.目前只從包包拿目標道具,未來考慮拿已裝備後的道具再強化
@@ -2529,15 +2445,13 @@ public class ItemServiceImpl extends AppServiceSupporter implements ItemService 
 			int nextEnhanceValue = land.getEnhanceLevel().getValue() + 1;
 
 			// 檢查強化
-			errorType = checkEnhance(land, nextEnhanceValue,
-					thing.getEnhanceType());
+			errorType = checkEnhance(land, nextEnhanceValue, thing.getEnhanceType());
 			if (errorType != ErrorType.NO_ERROR) {
 				return errorType;
 			}
 
 			// 使用道具強化
-			EnhanceResult enhanceResult = enhanceLand(sendable, role, land,
-					thing.getEnhanceType());
+			EnhanceResult enhanceResult = enhanceLand(sendable, role, land, thing.getEnhanceType());
 
 			// 強化結果
 			if (enhanceResult != null) {
@@ -2546,8 +2460,7 @@ public class ItemServiceImpl extends AppServiceSupporter implements ItemService 
 
 				// 武器爆掉了,移除武器
 				if (enhanceResult.isDisappear()) {
-					decreaseItemByUniqueId(sendable, role, land.getUniqueId(),
-							1);
+					decreaseItemByUniqueId(sendable, role, land.getUniqueId(), 1);
 				}
 
 				// 發訊息
@@ -2570,8 +2483,7 @@ public class ItemServiceImpl extends AppServiceSupporter implements ItemService 
 	 *            數量
 	 * @return
 	 */
-	public ErrorType useRoleExpThing(boolean sendable, Role role, Item item,
-			int amount) {
+	public ErrorType useRoleExpThing(boolean sendable, Role role, Item item, int amount) {
 		ErrorType result = ErrorType.NO_ERROR;
 		// 道具不存在
 		if (item == null) {
@@ -2583,8 +2495,7 @@ public class ItemServiceImpl extends AppServiceSupporter implements ItemService 
 			// 多個道具
 			for (int i = 0; i < amount; i++) {
 				// 成功
-				boolean success = NumberHelper
-						.randomWin(thing.getProbability());
+				boolean success = NumberHelper.randomWin(thing.getProbability());
 				if (success) {
 					exp += thing.getExp();
 				}
@@ -2608,9 +2519,8 @@ public class ItemServiceImpl extends AppServiceSupporter implements ItemService 
 	 * @return
 	 */
 	protected Message sendChangeExp(Role role, long exp) {
-		Message message = messageService.createMessage(CoreModuleType.ITEM,
-				CoreModuleType.ROLE, CoreMessageType.ROLE_CHANGE_EXP_REQUEST,
-				role.getId());
+		Message message = messageService.createMessage(CoreModuleType.ITEM, CoreModuleType.ROLE,
+				CoreMessageType.ROLE_CHANGE_EXP_REQUEST, role.getId());
 
 		message.addString(role.getId());// 0, String, 角色id
 		message.addLong(exp);// 1, long, 增減的經驗
@@ -2629,8 +2539,7 @@ public class ItemServiceImpl extends AppServiceSupporter implements ItemService 
 	 * @param amount
 	 * @return
 	 */
-	public ErrorType useRoleSpThing(boolean sendable, Role role, Item item,
-			int amount) {
+	public ErrorType useRoleSpThing(boolean sendable, Role role, Item item, int amount) {
 		ErrorType result = ErrorType.NO_ERROR;
 		// 道具不存在
 		if (item == null) {
@@ -2642,8 +2551,7 @@ public class ItemServiceImpl extends AppServiceSupporter implements ItemService 
 			// 多個道具
 			for (int i = 0; i < amount; i++) {
 				// 成功
-				boolean success = NumberHelper
-						.randomWin(thing.getProbability());
+				boolean success = NumberHelper.randomWin(thing.getProbability());
 				if (success) {
 					sp += thing.getSp();
 				}
@@ -2666,9 +2574,8 @@ public class ItemServiceImpl extends AppServiceSupporter implements ItemService 
 	 * @return
 	 */
 	protected Message sendChangeSp(Role role, long sp) {
-		Message message = messageService.createMessage(CoreModuleType.ITEM,
-				CoreModuleType.ROLE, CoreMessageType.ROLE_CHANGE_SP_REQUEST,
-				role.getId());
+		Message message = messageService.createMessage(CoreModuleType.ITEM, CoreModuleType.ROLE,
+				CoreMessageType.ROLE_CHANGE_SP_REQUEST, role.getId());
 
 		message.addString(role.getId());// 0, String, 角色id
 		message.addLong(sp);// 1, long, 增減的技魂
@@ -2689,8 +2596,7 @@ public class ItemServiceImpl extends AppServiceSupporter implements ItemService 
 	 *            數量
 	 * @return
 	 */
-	public ErrorType useRoleGoldThing(boolean sendable, Role role, Item item,
-			int amount) {
+	public ErrorType useRoleGoldThing(boolean sendable, Role role, Item item, int amount) {
 		ErrorType result = ErrorType.NO_ERROR;
 		// 道具不存在
 		if (item == null) {
@@ -2702,8 +2608,7 @@ public class ItemServiceImpl extends AppServiceSupporter implements ItemService 
 			// 多個道具
 			for (int i = 0; i < amount; i++) {
 				// 成功
-				boolean success = NumberHelper
-						.randomWin(thing.getProbability());
+				boolean success = NumberHelper.randomWin(thing.getProbability());
 				if (success) {
 					gold += thing.getGold();
 				}
@@ -2727,9 +2632,8 @@ public class ItemServiceImpl extends AppServiceSupporter implements ItemService 
 	 * @return
 	 */
 	protected Message sendChangeGold(Role role, long gold, GoldType goldReason) {
-		Message message = messageService.createMessage(CoreModuleType.ITEM,
-				CoreModuleType.ROLE, CoreMessageType.ROLE_CHANGE_GOLD_REQUEST,
-				role.getId());
+		Message message = messageService.createMessage(CoreModuleType.ITEM, CoreModuleType.ROLE,
+				CoreMessageType.ROLE_CHANGE_GOLD_REQUEST, role.getId());
 
 		message.addString(role.getId());// 0, String, 角色id
 		message.addLong(gold);// 1, long, 增減的金幣
@@ -2751,8 +2655,7 @@ public class ItemServiceImpl extends AppServiceSupporter implements ItemService 
 	 *            數量
 	 * @return
 	 */
-	public ErrorType useRoleFameThing(boolean sendable, Role role, Item item,
-			int amount) {
+	public ErrorType useRoleFameThing(boolean sendable, Role role, Item item, int amount) {
 		ErrorType result = ErrorType.NO_ERROR;
 		// 道具不存在
 		if (item == null) {
@@ -2764,8 +2667,7 @@ public class ItemServiceImpl extends AppServiceSupporter implements ItemService 
 			// 多個道具
 			for (int i = 0; i < amount; i++) {
 				// 成功
-				boolean success = NumberHelper
-						.randomWin(thing.getProbability());
+				boolean success = NumberHelper.randomWin(thing.getProbability());
 				if (success) {
 					fame += thing.getFame();
 				}
@@ -2788,9 +2690,8 @@ public class ItemServiceImpl extends AppServiceSupporter implements ItemService 
 	 * @return
 	 */
 	protected Message sendChangeFame(Role role, int fame) {
-		Message message = messageService.createMessage(CoreModuleType.ITEM,
-				CoreModuleType.ROLE, CoreMessageType.ROLE_CHANGE_FAME_REQUEST,
-				role.getId());
+		Message message = messageService.createMessage(CoreModuleType.ITEM, CoreModuleType.ROLE,
+				CoreMessageType.ROLE_CHANGE_FAME_REQUEST, role.getId());
 
 		message.addString(role.getId());// 0, String, 角色id
 		message.addInt(fame);// 1, int, 增減的聲望
@@ -2807,9 +2708,8 @@ public class ItemServiceImpl extends AppServiceSupporter implements ItemService 
 	 * @param role
 	 */
 	public void sendUseItem(ErrorType errorType, Role role) {
-		Message message = messageService.createMessage(CoreModuleType.ITEM,
-				CoreModuleType.CLIENT, CoreMessageType.ITEM_USE_RESPONSE,
-				role.getId());
+		Message message = messageService.createMessage(CoreModuleType.ITEM, CoreModuleType.CLIENT,
+				CoreMessageType.ITEM_USE_RESPONSE, role.getId());
 
 		message.addInt(errorType);// 0, errorType 錯誤碼
 
@@ -2876,8 +2776,7 @@ public class ItemServiceImpl extends AppServiceSupporter implements ItemService 
 	 * @param attributeAction
 	 *            INCREASE=增加屬性,DECREASE=減少屬性
 	 */
-	public void changeAttributes(Role role, Equipment equipment,
-			AttributeAction attributeAction) {
+	public void changeAttributes(Role role, Equipment equipment, AttributeAction attributeAction) {
 		// 檢查條件
 		if (role == null) {
 			return;
@@ -2908,8 +2807,7 @@ public class ItemServiceImpl extends AppServiceSupporter implements ItemService 
 
 		// 裝備屬性群
 		AttributeGroup attributeGroup = equipment.getAttributeGroup();
-		Map<AttributeType, Attribute> attributes = attributeGroup
-				.getAttributes();
+		Map<AttributeType, Attribute> attributes = attributeGroup.getAttributes();
 		for (Map.Entry<AttributeType, Attribute> entry : attributes.entrySet()) {
 			AttributeType key = entry.getKey();
 			Attribute value = entry.getValue();
@@ -2933,10 +2831,8 @@ public class ItemServiceImpl extends AppServiceSupporter implements ItemService 
 
 		// 精鍊屬性群
 		AttributeGroup refiningGroup = equipment.getRefiningGroup();
-		Map<AttributeType, Attribute> refiningAttributes = refiningGroup
-				.getAttributes();
-		for (Map.Entry<AttributeType, Attribute> entry : refiningAttributes
-				.entrySet()) {
+		Map<AttributeType, Attribute> refiningAttributes = refiningGroup.getAttributes();
+		for (Map.Entry<AttributeType, Attribute> entry : refiningAttributes.entrySet()) {
 			AttributeType key = entry.getKey();
 			Attribute value = entry.getValue();
 			// 判斷角色上是否有此裝備屬性
@@ -2967,8 +2863,7 @@ public class ItemServiceImpl extends AppServiceSupporter implements ItemService 
 	 * @param equipment
 	 * @return
 	 */
-	public boolean takeEquipment(boolean sendable, Role role,
-			Equipment equipment) {
+	public boolean takeEquipment(boolean sendable, Role role, Equipment equipment) {
 		boolean result = false;
 		// 檢查條件
 		if (equipment == null) {
@@ -2977,8 +2872,7 @@ public class ItemServiceImpl extends AppServiceSupporter implements ItemService 
 		// 裝備欄
 		EquipmentPen equipmentPen = role.getEquipmentPen();
 		// 脫裝備
-		EquipmentPen.ErrorType errorType = equipmentPen
-				.removeEquipment(equipment);
+		EquipmentPen.ErrorType errorType = equipmentPen.removeEquipment(equipment);
 		if (!EquipmentPen.ErrorType.NO_ERROR.equals(errorType)) {
 			return result;
 		}

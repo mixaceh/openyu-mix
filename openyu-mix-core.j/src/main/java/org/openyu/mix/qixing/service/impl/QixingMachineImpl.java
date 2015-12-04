@@ -1,21 +1,18 @@
 package org.openyu.mix.qixing.service.impl;
 
+import org.openyu.mix.app.service.supporter.AppServiceSupporter;
 import org.openyu.mix.qixing.service.QixingMachine;
 import org.openyu.mix.qixing.vo.QixingCollector;
-import org.openyu.commons.service.supporter.BaseServiceSupporter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class QixingMachineImpl extends BaseServiceSupporter implements
-		QixingMachine {
-	
-	private static transient final Logger LOGGER = LoggerFactory
-			.getLogger(QixingMachineImpl.class);
+public class QixingMachineImpl extends AppServiceSupporter implements QixingMachine {
+
+	private static transient final Logger LOGGER = LoggerFactory.getLogger(QixingMachineImpl.class);
 
 	private static QixingMachineImpl qixingMachineImpl;
 
-	private transient QixingCollector qixingCollector = QixingCollector
-			.getInstance();
+	private transient QixingCollector qixingCollector = QixingCollector.getInstance();
 
 	// /**
 	// * 七星勝負結果

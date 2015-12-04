@@ -13,6 +13,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import org.openyu.commons.bean.NamesBean;
 import org.openyu.commons.bean.adapter.NamesBeanXmlAdapter;
 import org.openyu.commons.bean.supporter.NamesBeanSupporter;
+import org.openyu.commons.collector.CollectorHelper;
 import org.openyu.commons.collector.supporter.BaseCollectorSupporter;
 import org.openyu.commons.enumz.EnumHelper;
 import org.openyu.mix.app.vo.Prize;
@@ -29,19 +30,24 @@ import org.openyu.mix.qixing.vo.adapter.QixingTypeXmlAdapter;
 // --------------------------------------------------
 @XmlRootElement(name = "qixingCollector")
 @XmlAccessorType(XmlAccessType.FIELD)
-public final class QixingCollector extends BaseCollectorSupporter
-{
+public final class QixingCollector extends BaseCollectorSupporter {
 
 	private static final long serialVersionUID = -366805549782373969L;
 
-	private static QixingCollector qixingCollector;
+	private static QixingCollector instance;
 
+	// --------------------------------------------------
+	// 此有系統值,只是為了轉出xml,並非給企劃編輯用
+	// --------------------------------------------------
 	/**
 	 * 七星類別
 	 */
 	@XmlJavaTypeAdapter(QixingTypeXmlAdapter.class)
 	private Set<QixingType> qixingTypes = new LinkedHashSet<QixingType>();
 
+	// --------------------------------------------------
+	// 企劃編輯用
+	// --------------------------------------------------
 	/**
 	 * 說明
 	 */
@@ -56,7 +62,7 @@ public final class QixingCollector extends BaseCollectorSupporter
 	/**
 	 * 花費的金幣
 	 */
-	private long playGold = 200 * 10000L;//200w
+	private long playGold = 200 * 10000L;// 200w
 
 	/**
 	 * 每日可玩的次數
@@ -66,7 +72,7 @@ public final class QixingCollector extends BaseCollectorSupporter
 	/**
 	 * 花費的道具,數量為1
 	 */
-	private String playItem = "T_QIXING_PLAY_G001";//七星石
+	private String playItem = "T_QIXING_PLAY_G001";// 七星石
 
 	/**
 	 * 花費的儲值幣
@@ -81,72 +87,87 @@ public final class QixingCollector extends BaseCollectorSupporter
 	@XmlJavaTypeAdapter(StringPrizeXmlAdapter.class)
 	private Map<String, Prize> prizes = new LinkedHashMap<String, Prize>();
 
-	public QixingCollector()
-	{
+	public QixingCollector() {
 		setId(QixingCollector.class.getName());
 	}
 
 	// --------------------------------------------------
-	public synchronized static QixingCollector getInstance()
-	{
+	public synchronized static QixingCollector getInstance() {
 		return getInstance(true);
 	}
 
-	public synchronized static QixingCollector getInstance(boolean initial)
-	{
-		if (qixingCollector == null)
-		{
-			qixingCollector = new QixingCollector();
-			if (initial)
-			{
-				qixingCollector.initialize();
+	public synchronized static QixingCollector getInstance(boolean start) {
+		if (instance == null) {
+			instance = CollectorHelper.readFromSer(QixingCollector.class);
+			// 此時有可能會沒有ser檔案,或舊的結構造成ex,只要再轉出一次ser,覆蓋原本ser即可
+			if (instance == null) {
+				instance = new QixingCollector();
 			}
-
+			//
+			if (start) {
+				// 啟動
+				instance.start();
+			}
 			// 此有系統值,只是為了轉出xml,並非給企劃編輯用
-			qixingCollector.qixingTypes = EnumHelper.valuesSet(QixingType.class);
+			instance.qixingTypes = EnumHelper.valuesSet(QixingType.class);
 
 		}
-		return qixingCollector;
+		return instance;
 	}
 
 	/**
-	 * 初始化
+	 * 單例關閉
 	 * 
+	 * @return
 	 */
-	public void initialize()
-	{
-		if (!qixingCollector.isInitialized())
-		{
-			qixingCollector = readFromSer(QixingCollector.class);
-			// 此時有可能會沒有ser檔案,或舊的結構造成ex,只要再轉出一次ser,覆蓋原本ser即可
-			if (qixingCollector == null)
-			{
-				qixingCollector = new QixingCollector();
-			}
+	public synchronized static QixingCollector shutdownInstance() {
+		if (instance != null) {
+			QixingCollector oldInstance = instance;
+			instance = null;
 			//
-			qixingCollector.setInitialized(true);
+			if (oldInstance != null) {
+				oldInstance.shutdown();
+			}
 		}
+		return instance;
 	}
 
-	public void clear()
-	{
-		prizes.clear();
-		// 設為可初始化
-		setInitialized(false);
+	/**
+	 * 單例重啟
+	 * 
+	 * @return
+	 */
+	public synchronized static QixingCollector restartInstance() {
+		if (instance != null) {
+			instance.restart();
+		}
+		return instance;
+	}
+
+	/**
+	 * 內部啟動
+	 */
+	@Override
+	protected void doStart() throws Exception {
+	}
+
+	/**
+	 * 內部關閉
+	 */
+	@Override
+	protected void doShutdown() throws Exception {
+		instance.prizes.clear();
 	}
 
 	// --------------------------------------------------
-	public Set<QixingType> getQixingTypes()
-	{
-		if (qixingTypes == null)
-		{
+	public Set<QixingType> getQixingTypes() {
+		if (qixingTypes == null) {
 			qixingTypes = new LinkedHashSet<QixingType>();
 		}
 		return qixingTypes;
 	}
 
-	public void setQixingTypes(Set<QixingType> qixingTypes)
-	{
+	public void setQixingTypes(Set<QixingType> qixingTypes) {
 		this.qixingTypes = qixingTypes;
 	}
 
@@ -155,87 +176,70 @@ public final class QixingCollector extends BaseCollectorSupporter
 	 * 
 	 * @return
 	 */
-	public String getDescription()
-	{
+	public String getDescription() {
 		return descriptions.getName();
 	}
 
-	public void setDescription(String description)
-	{
+	public void setDescription(String description) {
 		this.descriptions.setName(description);
 	}
 
-	public NamesBean getDescriptions()
-	{
+	public NamesBean getDescriptions() {
 		return descriptions;
 	}
 
-	public void setDescriptions(NamesBean descriptions)
-	{
+	public void setDescriptions(NamesBean descriptions) {
 		this.descriptions = descriptions;
 	}
 
-	public int getLevelLimit()
-	{
+	public int getLevelLimit() {
 		return levelLimit;
 	}
 
-	public void setLevelLimit(int levelLimit)
-	{
+	public void setLevelLimit(int levelLimit) {
 		this.levelLimit = levelLimit;
 	}
 
-	public long getPlayGold()
-	{
+	public long getPlayGold() {
 		return playGold;
 	}
 
-	public void setPlayGold(long playGold)
-	{
+	public void setPlayGold(long playGold) {
 		this.playGold = playGold;
 	}
 
-	public int getDailyTimes()
-	{
+	public int getDailyTimes() {
 		return dailyTimes;
 	}
 
-	public void setDailyTimes(int dailyTimes)
-	{
+	public void setDailyTimes(int dailyTimes) {
 		this.dailyTimes = dailyTimes;
 	}
 
-	public String getPlayItem()
-	{
+	public String getPlayItem() {
 		return playItem;
 	}
 
-	public void setPlayItem(String playItem)
-	{
+	public void setPlayItem(String playItem) {
 		this.playItem = playItem;
 	}
 
-	public int getPlayCoin()
-	{
+	public int getPlayCoin() {
 		return playCoin;
 	}
 
-	public void setPlayCoin(int playCoin)
-	{
+	public void setPlayCoin(int playCoin) {
 		this.playCoin = playCoin;
 	}
 
-	public Map<String, Prize> getPrizes()
-	{
-		if (prizes == null)
-		{
+	public Map<String, Prize> getPrizes() {
+		if (prizes == null) {
 			prizes = new LinkedHashMap<String, Prize>();
 		}
 		return prizes;
 	}
 
-	public void setPrizes(Map<String, Prize> prizes)
-	{
+	public void setPrizes(Map<String, Prize> prizes) {
 		this.prizes = prizes;
 	}
 
@@ -245,14 +249,12 @@ public final class QixingCollector extends BaseCollectorSupporter
 	 * @param id
 	 * @return
 	 */
-	public Prize getPrize(String id)
-	{
+	public Prize getPrize(String id) {
 		Prize result = null;
-		if (id != null)
-		{
+		if (id != null) {
 			result = prizes.get(id);
 		}
-		//return (result != null ? (Prize) result.clone() : null);
+		// return (result != null ? (Prize) result.clone() : null);
 		return result;
 	}
 
