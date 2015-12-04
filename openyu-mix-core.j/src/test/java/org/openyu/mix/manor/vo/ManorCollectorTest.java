@@ -4,7 +4,10 @@ import static org.junit.Assert.*;
 
 import java.util.Locale;
 
+import org.junit.Rule;
 import org.junit.Test;
+import org.openyu.commons.collector.CollectorHelper;
+import org.openyu.commons.junit.supporter.BaseTestSupporter;
 import org.openyu.mix.flutter.vo.Attribute;
 import org.openyu.mix.flutter.vo.AttributeGroup;
 import org.openyu.mix.flutter.vo.AttributeType;
@@ -17,28 +20,29 @@ import org.openyu.mix.manor.vo.Land;
 import org.openyu.mix.manor.vo.Seed;
 import org.openyu.mix.manor.vo.impl.LandImpl;
 import org.openyu.mix.manor.vo.impl.SeedImpl;
-import org.openyu.commons.junit.supporter.BeanTestSupporter;
 
-public class ManorCollectorTest extends BeanTestSupporter {
+import com.carrotsearch.junitbenchmarks.BenchmarkOptions;
+import com.carrotsearch.junitbenchmarks.BenchmarkRule;
+
+public class ManorCollectorTest extends BaseTestSupporter {
+
+	@Rule
+	public BenchmarkRule benchmarkRule = new BenchmarkRule();
 
 	@Test
 	@Deprecated
 	/**
 	 * 只是為了模擬用,有正式xml後,不應再使用,以免覆蓋掉正式的xml
 	 */
+	@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 	public void writeToXml() {
 		String result = null;
 		ManorCollector collector = ManorCollector.getInstance(false);
-		//
-		long beg = System.currentTimeMillis();
 		// 說明
-		collector
-				.setDescription("莊園內有農場,隨著等級的提升,可以獲得更多的農場,農場內需開墾不同屬性的土地來耕種,隨著土地的強化等級提升,會減少作物的成長時間,大量提升產量,作物成熟後收割,會獲得各種不同的材料,打造裝備");
-		collector
-				.getDescriptions()
-				.addName(
-						Locale.SIMPLIFIED_CHINESE,
-						"庄园内有农场,随着等级的提升,可以获得更多的农场,农场内需开垦不同属性的土地来耕种,随着土地的强化等级提升,会减少作物的成长时间,大量提升产量,作物成熟后收割,会获得各种不同的材料,打造装备");
+		collector.setDescription(
+				"莊園內有農場,隨著等級的提升,可以獲得更多的農場,農場內需開墾不同屬性的土地來耕種,隨著土地的強化等級提升,會減少作物的成長時間,大量提升產量,作物成熟後收割,會獲得各種不同的材料,打造裝備");
+		collector.getDescriptions().addName(Locale.SIMPLIFIED_CHINESE,
+				"庄园内有农场,随着等级的提升,可以获得更多的农场,农场内需开垦不同属性的土地来耕种,随着土地的强化等级提升,会减少作物的成长时间,大量提升产量,作物成熟后收割,会获得各种不同的材料,打造装备");
 
 		// 最高強化等級
 		collector.setMaxEnhanceLevel(EnhanceLevel._30);
@@ -75,8 +79,7 @@ public class ManorCollectorTest extends BeanTestSupporter {
 		seed.setName("棉花種子");
 		seed.addName(Locale.SIMPLIFIED_CHINESE, "棉花种子");
 		seed.setDescription("收割後可獲得棉布,打造裝備的材料之一");
-		seed.getDescriptions().addName(Locale.SIMPLIFIED_CHINESE,
-				"收割后可获得棉布，打造装备的材料之一");
+		seed.getDescriptions().addName(Locale.SIMPLIFIED_CHINESE, "收割后可获得棉布，打造装备的材料之一");
 		//
 		seed.setLevelLimit(20);
 		seed.setPrice(1 * 10000L);// 1w
@@ -90,8 +93,7 @@ public class ManorCollectorTest extends BeanTestSupporter {
 		seed.setName("橡樹種子");
 		seed.addName(Locale.SIMPLIFIED_CHINESE, "橡树种子");
 		seed.setDescription("收割後可獲得橡樹木板,打造裝備的材料之一");
-		seed.getDescriptions().addName(Locale.SIMPLIFIED_CHINESE,
-				"收割后可获得橡树木板，打造装备的材料之一");
+		seed.getDescriptions().addName(Locale.SIMPLIFIED_CHINESE, "收割后可获得橡树木板，打造装备的材料之一");
 		//
 		seed.setLevelLimit(20);
 		seed.setPrice(1 * 10000L);// 1w
@@ -100,17 +102,6 @@ public class ManorCollectorTest extends BeanTestSupporter {
 		seed.setReapMills(seed.getGrowMills());
 		seed.getProducts().put("M_OAK_G001", 1);
 		collector.getSeeds().put(seed.getId(), seed);
-
-		// //種子因子
-		// for (String id : collector.getSeeds().keySet())
-		// {
-		// SeedFactor plantFactor = new SeedFactorImpl(id);
-		// plantFactor.setPoint(1 + id.length());
-		// plantFactor.setRate(1 + id.length() * 10);
-		// plantFactor.setProbability(7000 - id.length() * 150);
-		// //
-		// collector.getSeedFactors().put(plantFactor.getId(), plantFactor);
-		// }
 
 		// 土地
 		Land land = new LandImpl("L_TROPICS_G001");
@@ -128,16 +119,14 @@ public class ManorCollectorTest extends BeanTestSupporter {
 		Attribute attribute = new AttributeImpl(attributeType);
 		attribute.setPoint(2);
 		attributeGroup.addAttribute(attribute);
-		System.out.println(land.getName() + ", " + attributeType + ", "
-				+ attributeGroup.getFinal(attributeType));
+		System.out.println(land.getName() + ", " + attributeType + ", " + attributeGroup.getFinal(attributeType));
 
 		// 產量(暴擊)率,萬分位(2000)
 		attributeType = AttributeType.MANOR_CRITICAL_RATE;
 		attribute = new AttributeImpl(attributeType);
 		attribute.setPoint(3000);
 		attributeGroup.addAttribute(attribute);
-		System.out.println(land.getName() + ", " + attributeType + ", "
-				+ attributeGroup.getFinal(attributeType));
+		System.out.println(land.getName() + ", " + attributeType + ", " + attributeGroup.getFinal(attributeType));
 		collector.getLands().put(land.getId(), land);
 
 		// 產量(暴擊)產量率,萬分位(2000)
@@ -145,8 +134,7 @@ public class ManorCollectorTest extends BeanTestSupporter {
 		attribute = new AttributeImpl(attributeType);
 		attribute.setPoint(3000);
 		attributeGroup.addAttribute(attribute);
-		System.out.println(land.getName() + ", " + attributeType + ", "
-				+ attributeGroup.getFinal(attributeType));
+		System.out.println(land.getName() + ", " + attributeType + ", " + attributeGroup.getFinal(attributeType));
 		collector.getLands().put(land.getId(), land);
 
 		// 成長速度,萬分位(2000)
@@ -154,8 +142,7 @@ public class ManorCollectorTest extends BeanTestSupporter {
 		attribute = new AttributeImpl(attributeType);
 		attribute.setPoint(1000);
 		attributeGroup.addAttribute(attribute);
-		System.out.println(land.getName() + ", " + attributeType + ", "
-				+ attributeGroup.getFinal(attributeType));
+		System.out.println(land.getName() + ", " + attributeType + ", " + attributeGroup.getFinal(attributeType));
 		collector.getLands().put(land.getId(), land);
 		//
 		land = new LandImpl("L_DESERT_G001");
@@ -171,16 +158,14 @@ public class ManorCollectorTest extends BeanTestSupporter {
 		attribute = new AttributeImpl(attributeType);
 		attribute.setPoint(1);
 		attributeGroup.addAttribute(attribute);
-		System.out.println(land.getName() + ", " + attributeType + ", "
-				+ attributeGroup.getFinal(attributeType));
+		System.out.println(land.getName() + ", " + attributeType + ", " + attributeGroup.getFinal(attributeType));
 
 		// 產量(暴擊)率,萬分位(2000)
 		attributeType = AttributeType.MANOR_CRITICAL_RATE;
 		attribute = new AttributeImpl(attributeType);
 		attribute.setPoint(4000);
 		attributeGroup.addAttribute(attribute);
-		System.out.println(land.getName() + ", " + attributeType + ", "
-				+ attributeGroup.getFinal(attributeType));
+		System.out.println(land.getName() + ", " + attributeType + ", " + attributeGroup.getFinal(attributeType));
 		collector.getLands().put(land.getId(), land);
 
 		// 產量(暴擊)產量率,萬分位(2000)
@@ -188,8 +173,7 @@ public class ManorCollectorTest extends BeanTestSupporter {
 		attribute = new AttributeImpl(attributeType);
 		attribute.setPoint(4000);
 		attributeGroup.addAttribute(attribute);
-		System.out.println(land.getName() + ", " + attributeType + ", "
-				+ attributeGroup.getFinal(attributeType));
+		System.out.println(land.getName() + ", " + attributeType + ", " + attributeGroup.getFinal(attributeType));
 		collector.getLands().put(land.getId(), land);
 
 		// 成長速度,萬分位(2000)
@@ -197,20 +181,8 @@ public class ManorCollectorTest extends BeanTestSupporter {
 		attribute = new AttributeImpl(attributeType);
 		attribute.setPoint(500);
 		attributeGroup.addAttribute(attribute);
-		System.out.println(land.getName() + ", " + attributeType + ", "
-				+ attributeGroup.getFinal(attributeType));
+		System.out.println(land.getName() + ", " + attributeType + ", " + attributeGroup.getFinal(attributeType));
 		collector.getLands().put(land.getId(), land);
-
-		// //土地因子
-		// for (String id : collector.getLands().keySet())
-		// {
-		// LandFactor landFactor = new LandFactorImpl(id);
-		// landFactor.setPoint(3 + id.length());
-		// landFactor.setRate(3 + id.length() * 10);
-		// landFactor.setProbability(7000 - id.length() * 150);
-		// //
-		// collector.getLandFactors().put(landFactor.getId(), landFactor);
-		// }
 
 		// 強化因子
 		for (EnhanceLevel enhanceLevel : EnhanceLevel.values()) {
@@ -224,153 +196,94 @@ public class ManorCollectorTest extends BeanTestSupporter {
 			enhanceFactor.setPoint(1 + enhanceLevel.getValue());
 			enhanceFactor.setRate(1 + enhanceLevel.getValue() * 10);
 			// 強化等級<=3,機率為1
-			if (enhanceLevel.getValue() <= collector.getSafeEnhanceLevel()
-					.getValue()) {
+			if (enhanceLevel.getValue() <= collector.getSafeEnhanceLevel().getValue()) {
 				enhanceFactor.setProbability(10000);
 			} else {
 				// >=4
-				enhanceFactor
-						.setProbability(8000 - enhanceLevel.getValue() * 150);
+				enhanceFactor.setProbability(8000 - enhanceLevel.getValue() * 150);
 			}
 			//
-			collector.getEnhanceFactors().put(enhanceFactor.getId(),
-					enhanceFactor);
+			collector.getEnhanceFactors().put(enhanceFactor.getId(), enhanceFactor);
 		}
 		//
-		result = collector.writeToXml(ManorCollector.class, collector);
-		//
-		long end = System.currentTimeMillis();
-		System.out.println((end - beg) + " mills. ");
+		result = CollectorHelper.writeToXml(ManorCollector.class, collector);
 		//
 		System.out.println(result);
 		assertNotNull(result);
 	}
 
 	@Test
-	// 100 times: 1872 mills.
-	// 100 times: 1786 mills.
-	// 100 times: 1832 mills.
+	@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 	public void readFromXml() {
 		ManorCollector result = null;
 		//
-		int count = 1;
-		long beg = System.currentTimeMillis();
-		//
-		for (int i = 0; i < count; i++) {
-			result = beanCollector.readFromXml(ManorCollector.class);
-		}
-		//
-		long end = System.currentTimeMillis();
-		System.out.println(count + " times: " + (end - beg) + " mills. ");
+		result = CollectorHelper.readFromXml(ManorCollector.class);
 		//
 		System.out.println(result);
 		assertNotNull(result);
 	}
 
 	@Test
+	@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 	public void writeToSerFromXml() {
 		String result = null;
 		//
-		long beg = System.currentTimeMillis();
-		//
-		result = beanCollector.writeToSerFromXml(ManorCollector.class);
-		//
-		long end = System.currentTimeMillis();
-		System.out.println((end - beg) + " mills. ");
+		result = CollectorHelper.writeToSerFromXml(ManorCollector.class);
 		//
 		System.out.println(result);
 		assertNotNull(result);
 	}
 
 	@Test
-	// 100 times: 465 mills.
-	// 100 times: 474 mills.
-	// 100 times: 495 mills.
+	@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 	public void readFromSer() {
 		ManorCollector result = null;
-		//
-		int count = 1;
-		long beg = System.currentTimeMillis();
-		//
-		for (int i = 0; i < count; i++) {
-			result = beanCollector.readFromSer(ManorCollector.class);
-		}
-		//
-		long end = System.currentTimeMillis();
-		System.out.println(count + " times: " + (end - beg) + " mills. ");
+		result = CollectorHelper.readFromSer(ManorCollector.class);
 		//
 		System.out.println(result);
 		assertNotNull(result);
 	}
 
 	@Test
-	// 1000000 times: 399 mills.
-	// 1000000 times: 398 mills.
-	// 1000000 times: 401 mills.
-	public void initialize() {
-		boolean result = false;
-		//
-		ManorCollector collector = ManorCollector.getInstance();
-		int count = 1;
-		long beg = System.currentTimeMillis();
-		//
-		for (int i = 0; i < count; i++) {
-			collector.initialize();
-		}
-		//
-		long end = System.currentTimeMillis();
-		System.out.println(count + " times: " + (end - beg) + " mills. ");
-		//
-		result = collector.isInitialized();
-		System.out.println(result);
-		assertTrue(result);
-		//
-		System.out.println(collector.getSafeEnhanceLevel());
-		System.out.println(collector.getEnhanceFactors());
-		System.out.println(collector.getAccuEnhanceFactors());
-	}
-
-	@Test
-	// 1000000 times: 400 mills.
-	// 1000000 times: 396 mills.
-	// 1000000 times: 399 mills.
+	@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 	public void getInstance() {
 		ManorCollector result = null;
 		//
-		int count = 1000000; // 100w
-		long beg = System.currentTimeMillis();
-		//
-		for (int i = 0; i < count; i++) {
-			result = ManorCollector.getInstance();
-		}
-		//
-		long end = System.currentTimeMillis();
-		System.out.println(count + " times: " + (end - beg) + " mills. ");
+		result = ManorCollector.getInstance();
 		//
 		System.out.println(result);
 		assertNotNull(result);
+		//
+		System.out.println(result.getSafeEnhanceLevel());
+		System.out.println(result.getEnhanceFactors());
+		System.out.println(result.getAccuEnhanceFactors());
 	}
 
 	@Test
-	// 10000 times: 1587 mills.
-	// 10000 times: 1583 mills.
-	// 10000 times: 1683 mills.
-	public void reset() {
-		ManorCollector collector = ManorCollector.getInstance();
+	@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
+	public void shutdownInstance() {
+		ManorCollector instance = ManorCollector.getInstance();
+		System.out.println(instance);
+		assertNotNull(instance);
 		//
-		int count = 1;
-		long beg = System.currentTimeMillis();
-		//
-		for (int i = 0; i < count; i++) {
-			collector.reset();
-		}
-		//
-		long end = System.currentTimeMillis();
-		System.out.println(count + " times: " + (end - beg) + " mills. ");
+		instance = ManorCollector.shutdownInstance();
+		assertNull(instance);
+		// 多次,不會丟出ex
+		instance = ManorCollector.shutdownInstance();
+		assertNull(instance);
+	}
 
-		assertFalse(collector.isInitialized());
+	@Test
+	@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
+	public void restartInstance() {
+		ManorCollector instance = ManorCollector.getInstance();
+		System.out.println(instance);
+		assertNotNull(instance);
 		//
-		assertEquals(0, collector.getLands().size());
-		assertEquals(0, collector.getSeeds().size());
+		instance = ManorCollector.restartInstance();
+		assertNotNull(instance);
+		// 多次,不會丟出ex
+		instance = ManorCollector.restartInstance();
+		assertNotNull(instance);
 	}
 }

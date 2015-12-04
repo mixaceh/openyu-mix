@@ -4,10 +4,10 @@ import static org.junit.Assert.assertNotNull;
 import jxl.write.WritableWorkbook;
 
 import org.junit.Test;
+import org.openyu.commons.junit.supporter.BaseTestSupporter;
 import org.openyu.mix.manor.vo.ManorEditor;
-import org.openyu.commons.junit.supporter.BeanTestSupporter;
 
-public class ManorEditorTest extends BeanTestSupporter {
+public class ManorEditorTest extends BaseTestSupporter {
 
 	@Test
 	@Deprecated
@@ -18,12 +18,7 @@ public class ManorEditorTest extends BeanTestSupporter {
 		ManorEditor editor = ManorEditor.getInstance();
 		String result = null;
 		//
-		long beg = System.currentTimeMillis();
-		//
 		result = editor.writeToExcel();
-		//
-		long end = System.currentTimeMillis();
-		System.out.println((end - beg) + " mills. ");
 		//
 		System.out.println(result);
 		assertNotNull(result);
@@ -34,15 +29,9 @@ public class ManorEditorTest extends BeanTestSupporter {
 		ManorEditor editor = ManorEditor.getInstance();
 		String result = null;
 		//
-		long beg = System.currentTimeMillis();
-		//
 		result = editor.writeToXml();
-		//
-		long end = System.currentTimeMillis();
-		System.out.println((end - beg) + " mills. ");
 		//
 		System.out.println(result);
 		assertNotNull(result);
 	}
-
 }

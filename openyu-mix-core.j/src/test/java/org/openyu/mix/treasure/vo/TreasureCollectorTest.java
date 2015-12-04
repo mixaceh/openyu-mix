@@ -6,13 +6,20 @@ import java.util.LinkedHashMap;
 import java.util.Locale;
 import java.util.Map;
 
+import org.junit.Rule;
 import org.junit.Test;
+import org.openyu.commons.junit.supporter.BaseTestSupporter;
 import org.openyu.mix.item.vo.ThingType;
 import org.openyu.mix.treasure.vo.impl.TreasureImpl;
-import org.openyu.mix.treasure.vo.impl.StockImpl;
-import org.openyu.commons.junit.supporter.BeanTestSupporter;
 
-public class TreasureCollectorTest extends BeanTestSupporter {
+import com.carrotsearch.junitbenchmarks.BenchmarkRule;
+
+import org.openyu.mix.treasure.vo.impl.StockImpl;
+
+public class TreasureCollectorTest extends BaseTestSupporter {
+
+	@Rule
+	public BenchmarkRule benchmarkRule = new BenchmarkRule();
 
 	@Test
 	@Deprecated
@@ -25,8 +32,7 @@ public class TreasureCollectorTest extends BeanTestSupporter {
 		//
 		long beg = System.currentTimeMillis();
 		// 說明
-		collector
-				.setDescription("每隔一段時間就會隨機刷新寶物庫，出現各種不同的祕寶，有提升經驗，技魂，金幣，聲望等提昇實力道具。");
+		collector.setDescription("每隔一段時間就會隨機刷新寶物庫，出現各種不同的祕寶，有提升經驗，技魂，金幣，聲望等提昇實力道具。");
 		collector.getDescriptions().addName(Locale.SIMPLIFIED_CHINESE,
 				"每隔一段时间就会随机刷新宝物库，出现各种不同的秘宝，有提升经验，技魂，金币，声望等提升实力道具。");
 
@@ -330,8 +336,7 @@ public class TreasureCollectorTest extends BeanTestSupporter {
 			String key = entry.getKey();
 			int value = entry.getValue();
 			Treasure treasure = stock.getTreasures().get(key);
-			System.out.println(key + ", " + treasure.getProbability() + ", "
-					+ value);
+			System.out.println(key + ", " + treasure.getProbability() + ", " + value);
 			total += value;
 		}
 		System.out.println(total);

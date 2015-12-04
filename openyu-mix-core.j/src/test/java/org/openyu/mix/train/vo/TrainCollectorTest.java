@@ -4,11 +4,17 @@ import static org.junit.Assert.*;
 
 import java.util.Locale;
 
+import org.junit.Rule;
 import org.junit.Test;
+import org.openyu.commons.junit.supporter.BaseTestSupporter;
 import org.openyu.mix.flutter.vo.IndustryCollector;
-import org.openyu.commons.junit.supporter.BeanTestSupporter;
 
-public class TrainCollectorTest extends BeanTestSupporter {
+import com.carrotsearch.junitbenchmarks.BenchmarkRule;
+
+public class TrainCollectorTest extends BaseTestSupporter {
+
+	@Rule
+	public BenchmarkRule benchmarkRule = new BenchmarkRule();
 
 	@Test
 	@Deprecated
@@ -21,10 +27,8 @@ public class TrainCollectorTest extends BeanTestSupporter {
 		//
 		long beg = System.currentTimeMillis();
 		// 說明
-		collector
-				.setDescription("在間斷的空閒時間，不需打怪或解任務，就能獲得經驗，每日利用特定的方式，更可以加倍獲得經驗。");
-		collector.getDescriptions().addName(Locale.SIMPLIFIED_CHINESE,
-				"在间断的空闲时间，不需打怪或解任务，就能获得经验，每日利用特定的方式，更可以加倍获得经验。");
+		collector.setDescription("在間斷的空閒時間，不需打怪或解任務，就能獲得經驗，每日利用特定的方式，更可以加倍獲得經驗。");
+		collector.getDescriptions().addName(Locale.SIMPLIFIED_CHINESE, "在间断的空闲时间，不需打怪或解任务，就能获得经验，每日利用特定的方式，更可以加倍获得经验。");
 		// 等級限制
 		collector.setLevelLimit(10);
 		// 每日限制毫秒
@@ -40,8 +44,7 @@ public class TrainCollectorTest extends BeanTestSupporter {
 		collector.setInspireRate(5000);
 
 		// 每周期獲得的經驗
-		for (int i = collector.getLevelLimit(); i <= IndustryCollector
-				.getInstance().getMaxLevel(); i++) {
+		for (int i = collector.getLevelLimit(); i <= IndustryCollector.getInstance().getMaxLevel(); i++) {
 			long exp = i * 10L;
 			//
 			collector.getExps().put(i, exp);

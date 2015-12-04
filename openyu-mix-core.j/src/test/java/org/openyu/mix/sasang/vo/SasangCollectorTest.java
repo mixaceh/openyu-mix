@@ -11,30 +11,35 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
+import org.junit.Rule;
 import org.junit.Test;
+import org.openyu.commons.collector.CollectorHelper;
+import org.openyu.commons.junit.supporter.BaseTestSupporter;
 import org.openyu.mix.app.vo.Prize;
 import org.openyu.mix.app.vo.impl.PrizeImpl;
 import org.openyu.mix.sasang.vo.SasangType;
 import org.openyu.mix.sasang.vo.impl.SasangImpl;
-import org.openyu.commons.junit.supporter.BeanTestSupporter;
 
-public class SasangCollectorTest extends BeanTestSupporter {
+import com.carrotsearch.junitbenchmarks.BenchmarkOptions;
+import com.carrotsearch.junitbenchmarks.BenchmarkRule;
+
+public class SasangCollectorTest extends BaseTestSupporter {
+
+	@Rule
+	public BenchmarkRule benchmarkRule = new BenchmarkRule();
 
 	@Test
 	@Deprecated
 	/**
 	 * 只是為了模擬用,有正式xml後,不應再使用,以免覆蓋掉正式的xml
 	 */
+	@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 	public void writeToXml() {
 		String result = null;
 		SasangCollector collector = SasangCollector.getInstance(false);
-		//
-		long beg = System.currentTimeMillis();
-
 		// 說明
 		collector.setDescription("青龍，白虎，玄武，朱雀，轉生幻化，在各種不同的輪迴中，有機會獲得祝福的強化武器捲。");
-		collector.getDescriptions().addName(Locale.SIMPLIFIED_CHINESE,
-				"青龙，白虎，玄武，朱雀，转生幻化，在各种不同的轮回中，有机会获得祝福的强化武器卷。");
+		collector.getDescriptions().addName(Locale.SIMPLIFIED_CHINESE, "青龙，白虎，玄武，朱雀，转生幻化，在各种不同的轮回中，有机会获得祝福的强化武器卷。");
 
 		// 等級限制
 		collector.setLevelLimit(20);
@@ -304,257 +309,116 @@ public class SasangCollectorTest extends BeanTestSupporter {
 		prize.setFamous(false);
 		collector.getPrizes().put(prize.getId(), prize);
 		//
-		result = collector.writeToXml(SasangCollector.class, collector);
-		//
-		long end = System.currentTimeMillis();
-		System.out.println((end - beg) + " mills. ");
+		result = CollectorHelper.writeToXml(SasangCollector.class, collector);
 		//
 		System.out.println(result);
 		assertNotNull(result);
 	}
 
 	@Test
-	// 100 times: 1872 mills.
-	// 100 times: 1786 mills.
-	// 100 times: 1832 mills.
+	@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 	public void readFromXml() {
 		SasangCollector result = null;
 		//
-		int count = 1;
-		long beg = System.currentTimeMillis();
-		//
-		for (int i = 0; i < count; i++) {
-			result = beanCollector.readFromXml(SasangCollector.class);
-		}
-		//
-		long end = System.currentTimeMillis();
-		System.out.println(count + " times: " + (end - beg) + " mills. ");
+		result = CollectorHelper.readFromXml(SasangCollector.class);
 		//
 		System.out.println(result);
 		assertNotNull(result);
 	}
 
 	@Test
+	@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 	public void writeToSerFromXml() {
 		String result = null;
 		//
-		long beg = System.currentTimeMillis();
-		//
-		result = beanCollector.writeToSerFromXml(SasangCollector.class);
-		//
-		long end = System.currentTimeMillis();
-		System.out.println((end - beg) + " mills. ");
+		result = CollectorHelper.writeToSerFromXml(SasangCollector.class);
 		//
 		System.out.println(result);
 		assertNotNull(result);
 	}
 
 	@Test
-	// 100 times: 465 mills.
-	// 100 times: 474 mills.
-	// 100 times: 495 mills.
+	@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 	public void readFromSer() {
 		SasangCollector result = null;
 		//
-		int count = 1;
-		long beg = System.currentTimeMillis();
-		//
-		for (int i = 0; i < count; i++) {
-			result = beanCollector.readFromSer(SasangCollector.class);
-		}
-		//
-		long end = System.currentTimeMillis();
-		System.out.println(count + " times: " + (end - beg) + " mills. ");
+		result = CollectorHelper.readFromSer(SasangCollector.class);
 		//
 		System.out.println(result);
 		assertNotNull(result);
 	}
 
 	@Test
-	// 1000000 times: 399 mills.
-	// 1000000 times: 398 mills.
-	// 1000000 times: 401 mills.
-	public void initialize() {
-		boolean result = false;
-		//
-		SasangCollector collector = SasangCollector.getInstance();
-		int count = 1;
-		long beg = System.currentTimeMillis();
-		//
-		for (int i = 0; i < count; i++) {
-			collector.initialize();
-		}
-		//
-		long end = System.currentTimeMillis();
-		System.out.println(count + " times: " + (end - beg) + " mills. ");
-
-		result = SasangCollector.getInstance().isInitialized();
-		System.out.println(result);
-		assertTrue(result);
-		//
-		System.out.println(collector.getSasangs());
-		System.out.println(collector.getSasang(SasangType.AZURE_DRAGON));
-		//
-		System.out.println(collector.getPrizes());
-		System.out.println(collector.getPrize("111"));
-	}
-
-	@Test
-	// 1000000 times: 400 mills.
-	// 1000000 times: 396 mills.
-	// 1000000 times: 399 mills.
+	@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 	public void getInstance() {
 		SasangCollector result = null;
 		//
-		int count = 1000000; // 100w
-		long beg = System.currentTimeMillis();
-		//
-		for (int i = 0; i < count; i++) {
-			result = SasangCollector.getInstance();
-		}
-		//
-		long end = System.currentTimeMillis();
-		System.out.println(count + " times: " + (end - beg) + " mills. ");
+		result = SasangCollector.getInstance();
 		//
 		System.out.println(result);
 		assertNotNull(result);
+		//
+		System.out.println(result.getSasangs());
+		System.out.println(result.getSasang(SasangType.AZURE_DRAGON));
+		//
+		System.out.println(result.getPrizes());
+		System.out.println(result.getPrize("111"));
 	}
 
 	@Test
-	// 10000 times: 1587 mills.
-	// 10000 times: 1583 mills.
-	// 10000 times: 1683 mills.
-	public void reset() {
-		SasangCollector collector = SasangCollector.getInstance();
-		//
-		int count = 10000;
-		long beg = System.currentTimeMillis();
-		//
-		for (int i = 0; i < count; i++) {
-			collector.reset();
-		}
-		//
-		long end = System.currentTimeMillis();
-		System.out.println(count + " times: " + (end - beg) + " mills. ");
-
-		assertFalse(collector.isInitialized());
-		//
-		assertEquals(0, collector.getSasangs().size());
-		assertEquals(0, collector.getPrizes().size());
-	}
-
-	@Test
-	// 1000000 times: 396 mills.
-	// 1000000 times: 393 mills.
-	// 1000000 times: 434 mills.
-	// verified
+	@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 	public void getSasangTypes() {
 		SasangCollector collector = SasangCollector.getInstance();
 		//
-		Set<SasangType> result = null;
-		//
-		int count = 1000000; // 100w
-		long beg = System.currentTimeMillis();
-		//
-		for (int i = 0; i < count; i++) {
-			result = collector.getSasangTypes();
-		}
-		//
-		long end = System.currentTimeMillis();
-		System.out.println(count + " times: " + (end - beg) + " mills. ");
+		Set<SasangType> result = collector.getSasangTypes();
 		//
 		System.out.println(result);
 		assertTrue(result.size() > 0);
 	}
 
 	@Test
-	// 1000000 times: 443 mills.
-	// 1000000 times: 400 mills.
-	// 1000000 times: 403 mills.
-	// verified
+	@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 	public void getSasangs() {
 		SasangCollector collector = SasangCollector.getInstance();
 		List<Sasang> result = null;
 		//
-		int count = 1000000; // 100w
-		long beg = System.currentTimeMillis();
-		//
-		for (int i = 0; i < count; i++) {
-			result = collector.getSasangs();
-		}
-		//
-		long end = System.currentTimeMillis();
-		System.out.println(count + " times: " + (end - beg) + " mills. ");
+		result = collector.getSasangs();
 		//
 		System.out.println(result);
 		assertTrue(result.size() > 0);
 	}
 
 	@Test
-	// 1000000 times: 443 mills.
-	// 1000000 times: 400 mills.
-	// 1000000 times: 403 mills.
-	// verified
+	@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 	public void getSasang() {
 		SasangCollector collector = SasangCollector.getInstance();
 		Sasang result = null;
 		//
-		int count = 1000000; // 100w
-		long beg = System.currentTimeMillis();
-		//
-		for (int i = 0; i < count; i++) {
-			result = collector.getSasang(SasangType.AZURE_DRAGON);
-		}
-		//
-		long end = System.currentTimeMillis();
-		System.out.println(count + " times: " + (end - beg) + " mills. ");
+		result = collector.getSasang(SasangType.AZURE_DRAGON);
 		//
 		System.out.println(result);
 		assertEquals(SasangType.AZURE_DRAGON, result.getId());
 	}
 
 	@Test
-	// 1000000 times: 443 mills.
-	// 1000000 times: 400 mills.
-	// 1000000 times: 403 mills.
-	// verified
+	@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 	public void getPrizes() {
 		SasangCollector collector = SasangCollector.getInstance();
 		Map<String, Prize> result = null;
 		//
-		int count = 1000000; // 100w
-		long beg = System.currentTimeMillis();
-		//
-		for (int i = 0; i < count; i++) {
-			result = collector.getPrizes();
-		}
-		//
-		long end = System.currentTimeMillis();
-		System.out.println(count + " times: " + (end - beg) + " mills. ");
+		result = collector.getPrizes();
 		//
 		System.out.println(result);
 		assertTrue(result.size() > 0);
 	}
 
 	@Test
-	// 1000000 times: 443 mills.
-	// 1000000 times: 400 mills.
-	// 1000000 times: 403 mills.
-	// verified
+	@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 	public void getPrize() {
 		SasangCollector collector = SasangCollector.getInstance();
 		Prize result = null;
 		//
-		int count = 1000000; // 100w
-		long beg = System.currentTimeMillis();
-		//
-		for (int i = 0; i < count; i++) {
-
-			result = collector.getPrize("111");// 111
-		}
-		//
-		long end = System.currentTimeMillis();
-		System.out.println(count + " times: " + (end - beg) + " mills. ");
+		result = collector.getPrize("111");// 111
 		//
 		System.out.println(result);
 		assertEquals("111", result.getId());// 111

@@ -16,10 +16,11 @@ import org.openyu.mix.manor.vo.ManorPen.FarmType;
 import org.openyu.mix.manor.vo.Seed;
 import org.openyu.mix.manor.vo.impl.ManorPenImpl.FarmImpl;
 import org.openyu.mix.role.vo.Role;
-import org.openyu.commons.junit.supporter.BeanTestSupporter;
+import org.openyu.commons.collector.CollectorHelper;
+import org.openyu.commons.junit.supporter.BaseTestSupporter;
 import org.openyu.commons.lang.SystemHelper;
 
-public class ManorPenImplTest extends BeanTestSupporter {
+public class ManorPenImplTest extends BaseTestSupporter {
 
 	@Test
 	public void writeToXml() {
@@ -28,14 +29,14 @@ public class ManorPenImplTest extends BeanTestSupporter {
 		Farm farm = new FarmImpl(0);
 		value.getFarms().put(farm.getId(), farm);
 		//
-		String result = beanCollector.writeToXml(ManorPenImpl.class, value);
+		String result = CollectorHelper.writeToXml(ManorPenImpl.class, value);
 		System.out.println(result);
 		assertNotNull(result);
 	}
 
 	@Test
 	public void readFromXml() {
-		ManorPen result = beanCollector.readFromXml(ManorPenImpl.class);
+		ManorPen result = CollectorHelper.readFromXml(ManorPenImpl.class);
 		System.out.println(result);
 		assertNotNull(result);
 	}
@@ -323,8 +324,7 @@ public class ManorPenImplTest extends BeanTestSupporter {
 		assertEquals(ManorPen.ErrorType.SEED_NOT_EXIST, result);
 
 		// 農場頁滿了
-		assertEquals((int) Farm.MAX_GRID_SIZE, (int) manorPen.getFarm(0)
-				.getSeedSize());
+		assertEquals((int) Farm.MAX_GRID_SIZE, (int) manorPen.getFarm(0).getSeedSize());
 		result = manorPen.addSeed(0, 0, seed);
 		System.out.println(result);
 		assertEquals(ManorPen.ErrorType.FARM_FULL, result);

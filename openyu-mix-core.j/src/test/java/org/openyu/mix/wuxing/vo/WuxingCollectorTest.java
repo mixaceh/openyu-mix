@@ -7,13 +7,19 @@ import static org.junit.Assert.assertTrue;
 import java.util.Locale;
 import java.util.Set;
 
+import org.junit.Rule;
 import org.junit.Test;
+import org.openyu.commons.junit.supporter.BaseTestSupporter;
 import org.openyu.mix.app.vo.Prize;
 import org.openyu.mix.app.vo.impl.PrizeImpl;
 import org.openyu.mix.wuxing.vo.WuxingType;
-import org.openyu.commons.junit.supporter.BeanTestSupporter;
 
-public class WuxingCollectorTest extends BeanTestSupporter {
+import com.carrotsearch.junitbenchmarks.BenchmarkRule;
+
+public class WuxingCollectorTest extends BaseTestSupporter {
+
+	@Rule
+	public BenchmarkRule benchmarkRule = new BenchmarkRule();
 
 	@Test
 	@Deprecated
@@ -27,8 +33,7 @@ public class WuxingCollectorTest extends BeanTestSupporter {
 		long beg = System.currentTimeMillis();
 		// 說明
 		collector.setDescription("金，木，水，火，土，相生相剋時，有機會獲得祝福的強化防具捲。");
-		collector.getDescriptions().addName(Locale.SIMPLIFIED_CHINESE,
-				"金，木，水，火，土，相生相克时，有机会获得祝福的强化防具卷。");
+		collector.getDescriptions().addName(Locale.SIMPLIFIED_CHINESE, "金，木，水，火，土，相生相克时，有机会获得祝福的强化防具卷。");
 		// 等級限制
 		collector.setLevelLimit(25);
 		// 玩一次所花費的金幣
