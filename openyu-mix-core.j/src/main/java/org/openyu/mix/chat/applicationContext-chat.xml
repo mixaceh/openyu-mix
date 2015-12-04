@@ -44,7 +44,7 @@
 	<!-- advisor -->
 	<aop:config>
 		<aop:pointcut id="chatServiceTxPointcut" expression="bean(chatService)" />
-		<aop:advisor id="chatServiceTxAdvisor" advice-ref="txAdvice"
+		<aop:advisor id="chatServiceTxAdvisor" advice-ref="commonTxAdvice"
 			pointcut-ref="chatServiceTxPointcut" />
 	</aop:config>
 
