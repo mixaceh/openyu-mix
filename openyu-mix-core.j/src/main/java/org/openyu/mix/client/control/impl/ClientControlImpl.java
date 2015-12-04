@@ -27,13 +27,11 @@ import org.springframework.beans.factory.annotation.Qualifier;
 /**
  * 客戶端控制器
  */
-public class ClientControlImpl extends BaseControlSupporter implements
-		ClientControl {
+public class ClientControlImpl extends BaseControlSupporter implements ClientControl {
 
 	private static final long serialVersionUID = 7550489985242323602L;
 
-	private static final transient Logger LOGGER = LoggerFactory
-			.getLogger(ClientControlImpl.class);
+	private static final transient Logger LOGGER = LoggerFactory.getLogger(ClientControlImpl.class);
 
 	/**
 	 * 客戶端服務
@@ -55,6 +53,15 @@ public class ClientControlImpl extends BaseControlSupporter implements
 	public ClientControlImpl() {
 	}
 
+	@Override
+	protected void doStart() throws Exception {
+
+	}
+
+	@Override
+	protected void doShutdown() throws Exception {
+
+	}
 
 	public ClientService getClientService() {
 		return clientService;
@@ -82,17 +89,13 @@ public class ClientControlImpl extends BaseControlSupporter implements
 			public void run() {
 				clientFrame = new ClientFrameImpl(id);
 				// commandTextField
-				clientFrame.getCommandTextField().addKeyListener(
-						new CommandTextFieldKeyAdapter(clientFrame,
-								ClientControlImpl.this, clientService,
-								messageService));
+				clientFrame.getCommandTextField().addKeyListener(new CommandTextFieldKeyAdapter(clientFrame,
+						ClientControlImpl.this, clientService, messageService));
 				// clearButton
-				clientFrame.getClearButton().addActionListener(
-						new ClearButtonActionAdapter(clientFrame));
+				clientFrame.getClearButton().addActionListener(new ClearButtonActionAdapter(clientFrame));
 				// reconnectButton
-				clientFrame.getReconnectButton().addActionListener(
-						new ReconnectButtonActionAdapter(clientFrame,
-								clientService));
+				clientFrame.getReconnectButton()
+						.addActionListener(new ReconnectButtonActionAdapter(clientFrame, clientService));
 				//
 				ClientControlImpl.this.setComponent((Component) clientFrame);
 				//
@@ -100,33 +103,22 @@ public class ClientControlImpl extends BaseControlSupporter implements
 			}
 		});
 		//
-		clientService.start();
-		boolean started = clientService.isStarted();
-		if (started) {
+		if ( clientService.isStarted()) {
 			EventQueue.invokeLater(new Runnable() {
 				public void run() {
-					clientFrame.getMessageTextArea().append(
-							"[" + clientService.getId() + "] Connected to "
-									+ "[" + clientService.getIp() + ":"
-									+ clientService.getPort() + "]"
-									+ StringHelper.LF);
+					clientFrame.getMessageTextArea().append("[" + clientService.getId() + "] Connected to " + "["
+							+ clientService.getIp() + ":" + clientService.getPort() + "]" + StringHelper.LF);
 					clientFrame.getMessageTextArea()
-							.setCaretPosition(
-									clientFrame.getMessageTextArea().getText()
-											.length());
+							.setCaretPosition(clientFrame.getMessageTextArea().getText().length());
 				}
 			});
 		} else {
 			EventQueue.invokeLater(new Runnable() {
 				public void run() {
-					clientFrame.getMessageTextArea().append(
-							"Can't connect to [" + clientService.getIp() + ":"
-									+ clientService.getPort() + "]"
-									+ StringHelper.LF);
+					clientFrame.getMessageTextArea().append("Can't connect to [" + clientService.getIp() + ":"
+							+ clientService.getPort() + "]" + StringHelper.LF);
 					clientFrame.getMessageTextArea()
-							.setCaretPosition(
-									clientFrame.getMessageTextArea().getText()
-											.length());
+							.setCaretPosition(clientFrame.getMessageTextArea().getText().length());
 				}
 			});
 		}
@@ -155,9 +147,8 @@ public class ClientControlImpl extends BaseControlSupporter implements
 
 		private MessageService messageService;
 
-		public CommandTextFieldKeyAdapter(ClientFrame clientFrame,
-				ClientControl clientControl, ClientService clientService,
-				MessageService messageService) {
+		public CommandTextFieldKeyAdapter(ClientFrame clientFrame, ClientControl clientControl,
+				ClientService clientService, MessageService messageService) {
 			this.clientFrame = clientFrame;
 			//
 			this.commandTextField = clientFrame.getCommandTextField();
@@ -176,14 +167,11 @@ public class ClientControlImpl extends BaseControlSupporter implements
 					return;
 				}
 				//
-				messageTextArea.append("client > " + buff.toString()
-						+ StringHelper.LF);
-				messageTextArea.setCaretPosition(clientFrame
-						.getMessageTextArea().getText().length());
+				messageTextArea.append("client > " + buff.toString() + StringHelper.LF);
+				messageTextArea.setCaretPosition(clientFrame.getMessageTextArea().getText().length());
 				//
 				// 聊天
-				Message message = messageService.createClient(
-						clientControl.getId(),
+				Message message = messageService.createClient(clientControl.getId(),
 						CoreMessageType.CHAT_SPEAK_REQUEST);
 				message.addString(clientControl.getId());// 角色id
 				message.addInt(7);// 7=世界聊天,Channel.ChannelType
@@ -234,8 +222,7 @@ public class ClientControlImpl extends BaseControlSupporter implements
 	/**
 	 * 重連按鈕, 按下處理
 	 */
-	protected static class ReconnectButtonActionAdapter implements
-			ActionListener {
+	protected static class ReconnectButtonActionAdapter implements ActionListener {
 
 		private ClientFrame clientFrame;
 
@@ -246,8 +233,7 @@ public class ClientControlImpl extends BaseControlSupporter implements
 		 */
 		private JTextArea messageTextArea;
 
-		public ReconnectButtonActionAdapter(ClientFrame clientFrame,
-				ClientService clientService) {
+		public ReconnectButtonActionAdapter(ClientFrame clientFrame, ClientService clientService) {
 			this.clientFrame = clientFrame;
 			this.clientService = clientService;
 			//

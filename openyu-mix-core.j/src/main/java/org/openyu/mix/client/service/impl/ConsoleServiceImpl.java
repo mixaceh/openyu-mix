@@ -5,8 +5,10 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
 import org.openyu.commons.lang.StringHelper;
+import org.openyu.commons.service.StartCallback;
 import org.openyu.socklet.connector.frame.ClientFrame;
 import org.openyu.socklet.connector.frame.impl.ClientFrameImpl;
+import org.openyu.socklet.connector.service.impl.ClientServiceImpl;
 import org.openyu.socklet.connector.service.supporter.ClientServiceSupporter;
 import org.openyu.mix.client.service.ConsoleService;
 import org.openyu.mix.core.service.CoreMessageType;
@@ -17,11 +19,11 @@ import org.slf4j.LoggerFactory;
 /**
  * console客戶端服務
  */
-public class ConsoleServiceImpl extends ClientServiceSupporter implements
-		ConsoleService {
+public class ConsoleServiceImpl extends ClientServiceSupporter implements ConsoleService {
 
-	private static transient final Logger LOGGER = LoggerFactory
-			.getLogger(ConsoleServiceImpl.class);
+	private static final long serialVersionUID = -472883929071331505L;
+
+	private static transient final Logger LOGGER = LoggerFactory.getLogger(ConsoleServiceImpl.class);
 
 	/**
 	 * 客戶端ui
@@ -29,6 +31,7 @@ public class ConsoleServiceImpl extends ClientServiceSupporter implements
 	private ClientFrame clientFrame;
 
 	public ConsoleServiceImpl() {
+		addServiceCallback("StartCallbacker", new StartCallbacker());
 	}
 
 	public ClientFrame getClientFrame() {
@@ -39,18 +42,21 @@ public class ConsoleServiceImpl extends ClientServiceSupporter implements
 		this.clientFrame = clientFrame;
 	}
 
-	public void start() {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				clientFrame = new ClientFrameImpl(id);
-				clientFrame.getCommandTextField().addKeyListener(
-						new CommandTextFieldKeyAdapter(clientFrame));
-				//
-				clientFrame.setVisible(true);// 顯示frame
-			}
-		});
-		//
-		super.start();
+	/**
+	 * 內部啟動
+	 */
+	protected class StartCallbacker implements StartCallback {
+		@Override
+		public void doInAction() throws Exception {
+			EventQueue.invokeLater(new Runnable() {
+				public void run() {
+					clientFrame = new ClientFrameImpl(id);
+					clientFrame.getCommandTextField().addKeyListener(new CommandTextFieldKeyAdapter(clientFrame));
+					//
+					clientFrame.setVisible(true);// 顯示frame
+				}
+			});
+		}
 	}
 
 	/**
@@ -70,8 +76,7 @@ public class ConsoleServiceImpl extends ClientServiceSupporter implements
 					return;
 				}
 				// 聊天
-				Message message = messageService.createClient(id,
-						CoreMessageType.CHAT_SPEAK_REQUEST);
+				Message message = messageService.createClient(id, CoreMessageType.CHAT_SPEAK_REQUEST);
 				message.addString(id);// 角色id
 				message.addInt(7);// 7=世界聊天,Channel.ChannelType
 				message.addString(text);// 聊天內容
@@ -98,10 +103,8 @@ public class ConsoleServiceImpl extends ClientServiceSupporter implements
 	public void service(final Message message) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
-				clientFrame.getMessageTextArea().append(
-						message + StringHelper.LF);
-				clientFrame.getMessageTextArea().setCaretPosition(
-						clientFrame.getMessageTextArea().getText().length());
+				clientFrame.getMessageTextArea().append(message + StringHelper.LF);
+				clientFrame.getMessageTextArea().setCaretPosition(clientFrame.getMessageTextArea().getText().length());
 			}
 		});
 		// TODO debug
