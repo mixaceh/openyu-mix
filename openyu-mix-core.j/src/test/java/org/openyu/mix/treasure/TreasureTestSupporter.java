@@ -11,13 +11,13 @@ import org.openyu.mix.account.service.AccountService;
 import org.openyu.mix.app.AppTestSupporter;
 import org.openyu.mix.item.service.ItemService;
 import org.openyu.mix.role.vo.Role;
+import org.openyu.mix.treasure.aop.TreasureBuyInterceptor;
+import org.openyu.mix.treasure.aop.TreasureRefreshInterceptor;
 import org.openyu.mix.treasure.dao.TreasureLogDao;
 import org.openyu.mix.treasure.service.TreasureLogService;
 import org.openyu.mix.treasure.service.TreasureService;
 import org.openyu.mix.treasure.service.adapter.TreasureChangeAdapter;
-import org.openyu.mix.treasure.service.aop.TreasureBuyInterceptor;
-import org.openyu.mix.treasure.service.aop.TreasureRefreshInterceptor;
-import org.openyu.mix.treasure.service.socklet.TreasureSocklet;
+import org.openyu.mix.treasure.socklet.TreasureSocklet;
 import org.openyu.mix.treasure.vo.Treasure;
 import org.openyu.mix.treasure.vo.TreasureCollector;
 import org.openyu.mix.treasure.vo.TreasurePen;
@@ -25,8 +25,7 @@ import org.openyu.mix.treasure.vo.impl.TreasurePenImpl;
 
 public class TreasureTestSupporter extends AppTestSupporter {
 
-	protected static TreasureCollector treasureCollector = TreasureCollector
-			.getInstance();
+	protected static TreasureCollector treasureCollector = TreasureCollector.getInstance();
 
 	/**
 	 * 帳號服務-1
@@ -52,42 +51,36 @@ public class TreasureTestSupporter extends AppTestSupporter {
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
-		applicationContext = new ClassPathXmlApplicationContext(new String[] {
-				"applicationContext-init.xml",//
-				"META-INF/applicationContext-commons-core.xml",//
-				"applicationContext-message.xml",//
-				"applicationContext-database.xml",//
-				"applicationContext-database-log.xml",//
+		applicationContext = new ClassPathXmlApplicationContext(new String[] { //
+				"applicationContext-init.xml", //
+				"applicationContext-bean.xml", //
+				"applicationContext-message.xml", //
+				"applicationContext-acceptor.xml", //
+				"applicationContext-database.xml", //
+				"applicationContext-database-log.xml", //
 				// "applicationContext-schedule.xml",// 排程
-				"META-INF/applicationContext-sls.xml",//
-				"org/openyu/mix/app/applicationContext-app.xml",//
+				"org/openyu/mix/app/applicationContext-app.xml", //
 				// biz
-				"org/openyu/mix/account/applicationContext-account.xml",//
-				"org/openyu/mix/item/applicationContext-item.xml",//
-				"org/openyu/mix/role/applicationContext-role.xml",//
+				"org/openyu/mix/account/applicationContext-account.xml", //
+				"org/openyu/mix/item/applicationContext-item.xml", //
+				"org/openyu/mix/role/applicationContext-role.xml", //
 				"org/openyu/mix/treasure/applicationContext-treasure.xml",//
 		});
 		// ---------------------------------------------------
 		initialize();
 		// ---------------------------------------------------
 		// 帳號
-		accountService = (AccountService) applicationContext
-				.getBean("accountService");
+		accountService = (AccountService) applicationContext.getBean("accountService");
 		// 道具
 		itemService = (ItemService) applicationContext.getBean("itemService");
 		//
-		treasureService = (TreasureService) applicationContext
-				.getBean("treasureService");
-		treasureSocklet = (TreasureSocklet) applicationContext
-				.getBean("treasureSocklet");
+		treasureService = (TreasureService) applicationContext.getBean("treasureService");
+		treasureSocklet = (TreasureSocklet) applicationContext.getBean("treasureSocklet");
 		//
-		treasureLogDao = (TreasureLogDao) applicationContext
-				.getBean("treasureLogDao");
-		treasureLogService = (TreasureLogService) applicationContext
-				.getBean("treasureLogService");
+		treasureLogDao = (TreasureLogDao) applicationContext.getBean("treasureLogDao");
+		treasureLogService = (TreasureLogService) applicationContext.getBean("treasureLogService");
 		//
-		treasureChangeAdapter = (TreasureChangeAdapter) applicationContext
-				.getBean("treasureChangeAdapter");
+		treasureChangeAdapter = (TreasureChangeAdapter) applicationContext.getBean("treasureChangeAdapter");
 	}
 
 	public static class BeanTest extends TreasureTestSupporter {
@@ -124,8 +117,7 @@ public class TreasureTestSupporter extends AppTestSupporter {
 
 		@Test
 		public void treasureBuyAdvice() {
-			TreasureBuyInterceptor bean = (TreasureBuyInterceptor) applicationContext
-					.getBean("treasureBuyAdvice");
+			TreasureBuyInterceptor bean = (TreasureBuyInterceptor) applicationContext.getBean("treasureBuyAdvice");
 			System.out.println(bean);
 			assertNotNull(bean);
 		}
@@ -182,16 +174,13 @@ public class TreasureTestSupporter extends AppTestSupporter {
 		//
 		result.setRefreshTime(System.currentTimeMillis());
 		//
-		Treasure treasure = treasureCollector.createTreasure("ROLE_EXP_001",
-				"T_ROLE_EXP_G001");
+		Treasure treasure = treasureCollector.createTreasure("ROLE_EXP_001", "T_ROLE_EXP_G001");
 		result.getTreasures().put(0, treasure);
 		//
-		treasure = treasureCollector.createTreasure("ROLE_EXP_001",
-				"T_ROLE_EXP_G002");
+		treasure = treasureCollector.createTreasure("ROLE_EXP_001", "T_ROLE_EXP_G002");
 		result.getTreasures().put(1, treasure);
 		//
-		treasure = treasureCollector.createTreasure("ROLE_EXP_001",
-				"T_ROLE_EXP_G003");
+		treasure = treasureCollector.createTreasure("ROLE_EXP_001", "T_ROLE_EXP_G003");
 		result.getTreasures().put(2, treasure);
 		return result;
 	}

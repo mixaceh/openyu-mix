@@ -1,6 +1,4 @@
-package org.openyu.mix.wuxing.service.aop;
-
-import java.lang.reflect.Method;
+package org.openyu.mix.treasure.aop;
 
 import org.aopalliance.intercept.MethodInvocation;
 import org.slf4j.Logger;
@@ -9,30 +7,29 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.openyu.mix.app.aop.supporter.AppMethodInterceptorSupporter;
 import org.openyu.mix.role.vo.Role;
-import org.openyu.mix.wuxing.service.WuxingLogService;
-import org.openyu.mix.wuxing.service.WuxingService.PutResult;
-import org.openyu.mix.wuxing.service.WuxingService.PutType;
+import org.openyu.mix.treasure.service.TreasureLogService;
+import org.openyu.mix.treasure.service.TreasureService.BuyResult;
 
 /**
- * 五行單擊獎勵放入包包攔截器
+ * 祕寶購買攔截器
  */
-public class WuxingPutOneInterceptor extends AppMethodInterceptorSupporter {
+public class TreasureBuyInterceptor extends AppMethodInterceptorSupporter {
 
-	private static final long serialVersionUID = -8493472739461972215L;
+	private static final long serialVersionUID = 6260420634235652046L;
 
-	private static transient final Logger LOGGER = LoggerFactory.getLogger(WuxingPutOneInterceptor.class);
+	private static transient final Logger LOGGER = LoggerFactory.getLogger(TreasureBuyInterceptor.class);
 
 	@Autowired
-	@Qualifier("wuxingLogService")
-	protected transient WuxingLogService wuxingLogService;
+	@Qualifier("treasureLogService")
+	protected transient TreasureLogService treasureLogService;
 
-	public WuxingPutOneInterceptor() {
+	public TreasureBuyInterceptor() {
 	}
 
 	/**
-	 * WuxingService
+	 * TreasureService
 	 * 
-	 * PutResult putOne(boolean sendable, Role role, String itemId, int amount)
+	 * BuyResult buy(boolean sendable, Role role, int buyValue, int index)
 	 */
 	protected Object doInvoke(MethodInvocation methodInvocation) throws Throwable {
 		Object result = null;
@@ -44,8 +41,8 @@ public class WuxingPutOneInterceptor extends AppMethodInterceptorSupporter {
 			Object[] args = methodInvocation.getArguments();
 			boolean sendable = (Boolean) args[0];
 			Role role = (Role) args[1];
-			String itemId = (String) args[2];
-			int amount = (Integer) args[3];
+			int buyValue = (Integer) args[2];
+			int index = (Integer) args[3];
 
 			// --------------------------------------------------
 			result = methodInvocation.proceed();
@@ -56,11 +53,11 @@ public class WuxingPutOneInterceptor extends AppMethodInterceptorSupporter {
 			// --------------------------------------------------
 
 			// 傳回值
-			PutResult ret = (PutResult) result;
-
+			BuyResult ret = (BuyResult) result;
 			//
 			if (ret != null) {
-				wuxingLogService.recordPut(role, PutType.ONE, ret.getAwards());
+				treasureLogService.recordBuy(role, ret.getBuyType(), ret.getIndex(), ret.getTreasure(), ret.getItem(),
+						ret.getSpendGold(), ret.getSpendCoin());
 			}
 		} catch (Throwable e) {
 			LOGGER.error(new StringBuilder("Exception encountered during doInvoke()").toString(), e);

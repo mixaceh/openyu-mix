@@ -16,7 +16,7 @@
 	<!-- advisor -->
 	<!-- 訓練鼓舞 -->
 	<bean id="trainInspireAdvice"
-		class="org.openyu.mix.train.service.aop.TrainInspireInterceptor"
+		class="org.openyu.mix.train.aop.TrainInspireInterceptor"
 		parent="appMethodInterceptorSupporter" />
 	<aop:config>
 		<aop:pointcut id="trainInspirePointcut"
@@ -42,7 +42,7 @@
 	</aop:config>
 
 	<!-- socklet -->
-	<bean id="trainSocklet" class="org.openyu.mix.train.service.socklet.TrainSocklet"
+	<bean id="trainSocklet" class="org.openyu.mix.train.socklet.TrainSocklet"
 		parent="slaveSockletServiceSupporter">
 		<property name="id" value="TRAIN" />
 	</bean>

@@ -1,4 +1,4 @@
-package org.openyu.mix.train.service.socklet;
+package org.openyu.mix.train.socklet;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

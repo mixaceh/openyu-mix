@@ -11,23 +11,22 @@ import org.openyu.mix.account.service.AccountService;
 import org.openyu.mix.app.AppTestSupporter;
 import org.openyu.mix.item.service.ItemService;
 import org.openyu.mix.role.vo.Role;
-import org.openyu.mix.wuxing.service.aop.WuxingPlayInterceptor;
-import org.openyu.mix.wuxing.service.aop.WuxingPutAllInterceptor;
-import org.openyu.mix.wuxing.service.aop.WuxingPutOneInterceptor;
+import org.openyu.mix.wuxing.aop.WuxingPlayInterceptor;
+import org.openyu.mix.wuxing.aop.WuxingPutAllInterceptor;
+import org.openyu.mix.wuxing.aop.WuxingPutOneInterceptor;
 import org.openyu.mix.wuxing.dao.WuxingLogDao;
 import org.openyu.mix.wuxing.service.WuxingLogService;
 import org.openyu.mix.wuxing.service.WuxingService;
 import org.openyu.mix.wuxing.service.adapter.WuxingChangeAdapter;
 import org.openyu.mix.wuxing.service.impl.WuxingMachineImpl;
-import org.openyu.mix.wuxing.service.socklet.WuxingSocklet;
+import org.openyu.mix.wuxing.socklet.WuxingSocklet;
 import org.openyu.mix.wuxing.vo.Outcome;
 import org.openyu.mix.wuxing.vo.WuxingCollector;
 import org.openyu.mix.wuxing.vo.WuxingPen;
 import org.openyu.mix.wuxing.vo.impl.WuxingPenImpl;
 
 public class WuxingTestSupporter extends AppTestSupporter {
-	protected static WuxingCollector wuxingCollector = WuxingCollector
-			.getInstance();
+	protected static WuxingCollector wuxingCollector = WuxingCollector.getInstance();
 
 	/**
 	 * 帳號服務-1
@@ -59,43 +58,36 @@ public class WuxingTestSupporter extends AppTestSupporter {
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
-		applicationContext = new ClassPathXmlApplicationContext(new String[] {
+		applicationContext = new ClassPathXmlApplicationContext(new String[] { //
 				"applicationContext-init.xml", //
 				"applicationContext-bean.xml", //
-				"applicationContext-message.xml",//
+				"applicationContext-message.xml", //
 				"applicationContext-acceptor.xml", //
-				"applicationContext-database.xml",//
-				"applicationContext-database-log.xml",//
+				"applicationContext-database.xml", //
+				"applicationContext-database-log.xml", //
 				// "applicationContext-schedule.xml",// 排程
-				"org/openyu/mix/app/applicationContext-app.xml",//
+				"org/openyu/mix/app/applicationContext-app.xml", //
 				// biz
-				"org/openyu/mix/account/applicationContext-account.xml",//
-				"org/openyu/mix/item/applicationContext-item.xml",//
-				"org/openyu/mix/role/applicationContext-role.xml",//
+				"org/openyu/mix/account/applicationContext-account.xml", //
+				"org/openyu/mix/item/applicationContext-item.xml", //
+				"org/openyu/mix/role/applicationContext-role.xml", //
 				"org/openyu/mix/wuxing/applicationContext-wuxing.xml",//
 		});
 		// ---------------------------------------------------
 		initialize();
 		// ---------------------------------------------------
 		// 帳號
-		accountService = (AccountService) applicationContext
-				.getBean("accountService");
+		accountService = (AccountService) applicationContext.getBean("accountService");
 		// 道具
 		itemService = (ItemService) applicationContext.getBean("itemService");
 		//
-		wuxingMachine = (WuxingMachineImpl) applicationContext
-				.getBean("wuxingMachine");
-		wuxingService = (WuxingService) applicationContext
-				.getBean("wuxingService");
-		wuxingSocklet = (WuxingSocklet) applicationContext
-				.getBean("wuxingSocklet");
+		wuxingMachine = (WuxingMachineImpl) applicationContext.getBean("wuxingMachine");
+		wuxingService = (WuxingService) applicationContext.getBean("wuxingService");
+		wuxingSocklet = (WuxingSocklet) applicationContext.getBean("wuxingSocklet");
 		//
-		wuxingLogDao = (WuxingLogDao) applicationContext
-				.getBean("wuxingLogDao");
-		wuxingLogService = (WuxingLogService) applicationContext
-				.getBean("wuxingLogService");
-		wuxingChangeAdapter = (WuxingChangeAdapter) applicationContext
-				.getBean("wuxingChangeAdapter");
+		wuxingLogDao = (WuxingLogDao) applicationContext.getBean("wuxingLogDao");
+		wuxingLogService = (WuxingLogService) applicationContext.getBean("wuxingLogService");
+		wuxingChangeAdapter = (WuxingChangeAdapter) applicationContext.getBean("wuxingChangeAdapter");
 	}
 
 	public static class BeanTest extends WuxingTestSupporter {
@@ -114,8 +106,7 @@ public class WuxingTestSupporter extends AppTestSupporter {
 
 		@Test
 		public void wuxingPlayAdvice() {
-			WuxingPlayInterceptor bean = (WuxingPlayInterceptor) applicationContext
-					.getBean("wuxingPlayAdvice");
+			WuxingPlayInterceptor bean = (WuxingPlayInterceptor) applicationContext.getBean("wuxingPlayAdvice");
 			System.out.println(bean);
 			assertNotNull(bean);
 		}
@@ -138,8 +129,7 @@ public class WuxingTestSupporter extends AppTestSupporter {
 
 		@Test
 		public void wuxingPutOneAdvice() {
-			WuxingPutOneInterceptor bean = (WuxingPutOneInterceptor) applicationContext
-					.getBean("wuxingPutOneAdvice");
+			WuxingPutOneInterceptor bean = (WuxingPutOneInterceptor) applicationContext.getBean("wuxingPutOneAdvice");
 			System.out.println(bean);
 			assertNotNull(bean);
 		}
@@ -162,8 +152,7 @@ public class WuxingTestSupporter extends AppTestSupporter {
 
 		@Test
 		public void wuxingPutAllAdvice() {
-			WuxingPutAllInterceptor bean = (WuxingPutAllInterceptor) applicationContext
-					.getBean("wuxingPutAllAdvice");
+			WuxingPutAllInterceptor bean = (WuxingPutAllInterceptor) applicationContext.getBean("wuxingPutAllAdvice");
 			System.out.println(bean);
 			assertNotNull(bean);
 		}
@@ -213,8 +202,7 @@ public class WuxingTestSupporter extends AppTestSupporter {
 		//
 		result.setPlayTime(System.currentTimeMillis());
 		result.setDailyTimes(1);
-		Outcome outcome = wuxingMachine
-				.createOutcome("13221", "34352", "42243");
+		Outcome outcome = wuxingMachine.createOutcome("13221", "34352", "42243");
 		result.setOutcome(outcome);
 		result.getAwards().put("T_ROLE_EXP_G001", 1);
 		result.getAwards().put("T_ROLE_GOLD_G001", 5);

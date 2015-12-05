@@ -1,4 +1,4 @@
-package org.openyu.mix.train.service.aop;
+package org.openyu.mix.treasure.aop;
 
 import org.aopalliance.intercept.MethodInvocation;
 import org.slf4j.Logger;
@@ -7,32 +7,31 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.openyu.mix.app.aop.supporter.AppMethodInterceptorSupporter;
 import org.openyu.mix.role.vo.Role;
-import org.openyu.mix.train.service.TrainLogService;
-import org.openyu.mix.train.service.TrainService.InspireResult;
+import org.openyu.mix.treasure.service.TreasureLogService;
+import org.openyu.mix.treasure.service.TreasureService.RefreshResult;
 
 /**
- * 訓練鼓舞攔截器
+ * 祕寶刷新攔截器
  */
-public class TrainInspireInterceptor extends AppMethodInterceptorSupporter {
+public class TreasureRefreshInterceptor extends AppMethodInterceptorSupporter {
 
-	private static final long serialVersionUID = -3463487277608619783L;
+	private static final long serialVersionUID = 5321914280602434336L;
 
-	private static transient final Logger LOGGER = LoggerFactory.getLogger(TrainInspireInterceptor.class);
+	private static transient final Logger LOGGER = LoggerFactory.getLogger(TreasureRefreshInterceptor.class);
 
 	@Autowired
-	@Qualifier("trainLogService")
-	protected transient TrainLogService trainLogService;
+	@Qualifier("treasureLogService")
+	protected transient TreasureLogService treasureLogService;
 
-	public TrainInspireInterceptor() {
+	public TreasureRefreshInterceptor() {
 	}
 
 	/**
-	 * TrainService
+	 * TreasureService
 	 * 
-	 * InspireResult inspire(boolean sendable, Role role);
+	 * RefreshResult refresh(boolean sendable, Role role)
 	 */
 	protected Object doInvoke(MethodInvocation methodInvocation) throws Throwable {
-		// 傳回值
 		Object result = null;
 		try {
 			// --------------------------------------------------
@@ -52,10 +51,11 @@ public class TrainInspireInterceptor extends AppMethodInterceptorSupporter {
 			// --------------------------------------------------
 
 			// 傳回值
-			InspireResult ret = (InspireResult) result;
+			RefreshResult ret = (RefreshResult) result;
 			//
 			if (ret != null) {
-				trainLogService.recordInspire(role, ret.getInspireTime(), ret.getSpendItems(), ret.getSpendCoin());
+				treasureLogService.recordRefresh(role, ret.getRefreshTime(), ret.getTreasures(), ret.getSpendItems(),
+						ret.getSpendCoin());
 			}
 		} catch (Throwable e) {
 			LOGGER.error(new StringBuilder("Exception encountered during doInvoke()").toString(), e);

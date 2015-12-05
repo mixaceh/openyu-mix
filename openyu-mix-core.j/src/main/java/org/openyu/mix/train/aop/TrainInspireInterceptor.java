@@ -1,6 +1,4 @@
-package org.openyu.mix.wuxing.service.aop;
-
-import java.lang.reflect.Method;
+package org.openyu.mix.train.aop;
 
 import org.aopalliance.intercept.MethodInvocation;
 import org.slf4j.Logger;
@@ -9,33 +7,32 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.openyu.mix.app.aop.supporter.AppMethodInterceptorSupporter;
 import org.openyu.mix.role.vo.Role;
-import org.openyu.mix.wuxing.service.WuxingLogService;
-import org.openyu.mix.wuxing.service.WuxingService.PutResult;
-import org.openyu.mix.wuxing.service.WuxingService.PutType;
+import org.openyu.mix.train.service.TrainLogService;
+import org.openyu.mix.train.service.TrainService.InspireResult;
 
 /**
- * 五行所有中獎區獎勵放入包包攔截器
+ * 訓練鼓舞攔截器
  */
-public class WuxingPutAllInterceptor extends AppMethodInterceptorSupporter {
+public class TrainInspireInterceptor extends AppMethodInterceptorSupporter {
 
-	private static final long serialVersionUID = 4741121694715451195L;
+	private static final long serialVersionUID = -3463487277608619783L;
 
-	private static transient final Logger LOGGER = LoggerFactory
-			.getLogger(WuxingPutAllInterceptor.class);
+	private static transient final Logger LOGGER = LoggerFactory.getLogger(TrainInspireInterceptor.class);
 
 	@Autowired
-	@Qualifier("wuxingLogService")
-	protected transient WuxingLogService wuxingLogService;
+	@Qualifier("trainLogService")
+	protected transient TrainLogService trainLogService;
 
-	public WuxingPutAllInterceptor() {
+	public TrainInspireInterceptor() {
 	}
 
 	/**
-	 * WuxingService
+	 * TrainService
 	 * 
-	 * PutResult putAll(boolean sendable, Role role)
+	 * InspireResult inspire(boolean sendable, Role role);
 	 */
 	protected Object doInvoke(MethodInvocation methodInvocation) throws Throwable {
+		// 傳回值
 		Object result = null;
 		try {
 			// --------------------------------------------------
@@ -55,10 +52,10 @@ public class WuxingPutAllInterceptor extends AppMethodInterceptorSupporter {
 			// --------------------------------------------------
 
 			// 傳回值
-			PutResult ret = (PutResult) result;
+			InspireResult ret = (InspireResult) result;
 			//
 			if (ret != null) {
-				wuxingLogService.recordPut(role, PutType.ALL, ret.getAwards());
+				trainLogService.recordInspire(role, ret.getInspireTime(), ret.getSpendItems(), ret.getSpendCoin());
 			}
 		} catch (Throwable e) {
 			LOGGER.error(new StringBuilder("Exception encountered during doInvoke()").toString(), e);

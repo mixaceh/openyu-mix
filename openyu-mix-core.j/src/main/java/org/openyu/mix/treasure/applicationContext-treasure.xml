@@ -17,7 +17,7 @@
 	<!-- advisor -->
 	<!-- 祕寶刷新 -->
 	<bean id="treasureRefreshAdvice"
-		class="org.openyu.mix.treasure.service.aop.TreasureRefreshInterceptor"
+		class="org.openyu.mix.treasure.aop.TreasureRefreshInterceptor"
 		parent="appMethodInterceptorSupporter" />
 	<aop:config>
 		<aop:pointcut id="treasureRefreshPointcut"
@@ -28,7 +28,7 @@
 
 	<!-- 祕寶購買 -->
 	<bean id="treasureBuyAdvice"
-		class="org.openyu.mix.treasure.service.aop.TreasureBuyInterceptor"
+		class="org.openyu.mix.treasure.aop.TreasureBuyInterceptor"
 		parent="appMethodInterceptorSupporter"/>
 	<aop:config>
 		<aop:pointcut id="treasureBuyPointcut"
@@ -55,7 +55,7 @@
 	</aop:config>
 	
 	<!-- socklet -->
-	<bean id="treasureSocklet" class="org.openyu.mix.treasure.service.socklet.TreasureSocklet"
+	<bean id="treasureSocklet" class="org.openyu.mix.treasure.socklet.TreasureSocklet"
 		parent="slaveSockletServiceSupporter">
 		<property name="id" value="TREASURE" />
 	</bean>

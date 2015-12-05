@@ -22,7 +22,7 @@
 
 	<!-- advisor -->
 	<!-- 五行玩 -->
-	<bean id="wuxingPlayAdvice" class="org.openyu.mix.wuxing.service.aop.WuxingPlayInterceptor"
+	<bean id="wuxingPlayAdvice" class="org.openyu.mix.wuxing.aop.WuxingPlayInterceptor"
 		parent="appMethodInterceptorSupporter">
 	</bean>
 	<aop:config>
@@ -34,7 +34,7 @@
 
 	<!-- 五行單擊獎勵放入包包 -->
 	<bean id="wuxingPutOneAdvice"
-		class="org.openyu.mix.wuxing.service.aop.WuxingPutOneInterceptor"
+		class="org.openyu.mix.wuxing.aop.WuxingPutOneInterceptor"
 		parent="appMethodInterceptorSupporter">
 	</bean>
 	<aop:config>
@@ -46,7 +46,7 @@
 
 	<!-- 五行所有中獎區獎勵放入包包 -->
 	<bean id="wuxingPutAllAdvice"
-		class="org.openyu.mix.wuxing.service.aop.WuxingPutAllInterceptor"
+		class="org.openyu.mix.wuxing.aop.WuxingPutAllInterceptor"
 		parent="appMethodInterceptorSupporter">
 	</bean>
 	<aop:config>
@@ -74,7 +74,7 @@
 	</aop:config>
 
 	<!-- socklet -->
-	<bean id="wuxingSocklet" class="org.openyu.mix.wuxing.service.socklet.WuxingSocklet"
+	<bean id="wuxingSocklet" class="org.openyu.mix.wuxing.socklet.WuxingSocklet"
 		parent="slaveSockletServiceSupporter">
 		<property name="id" value="WUXING" />
 	</bean>

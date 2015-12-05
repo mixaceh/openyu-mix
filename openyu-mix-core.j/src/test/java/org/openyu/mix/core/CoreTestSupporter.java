@@ -28,7 +28,7 @@ import org.openyu.mix.train.service.TrainService;
 import org.openyu.mix.treasure.service.TreasureService;
 import org.openyu.mix.wuxing.service.WuxingMachine;
 import org.openyu.mix.wuxing.service.WuxingService;
-import org.openyu.mix.wuxing.service.socklet.WuxingSocklet;
+import org.openyu.mix.wuxing.socklet.WuxingSocklet;
 
 public class CoreTestSupporter extends AppTestSupporter {
 	/**
@@ -99,7 +99,8 @@ public class CoreTestSupporter extends AppTestSupporter {
 	// ---------------------------------------------------
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
-		applicationContext = new ClassPathXmlApplicationContext(new String[] { "applicationContext-init.xml", //
+		applicationContext = new ClassPathXmlApplicationContext(new String[] { //
+				"applicationContext-init.xml", //
 				"applicationContext-bean.xml", //
 				"applicationContext-message.xml", //
 				"applicationContext-acceptor.xml", //

@@ -1,4 +1,6 @@
-package org.openyu.mix.treasure.service.aop;
+package org.openyu.mix.wuxing.aop;
+
+import java.lang.reflect.Method;
 
 import org.aopalliance.intercept.MethodInvocation;
 import org.slf4j.Logger;
@@ -7,29 +9,30 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.openyu.mix.app.aop.supporter.AppMethodInterceptorSupporter;
 import org.openyu.mix.role.vo.Role;
-import org.openyu.mix.treasure.service.TreasureLogService;
-import org.openyu.mix.treasure.service.TreasureService.BuyResult;
+import org.openyu.mix.wuxing.service.WuxingService.PlayResult;
+import org.openyu.mix.wuxing.service.WuxingLogService;
 
 /**
- * 祕寶購買攔截器
+ * 五行玩的攔截器
  */
-public class TreasureBuyInterceptor extends AppMethodInterceptorSupporter {
+public class WuxingPlayInterceptor extends AppMethodInterceptorSupporter {
 
-	private static final long serialVersionUID = 6260420634235652046L;
+	private static final long serialVersionUID = 3244885022032659905L;
 
-	private static transient final Logger LOGGER = LoggerFactory.getLogger(TreasureBuyInterceptor.class);
+	private static transient final Logger LOGGER = LoggerFactory
+			.getLogger(WuxingPlayInterceptor.class);
 
 	@Autowired
-	@Qualifier("treasureLogService")
-	protected transient TreasureLogService treasureLogService;
+	@Qualifier("wuxingLogService")
+	protected transient WuxingLogService wuxingLogService;
 
-	public TreasureBuyInterceptor() {
+	public WuxingPlayInterceptor() {
 	}
 
 	/**
-	 * TreasureService
+	 * WuxingService
 	 * 
-	 * BuyResult buy(boolean sendable, Role role, int buyValue, int index)
+	 * PlayResult play(boolean sendable, Role role, int playValue)
 	 */
 	protected Object doInvoke(MethodInvocation methodInvocation) throws Throwable {
 		Object result = null;
@@ -41,8 +44,7 @@ public class TreasureBuyInterceptor extends AppMethodInterceptorSupporter {
 			Object[] args = methodInvocation.getArguments();
 			boolean sendable = (Boolean) args[0];
 			Role role = (Role) args[1];
-			int buyValue = (Integer) args[2];
-			int index = (Integer) args[3];
+			int playValue = (Integer) args[2];
 
 			// --------------------------------------------------
 			result = methodInvocation.proceed();
@@ -53,11 +55,18 @@ public class TreasureBuyInterceptor extends AppMethodInterceptorSupporter {
 			// --------------------------------------------------
 
 			// 傳回值
-			BuyResult ret = (BuyResult) result;
+			PlayResult ret = (PlayResult) result;
 			//
 			if (ret != null) {
-				treasureLogService.recordBuy(role, ret.getBuyType(), ret.getIndex(), ret.getTreasure(), ret.getItem(),
-						ret.getSpendGold(), ret.getSpendCoin());
+				// 記錄玩的
+				wuxingLogService.recordPlay(role, ret.getPlayType(),
+						ret.getPlayTime(), ret.getOutcome(),
+						ret.getTotalTimes(), ret.getSpendGold(),
+						ret.getSpendItems(), ret.getSpendCoin());
+
+				// 記錄開出的結果,有成名的
+				wuxingLogService.recordFamous(role, ret.getPlayType(),
+						ret.getPlayTime(), ret.getOutcomes());
 			}
 		} catch (Throwable e) {
 			LOGGER.error(new StringBuilder("Exception encountered during doInvoke()").toString(), e);

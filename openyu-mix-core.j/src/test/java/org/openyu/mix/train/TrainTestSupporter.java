@@ -10,19 +10,18 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.openyu.mix.account.service.AccountService;
 import org.openyu.mix.app.AppTestSupporter;
 import org.openyu.mix.item.service.ItemService;
+import org.openyu.mix.train.aop.TrainInspireInterceptor;
 import org.openyu.mix.train.dao.TrainLogDao;
 import org.openyu.mix.train.service.TrainLogService;
 import org.openyu.mix.train.service.TrainService;
 import org.openyu.mix.train.service.TrainSetService;
 import org.openyu.mix.train.service.adapter.TrainChangeAdapter;
-import org.openyu.mix.train.service.aop.TrainInspireInterceptor;
-import org.openyu.mix.train.service.socklet.TrainSocklet;
+import org.openyu.mix.train.socklet.TrainSocklet;
 import org.openyu.mix.train.vo.TrainCollector;
 
 public class TrainTestSupporter extends AppTestSupporter {
 
-	protected static TrainCollector trainCollector = TrainCollector
-			.getInstance();
+	protected static TrainCollector trainCollector = TrainCollector.getInstance();
 
 	/**
 	 * 帳號服務-1
@@ -50,44 +49,38 @@ public class TrainTestSupporter extends AppTestSupporter {
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
-		applicationContext = new ClassPathXmlApplicationContext(new String[] {
-				"applicationContext-init.xml",//
-				"META-INF/applicationContext-commons-core.xml",//
-				"applicationContext-message.xml",//
-				"applicationContext-database.xml",//
-				"applicationContext-database-log.xml",//
+		applicationContext = new ClassPathXmlApplicationContext(new String[] { //
+				"applicationContext-init.xml", //
+				"applicationContext-bean.xml", //
+				"applicationContext-message.xml", //
+				"applicationContext-acceptor.xml", //
+				"applicationContext-database.xml", //
+				"applicationContext-database-log.xml", //
 				// "applicationContext-schedule.xml",// 排程
-				"META-INF/applicationContext-sls.xml",//
-				"org/openyu/mix/app/applicationContext-app.xml",//
+				"org/openyu/mix/app/applicationContext-app.xml", //
 				// biz
-				"org/openyu/mix/account/applicationContext-account.xml",//
-				"org/openyu/mix/item/applicationContext-item.xml",//
-				"org/openyu/mix/role/applicationContext-role.xml",//
+				"org/openyu/mix/account/applicationContext-account.xml", //
+				"org/openyu/mix/item/applicationContext-item.xml", //
+				"org/openyu/mix/role/applicationContext-role.xml", //
 				"org/openyu/mix/train/applicationContext-train.xml",//
 		});
 		// ---------------------------------------------------
 		initialize();
 		// ---------------------------------------------------
 		// 帳號
-		accountService = (AccountService) applicationContext
-				.getBean("accountService");
+		accountService = (AccountService) applicationContext.getBean("accountService");
 		// 道具
 		itemService = (ItemService) applicationContext.getBean("itemService");
 		//
 		//
-		trainSetService = (TrainSetService) applicationContext
-				.getBean("trainSetService");
-		trainService = (TrainService) applicationContext
-				.getBean("trainService");
-		trainSocklet = (TrainSocklet) applicationContext
-				.getBean("trainSocklet");
+		trainSetService = (TrainSetService) applicationContext.getBean("trainSetService");
+		trainService = (TrainService) applicationContext.getBean("trainService");
+		trainSocklet = (TrainSocklet) applicationContext.getBean("trainSocklet");
 		//
 		trainLogDao = (TrainLogDao) applicationContext.getBean("trainLogDao");
-		trainLogService = (TrainLogService) applicationContext
-				.getBean("trainLogService");
+		trainLogService = (TrainLogService) applicationContext.getBean("trainLogService");
 		//
-		trainChangeAdapter = (TrainChangeAdapter) applicationContext
-				.getBean("trainChangeAdapter");
+		trainChangeAdapter = (TrainChangeAdapter) applicationContext.getBean("trainChangeAdapter");
 	}
 
 	public static class BeanTest extends TrainTestSupporter {
@@ -106,8 +99,7 @@ public class TrainTestSupporter extends AppTestSupporter {
 
 		@Test
 		public void trainInspireAdvice() {
-			TrainInspireInterceptor bean = (TrainInspireInterceptor) applicationContext
-					.getBean("trainInspireAdvice");
+			TrainInspireInterceptor bean = (TrainInspireInterceptor) applicationContext.getBean("trainInspireAdvice");
 			System.out.println(bean);
 			assertNotNull(bean);
 		}
