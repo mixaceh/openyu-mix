@@ -11,11 +11,14 @@ import org.openyu.mix.account.service.AccountService;
 import org.openyu.mix.app.AppTestSupporter;
 import org.openyu.mix.item.service.ItemService;
 import org.openyu.mix.item.vo.EnhanceLevel;
+import org.openyu.mix.manor.aop.ManorCultureInterceptor;
+import org.openyu.mix.manor.aop.ManorDisuseInterceptor;
+import org.openyu.mix.manor.aop.ManorReclaimInterceptor;
 import org.openyu.mix.manor.dao.ManorLogDao;
 import org.openyu.mix.manor.service.ManorLogService;
 import org.openyu.mix.manor.service.ManorService;
 import org.openyu.mix.manor.service.adapter.ManorChangeAdapter;
-import org.openyu.mix.manor.service.socklet.ManorSocklet;
+import org.openyu.mix.manor.socklet.ManorSocklet;
 import org.openyu.mix.manor.vo.Land;
 import org.openyu.mix.manor.vo.ManorCollector;
 import org.openyu.mix.manor.vo.ManorPen;
@@ -23,10 +26,6 @@ import org.openyu.mix.manor.vo.Seed;
 import org.openyu.mix.manor.vo.ManorPen.Farm;
 import org.openyu.mix.manor.vo.impl.ManorPenImpl.FarmImpl;
 import org.openyu.mix.role.vo.Role;
-import org.openyu.mix.sasang.aop.SasangPlayInterceptor;
-import org.openyu.mix.manor.service.aop.ManorReclaimInterceptor;
-import org.openyu.mix.manor.service.aop.ManorDisuseInterceptor;
-import org.openyu.mix.manor.service.aop.ManorCultureInterceptor;
 
 public class ManorTestSupporter extends AppTestSupporter {
 	/**
@@ -57,13 +56,13 @@ public class ManorTestSupporter extends AppTestSupporter {
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
 		applicationContext = new ClassPathXmlApplicationContext(new String[] {
-				"applicationContext-init.xml",//
-				"META-INF/applicationContext-commons-core.xml",//
-				"applicationContext-message.xml",//
-				"applicationContext-database.xml",//
-				"applicationContext-database-log.xml",//
+				"applicationContext-init.xml", //
+				"applicationContext-bean.xml", //
+				"applicationContext-message.xml", //
+				"applicationContext-acceptor.xml", //
+				"applicationContext-database.xml", //
+				"applicationContext-database-log.xml", //
 				// "applicationContext-schedule.xml",// 排程
-				"META-INF/applicationContext-sls.xml",//
 				"org/openyu/mix/app/applicationContext-app.xml",//
 				// biz
 				"org/openyu/mix/item/applicationContext-item.xml",//

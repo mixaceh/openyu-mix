@@ -1,4 +1,4 @@
-package org.openyu.mix.manor.service.aop;
+package org.openyu.mix.manor.aop;
 
 import org.aopalliance.intercept.MethodInvocation;
 import org.slf4j.Logger;

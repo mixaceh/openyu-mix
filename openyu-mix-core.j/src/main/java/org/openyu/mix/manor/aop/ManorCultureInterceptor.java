@@ -1,4 +1,4 @@
-package org.openyu.mix.manor.service.aop;
+package org.openyu.mix.manor.aop;
 
 import java.lang.reflect.Method;
 

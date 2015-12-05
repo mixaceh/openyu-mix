@@ -18,7 +18,7 @@
 	<!-- advisor -->
 	<!-- 莊園開墾 -->
 	<bean id="manorReclaimAdvice"
-		class="org.openyu.mix.manor.service.aop.ManorReclaimInterceptor"
+		class="org.openyu.mix.manor.aop.ManorReclaimInterceptor"
 		parent="appMethodInterceptorSupporter">
 	</bean>
 	<aop:config>
@@ -29,7 +29,7 @@
 	</aop:config>
 
 	<!-- 莊園休耕 -->
-	<bean id="manorDisuseAdvice" class="org.openyu.mix.manor.service.aop.ManorDisuseInterceptor"
+	<bean id="manorDisuseAdvice" class="org.openyu.mix.manor.aop.ManorDisuseInterceptor"
 		parent="appMethodInterceptorSupporter">
 	</bean>
 	<aop:config>
@@ -41,7 +41,7 @@
 
 	<!-- 莊園耕種 -->
 	<bean id="manorCultureAdvice"
-		class="org.openyu.mix.manor.service.aop.ManorCultureInterceptor"
+		class="org.openyu.mix.manor.aop.ManorCultureInterceptor"
 		parent="appMethodInterceptorSupporter">
 	</bean>
 	<aop:config>
@@ -69,7 +69,7 @@
 	</aop:config>
 
 	<!-- socklet -->
-	<bean id="manorSocklet" class="org.openyu.mix.manor.service.socklet.ManorSocklet"
+	<bean id="manorSocklet" class="org.openyu.mix.manor.socklet.ManorSocklet"
 		parent="slaveSockletServiceSupporter">
 		<property name="id" value="MANOR" />
 	</bean>

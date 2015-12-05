@@ -1,4 +1,4 @@
-package org.openyu.mix.manor.service.socklet;
+package org.openyu.mix.manor.socklet;
 
 import java.util.List;
 
