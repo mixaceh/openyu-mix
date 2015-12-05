@@ -23,7 +23,7 @@ import org.openyu.mix.manor.service.ManorService;
 import org.openyu.mix.role.service.RoleService;
 import org.openyu.mix.sasang.service.SasangMachine;
 import org.openyu.mix.sasang.service.SasangService;
-import org.openyu.mix.sasang.service.socklet.SasangSocklet;
+import org.openyu.mix.sasang.socklet.SasangSocklet;
 import org.openyu.mix.train.service.TrainService;
 import org.openyu.mix.treasure.service.TreasureService;
 import org.openyu.mix.wuxing.service.WuxingMachine;

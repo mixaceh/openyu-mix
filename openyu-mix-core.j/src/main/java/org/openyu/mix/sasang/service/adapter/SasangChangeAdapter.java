@@ -1,7 +1,7 @@
 package org.openyu.mix.sasang.service.adapter;
 
+import org.openyu.mix.sasang.aop.SasangPlayInterceptor;
 import org.openyu.mix.sasang.service.SasangService;
-import org.openyu.mix.sasang.service.aop.SasangPlayInterceptor;
 import org.openyu.mix.role.vo.Role;
 import org.openyu.mix.role.vo.RoleField;
 import org.openyu.mix.vip.vo.VipType;

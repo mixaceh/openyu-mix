@@ -22,7 +22,7 @@
 
 	<!-- advisor -->
 	<!-- 四象玩 -->
-	<bean id="sasangPlayAdvice" class="org.openyu.mix.sasang.service.aop.SasangPlayInterceptor"
+	<bean id="sasangPlayAdvice" class="org.openyu.mix.sasang.aop.SasangPlayInterceptor"
 		parent="appMethodInterceptorSupporter">
 	</bean>
 	<aop:config>
@@ -34,7 +34,7 @@
 
 	<!-- 四象單擊獎勵放入包包 -->
 	<bean id="sasangPutOneAdvice"
-		class="org.openyu.mix.sasang.service.aop.SasangPutOneInterceptor"
+		class="org.openyu.mix.sasang.aop.SasangPutOneInterceptor"
 		parent="appMethodInterceptorSupporter">
 	</bean>
 	<aop:config>
@@ -46,7 +46,7 @@
 
 	<!-- 四象所有中獎區獎勵放入包包 -->
 	<bean id="sasangPutAllAdvice"
-		class="org.openyu.mix.sasang.service.aop.SasangPutAllInterceptor"
+		class="org.openyu.mix.sasang.aop.SasangPutAllInterceptor"
 		parent="appMethodInterceptorSupporter">
 	</bean>
 	<aop:config>
@@ -74,7 +74,7 @@
 	</aop:config>
 
 	<!-- socklet -->
-	<bean id="sasangSocklet" class="org.openyu.mix.sasang.service.socklet.SasangSocklet"
+	<bean id="sasangSocklet" class="org.openyu.mix.sasang.socklet.SasangSocklet"
 		parent="slaveSockletServiceSupporter">
 		<property name="id" value="SASANG" />
 	</bean>

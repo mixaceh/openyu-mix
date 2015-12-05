@@ -14,7 +14,7 @@
 		parent="appServiceSupporter" />
 
 	<!-- advisor -->
-	<bean id="debugCheatAdvice" class="org.openyu.mix.chat.service.aop.DebugCheatInterceptor"
+	<bean id="debugCheatAdvice" class="org.openyu.mix.chat.aop.DebugCheatInterceptor"
 		parent="appMethodInterceptorSupporter">
 	</bean>
 	<aop:config>
@@ -24,7 +24,7 @@
 			pointcut-ref="debugCheatPointcut" />
 	</aop:config>
 
-	<bean id="debugRequestAdvice" class="org.openyu.mix.chat.service.aop.DebugRequestInterceptor"
+	<bean id="debugRequestAdvice" class="org.openyu.mix.chat.aop.DebugRequestInterceptor"
 		parent="appMethodInterceptorSupporter" />
 	<aop:config>
 		<aop:pointcut id="debugRequestPointcut"
@@ -53,7 +53,7 @@
 		parent="appServiceSupporter" />
 
 	<!-- socklet -->
-	<bean id="chatSocklet" class="org.openyu.mix.chat.service.socklet.ChatSocklet"
+	<bean id="chatSocklet" class="org.openyu.mix.chat.socklet.ChatSocklet"
 		parent="slaveSockletServiceSupporter">
 		<property name="id" value="CHAT" />
 	</bean>

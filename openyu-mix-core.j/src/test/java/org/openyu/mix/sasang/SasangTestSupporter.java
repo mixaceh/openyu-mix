@@ -10,15 +10,15 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.openyu.mix.account.service.AccountService;
 import org.openyu.mix.app.AppTestSupporter;
 import org.openyu.mix.item.service.ItemService;
+import org.openyu.mix.sasang.aop.SasangPlayInterceptor;
+import org.openyu.mix.sasang.aop.SasangPutAllInterceptor;
+import org.openyu.mix.sasang.aop.SasangPutOneInterceptor;
 import org.openyu.mix.sasang.dao.SasangLogDao;
 import org.openyu.mix.sasang.service.SasangLogService;
 import org.openyu.mix.sasang.service.SasangService;
 import org.openyu.mix.sasang.service.adapter.SasangChangeAdapter;
-import org.openyu.mix.sasang.service.aop.SasangPlayInterceptor;
-import org.openyu.mix.sasang.service.aop.SasangPutOneInterceptor;
-import org.openyu.mix.sasang.service.aop.SasangPutAllInterceptor;
 import org.openyu.mix.sasang.service.impl.SasangMachineImpl;
-import org.openyu.mix.sasang.service.socklet.SasangSocklet;
+import org.openyu.mix.sasang.socklet.SasangSocklet;
 import org.openyu.mix.sasang.vo.Outcome;
 import org.openyu.mix.sasang.vo.SasangCollector;
 import org.openyu.mix.sasang.vo.SasangPen;
@@ -61,14 +61,14 @@ public class SasangTestSupporter extends AppTestSupporter {
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
-		applicationContext = new ClassPathXmlApplicationContext(new String[] {
-				"applicationContext-init.xml",//
-				"META-INF/applicationContext-commons-core.xml",//
-				"applicationContext-message.xml",//
-				"applicationContext-database.xml",//
-				"applicationContext-database-log.xml",//
+		applicationContext = new ClassPathXmlApplicationContext(new String[] {//
+				"applicationContext-init.xml", //
+				"applicationContext-bean.xml", //
+				"applicationContext-message.xml", //
+				"applicationContext-acceptor.xml", //
+				"applicationContext-database.xml", //
+				"applicationContext-database-log.xml", //
 				// "applicationContext-schedule.xml",// 排程
-				"META-INF/applicationContext-sls.xml",//
 				"org/openyu/mix/app/applicationContext-app.xml",//
 				// biz
 				"org/openyu/mix/account/applicationContext-account.xml",//

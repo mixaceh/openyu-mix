@@ -23,7 +23,7 @@ import org.openyu.mix.manor.vo.Seed;
 import org.openyu.mix.manor.vo.ManorPen.Farm;
 import org.openyu.mix.manor.vo.impl.ManorPenImpl.FarmImpl;
 import org.openyu.mix.role.vo.Role;
-import org.openyu.mix.sasang.service.aop.SasangPlayInterceptor;
+import org.openyu.mix.sasang.aop.SasangPlayInterceptor;
 import org.openyu.mix.manor.service.aop.ManorReclaimInterceptor;
 import org.openyu.mix.manor.service.aop.ManorDisuseInterceptor;
 import org.openyu.mix.manor.service.aop.ManorCultureInterceptor;

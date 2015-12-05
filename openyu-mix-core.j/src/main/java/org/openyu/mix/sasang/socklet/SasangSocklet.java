@@ -1,4 +1,4 @@
-package org.openyu.mix.sasang.service.socklet;
+package org.openyu.mix.sasang.socklet;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

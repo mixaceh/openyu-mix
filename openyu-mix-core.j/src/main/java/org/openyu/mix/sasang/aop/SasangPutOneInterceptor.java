@@ -1,4 +1,4 @@
-package org.openyu.mix.sasang.service.aop;
+package org.openyu.mix.sasang.aop;
 
 
 import org.aopalliance.intercept.MethodInvocation;

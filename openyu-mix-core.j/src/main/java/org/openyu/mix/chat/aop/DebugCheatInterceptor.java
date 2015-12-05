@@ -1,4 +1,4 @@
-package org.openyu.mix.chat.service.aop;
+package org.openyu.mix.chat.aop;
 
 import java.lang.reflect.Method;
 
