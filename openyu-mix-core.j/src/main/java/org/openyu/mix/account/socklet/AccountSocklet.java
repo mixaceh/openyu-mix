@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.openyu.mix.account.service.AccountService;
 import org.openyu.mix.app.socklet.supporter.AppSockletServiceSupporter;
 import org.openyu.mix.core.service.CoreMessageType;
-import org.openyu.mix.item.service.socklet.ItemSocklet;
+import org.openyu.mix.item.socklet.ItemSocklet;
 import org.openyu.socklet.message.vo.Message;
 
 public class AccountSocklet extends AppSockletServiceSupporter {

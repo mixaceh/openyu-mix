@@ -1,4 +1,4 @@
-package org.openyu.mix.role.service.socklet;
+package org.openyu.mix.role.socklet;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

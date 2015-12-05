@@ -1,4 +1,4 @@
-package org.openyu.mix.role.service.aop;
+package org.openyu.mix.role.aop;
 
 import java.lang.reflect.Method;
 
@@ -9,30 +9,30 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.openyu.mix.app.aop.supporter.AppMethodInterceptorSupporter;
 import org.openyu.mix.role.service.RoleLogService;
+import org.openyu.mix.role.service.RoleService.ActionType;
 import org.openyu.mix.role.service.RoleService.GoldType;
 import org.openyu.mix.role.vo.Role;
 
 /**
  * 增加金幣攔截器
  */
-public class RoleIncreaseGoldInterceptor extends AppMethodInterceptorSupporter {
+public class RoleChangeGoldInterceptor extends AppMethodInterceptorSupporter {
 
 	private static transient final Logger LOGGER = LoggerFactory
-			.getLogger(RoleIncreaseGoldInterceptor.class);
-
+			.getLogger(RoleChangeGoldInterceptor.class);
 
 	@Autowired
 	@Qualifier("roleLogService")
 	protected transient RoleLogService roleLogService;
 
-	public RoleIncreaseGoldInterceptor() {
+	public RoleChangeGoldInterceptor() {
 	}
 
 	/**
 	 * RoleService
 	 * 
-	 * long increaseGold(boolean sendable, Role role, long gold, GoldReason
-	 * goldReason);
+	 * long changeGold(boolean sendable, Role role, long gold, GoldAction
+	 * goldAction, GoldReason goldReason);
 	 */
 	protected Object doInvoke(MethodInvocation methodInvocation) throws Throwable {
 		// 傳回值
@@ -46,7 +46,8 @@ public class RoleIncreaseGoldInterceptor extends AppMethodInterceptorSupporter {
 			boolean sendable = (Boolean) args[0];
 			Role role = (Role) args[1];
 			long gold = (Long) args[2];
-			GoldType goldReason = (GoldType) args[3];
+			ActionType goldAction = (ActionType) args[3];
+			GoldType goldReason = (GoldType) args[4];
 
 			// 改變前金幣
 			long beforeGold = 0;
@@ -65,9 +66,9 @@ public class RoleIncreaseGoldInterceptor extends AppMethodInterceptorSupporter {
 			// 傳回值
 			long ret = (Long) result;
 			//
-			if (ret != 0 && goldReason != null) {
-				roleLogService.recordIncreaseGold(role, ret, beforeGold,
-						goldReason);
+			if (ret != 0 && goldAction != null && goldReason != null) {
+				roleLogService.recordChangeGold(role, ret, beforeGold,
+						goldAction, goldReason);
 			}
 		} catch (Throwable e) {
 			LOGGER.error(new StringBuilder("Exception encountered during doInvoke()").toString(), e);

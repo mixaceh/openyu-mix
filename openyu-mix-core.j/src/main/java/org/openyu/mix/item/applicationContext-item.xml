@@ -16,7 +16,7 @@
 	<!-- advisor -->
 	<!-- 道具增加 -->
 	<bean id="itemIncreaseItemAdvice"
-		class="org.openyu.mix.item.service.aop.ItemIncreaseItemInterceptor"
+		class="org.openyu.mix.item.aop.ItemIncreaseItemInterceptor"
 		parent="appMethodInterceptorSupporter"/>
 	<aop:config>
 		<aop:pointcut id="itemIncreaseItemPointcut"
@@ -27,7 +27,7 @@
 
 	<!-- 道具減少 -->
 	<bean id="itemDecreaseItemAdvice"
-		class="org.openyu.mix.item.service.aop.ItemDecreaseItemInterceptor"
+		class="org.openyu.mix.item.aop.ItemDecreaseItemInterceptor"
 		parent="appMethodInterceptorSupporter"/>
 	<aop:config>
 		<aop:pointcut id="itemDecreaseItemPointcut"
@@ -38,7 +38,7 @@
 
 	<!-- 道具使用強化 -->
 	<bean id="itemUseEnhanceAdvice"
-		class="org.openyu.mix.item.service.aop.ItemUseEnhanceInterceptor"
+		class="org.openyu.mix.item.aop.ItemUseEnhanceInterceptor"
 		parent="appMethodInterceptorSupporter" />
 	<aop:config>
 		<aop:pointcut id="itemUseEnhancePointcut"
@@ -49,7 +49,7 @@
 
 	<!-- 道具增減強化 -->
 	<bean id="itemChangeEnhanceAdvice"
-		class="org.openyu.mix.item.service.aop.ItemChangeEnhanceInterceptor"
+		class="org.openyu.mix.item.aop.ItemChangeEnhanceInterceptor"
 		parent="appMethodInterceptorSupporter" />
 	<aop:config>
 		<aop:pointcut id="itemChangeEnhancePointcut"
@@ -75,7 +75,7 @@
 	</aop:config>
 
 	<!-- socklet -->
-	<bean id="itemSocklet" class="org.openyu.mix.item.service.socklet.ItemSocklet"
+	<bean id="itemSocklet" class="org.openyu.mix.item.socklet.ItemSocklet"
 		parent="slaveSockletServiceSupporter" >
 		<property name="id" value="ITEM" />
 	</bean>

@@ -1,4 +1,4 @@
-package org.openyu.mix.item.service.socklet;
+package org.openyu.mix.item.socklet;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

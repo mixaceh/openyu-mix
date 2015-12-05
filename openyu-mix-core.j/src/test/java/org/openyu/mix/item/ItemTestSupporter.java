@@ -8,14 +8,14 @@ import org.springframework.aop.aspectj.AspectJExpressionPointcut;
 import org.springframework.aop.support.DefaultBeanFactoryPointcutAdvisor;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.openyu.mix.app.AppTestSupporter;
+import org.openyu.mix.item.aop.ItemChangeEnhanceInterceptor;
+import org.openyu.mix.item.aop.ItemDecreaseItemInterceptor;
+import org.openyu.mix.item.aop.ItemIncreaseItemInterceptor;
+import org.openyu.mix.item.aop.ItemUseEnhanceInterceptor;
 import org.openyu.mix.item.dao.ItemLogDao;
 import org.openyu.mix.item.service.ItemLogService;
 import org.openyu.mix.item.service.ItemService;
-import org.openyu.mix.item.service.aop.ItemChangeEnhanceInterceptor;
-import org.openyu.mix.item.service.aop.ItemDecreaseItemInterceptor;
-import org.openyu.mix.item.service.aop.ItemIncreaseItemInterceptor;
-import org.openyu.mix.item.service.aop.ItemUseEnhanceInterceptor;
-import org.openyu.mix.item.service.socklet.ItemSocklet;
+import org.openyu.mix.item.socklet.ItemSocklet;
 
 public class ItemTestSupporter extends AppTestSupporter {
 

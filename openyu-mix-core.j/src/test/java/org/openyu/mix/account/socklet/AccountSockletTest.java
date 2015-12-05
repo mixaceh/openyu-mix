@@ -1,4 +1,4 @@
-package org.openyu.mix.account.service.socklet;
+package org.openyu.mix.account.socklet;
 
 import javax.crypto.SecretKey;
 

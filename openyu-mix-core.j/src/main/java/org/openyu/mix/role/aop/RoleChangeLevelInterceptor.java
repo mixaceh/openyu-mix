@@ -1,4 +1,4 @@
-package org.openyu.mix.role.service.aop;
+package org.openyu.mix.role.aop;
 
 import java.lang.reflect.Method;
 
@@ -9,28 +9,27 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.openyu.mix.app.aop.supporter.AppMethodInterceptorSupporter;
 import org.openyu.mix.role.service.RoleLogService;
-import org.openyu.mix.role.service.RoleService.GoldType;
 import org.openyu.mix.role.vo.Role;
 
 /**
- * 減少金幣攔截器
+ * 增減等級攔截器
  */
-public class RoleDecreaseGoldInterceptor extends AppMethodInterceptorSupporter {
+public class RoleChangeLevelInterceptor extends AppMethodInterceptorSupporter {
 
-	private static transient final Logger LOGGER = LoggerFactory.getLogger(RoleDecreaseGoldInterceptor.class);
+	private static transient final Logger LOGGER = LoggerFactory
+			.getLogger(RoleChangeLevelInterceptor.class);
 
 	@Autowired
 	@Qualifier("roleLogService")
 	protected transient RoleLogService roleLogService;
 
-	public RoleDecreaseGoldInterceptor() {
+	public RoleChangeLevelInterceptor() {
 	}
 
 	/**
 	 * RoleService
 	 * 
-	 * long decreaseGold(boolean sendable, Role role, long gold, GoldReason
-	 * goldReason);
+	 * int changeLevel(boolean sendable, Role role, int level);
 	 */
 	protected Object doInvoke(MethodInvocation methodInvocation) throws Throwable {
 		// 傳回值
@@ -43,13 +42,12 @@ public class RoleDecreaseGoldInterceptor extends AppMethodInterceptorSupporter {
 			Object[] args = methodInvocation.getArguments();
 			boolean sendable = (Boolean) args[0];
 			Role role = (Role) args[1];
-			long gold = (Long) args[2];
-			GoldType goldReason = (GoldType) args[3];
+			int level = (Integer) args[2];
 
-			// 改變前金幣
-			long beforeGold = 0;
+			// 改變前等級
+			int beforeLevel = 0;
 			if (role != null) {
-				beforeGold = role.getGold();
+				beforeLevel = role.getLevel();
 			}
 
 			// --------------------------------------------------
@@ -61,10 +59,11 @@ public class RoleDecreaseGoldInterceptor extends AppMethodInterceptorSupporter {
 			// --------------------------------------------------
 
 			// 傳回值
-			long ret = (Long) result;
-			//
-			if (ret != 0 && goldReason != null) {
-				roleLogService.recordDecreaseGold(role, ret, beforeGold, goldReason);
+			int ret = (Integer) result;
+
+			// 有增減時,會有正負等級差,沒增減時=0
+			if (ret != 0) {
+				roleLogService.recordChangeLevel(role, ret, beforeLevel);
 			}
 		} catch (Throwable e) {
 			LOGGER.error(new StringBuilder("Exception encountered during doInvoke()").toString(), e);

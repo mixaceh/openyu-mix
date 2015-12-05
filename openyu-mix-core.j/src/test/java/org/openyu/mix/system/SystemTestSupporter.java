@@ -7,7 +7,7 @@ import org.junit.Test;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.openyu.mix.app.AppTestSupporter;
 import org.openyu.mix.system.service.SystemService;
-import org.openyu.mix.system.service.socklet.SystemSocklet;
+import org.openyu.mix.system.socklet.SystemSocklet;
 
 public class SystemTestSupporter extends AppTestSupporter {
 

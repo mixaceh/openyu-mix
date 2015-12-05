@@ -1,4 +1,4 @@
-package org.openyu.mix.item.service.aop;
+package org.openyu.mix.item.aop;
 
 import java.lang.reflect.Method;
 import java.util.List;

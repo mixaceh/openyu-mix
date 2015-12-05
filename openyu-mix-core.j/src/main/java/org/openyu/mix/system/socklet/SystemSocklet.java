@@ -1,4 +1,4 @@
-package org.openyu.mix.system.service.socklet;
+package org.openyu.mix.system.socklet;
 
 import org.openyu.mix.app.socklet.supporter.AppSockletServiceSupporter;
 import org.openyu.mix.core.service.CoreMessageType;
@@ -11,8 +11,9 @@ import org.springframework.beans.factory.annotation.Qualifier;
 
 public class SystemSocklet extends AppSockletServiceSupporter {
 
-	private static transient final Logger LOGGER = LoggerFactory
-			.getLogger(SystemSocklet.class);
+	private static final long serialVersionUID = 1785146099813920212L;
+
+	private static transient final Logger LOGGER = LoggerFactory.getLogger(SystemSocklet.class);
 
 	@Autowired
 	@Qualifier("systemService")
@@ -25,8 +26,7 @@ public class SystemSocklet extends AppSockletServiceSupporter {
 		super.service(message);
 
 		// 訊息
-		CoreMessageType messageType = (CoreMessageType) message
-				.getMessageType();
+		CoreMessageType messageType = (CoreMessageType) message.getMessageType();
 
 		switch (messageType) {
 		default: {
