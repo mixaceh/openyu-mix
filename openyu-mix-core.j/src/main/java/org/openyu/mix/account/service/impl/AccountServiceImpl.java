@@ -20,6 +20,7 @@ import org.openyu.commons.lang.ClassHelper;
 import org.openyu.commons.lang.NumberHelper;
 import org.openyu.commons.security.AuthKey;
 import org.openyu.commons.security.AuthKeyService;
+import org.openyu.commons.security.anno.DefaultAuthKeyService;
 import org.openyu.socklet.message.vo.Message;
 
 /**
@@ -31,8 +32,7 @@ public class AccountServiceImpl extends AppServiceSupporter implements AccountSe
 
 	private static transient final Logger LOGGER = LoggerFactory.getLogger(AccountServiceImpl.class);
 
-	@Autowired
-	@Qualifier("authKeyService")
+	@DefaultAuthKeyService
 	protected transient AuthKeyService authKeyService;
 
 	public AccountServiceImpl() {

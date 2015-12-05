@@ -27,7 +27,6 @@ import org.openyu.commons.io.IoHelper;
 import org.openyu.commons.nio.NioHelper;
 import org.openyu.commons.thread.ThreadHelper;
 import org.openyu.commons.thread.ThreadService;
-import org.openyu.commons.thread.anno.DefaultThreadService;
 import org.openyu.commons.thread.supporter.BaseRunnableSupporter;
 import org.openyu.commons.thread.supporter.TriggerQueueSupporter;
 import org.openyu.socklet.message.vo.Message;
@@ -48,9 +47,6 @@ public class StoreRoleServiceImpl extends AppServiceSupporter implements StoreRo
 	private static final long serialVersionUID = 3975742001750821702L;
 
 	private static transient final Logger LOGGER = LoggerFactory.getLogger(StoreRoleServiceImpl.class);
-
-	@DefaultThreadService
-	private transient ThreadService threadService;
 
 	@Autowired
 	@Qualifier("roleSetService")

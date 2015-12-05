@@ -2,7 +2,6 @@ package org.openyu.mix.account;
 
 import static org.junit.Assert.assertNotNull;
 
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -11,15 +10,14 @@ import org.springframework.aop.aspectj.AspectJExpressionPointcut;
 import org.springframework.aop.support.DefaultBeanFactoryPointcutAdvisor;
 import org.springframework.context.ApplicationContext;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.support.AnnotationConfigContextLoader;
+import org.openyu.mix.account.aop.AccountChangeCoinInterceptor;
+import org.openyu.mix.account.aop.AccountDecreaseCoinInterceptor;
+import org.openyu.mix.account.aop.AccountIncreaseCoinInterceptor;
 import org.openyu.mix.account.dao.AccountDao;
 import org.openyu.mix.account.dao.AccountLogDao;
 import org.openyu.mix.account.service.AccountLogService;
 import org.openyu.mix.account.service.AccountService;
-import org.openyu.mix.account.service.aop.AccountChangeCoinInterceptor;
-import org.openyu.mix.account.service.aop.AccountDecreaseCoinInterceptor;
-import org.openyu.mix.account.service.aop.AccountIncreaseCoinInterceptor;
-import org.openyu.mix.account.service.socklet.AccountSocklet;
+import org.openyu.mix.account.socklet.AccountSocklet;
 import org.openyu.mix.account.vo.Account;
 import org.openyu.mix.account.vo.impl.AccountImpl;
 import org.openyu.mix.app.AppTestSupporter;
@@ -40,7 +38,7 @@ import org.openyu.mix.app.AppTestSupporter;
 		// "classpath:org/openyu/mix/item/applicationContext-item.xml",//
 		// "classpath:org/openyu/mix/role/applicationContext-role.xml",//
 })
-public class CopyOfAccountTestSupporter extends AppTestSupporter {
+public class AccountTestSupporter2 extends AppTestSupporter {
 
 	@Autowired
 	protected static ApplicationContext applicationContext;
@@ -96,7 +94,7 @@ public class CopyOfAccountTestSupporter extends AppTestSupporter {
 
 	// --------------------------------------------------
 
-	public static class BeanTest extends CopyOfAccountTestSupporter {
+	public static class BeanTest extends AccountTestSupporter2 {
 
 		@Test
 		public void accountDao() {

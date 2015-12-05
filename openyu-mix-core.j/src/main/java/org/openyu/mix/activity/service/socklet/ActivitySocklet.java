@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.openyu.mix.core.service.CoreMessageType;
 import org.openyu.mix.activity.service.ActivityService;
-import org.openyu.mix.app.service.socklet.supporter.AppSockletServiceSupporter;
+import org.openyu.mix.app.socklet.supporter.AppSockletServiceSupporter;
 import org.openyu.mix.role.service.RoleSetService;
 import org.openyu.socklet.message.vo.Message;
 

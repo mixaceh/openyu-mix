@@ -1,4 +1,4 @@
-package org.openyu.mix.account.service.aop;
+package org.openyu.mix.account.aop;
 
 import org.aopalliance.intercept.MethodInvocation;
 import org.slf4j.Logger;
@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.openyu.mix.account.service.AccountLogService;
 import org.openyu.mix.account.service.AccountService.CoinType;
-import org.openyu.mix.app.service.aop.supporter.AppMethodInterceptorSupporter;
+import org.openyu.mix.app.aop.supporter.AppMethodInterceptorSupporter;
 import org.openyu.mix.role.vo.Role;
 
 /**

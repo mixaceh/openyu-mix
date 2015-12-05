@@ -29,7 +29,6 @@ import org.openyu.mix.train.vo.TrainPen;
 import org.openyu.mix.vip.vo.VipCollector;
 import org.openyu.commons.thread.ThreadHelper;
 import org.openyu.commons.thread.ThreadService;
-import org.openyu.commons.thread.anno.DefaultThreadService;
 import org.openyu.commons.thread.supporter.BaseRunnableSupporter;
 import org.openyu.commons.util.CalendarHelper;
 import org.openyu.commons.util.DateHelper;
@@ -43,9 +42,6 @@ public class TrainServiceImpl extends AppServiceSupporter implements TrainServic
 	private static final long serialVersionUID = -4308347953505176980L;
 
 	private static transient final Logger LOGGER = LoggerFactory.getLogger(TrainServiceImpl.class);
-
-	@DefaultThreadService
-	private transient ThreadService threadService;
 
 	@Autowired
 	@Qualifier("accountService")

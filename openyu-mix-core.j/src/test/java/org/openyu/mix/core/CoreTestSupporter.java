@@ -99,76 +99,63 @@ public class CoreTestSupporter extends AppTestSupporter {
 	// ---------------------------------------------------
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
-		applicationContext = new ClassPathXmlApplicationContext(new String[] {
-				"applicationContext-init.xml",//
-				"META-INF/applicationContext-commons-core.xml",//
-				"applicationContext-message.xml",//
-				"applicationContext-database.xml",//
-				"applicationContext-database-log.xml",//
+		applicationContext = new ClassPathXmlApplicationContext(new String[] { "applicationContext-init.xml", //
+				"applicationContext-bean.xml", //
+				"applicationContext-message.xml", //
+				"applicationContext-acceptor.xml", //
+				"applicationContext-database.xml", //
+				"applicationContext-database-log.xml", //
 				// "applicationContext-schedule.xml",// 排程
-				"META-INF/applicationContext-sls.xml",//
-				"org/openyu/mix/app/applicationContext-app.xml",//
+				"org/openyu/mix/app/applicationContext-app.xml", //
 				// biz
-				"org/openyu/mix/system/applicationContext-system.xml",//
-				"org/openyu/mix/account/applicationContext-account.xml",//
-				"org/openyu/mix/item/applicationContext-item.xml",//
-				"org/openyu/mix/role/applicationContext-role.xml",//
+				"org/openyu/mix/account/applicationContext-account.xml", //
+				"org/openyu/mix/item/applicationContext-item.xml", //
+				"org/openyu/mix/role/applicationContext-role.xml", //
+				"org/openyu/mix/system/applicationContext-system.xml", //
 				//
+				"org/openyu/mix/chat/applicationContext-chat.xml", //
+				"org/openyu/mix/sasang/applicationContext-sasang.xml", //
+				"org/openyu/mix/manor/applicationContext-manor.xml", //
+				"org/openyu/mix/treasure/applicationContext-treasure.xml", //
+				"org/openyu/mix/train/applicationContext-train.xml", //
+				"org/openyu/mix/wuxing/applicationContext-wuxing.xml", //
+				// core
 				"org/openyu/mix/core/applicationContext-core.xml",//
-				"org/openyu/mix/chat/applicationContext-chat.xml",//
-				"org/openyu/mix/sasang/applicationContext-sasang.xml",//
-				"org/openyu/mix/manor/applicationContext-manor.xml",//
-				"org/openyu/mix/treasure/applicationContext-treasure.xml",//
-				"org/openyu/mix/train/applicationContext-train.xml",//
-				"org/openyu/mix/wuxing/applicationContext-wuxing.xml",//
 		});
 		// ---------------------------------------------------
 		initialize();
 		// ---------------------------------------------------
 		// 帳號
-		accountService = (AccountService) applicationContext
-				.getBean("accountService");
+		accountService = (AccountService) applicationContext.getBean("accountService");
 		// 道具
 		itemService = (ItemService) applicationContext.getBean("itemService");
 		// 角色
 		roleService = (RoleService) applicationContext.getBean("roleService");
 		//
 		coreService = (CoreService) applicationContext.getBean("coreService");
-		coreSessionAdapter = (CoreSessionAdapter) applicationContext
-				.getBean("coreSessionAdapter");
-		coreRelationAdapter = (CoreRelationAdapter) applicationContext
-				.getBean("coreRelationAdapter");
+		coreSessionAdapter = (CoreSessionAdapter) applicationContext.getBean("coreSessionAdapter");
+		coreRelationAdapter = (CoreRelationAdapter) applicationContext.getBean("coreRelationAdapter");
 		//
 		coreLogDao = (CoreLogDao) applicationContext.getBean("coreLogDao");
-		coreLogService = (CoreLogService) applicationContext
-				.getBean("coreLogService");
+		coreLogService = (CoreLogService) applicationContext.getBean("coreLogService");
 		coreSocklet = (CoreSocklet) applicationContext.getBean("coreSocklet");
 
 		// 聊天
 		chatService = (ChatService) applicationContext.getBean("chatService");
 		// 四象
-		sasangService = (SasangService) applicationContext
-				.getBean("sasangService");
-		sasangMachine = (SasangMachine) applicationContext
-				.getBean("sasangMachine");
-		sasangSocklet = (SasangSocklet) applicationContext
-				.getBean("sasangSocklet");
+		sasangService = (SasangService) applicationContext.getBean("sasangService");
+		sasangMachine = (SasangMachine) applicationContext.getBean("sasangMachine");
+		sasangSocklet = (SasangSocklet) applicationContext.getBean("sasangSocklet");
 		// 莊園
-		manorService = (ManorService) applicationContext
-				.getBean("manorService");
+		manorService = (ManorService) applicationContext.getBean("manorService");
 		// 祕寶
-		treasureService = (TreasureService) applicationContext
-				.getBean("treasureService");
+		treasureService = (TreasureService) applicationContext.getBean("treasureService");
 		// 訓練
-		trainService = (TrainService) applicationContext
-				.getBean("trainService");
+		trainService = (TrainService) applicationContext.getBean("trainService");
 		// 五行
-		wuxingService = (WuxingService) applicationContext
-				.getBean("wuxingService");
-		wuxingMachine = (WuxingMachine) applicationContext
-				.getBean("wuxingMachine");
-		wuxingSocklet = (WuxingSocklet) applicationContext
-				.getBean("wuxingSocklet");
+		wuxingService = (WuxingService) applicationContext.getBean("wuxingService");
+		wuxingMachine = (WuxingMachine) applicationContext.getBean("wuxingMachine");
+		wuxingSocklet = (WuxingSocklet) applicationContext.getBean("wuxingSocklet");
 	}
 
 	// --------------------------------------------------

@@ -2,14 +2,15 @@ package org.openyu.mix.app.service.supporter;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.openyu.mix.app.service.AppService;
 import org.openyu.mix.role.vo.Role;
 import org.openyu.commons.service.supporter.CommonServiceSupporter;
+import org.openyu.commons.thread.ThreadService;
+import org.openyu.commons.thread.anno.DefaultThreadService;
 import org.openyu.socklet.acceptor.service.AcceptorService;
 import org.openyu.socklet.acceptor.vo.AcceptorStarter;
 import org.openyu.socklet.connector.vo.AcceptorConnector;
+import org.openyu.socklet.message.anno.DefaultMessageService;
 import org.openyu.socklet.message.service.MessageService;
 import org.openyu.socklet.message.vo.Message;
 
@@ -18,9 +19,17 @@ public class AppServiceSupporter extends CommonServiceSupporter implements AppSe
 	private static final long serialVersionUID = -8839967232533601475L;
 
 	private static transient final Logger LOGGER = LoggerFactory.getLogger(AppServiceSupporter.class);
+	
+	/**
+	 * 線程服務
+	 */
+	@DefaultThreadService
+	protected transient ThreadService threadService;
 
-	@Autowired
-	@Qualifier("messageService")
+	/**
+	 * 訊息服務
+	 */
+	@DefaultMessageService
 	protected transient MessageService messageService;
 
 	private transient AcceptorStarter acceptorStarter;

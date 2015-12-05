@@ -38,7 +38,6 @@ import org.openyu.mix.vip.vo.VipCollector;
 import org.openyu.commons.enumz.EnumHelper;
 import org.openyu.commons.thread.ThreadHelper;
 import org.openyu.commons.thread.ThreadService;
-import org.openyu.commons.thread.anno.DefaultThreadService;
 import org.openyu.commons.thread.supporter.BaseRunnableSupporter;
 import org.openyu.socklet.message.vo.Message;
 
@@ -50,9 +49,6 @@ public class TreasureServiceImpl extends AppServiceSupporter implements Treasure
 	private static final long serialVersionUID = -6406783662997385343L;
 
 	private static transient final Logger LOGGER = LoggerFactory.getLogger(TreasureServiceImpl.class);
-
-	@DefaultThreadService
-	private transient ThreadService threadService;
 
 	@Autowired
 	@Qualifier("accountService")

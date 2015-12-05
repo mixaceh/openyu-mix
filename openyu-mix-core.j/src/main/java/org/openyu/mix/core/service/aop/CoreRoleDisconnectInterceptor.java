@@ -1,15 +1,12 @@
 package org.openyu.mix.core.service.aop;
 
-import java.lang.reflect.Method;
 
 import org.aopalliance.intercept.MethodInvocation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.openyu.commons.thread.ThreadService;
-import org.openyu.commons.thread.anno.DefaultThreadService;
-import org.openyu.mix.app.service.aop.supporter.AppMethodInterceptorSupporter;
+import org.openyu.mix.app.aop.supporter.AppMethodInterceptorSupporter;
 import org.openyu.mix.core.service.CoreLogService;
 import org.openyu.mix.role.vo.Role;
 
@@ -23,12 +20,6 @@ public class CoreRoleDisconnectInterceptor extends AppMethodInterceptorSupporter
 	private static final long serialVersionUID = -8497969453177168222L;
 
 	private static transient final Logger LOGGER = LoggerFactory.getLogger(CoreRoleDisconnectInterceptor.class);
-
-	/**
-	 * 線程服務
-	 */
-	@DefaultThreadService
-	private transient ThreadService threadService;
 
 	@Autowired
 	@Qualifier("coreLogService")

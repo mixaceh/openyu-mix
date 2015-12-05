@@ -17,7 +17,6 @@ import org.openyu.mix.role.vo.Role;
 import org.openyu.mix.vip.vo.VipCollector;
 import org.openyu.commons.thread.ThreadHelper;
 import org.openyu.commons.thread.ThreadService;
-import org.openyu.commons.thread.anno.DefaultThreadService;
 import org.openyu.commons.thread.supporter.BaseRunnableSupporter;
 import org.openyu.socklet.message.vo.Message;
 
@@ -29,14 +28,6 @@ public class ActivityServiceImpl extends AppServiceSupporter implements Activity
 	private static final long serialVersionUID = -4584962342046502809L;
 
 	private static transient final Logger LOGGER = LoggerFactory.getLogger(ActivityServiceImpl.class);
-
-	/**
-	 * 線程服務
-	 */
-	// @Autowired
-	// @Qualifier("threadService")
-	@DefaultThreadService
-	private transient ThreadService threadService;
 
 	@Autowired
 	@Qualifier("accountService")
@@ -89,7 +80,7 @@ public class ActivityServiceImpl extends AppServiceSupporter implements Activity
 		super.doShutdown();
 		this.activityListenRunner.shutdown();
 	}
-	
+
 	// --------------------------------------------------
 
 	/**

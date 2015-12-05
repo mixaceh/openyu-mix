@@ -43,7 +43,6 @@ import org.openyu.commons.enumz.EnumHelper;
 import org.openyu.commons.lang.NumberHelper;
 import org.openyu.commons.thread.ThreadHelper;
 import org.openyu.commons.thread.ThreadService;
-import org.openyu.commons.thread.anno.DefaultThreadService;
 import org.openyu.commons.thread.supporter.BaseRunnableSupporter;
 import org.openyu.socklet.message.vo.Message;
 
@@ -52,14 +51,6 @@ public class ManorServiceImpl extends AppServiceSupporter implements ManorServic
 	private static final long serialVersionUID = -1082911837246717368L;
 
 	private static transient final Logger LOGGER = LoggerFactory.getLogger(ManorServiceImpl.class);
-	
-	/**
-	 * 線程服務
-	 */
-	// @Autowired
-	// @Qualifier("threadService")
-	@DefaultThreadService
-	private transient ThreadService threadService;
 
 	@Autowired
 	@Qualifier("accountService")

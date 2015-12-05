@@ -53,13 +53,13 @@ public class ChatTestSupporter extends AppTestSupporter {
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
 		applicationContext = new ClassPathXmlApplicationContext(new String[] {
-				"applicationContext-init.xml",//
-				"META-INF/applicationContext-commons-core.xml",//
-				"applicationContext-message.xml",//
+				"applicationContext-init.xml", //
+				"applicationContext-bean.xml", //
+				"applicationContext-message.xml", //
+				"applicationContext-acceptor.xml", //
 				"applicationContext-database.xml",//
 				"applicationContext-database-log.xml",//
 				// "applicationContext-schedule.xml",// 排程
-				"META-INF/applicationContext-sls.xml",//
 				"org/openyu/mix/app/applicationContext-app.xml",//
 				// biz
 				"org/openyu/mix/account/applicationContext-account.xml",//

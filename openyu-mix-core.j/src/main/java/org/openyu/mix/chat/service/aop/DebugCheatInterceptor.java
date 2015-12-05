@@ -3,8 +3,8 @@ package org.openyu.mix.chat.service.aop;
 import java.lang.reflect.Method;
 
 import org.aopalliance.intercept.MethodInvocation;
-import org.openyu.mix.app.service.aop.supporter.AppMethodInterceptorSupporter;
 import org.openyu.commons.util.ConfigHelper;
+import org.openyu.mix.app.aop.supporter.AppMethodInterceptorSupporter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

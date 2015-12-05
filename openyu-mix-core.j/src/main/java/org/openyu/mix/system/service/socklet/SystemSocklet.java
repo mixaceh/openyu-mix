@@ -1,6 +1,6 @@
 package org.openyu.mix.system.service.socklet;
 
-import org.openyu.mix.app.service.socklet.supporter.AppSockletServiceSupporter;
+import org.openyu.mix.app.socklet.supporter.AppSockletServiceSupporter;
 import org.openyu.mix.core.service.CoreMessageType;
 import org.openyu.mix.system.service.SystemService;
 import org.openyu.socklet.message.vo.Message;

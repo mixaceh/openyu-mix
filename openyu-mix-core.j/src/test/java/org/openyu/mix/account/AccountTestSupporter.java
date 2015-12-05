@@ -7,14 +7,14 @@ import org.junit.Test;
 import org.springframework.aop.aspectj.AspectJExpressionPointcut;
 import org.springframework.aop.support.DefaultBeanFactoryPointcutAdvisor;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.openyu.mix.account.aop.AccountChangeCoinInterceptor;
+import org.openyu.mix.account.aop.AccountDecreaseCoinInterceptor;
+import org.openyu.mix.account.aop.AccountIncreaseCoinInterceptor;
 import org.openyu.mix.account.dao.AccountDao;
 import org.openyu.mix.account.dao.AccountLogDao;
 import org.openyu.mix.account.service.AccountLogService;
 import org.openyu.mix.account.service.AccountService;
-import org.openyu.mix.account.service.aop.AccountChangeCoinInterceptor;
-import org.openyu.mix.account.service.aop.AccountDecreaseCoinInterceptor;
-import org.openyu.mix.account.service.aop.AccountIncreaseCoinInterceptor;
-import org.openyu.mix.account.service.socklet.AccountSocklet;
+import org.openyu.mix.account.socklet.AccountSocklet;
 import org.openyu.mix.app.AppTestSupporter;
 
 public class AccountTestSupporter extends AppTestSupporter {

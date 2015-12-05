@@ -1,30 +1,32 @@
-package org.openyu.mix.app.service.socklet.supporter;
+package org.openyu.mix.app.socklet.supporter;
 
-import org.openyu.mix.app.service.socklet.AppSockletService;
 import org.openyu.mix.role.ex.RoleException;
 import org.openyu.mix.role.service.RoleSetService;
 import org.openyu.mix.role.vo.Role;
 import org.openyu.mix.chat.service.ChatSetService;
+import org.openyu.mix.app.socklet.AppSockletService;
 import org.openyu.mix.chat.ex.ChatException;
 import org.openyu.mix.chat.vo.Chat;
+import org.openyu.socklet.message.anno.DefaultMessageService;
 import org.openyu.socklet.message.service.MessageService;
 import org.openyu.socklet.message.vo.Message;
+import org.openyu.socklet.socklet.anno.SockletThreadService;
 import org.openyu.socklet.socklet.service.supporter.SockletServiceSupporter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
-public class AppSockletServiceSupporter extends SockletServiceSupporter
-		implements AppSockletService {
+/**
+ * 線程服務使用SockletServiceSupporter宣告的@SockletThreadService
+ */
+public class AppSockletServiceSupporter extends SockletServiceSupporter implements AppSockletService {
 
 	private static final long serialVersionUID = -7928804185521125204L;
 
-	private static transient final Logger LOGGER = LoggerFactory
-			.getLogger(AppSockletServiceSupporter.class);
+	private static transient final Logger LOGGER = LoggerFactory.getLogger(AppSockletServiceSupporter.class);
 
-	@Autowired
-	@Qualifier("messageService")
+	@DefaultMessageService
 	protected transient MessageService messageService;
 
 	/**

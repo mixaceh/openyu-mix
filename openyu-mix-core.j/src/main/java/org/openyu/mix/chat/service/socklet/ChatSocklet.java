@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.openyu.mix.app.socklet.supporter.AppSockletServiceSupporter;
 import org.openyu.mix.chat.service.ChatService;
 import org.openyu.mix.chat.service.StoreChatService;
 import org.openyu.mix.chat.vo.Chat;
@@ -11,7 +12,6 @@ import org.openyu.mix.core.service.CoreMessageType;
 import org.openyu.mix.role.vo.Role;
 import org.openyu.mix.sasang.service.socklet.SasangSocklet;
 import org.openyu.socklet.message.vo.Message;
-import org.openyu.mix.app.service.socklet.supporter.AppSockletServiceSupporter;
 
 public class ChatSocklet extends AppSockletServiceSupporter {
 

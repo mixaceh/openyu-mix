@@ -5,7 +5,7 @@
 	xsi:schemaLocation="
              http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd">
 
-	<bean id="mixCollectorStarter" class="org.openyu.commons.bean.impl.CollectorStarterImpl">
+	<bean id="mixCollectorStarter" class="org.openyu.commons.collector.impl.CollectorStarterImpl">
 		<property name="names">
 			<list>
 				<value>org.openyu.mix.flutter.vo.RaceCollector</value>

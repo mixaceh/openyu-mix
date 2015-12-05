@@ -16,7 +16,7 @@
 	</bean>
 
 	<!-- relationlet -->
-	<bean id="systemSockletlet" class="org.openyu.mix.system.service.socklet.SystemSocklet"
+	<bean id="systemSocklet" class="org.openyu.mix.system.service.socklet.SystemSocklet"
 		parent="systemSockletServiceSupporter">
 		<property name="id" value="SYSTEM" />
 	</bean>

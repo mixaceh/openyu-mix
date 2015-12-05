@@ -29,7 +29,6 @@ import org.openyu.commons.nio.NioHelper;
 import org.openyu.commons.security.SecurityProcessor;
 import org.openyu.commons.thread.ThreadHelper;
 import org.openyu.commons.thread.ThreadService;
-import org.openyu.commons.thread.anno.DefaultThreadService;
 import org.openyu.commons.thread.supporter.BaseRunnableSupporter;
 import org.openyu.commons.thread.supporter.TriggerQueueSupporter;
 import org.openyu.commons.util.CompressProcessor;
@@ -48,14 +47,6 @@ public class StoreChatServiceImpl extends AppServiceSupporter implements StoreCh
 	private static final long serialVersionUID = -5119832212938784272L;
 
 	private static transient final Logger LOGGER = LoggerFactory.getLogger(StoreChatServiceImpl.class);
-
-	/**
-	 * 線程服務
-	 */
-	// @Autowired
-	// @Qualifier("threadService")
-	@DefaultThreadService
-	private transient ThreadService threadService;
 
 	@Autowired
 	@Qualifier("chatSetService")

@@ -26,7 +26,7 @@
 
 	<!-- 增加帳戶的儲值幣 -->
 	<bean id="accountIncreaseCoinAdvice"
-		class="org.openyu.mix.account.service.aop.AccountIncreaseCoinInterceptor"
+		class="org.openyu.mix.account.aop.AccountIncreaseCoinInterceptor"
 		parent="appMethodInterceptorSupporter" />
 	<aop:config>
 		<aop:pointcut id="accountIncreaseCoinPointcut"
@@ -37,7 +37,7 @@
 
 	<!-- 減少帳戶的儲值幣 -->
 	<bean id="accountDecreaseCoinAdvice"
-		class="org.openyu.mix.account.service.aop.AccountDecreaseCoinInterceptor"
+		class="org.openyu.mix.account.aop.AccountDecreaseCoinInterceptor"
 		parent="appMethodInterceptorSupporter" />
 	<aop:config>
 		<aop:pointcut id="accountDecreaseCoinPointcut"
@@ -48,7 +48,7 @@
 
 	<!--增減帳戶的儲值幣 -->
 	<bean id="accountChangeCoinAdvice"
-		class="org.openyu.mix.account.service.aop.AccountChangeCoinInterceptor"
+		class="org.openyu.mix.account.aop.AccountChangeCoinInterceptor"
 		parent="appMethodInterceptorSupporter" />
 	<aop:config>
 		<aop:pointcut id="accountChangeCoinPointcut"
@@ -59,7 +59,7 @@
 
 	<!--重置帳戶儲值幣 -->
 	<bean id="accountResetCoinAdvice"
-		class="org.openyu.mix.account.service.aop.AccountResetCoinInterceptor"
+		class="org.openyu.mix.account.aop.AccountResetCoinInterceptor"
 		parent="appMethodInterceptorSupporter" />
 	<aop:config>
 		<aop:pointcut id="accountResetCoinPointcut"
@@ -87,7 +87,7 @@
 	</aop:config>
 
 	<!-- socklet -->
-	<bean id="accountSocklet" class="org.openyu.mix.account.service.socklet.AccountSocklet"
+	<bean id="accountSocklet" class="org.openyu.mix.account.socklet.AccountSocklet"
 		parent="accountSockletServiceSupporter">
 		<property name="id" value="ACCOUNT" />
 	</bean>

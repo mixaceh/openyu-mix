@@ -10,12 +10,12 @@
 
 	<!-- supporter -->
 	<bean id="appMethodInterceptorSupporter"
-		class="org.openyu.mix.app.service.aop.supporter.AppMethodInterceptorSupporter"
+		class="org.openyu.mix.app.aop.supporter.AppMethodInterceptorSupporter"
 		parent="baseMethodInterceptorSupporter" abstract="true">
 	</bean>
 
 	<bean id="appSockletServiceSupporter"
-		class="org.openyu.mix.app.service.socklet.supporter.AppSockletServiceSupporter"
+		class="org.openyu.mix.app.socklet.supporter.AppSockletServiceSupporter"
 		parent="sockletServiceSupporter" abstract="true">
 	</bean>
 
