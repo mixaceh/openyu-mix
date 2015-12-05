@@ -8,10 +8,12 @@ import java.util.Map;
 
 import org.junit.Rule;
 import org.junit.Test;
+import org.openyu.commons.collector.CollectorHelper;
 import org.openyu.commons.junit.supporter.BaseTestSupporter;
 import org.openyu.mix.item.vo.ThingType;
 import org.openyu.mix.treasure.vo.impl.TreasureImpl;
 
+import com.carrotsearch.junitbenchmarks.BenchmarkOptions;
 import com.carrotsearch.junitbenchmarks.BenchmarkRule;
 
 import org.openyu.mix.treasure.vo.impl.StockImpl;
@@ -26,6 +28,7 @@ public class TreasureCollectorTest extends BaseTestSupporter {
 	/**
 	 * 只是為了模擬用,有正式xml後,不應再使用,以免覆蓋掉正式的xml
 	 */
+	@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 	public void writeToXml() {
 		String result = null;
 		TreasureCollector collector = TreasureCollector.getInstance(false);
@@ -157,7 +160,7 @@ public class TreasureCollectorTest extends BaseTestSupporter {
 		// 所有上架祕寶
 		collector.getProducts().put(3, stock.getId());
 		//
-		result = collector.writeToXml(TreasureCollector.class, collector);
+		result = CollectorHelper.writeToXml(TreasureCollector.class, collector);
 		//
 		long end = System.currentTimeMillis();
 		System.out.println((end - beg) + " mills. ");
@@ -167,145 +170,62 @@ public class TreasureCollectorTest extends BaseTestSupporter {
 	}
 
 	@Test
-	// 100 times: 1872 mills.
-	// 100 times: 1786 mills.
-	// 100 times: 1832 mills.
+	@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 	public void readFromXml() {
 		TreasureCollector result = null;
 		//
-		int count = 1;
-		long beg = System.currentTimeMillis();
-		//
-		for (int i = 0; i < count; i++) {
-			result = beanCollector.readFromXml(TreasureCollector.class);
-		}
-		//
-		long end = System.currentTimeMillis();
-		System.out.println(count + " times: " + (end - beg) + " mills. ");
+		result = CollectorHelper.readFromXml(TreasureCollector.class);
 		//
 		System.out.println(result);
 		assertNotNull(result);
 	}
 
 	@Test
+	@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 	public void writeToSerFromXml() {
 		String result = null;
 		//
-		long beg = System.currentTimeMillis();
-		//
-		result = beanCollector.writeToSerFromXml(TreasureCollector.class);
-		//
-		long end = System.currentTimeMillis();
-		System.out.println((end - beg) + " mills. ");
+		result = CollectorHelper.writeToSerFromXml(TreasureCollector.class);
 		//
 		System.out.println(result);
 		assertNotNull(result);
 	}
 
 	@Test
-	// 100 times: 465 mills.
-	// 100 times: 474 mills.
-	// 100 times: 495 mills.
+	@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 	public void readFromSer() {
 		TreasureCollector result = null;
 		//
-		int count = 1;
-		long beg = System.currentTimeMillis();
-		//
-		for (int i = 0; i < count; i++) {
-			result = beanCollector.readFromSer(TreasureCollector.class);
-		}
-		//
-		long end = System.currentTimeMillis();
-		System.out.println(count + " times: " + (end - beg) + " mills. ");
+		result = CollectorHelper.readFromSer(TreasureCollector.class);
 		//
 		System.out.println(result);
 		assertNotNull(result);
 	}
 
 	@Test
-	// 1000000 times: 399 mills.
-	// 1000000 times: 398 mills.
-	// 1000000 times: 401 mills.
-	public void initialize() {
-		boolean result = false;
-		//
-		TreasureCollector collector = TreasureCollector.getInstance();
-		int count = 1;
-		long beg = System.currentTimeMillis();
-		//
-		for (int i = 0; i < count; i++) {
-			collector.initialize();
-		}
-		//
-		long end = System.currentTimeMillis();
-		System.out.println(count + " times: " + (end - beg) + " mills. ");
-		//
-		result = collector.isInitialized();
-		System.out.println(result);
-		assertTrue(result);
-		//
-		System.out.println(collector.getStocks());
-		System.out.println(collector.getProducts());
-	}
-
-	@Test
-	// 1000000 times: 400 mills.
-	// 1000000 times: 396 mills.
-	// 1000000 times: 399 mills.
+	@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 	public void getInstance() {
 		TreasureCollector result = null;
 		//
-		int count = 1000000; // 100w
-		long beg = System.currentTimeMillis();
-		//
-		for (int i = 0; i < count; i++) {
-			result = TreasureCollector.getInstance();
-		}
-		//
-		long end = System.currentTimeMillis();
-		System.out.println(count + " times: " + (end - beg) + " mills. ");
+		result = TreasureCollector.getInstance();
 		//
 		System.out.println(result);
 		assertNotNull(result);
+		System.out.println(result.getStocks());
+		System.out.println(result.getProducts());
 	}
 
-	@Test
-	// 10000 times: 1587 mills.
-	// 10000 times: 1583 mills.
-	// 10000 times: 1683 mills.
-	public void reset() {
-		TreasureCollector collector = TreasureCollector.getInstance();
-		//
-		int count = 1;
-		long beg = System.currentTimeMillis();
-		//
-		for (int i = 0; i < count; i++) {
-			collector.reset();
-		}
-		//
-		long end = System.currentTimeMillis();
-		System.out.println(count + " times: " + (end - beg) + " mills. ");
-
-		assertFalse(collector.isInitialized());
-		//
-		assertEquals(0, collector.getStocks().size());
-		assertEquals(0, collector.getProducts().size());
-	}
-
-	@Test
 	/**
 	 * 依照權重隨機從祕寶庫中取得祕寶
 	 */
-	// 1000000 times: 561 mills.
-	// 1000000 times: 575 mills.
-	// 1000000 times: 558 mills.
+	@Test
+	@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 	public void randomTreasure() {
 		TreasureCollector collector = TreasureCollector.getInstance();
 		//
 		Treasure result = null;
 		//
-		int count = 1000000;// 100w
+		int count = 100;// 100w
 		long beg = System.currentTimeMillis();
 		// 祕寶庫id
 		String stockId = "ROLE_EXP_001";
@@ -344,24 +264,14 @@ public class TreasureCollectorTest extends BaseTestSupporter {
 	}
 
 	@Test
-	// 1000000 times: 2563 mills.
-	// 1000000 times: 2501 mills.
-	// 1000000 times: 2606 mills.
+	@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 	public void randomTreasures() {
 		TreasureCollector collector = TreasureCollector.getInstance();
 		//
 		Map<Integer, Treasure> result = null;
 		//
-		int count = 1000000;// 100w
-		long beg = System.currentTimeMillis();
-
-		for (int i = 0; i < count; i++) {
-			result = collector.randomTreasures();
-		}
+		result = collector.randomTreasures();
 		//
-		long end = System.currentTimeMillis();
-		System.out.println(count + " times: " + (end - beg) + " mills. ");
-
 		System.out.println(result);
 		assertTrue(result.size() > 0);
 	}

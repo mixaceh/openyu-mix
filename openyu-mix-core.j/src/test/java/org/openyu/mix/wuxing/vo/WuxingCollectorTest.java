@@ -9,11 +9,13 @@ import java.util.Set;
 
 import org.junit.Rule;
 import org.junit.Test;
+import org.openyu.commons.collector.CollectorHelper;
 import org.openyu.commons.junit.supporter.BaseTestSupporter;
 import org.openyu.mix.app.vo.Prize;
 import org.openyu.mix.app.vo.impl.PrizeImpl;
 import org.openyu.mix.wuxing.vo.WuxingType;
 
+import com.carrotsearch.junitbenchmarks.BenchmarkOptions;
 import com.carrotsearch.junitbenchmarks.BenchmarkRule;
 
 public class WuxingCollectorTest extends BaseTestSupporter {
@@ -26,11 +28,11 @@ public class WuxingCollectorTest extends BaseTestSupporter {
 	/**
 	 * 只是為了模擬用,有正式xml後,不應再使用,以免覆蓋掉正式的xml
 	 */
+	@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 	public void writeToXml() {
 		String result = null;
 		WuxingCollector collector = WuxingCollector.getInstance(false);
 		//
-		long beg = System.currentTimeMillis();
 		// 說明
 		collector.setDescription("金，木，水，火，土，相生相剋時，有機會獲得祝福的強化防具捲。");
 		collector.getDescriptions().addName(Locale.SIMPLIFIED_CHINESE, "金，木，水，火，土，相生相克时，有机会获得祝福的强化防具卷。");
@@ -115,155 +117,64 @@ public class WuxingCollectorTest extends BaseTestSupporter {
 		prize.setFamous(false);
 		collector.getFinalPrizes().put(prize.getId(), prize);
 		//
-		result = collector.writeToXml(WuxingCollector.class, collector);
-		//
-		long end = System.currentTimeMillis();
-		System.out.println((end - beg) + " mills. ");
+		result = CollectorHelper.writeToXml(WuxingCollector.class, collector);
 		//
 		System.out.println(result);
 		assertNotNull(result);
 	}
 
 	@Test
-	// 100 times: 1872 mills.
-	// 100 times: 1786 mills.
-	// 100 times: 1832 mills.
+	@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 	public void readFromXml() {
 		WuxingCollector result = null;
 		//
-		int count = 1;
-		long beg = System.currentTimeMillis();
-		//
-		for (int i = 0; i < count; i++) {
-			result = beanCollector.readFromXml(WuxingCollector.class);
-		}
-		//
-		long end = System.currentTimeMillis();
-		System.out.println(count + " times: " + (end - beg) + " mills. ");
+		result = CollectorHelper.readFromXml(WuxingCollector.class);
 		//
 		System.out.println(result);
 		assertNotNull(result);
 	}
 
 	@Test
+	@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 	public void writeToSerFromXml() {
 		String result = null;
 		//
-		long beg = System.currentTimeMillis();
-		//
-		result = beanCollector.writeToSerFromXml(WuxingCollector.class);
-		//
-		long end = System.currentTimeMillis();
-		System.out.println((end - beg) + " mills. ");
+		result = CollectorHelper.writeToSerFromXml(WuxingCollector.class);
 		//
 		System.out.println(result);
 		assertNotNull(result);
 	}
 
 	@Test
-	// 100 times: 465 mills.
-	// 100 times: 474 mills.
-	// 100 times: 495 mills.
+	@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 	public void readFromSer() {
 		WuxingCollector result = null;
 		//
-		int count = 1;
-		long beg = System.currentTimeMillis();
-		//
-		for (int i = 0; i < count; i++) {
-			result = beanCollector.readFromSer(WuxingCollector.class);
-		}
-		//
-		long end = System.currentTimeMillis();
-		System.out.println(count + " times: " + (end - beg) + " mills. ");
+		result = CollectorHelper.readFromSer(WuxingCollector.class);
 		//
 		System.out.println(result);
 		assertNotNull(result);
 	}
 
 	@Test
-	// 1000000 times: 399 mills.
-	// 1000000 times: 398 mills.
-	// 1000000 times: 401 mills.
-	public void initialize() {
-		boolean result = false;
-		//
-		WuxingCollector collector = WuxingCollector.getInstance();
-		int count = 1000000;
-		long beg = System.currentTimeMillis();
-		//
-		for (int i = 0; i < count; i++) {
-			collector.initialize();
-		}
-		//
-		long end = System.currentTimeMillis();
-		System.out.println(count + " times: " + (end - beg) + " mills. ");
-
-		result = WuxingCollector.getInstance().isInitialized();
-		System.out.println(result);
-		assertTrue(result);
-	}
-
-	@Test
-	// 1000000 times: 400 mills.
-	// 1000000 times: 396 mills.
-	// 1000000 times: 399 mills.
+	@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 	public void getInstance() {
 		WuxingCollector result = null;
 		//
-		int count = 1000000; // 100w
-		long beg = System.currentTimeMillis();
-		//
-		for (int i = 0; i < count; i++) {
-			result = WuxingCollector.getInstance();
-		}
-		//
-		long end = System.currentTimeMillis();
-		System.out.println(count + " times: " + (end - beg) + " mills. ");
+		result = WuxingCollector.getInstance();
 		//
 		System.out.println(result);
 		assertNotNull(result);
 	}
 
 	@Test
-	// 10000 times: 1587 mills.
-	// 10000 times: 1583 mills.
-	// 10000 times: 1683 mills.
-	public void reset() {
-		WuxingCollector collector = WuxingCollector.getInstance();
-		//
-		int count = 10000;
-		long beg = System.currentTimeMillis();
-		//
-		for (int i = 0; i < count; i++) {
-			collector.reset();
-		}
-		//
-		long end = System.currentTimeMillis();
-		System.out.println(count + " times: " + (end - beg) + " mills. ");
-
-		assertFalse(collector.isInitialized());
-	}
-
-	@Test
-	// 1000000 times: 396 mills.
-	// 1000000 times: 393 mills.
-	// 1000000 times: 434 mills.
-	// verified
+	@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 	public void getWuxingTypes() {
 		WuxingCollector collector = WuxingCollector.getInstance();
 		//
 		Set<WuxingType> result = null;
 		//
-		int count = 1000000; // 100w
-		long beg = System.currentTimeMillis();
-		//
-		for (int i = 0; i < count; i++) {
-			result = collector.getWuxingTypes();
-		}
-		//
-		long end = System.currentTimeMillis();
-		System.out.println(count + " times: " + (end - beg) + " mills. ");
+		result = collector.getWuxingTypes();
 		//
 		System.out.println(result);
 		assertTrue(result.size() > 0);
