@@ -98,16 +98,16 @@
 	<util:set
 		id="slaveSessionAdapterAcceptors"
 		set-class="java.util.LinkedHashSet">
-		<value>SLAVE1</value>
-		<value>SLAVE2</value>
-		<value>SLAVE3</value>
-		<value>SLAVE4</value>
-		<value>SLAVE5</value>
-		<value>SLAVE6</value>
-		<value>SLAVE7</value>
-		<value>SLAVE8</value>
-		<value>SLAVE9</value>
-		<value>SLAVE10</value>
+		<value>slave1</value>
+		<value>slave2</value>
+		<value>slave3</value>
+		<value>slave4</value>
+		<value>slave5</value>
+		<value>slave6</value>
+		<value>slave7</value>
+		<value>slave8</value>
+		<value>slave9</value>
+		<value>slave10</value>
 	</util:set>	
 
 	<!-- system, slave -->
@@ -121,17 +121,17 @@
 	<util:set
 		id="systemSlaveSessionAdapterAcceptors"
 		set-class="java.util.LinkedHashSet">
-		<value>SYSTEM</value>
-		<value>SLAVE1</value>
-		<value>SLAVE2</value>
-		<value>SLAVE3</value>
-		<value>SLAVE4</value>
-		<value>SLAVE5</value>
-		<value>SLAVE6</value>
-		<value>SLAVE7</value>
-		<value>SLAVE8</value>
-		<value>SLAVE9</value>
-		<value>SLAVE10</value>
+		<value>system</value>
+		<value>slave1</value>
+		<value>slave2</value>
+		<value>slave3</value>
+		<value>slave4</value>
+		<value>slave5</value>
+		<value>slave6</value>
+		<value>slave7</value>
+		<value>slave8</value>
+		<value>slave9</value>
+		<value>slave10</value>
 	</util:set>
 
 </beans>

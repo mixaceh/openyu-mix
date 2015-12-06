@@ -3,6 +3,8 @@ package org.openyu.mix.wuxing.service.impl;
 import static org.junit.Assert.assertEquals;
 import java.util.List;
 import java.util.Map;
+
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import org.openyu.mix.app.vo.Prize;
@@ -12,6 +14,15 @@ import org.openyu.mix.wuxing.vo.Outcome.OutcomeType;
 import org.openyu.mix.wuxing.vo.WuxingType;
 
 public class WuxingMachineImplTest extends WuxingTestSupporter {
+	
+	protected static WuxingMachineImpl wuxingMachineImpl;
+
+	@BeforeClass
+	public static void setUpBeforeClass() throws Exception {
+		WuxingTestSupporter.setUpBeforeClass();
+		wuxingMachineImpl = (WuxingMachineImpl) wuxingMachine;
+
+	}
 	@Test
 	// 1000000 times: 256 mills.
 	public void buildOutcomeTypes() {
@@ -20,7 +31,7 @@ public class WuxingMachineImplTest extends WuxingTestSupporter {
 		int count = 1;// 100w
 		long beg = System.currentTimeMillis();
 		for (int i = 0; i < count; i++) {
-			result = wuxingMachine.buildOutcomeTypes();
+			result = wuxingMachineImpl.buildOutcomeTypes();
 		}
 		//
 		long end = System.currentTimeMillis();
@@ -38,7 +49,7 @@ public class WuxingMachineImplTest extends WuxingTestSupporter {
 		int count = 1;// 100w
 		long beg = System.currentTimeMillis();
 		for (int i = 0; i < count; i++) {
-			result = wuxingMachine.randomWuxingTypes();
+			result = wuxingMachineImpl.randomWuxingTypes();
 		}
 		//
 		long end = System.currentTimeMillis();
@@ -47,10 +58,10 @@ public class WuxingMachineImplTest extends WuxingTestSupporter {
 		System.out.println(result);
 		assertEquals(5, result.size());
 		//
-		result = wuxingMachine.randomWuxingTypes();
+		result = wuxingMachineImpl.randomWuxingTypes();
 		System.out.println(result);
 		//
-		result = wuxingMachine.randomWuxingTypes();
+		result = wuxingMachineImpl.randomWuxingTypes();
 		System.out.println(result);
 	}
 
@@ -64,7 +75,7 @@ public class WuxingMachineImplTest extends WuxingTestSupporter {
 		int count = 1;// 100w
 		long beg = System.currentTimeMillis();
 		for (int i = 0; i < count; i++) {
-			result = wuxingMachine.play();
+			result = wuxingMachineImpl.play();
 		}
 		//
 		long end = System.currentTimeMillis();
@@ -84,7 +95,7 @@ public class WuxingMachineImplTest extends WuxingTestSupporter {
 		int count = 100000;// 100w
 		long beg = System.currentTimeMillis();
 		for (int i = 0; i < count; i++) {
-			result = wuxingMachine.play(10);
+			result = wuxingMachineImpl.play(10);
 		}
 		//
 		long end = System.currentTimeMillis();
@@ -93,7 +104,7 @@ public class WuxingMachineImplTest extends WuxingTestSupporter {
 		System.out.println(result.size() + ", " + result);
 		assertEquals(10, result.size());
 		//
-		result = wuxingMachine.play(10);
+		result = wuxingMachineImpl.play(10);
 		System.out.println(result.size() + ", " + result);
 		assertEquals(10, result.size());
 	}
@@ -107,7 +118,7 @@ public class WuxingMachineImplTest extends WuxingTestSupporter {
 		long beg = System.currentTimeMillis();
 		for (int i = 0; i < count; i++) {
 			// @see org.openyu.mix.wuxing.vo.Outcome.OutcomeType
-			result = wuxingMachine.calcPrizes("14444");// 1勝4和
+			result = wuxingMachineImpl.calcPrizes("14444");// 1勝4和
 		}
 		//
 		long end = System.currentTimeMillis();

@@ -16,6 +16,7 @@ import org.openyu.mix.wuxing.aop.WuxingPutAllInterceptor;
 import org.openyu.mix.wuxing.aop.WuxingPutOneInterceptor;
 import org.openyu.mix.wuxing.dao.WuxingLogDao;
 import org.openyu.mix.wuxing.service.WuxingLogService;
+import org.openyu.mix.wuxing.service.WuxingMachine;
 import org.openyu.mix.wuxing.service.WuxingService;
 import org.openyu.mix.wuxing.service.adapter.WuxingChangeAdapter;
 import org.openyu.mix.wuxing.service.impl.WuxingMachineImpl;
@@ -40,8 +41,10 @@ public class WuxingTestSupporter extends AppTestSupporter {
 
 	/**
 	 * 取實作class,所以不能用aop
+	 * 
+	 * 改取interface
 	 */
-	protected static WuxingMachineImpl wuxingMachine;
+	protected static WuxingMachine wuxingMachine;
 
 	protected static WuxingService wuxingService;
 
@@ -81,7 +84,7 @@ public class WuxingTestSupporter extends AppTestSupporter {
 		// 道具
 		itemService = (ItemService) applicationContext.getBean("itemService");
 		//
-		wuxingMachine = (WuxingMachineImpl) applicationContext.getBean("wuxingMachine");
+		wuxingMachine = (WuxingMachine) applicationContext.getBean("wuxingMachine");
 		wuxingService = (WuxingService) applicationContext.getBean("wuxingService");
 		wuxingSocklet = (WuxingSocklet) applicationContext.getBean("wuxingSocklet");
 		//

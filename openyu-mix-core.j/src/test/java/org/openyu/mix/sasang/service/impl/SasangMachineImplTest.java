@@ -3,6 +3,8 @@ package org.openyu.mix.sasang.service.impl;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import java.util.List;
+
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import org.openyu.mix.sasang.SasangTestSupporter;
@@ -14,6 +16,14 @@ import org.openyu.commons.lang.SystemHelper;
 
 public class SasangMachineImplTest extends SasangTestSupporter {
 
+	protected static SasangMachineImpl sasangMachineImpl;
+
+	@BeforeClass
+	public static void setUpBeforeClass() throws Exception {
+		SasangTestSupporter.setUpBeforeClass();
+		sasangMachineImpl = (SasangMachineImpl) sasangMachine;
+	}
+
 	@Test
 	// 1000000 times: 1542 mills.
 	// 1000000 times: 1385 mills.
@@ -23,19 +33,19 @@ public class SasangMachineImplTest extends SasangTestSupporter {
 		int count = 1000000;
 		long beg = System.currentTimeMillis();
 		for (int i = 0; i < count; i++) {
-			result = sasangMachine.calcSasangTypeWeights();
+			result = sasangMachineImpl.calcSasangTypeWeights();
 		}
 		long end = System.currentTimeMillis();
 		System.out.println(count + " times: " + (end - beg) + " mills. ");
 
 		System.out.println(result);
-		System.out.println(sasangMachine.getSasangWeights());
+		System.out.println(sasangMachineImpl.getSasangWeights());
 		//
-		int weight = sasangMachine.getSasangTypeWeight(SasangType.AZURE_DRAGON, 0);
+		int weight = sasangMachineImpl.getSasangTypeWeight(SasangType.AZURE_DRAGON, 0);
 		System.out.println(weight);
 		assertEquals(4, weight);
 		//
-		weight = sasangMachine.getSasangTypeWeight(SasangType.VERMILION_BIRD, 2);
+		weight = sasangMachineImpl.getSasangTypeWeight(SasangType.VERMILION_BIRD, 2);
 		System.out.println(weight);
 		assertEquals(2, weight);
 	}
@@ -49,27 +59,27 @@ public class SasangMachineImplTest extends SasangTestSupporter {
 		int count = 1000000;
 		long beg = System.currentTimeMillis();
 		for (int i = 0; i < count; i++) {
-			result = sasangMachine.calcRoundWeightSums();
+			result = sasangMachineImpl.calcRoundWeightSums();
 		}
 		long end = System.currentTimeMillis();
 		System.out.println(count + " times: " + (end - beg) + " mills. ");
 
 		System.out.println(result);
-		System.out.println(sasangMachine.getRoundWeightSums());
+		System.out.println(sasangMachineImpl.getRoundWeightSums());
 		//
-		int sum = sasangMachine.getRoundWeightSum(0);
+		int sum = sasangMachineImpl.getRoundWeightSum(0);
 		System.out.println(sum);// 64
 		assertEquals(64, sum);
 		//
-		sum = sasangMachine.getRoundWeightSum(1);
+		sum = sasangMachineImpl.getRoundWeightSum(1);
 		System.out.println(sum);// 64
 		assertEquals(64, sum);
 		//
-		sum = sasangMachine.getRoundWeightSum(2);
+		sum = sasangMachineImpl.getRoundWeightSum(2);
 		System.out.println(sum);// 64
 		assertEquals(64, sum);
 		//
-		sum = sasangMachine.getRoundWeightSum(3);
+		sum = sasangMachineImpl.getRoundWeightSum(3);
 		System.out.println(sum);// 0
 	}
 
@@ -79,7 +89,7 @@ public class SasangMachineImplTest extends SasangTestSupporter {
 		int count = 1;
 		long beg = System.currentTimeMillis();
 		for (int i = 0; i < count; i++) {
-			result = sasangMachine.calcSameThreeProbs();
+			result = sasangMachineImpl.calcSameThreeProbs();
 		}
 		long end = System.currentTimeMillis();
 		System.out.println(count + " times: " + (end - beg) + " mills. ");
@@ -88,21 +98,21 @@ public class SasangMachineImplTest extends SasangTestSupporter {
 		// VERMILION_BIRD=1.525879E-4, BLACK_TORTOISE=4.577637E-4,
 		// YIN=8.010864E-4, YANG=0.0010986328, NOTHING=0.1659851074}
 		System.out.println(result);
-		System.out.println(sasangMachine.getSameThreeProbs());
+		System.out.println(sasangMachineImpl.getSameThreeProbs());
 		//
-		double prob = sasangMachine.getSameThreeProb(SasangType.AZURE_DRAGON);// 4.57764E-5,1/10w
+		double prob = sasangMachineImpl.getSameThreeProb(SasangType.AZURE_DRAGON);// 4.57764E-5,1/10w
 		System.out.println(NumberHelper.toString(prob, "#,##0.##########"));
 		assertEquals(Double.doubleToLongBits(4.57764E-5), Double.doubleToLongBits(prob));
 		//
-		prob = sasangMachine.getSameThreeProb(SasangType.WHITE_TIGER);// 2.746582E-4,1/1w
+		prob = sasangMachineImpl.getSameThreeProb(SasangType.WHITE_TIGER);// 2.746582E-4,1/1w
 		System.out.println(NumberHelper.toString(prob, "#,##0.##########"));
 		assertEquals(Double.doubleToLongBits(2.746582E-4), Double.doubleToLongBits(prob));
 		//
-		prob = sasangMachine.getSameThreeProb(SasangType.VERMILION_BIRD);// 1.525879E-4,1/1w
+		prob = sasangMachineImpl.getSameThreeProb(SasangType.VERMILION_BIRD);// 1.525879E-4,1/1w
 		System.out.println(NumberHelper.toString(prob, "#,##0.##########"));
 		assertEquals(Double.doubleToLongBits(1.525879E-4), Double.doubleToLongBits(prob));
 		//
-		prob = sasangMachine.getSameThreeProb(SasangType.BLACK_TORTOISE);// 4.577637E-4,1/1w
+		prob = sasangMachineImpl.getSameThreeProb(SasangType.BLACK_TORTOISE);// 4.577637E-4,1/1w
 		System.out.println(NumberHelper.toString(prob, "#,##0.##########"));
 		assertEquals(Double.doubleToLongBits(4.577637E-4), Double.doubleToLongBits(prob));
 	}
@@ -113,7 +123,7 @@ public class SasangMachineImplTest extends SasangTestSupporter {
 		int count = 1;
 		long beg = System.currentTimeMillis();
 		for (int i = 0; i < count; i++) {
-			result = sasangMachine.calcSameTwoProbs();
+			result = sasangMachineImpl.calcSameTwoProbs();
 		}
 		long end = System.currentTimeMillis();
 		System.out.println(count + " times: " + (end - beg) + " mills. ");
@@ -122,21 +132,21 @@ public class SasangMachineImplTest extends SasangTestSupporter {
 		// VERMILION_BIRD=0.0088195801, BLACK_TORTOISE=0.0166931152,
 		// YIN=0.0237197876, YANG=0.0289306641, NOTHING=0.4214782715}
 		System.out.println(result);
-		System.out.println(sasangMachine.getSameTwoProbs());
+		System.out.println(sasangMachineImpl.getSameTwoProbs());
 		//
-		double prob = sasangMachine.getSameTwoProb(SasangType.AZURE_DRAGON);// 0.0045013428
+		double prob = sasangMachineImpl.getSameTwoProb(SasangType.AZURE_DRAGON);// 0.0045013428
 		System.out.println(prob);
 		assertEquals(Double.doubleToLongBits(0.0045013428), Double.doubleToLongBits(prob));
 		//
-		prob = sasangMachine.getSameTwoProb(SasangType.WHITE_TIGER);// 0.0123596191
+		prob = sasangMachineImpl.getSameTwoProb(SasangType.WHITE_TIGER);// 0.0123596191
 		System.out.println(prob);
 		assertEquals(Double.doubleToLongBits(0.0123596191), Double.doubleToLongBits(prob));
 		//
-		prob = sasangMachine.getSameTwoProb(SasangType.VERMILION_BIRD);// 0.0088195801
+		prob = sasangMachineImpl.getSameTwoProb(SasangType.VERMILION_BIRD);// 0.0088195801
 		System.out.println(prob);
 		assertEquals(Double.doubleToLongBits(0.0088195801), Double.doubleToLongBits(prob));
 		//
-		prob = sasangMachine.getSameTwoProb(SasangType.BLACK_TORTOISE);// 0.0166931152
+		prob = sasangMachineImpl.getSameTwoProb(SasangType.BLACK_TORTOISE);// 0.0166931152
 		System.out.println(prob);
 		assertEquals(Double.doubleToLongBits(0.0166931152), Double.doubleToLongBits(prob));
 	}
@@ -147,13 +157,13 @@ public class SasangMachineImplTest extends SasangTestSupporter {
 		int count = 1;
 		long beg = System.currentTimeMillis();
 		for (int i = 0; i < count; i++) {
-			result = sasangMachine.calcTotalProbSums();
+			result = sasangMachineImpl.calcTotalProbSums();
 		}
 		long end = System.currentTimeMillis();
 		System.out.println(count + " times: " + (end - beg) + " mills. ");
 
 		System.out.println(result);
-		double[] probSums = sasangMachine.getProbSums();
+		double[] probSums = sasangMachineImpl.getProbSums();
 		SystemHelper.println(probSums);// 0.0028305054, 0.0950241089,
 										// 0.9021453857
 
@@ -176,7 +186,7 @@ public class SasangMachineImplTest extends SasangTestSupporter {
 		int count = 1000000;// 100w
 		long beg = System.currentTimeMillis();
 		for (int i = 0; i < count; i++) {
-			result = sasangMachine.playByType(SasangType.AZURE_DRAGON, 3);// 3個相同青龍
+			result = sasangMachineImpl.playByType(SasangType.AZURE_DRAGON, 3);// 3個相同青龍
 			if (result) {
 				times += 1;
 			}
@@ -189,7 +199,7 @@ public class SasangMachineImplTest extends SasangTestSupporter {
 		times = 0;
 		beg = System.currentTimeMillis();
 		for (int i = 0; i < count; i++) {
-			result = sasangMachine.playByType(SasangType.AZURE_DRAGON, 2);// 2個相同青龍
+			result = sasangMachineImpl.playByType(SasangType.AZURE_DRAGON, 2);// 2個相同青龍
 			if (result) {
 				times += 1;
 			}
@@ -202,7 +212,7 @@ public class SasangMachineImplTest extends SasangTestSupporter {
 		times = 0;
 		beg = System.currentTimeMillis();
 		for (int i = 0; i < count; i++) {
-			result = sasangMachine.playByType(SasangType.WHITE_TIGER, 3);// 3個相同白虎
+			result = sasangMachineImpl.playByType(SasangType.WHITE_TIGER, 3);// 3個相同白虎
 			if (result) {
 				times += 1;
 			}
@@ -219,15 +229,15 @@ public class SasangMachineImplTest extends SasangTestSupporter {
 		int count = 1;
 		long beg = System.currentTimeMillis();
 		for (int i = 0; i < count; i++) {
-			result = sasangMachine.buildOutcomes();
+			result = sasangMachineImpl.buildOutcomes();
 		}
 		long end = System.currentTimeMillis();
 		System.out.println(count + " times: " + (end - beg) + " mills. ");
 
 		System.out.println(result);
-		System.out.println(sasangMachine.getOutcomes());
+		System.out.println(sasangMachineImpl.getOutcomes());
 
-		int size = sasangMachine.getOutcomes().size();
+		int size = sasangMachineImpl.getOutcomes().size();
 		System.out.println(size);
 		assertEquals(343, size);// 3輪^7=343個
 	}
@@ -238,13 +248,13 @@ public class SasangMachineImplTest extends SasangTestSupporter {
 		int count = 1;
 		long beg = System.currentTimeMillis();
 		for (int i = 0; i < count; i++) {
-			result = sasangMachine.calcOutcomesProbSum();
+			result = sasangMachineImpl.calcOutcomesProbSum();
 		}
 		long end = System.currentTimeMillis();
 		System.out.println(count + " times: " + (end - beg) + " mills. ");
 
 		System.out.println(result);
-		System.out.println(sasangMachine.getOutcomesProbSum());// 1.0000000005
+		System.out.println(sasangMachineImpl.getOutcomesProbSum());// 1.0000000005
 	}
 
 	@Test
@@ -261,7 +271,7 @@ public class SasangMachineImplTest extends SasangTestSupporter {
 		int count = 1000000;// 100w
 		long beg = System.currentTimeMillis();
 		for (int i = 0; i < count; i++) {
-			result = sasangMachine.play();
+			result = sasangMachineImpl.play();
 			OutcomeType outcomeType = result.getOutcomeType();
 			if (outcomeType == OutcomeType.SAME_THREE) {
 				count3same += 1;
@@ -285,11 +295,11 @@ public class SasangMachineImplTest extends SasangTestSupporter {
 		System.out.println("中獎總計: " + (count3same + count2same + countStandAlone));
 		//
 		//
-		result = sasangMachine.play();
+		result = sasangMachineImpl.play();
 		System.out.println(result);
 		assertNotNull(result);
 		//
-		result = sasangMachine.play();
+		result = sasangMachineImpl.play();
 		System.out.println(result);
 		assertNotNull(result);
 	}
@@ -304,7 +314,7 @@ public class SasangMachineImplTest extends SasangTestSupporter {
 		int count = 100000;// 100w
 		long beg = System.currentTimeMillis();
 		for (int i = 0; i < count; i++) {
-			result = sasangMachine.play(10);
+			result = sasangMachineImpl.play(10);
 		}
 		//
 		long end = System.currentTimeMillis();
@@ -313,7 +323,7 @@ public class SasangMachineImplTest extends SasangTestSupporter {
 		System.out.println(result.size() + ", " + result);
 		assertEquals(10, result.size());
 		//
-		result = sasangMachine.play(10);
+		result = sasangMachineImpl.play(10);
 		System.out.println(result.size() + ", " + result);
 		assertEquals(10, result.size());
 	}
@@ -324,7 +334,7 @@ public class SasangMachineImplTest extends SasangTestSupporter {
 		int count = 1;
 		long beg = System.currentTimeMillis();
 		for (int i = 0; i < count; i++) {
-			result = sasangMachine.createOutcome("111");
+			result = sasangMachineImpl.createOutcome("111");
 		}
 		long end = System.currentTimeMillis();
 		System.out.println(count + " times: " + (end - beg) + " mills. ");

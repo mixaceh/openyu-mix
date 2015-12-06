@@ -15,9 +15,9 @@ import org.openyu.mix.sasang.aop.SasangPutAllInterceptor;
 import org.openyu.mix.sasang.aop.SasangPutOneInterceptor;
 import org.openyu.mix.sasang.dao.SasangLogDao;
 import org.openyu.mix.sasang.service.SasangLogService;
+import org.openyu.mix.sasang.service.SasangMachine;
 import org.openyu.mix.sasang.service.SasangService;
 import org.openyu.mix.sasang.service.adapter.SasangChangeAdapter;
-import org.openyu.mix.sasang.service.impl.SasangMachineImpl;
 import org.openyu.mix.sasang.socklet.SasangSocklet;
 import org.openyu.mix.sasang.vo.Outcome;
 import org.openyu.mix.sasang.vo.SasangCollector;
@@ -42,8 +42,10 @@ public class SasangTestSupporter extends AppTestSupporter {
 
 	/**
 	 * 取實作class,所以不能用aop
+	 * 
+	 * 改取interface
 	 */
-	protected static SasangMachineImpl sasangMachine;
+	protected static SasangMachine sasangMachine;
 
 	protected static SasangService sasangService;
 
@@ -85,7 +87,7 @@ public class SasangTestSupporter extends AppTestSupporter {
 		// 道具
 		itemService = (ItemService) applicationContext.getBean("itemService");
 		//
-		sasangMachine = (SasangMachineImpl) applicationContext
+		sasangMachine = (SasangMachine) applicationContext
 				.getBean("sasangMachine");
 		sasangService = (SasangService) applicationContext
 				.getBean("sasangService");
