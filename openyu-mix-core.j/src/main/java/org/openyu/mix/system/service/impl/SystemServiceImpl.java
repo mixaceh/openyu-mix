@@ -2,6 +2,7 @@ package org.openyu.mix.system.service.impl;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.openyu.mix.app.service.supporter.AppServiceSupporter;
 import org.openyu.mix.core.service.CoreMessageType;
@@ -165,7 +166,7 @@ public class SystemServiceImpl extends AppServiceSupporter implements SystemServ
 		result.setConnected(true);
 
 		// 載入欲加入的伺服器關連
-		List<String> relations = getAcceptorService().getRelations();
+		Set<String> relations = getAcceptorService().getRelations().keySet();
 		for (String rationId : relations) {
 			Relation relation = new RelationImpl();
 			relation.setId(rationId);
