@@ -27,7 +27,7 @@ import org.openyu.mix.app.AppTestSupporter;
 //
 		"classpath:applicationContext-init.xml",//
 		"classpath:META-INF/applicationContext-commons-core.xml",//
-		"classpath:applicationContext-message.xml",//
+		"classpath:applicationContext-i18n.xml",//
 		"classpath:applicationContext-database.xml",//
 		"classpath:applicationContext-database-log.xml",//
 		// "classpath:applicationContext-schedule.xml",// 排程
@@ -67,7 +67,7 @@ public class AccountTestSupporter2 extends AppTestSupporter {
 	// applicationContext = new ClassPathXmlApplicationContext(new String[] {
 	// "applicationContext-init.xml",//
 	// "META-INF/applicationContext-commons-core.xml",//
-	// "applicationContext-message.xml",//
+	// "applicationContext-i18n.xml",//
 	// "applicationContext-database.xml",//
 	// "applicationContext-database-log.xml",//
 	// // "applicationContext-schedule.xml",// 排程

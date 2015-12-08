@@ -66,7 +66,7 @@ public class SasangTestSupporter extends AppTestSupporter {
 		applicationContext = new ClassPathXmlApplicationContext(new String[] {//
 				"applicationContext-init.xml", //
 				"applicationContext-bean.xml", //
-				"applicationContext-message.xml", //
+				"applicationContext-i18n.xml", //
 				"applicationContext-acceptor.xml", //
 				"applicationContext-database.xml", //
 				"applicationContext-database-log.xml", //

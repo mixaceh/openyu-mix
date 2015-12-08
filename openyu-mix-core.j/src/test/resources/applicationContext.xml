@@ -13,7 +13,7 @@
 	<!-- init by project -->
 	<import resource="classpath:applicationContext-init.xml" />
 	<import resource="classpath:applicationContext-bean.xml" />
-	<import resource="classpath:applicationContext-message.xml" />
+	<import resource="classpath:applicationContext-i18n.xml" />
 	<import resource="classpath:applicationContext-acceptor.xml" />
 	<import resource="classpath:applicationContext-database.xml" />
 	<import resource="classpath:applicationContext-database-log.xml" />

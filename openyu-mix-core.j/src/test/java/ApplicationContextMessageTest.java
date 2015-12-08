@@ -12,7 +12,7 @@ public class ApplicationContextMessageTest extends BaseTestSupporter {
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
 		applicationContext = new ClassPathXmlApplicationContext(
-				new String[] { "applicationContext-message.xml"//
+				new String[] { "applicationContext-i18n.xml"//
 				});
 	}
 
