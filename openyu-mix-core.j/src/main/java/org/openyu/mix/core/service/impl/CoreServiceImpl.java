@@ -53,8 +53,7 @@ public class CoreServiceImpl extends AppServiceSupporter implements CoreService 
 
 	private static final long serialVersionUID = -5090784355697979943L;
 
-	private static transient final Logger LOGGER = LoggerFactory
-			.getLogger(CoreServiceImpl.class);
+	private static transient final Logger LOGGER = LoggerFactory.getLogger(CoreServiceImpl.class);
 
 	@Autowired
 	@Qualifier("accountService")
@@ -315,8 +314,7 @@ public class CoreServiceImpl extends AppServiceSupporter implements CoreService 
 	/**
 	 * 檢查角色結果
 	 */
-	public static class CheckRoleResultImpl extends AppResultSupporter
-			implements CheckRoleResult {
+	public static class CheckRoleResultImpl extends AppResultSupporter implements CheckRoleResult {
 
 		private static final long serialVersionUID = 56269573789421786L;
 
@@ -354,8 +352,7 @@ public class CoreServiceImpl extends AppServiceSupporter implements CoreService 
 		}
 
 		public String toString() {
-			ToStringBuilder builder = new ToStringBuilder(this,
-					ToStringStyle.SIMPLE_STYLE);
+			ToStringBuilder builder = new ToStringBuilder(this, ToStringStyle.SIMPLE_STYLE);
 			builder.appendSuper(super.toString());
 			builder.append("account", accountResult);
 			builder.append("role", roleResult);
@@ -393,12 +390,13 @@ public class CoreServiceImpl extends AppServiceSupporter implements CoreService 
 		if (exist) {
 			role = storeRoleService.deserializeRole(roleId);
 			// 在storeRoleService.storeRole中才刪除ser
-			LOGGER.info("[" + roleId + "] Restored from ser file [" + serName
-					+ "]");
+			LOGGER.info("[" + roleId + "] Restored from ser file [" + serName + "]");
 		} else {
 			// 2.若沒ser, 則從DB回存到mem
 			role = roleService.findRole(roleId);
-			LOGGER.info("Role [" + roleId + "] restored from DB");
+			if (role != null) {
+				LOGGER.info("Role [" + roleId + "] restored from DB");
+			}
 		}
 
 		// 當無角色時, 依據是否為TEST_ROLE開頭的id, 建立role
@@ -409,17 +407,15 @@ public class CoreServiceImpl extends AppServiceSupporter implements CoreService 
 				// industryId=HUMAN_WARRIOR_1
 				String name = roleId.substring(TEST_ROLE.length());// _mary
 
-				role = roleService.createRole(roleId, safeRoleName(name),
-						RaceType.RONG, CareerType.WARRIOR_1, GenderType.FEMALE,
-						HairType.SHORT, FaceType.CUTE);
+				role = roleService.createRole(roleId, safeRoleName(name), RaceType.RONG, CareerType.WARRIOR_1,
+						GenderType.FEMALE, HairType.SHORT, FaceType.CUTE);
 
 				String accountId = TEST_ACCOUNT + name;
 				account = accountService.findAccount(accountId);
 
 				// 無角色,無帳號
 				if (account == null) {
-					account = accountService.createAccount(accountId,
-							safeAccountName(name));
+					account = accountService.createAccount(accountId, safeAccountName(name));
 					// 存到DB
 					accountService.insert(account);
 				} else {
@@ -454,8 +450,7 @@ public class CoreServiceImpl extends AppServiceSupporter implements CoreService 
 				account = accountService.findAccount(accountId);
 				// 有角色,無帳號
 				if (account == null) {
-					account = accountService.createAccount(accountId,
-							safeAccountName(name));
+					account = accountService.createAccount(accountId, safeAccountName(name));
 					accountService.insert(account);
 					role.setAccountId(account.getId());
 				} else {
@@ -518,14 +513,14 @@ public class CoreServiceImpl extends AppServiceSupporter implements CoreService 
 		if (exist) {
 			chat = storeChatService.deserializeChat(roleId);
 			// 在storeChatService.storeChat中才刪除ser
-			LOGGER.info("[" + roleId + "] Restored from ser file [" + serName
-					+ "]");
+			LOGGER.info("[" + roleId + "] Restored from ser file [" + serName + "]");
 		} else {
 			// 2.若沒ser, 則從DB回存到mem
 			chat = chatService.findChat(roleId);
-			LOGGER.info("Chat [" + roleId + "] restored from DB");
+			if (chat != null) {
+				LOGGER.info("Chat [" + chat.getId() + "] restored from DB");
+			}
 		}
-
 		//
 		if (chat == null) {
 			chat = chatService.createChat(roleId);
@@ -697,8 +692,7 @@ public class CoreServiceImpl extends AppServiceSupporter implements CoreService 
 	/**
 	 * 檢查檢查本文結果
 	 */
-	public class CheckContextResultImpl extends AppResultSupporter implements
-			CheckContextResult {
+	public class CheckContextResultImpl extends AppResultSupporter implements CheckContextResult {
 
 		private static final long serialVersionUID = -7440553804477362234L;
 
@@ -726,8 +720,7 @@ public class CoreServiceImpl extends AppServiceSupporter implements CoreService 
 		}
 
 		public String toString() {
-			ToStringBuilder builder = new ToStringBuilder(this,
-					ToStringStyle.SIMPLE_STYLE);
+			ToStringBuilder builder = new ToStringBuilder(this, ToStringStyle.SIMPLE_STYLE);
 			builder.appendSuper(super.toString());
 			builder.append("context", context);
 			builder.append("errorType", errorType);
@@ -790,8 +783,7 @@ public class CoreServiceImpl extends AppServiceSupporter implements CoreService 
 	/**
 	 * 檢查伺服器關連結果
 	 */
-	public class CheckRelationResultImpl extends AppResultSupporter implements
-			CheckRelationResult {
+	public class CheckRelationResultImpl extends AppResultSupporter implements CheckRelationResult {
 
 		private static final long serialVersionUID = 56269573789421786L;
 
@@ -819,8 +811,7 @@ public class CoreServiceImpl extends AppServiceSupporter implements CoreService 
 		}
 
 		public String toString() {
-			ToStringBuilder builder = new ToStringBuilder(this,
-					ToStringStyle.SIMPLE_STYLE);
+			ToStringBuilder builder = new ToStringBuilder(this, ToStringStyle.SIMPLE_STYLE);
 			builder.appendSuper(super.toString());
 			builder.append("relation", relation);
 			builder.append("errorType", errorType);
