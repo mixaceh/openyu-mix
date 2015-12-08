@@ -7,7 +7,7 @@ import org.springframework.context.support.ResourceBundleMessageSource;
 
 import org.openyu.commons.junit.supporter.BaseTestSupporter;
 
-public class ApplicationContextMessageTest extends BaseTestSupporter {
+public class ApplicationContextI18nTest extends BaseTestSupporter {
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
