@@ -18,13 +18,11 @@ import org.openyu.commons.dao.inquiry.Inquiry;
 import org.openyu.commons.util.concurrent.MapCache;
 import org.openyu.commons.util.concurrent.impl.MapCacheImpl;
 
-public class CoreLogServiceImpl extends AppLogServiceSupporter implements
-		CoreLogService {
+public class CoreLogServiceImpl extends AppLogServiceSupporter implements CoreLogService {
 
 	private static final long serialVersionUID = -8168690228036491535L;
 
-	private static transient final Logger LOGGER = LoggerFactory
-			.getLogger(CoreLogServiceImpl.class);
+	private static transient final Logger LOGGER = LoggerFactory.getLogger(CoreLogServiceImpl.class);
 
 	@Autowired
 	@Qualifier("roleService")
@@ -53,8 +51,7 @@ public class CoreLogServiceImpl extends AppLogServiceSupporter implements
 		return coreLogDao.findCoreConnectLog(roleId);
 	}
 
-	public List<CoreConnectLog> findCoreConnectLog(Inquiry inquiry,
-			String roleId) {
+	public List<CoreConnectLog> findCoreConnectLog(Inquiry inquiry, String roleId) {
 		return coreLogDao.findCoreConnectLog(inquiry, roleId);
 	}
 
@@ -124,17 +121,17 @@ public class CoreLogServiceImpl extends AppLogServiceSupporter implements
 				log.setOnlineMills(online);
 			}
 		}
-		//新增log
+		// 新增log
 		if (insert) {
 			offerInsert(log);
 		} else {
-			//修改log
-			//offerUpdate(log);//沒存
-			//queueService.offerUpdate(log);//沒存
- 
-			update(log);//ok
-			
-			//offerUpdate(log);//TODO test
+			// 修改log
+			// offerUpdate(log);//沒存
+			// queueService.offerUpdate(log);//沒存
+
+			// update(log);//ok
+
+			offerUpdate(log);// ok
 		}
 
 		// 從mem移除

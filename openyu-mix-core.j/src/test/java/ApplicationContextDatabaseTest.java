@@ -10,6 +10,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.jdbc.Work;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.orm.hibernate4.HibernateTemplate;
 import org.springframework.orm.hibernate4.HibernateTransactionManager;
@@ -18,7 +19,9 @@ import org.openyu.mix.app.dao.AppDao;
 import org.openyu.mix.app.service.AppService;
 import org.openyu.commons.dao.supporter.CommonDaoSupporter;
 import org.openyu.commons.junit.supporter.BaseTestSupporter;
+import org.openyu.commons.service.AsyncService;
 import org.openyu.commons.service.CommonService;
+import org.openyu.commons.thread.ThreadHelper;
 
 public class ApplicationContextDatabaseTest extends BaseTestSupporter {
 
@@ -106,5 +109,17 @@ public class ApplicationContextDatabaseTest extends BaseTestSupporter {
 		AppService bean = (AppService) applicationContext.getBean("appServiceSupporter");
 		System.out.println(bean);
 		assertNotNull(bean);
+	}
+
+	@Test
+	public void asyncService() {
+		AsyncService bean = (AsyncService) applicationContext.getBean("asyncService");
+		System.out.println(bean);
+		assertNotNull(bean);
+		//
+		ThreadHelper.sleep(3 * 1000);
+		BeanDefinitionRegistry factory = (BeanDefinitionRegistry) applicationContext.getAutowireCapableBeanFactory();
+		factory.removeBeanDefinition("asyncService");
+		ThreadHelper.sleep(3 * 1000);
 	}
 }
