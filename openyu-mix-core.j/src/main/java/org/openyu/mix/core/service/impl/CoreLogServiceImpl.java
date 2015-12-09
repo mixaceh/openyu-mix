@@ -131,8 +131,10 @@ public class CoreLogServiceImpl extends AppLogServiceSupporter implements
 			//修改log
 			//offerUpdate(log);//沒存
 			//queueService.offerUpdate(log);//沒存
-			//TODO 
+ 
 			update(log);//ok
+			
+			//offerUpdate(log);//TODO test
 		}
 
 		// 從mem移除

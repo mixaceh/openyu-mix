@@ -140,28 +140,22 @@
 		class="org.openyu.mix.app.dao.supporter.AppLogDaoSupporter"
 		parent="logCommonDaoSupporter" />
 	
-	<!-- queue service -->
+	<!-- log async service -->
 	<bean
-		id="logQueueService"
-		class="org.openyu.commons.service.impl.QueueServiceImpl"
-		parent="baseServiceSupporter">
-		<property name="threadService">
-			<ref bean="threadService" />
-		</property>
-		<property name="commonDao">
-			<ref bean="logCommonDaoSupporter" />
-		</property>
-	</bean>
+		id="logAsyncCommonService"
+		class="org.openyu.commons.service.impl.AsyncCommonServiceImpl"
+		parent="baseServiceSupporter"
+		p:commonDao-ref="logCommonDaoSupporter" />
 	
 	<!-- advisor -->
 	<aop:config>
 		<aop:pointcut
-			id="logQueueServiceTxPointcut"
-			expression="bean(logQueueService)" />
+			id="logAsyncCommonServiceTxPointcut"
+			expression="bean(logAsyncCommonService)" />
 		<aop:advisor
-			id="logQueueServiceTxAdvisor"
+			id="logAsyncCommonServiceTxAdvisor"
 			advice-ref="logTxAdvice"
-			pointcut-ref="logQueueServiceTxPointcut" />
+			pointcut-ref="logAsyncCommonServiceTxPointcut" />
 	</aop:config>
 
 	<!-- log service supporter -->

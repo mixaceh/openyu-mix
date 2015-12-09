@@ -19,8 +19,8 @@ import org.openyu.mix.app.dao.AppLogDao;
 import org.openyu.mix.app.service.AppLogService;
 import org.openyu.commons.dao.supporter.CommonDaoSupporter;
 import org.openyu.commons.junit.supporter.BaseTestSupporter;
+import org.openyu.commons.service.AsyncCommonService;
 import org.openyu.commons.service.BaseLogService;
-import org.openyu.commons.service.QueueService;
 import org.openyu.commons.thread.ThreadHelper;
 
 public class ApplicationContextDatabaseLogTest extends BaseTestSupporter {
@@ -107,14 +107,14 @@ public class ApplicationContextDatabaseLogTest extends BaseTestSupporter {
 	}
 
 	@Test
-	public void logQueueService() {
-		QueueService bean = (QueueService) applicationContext.getBean("logQueueService");
+	public void logAsyncCommonService() {
+		AsyncCommonService bean = (AsyncCommonService) applicationContext.getBean("logAsyncCommonService");
 		System.out.println(bean);
 		assertNotNull(bean);
 		//
 		ThreadHelper.sleep(3 * 1000);
 		BeanDefinitionRegistry factory = (BeanDefinitionRegistry) applicationContext.getAutowireCapableBeanFactory();
-		factory.removeBeanDefinition("logQueueService");
+		factory.removeBeanDefinition("logAsyncCommonService");
 		ThreadHelper.sleep(3 * 1000);
 	}
 }
