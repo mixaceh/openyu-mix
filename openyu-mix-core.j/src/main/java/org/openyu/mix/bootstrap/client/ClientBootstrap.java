@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 /**
  * client啟動器
  */
+@Deprecated
 public final class ClientBootstrap implements Supporter {
 	
 	private static transient final Logger LOGGER = LoggerFactory
