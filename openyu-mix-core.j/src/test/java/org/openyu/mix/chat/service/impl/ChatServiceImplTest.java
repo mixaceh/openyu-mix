@@ -44,8 +44,8 @@ public class ChatServiceImplTest extends ChatTestSupporter {
 		System.out.println(count + " times: " + (end - beg) + " mills. ");
 
 		System.out.println(result.getId());
-		System.out.println(chatService.getBeanCache().size() + ", "
-				+ chatService.getBeanCache());
+		System.out.println(chatService.getBeans().size() + ", "
+				+ chatService.getBeans());
 	}
 
 	@Test
