@@ -10,7 +10,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.openyu.commons.junit.supporter.BaseTestSupporter;
 import org.openyu.commons.thread.ThreadHelper;
 
-public class ApplicationContextScheduleTest extends BaseTestSupporter {
+public class ApplicationContextQuartzTest extends BaseTestSupporter {
 
 	private static ApplicationContext applicationContext;
 

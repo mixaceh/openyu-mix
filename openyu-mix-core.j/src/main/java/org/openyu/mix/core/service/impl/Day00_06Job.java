@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
 /**
- * 排程每日00:00執行
+ * 排程每日00:06執行
  */
 public class Day00_06Job extends BaseJobSupporter {
 
