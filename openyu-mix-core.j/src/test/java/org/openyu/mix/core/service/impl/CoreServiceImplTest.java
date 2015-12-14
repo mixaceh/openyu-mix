@@ -41,11 +41,11 @@ public class CoreServiceImplTest extends CoreTestSupporter {
 	}
 
 	@Test
-	public void day0000() {
+	public void roleConnect() {
 		final String ROLE_ID = "TEST_ROLE";
 		coreService.roleConnect(ROLE_ID, null);
 		//
-		ThreadHelper.sleep(600 * 1000);
+		ThreadHelper.sleep(30 * 1000);
 	}
 
 	@Test
@@ -63,9 +63,6 @@ public class CoreServiceImplTest extends CoreTestSupporter {
 	}
 
 	@Test
-	/**
-	 * 
-	 */
 	public void disconnect() {
 		final String ROLE_ID = "TEST_ROLE";
 		// 連線

@@ -45,7 +45,6 @@ import org.openyu.mix.treasure.service.adapter.TreasureChangeAdapter;
 import org.openyu.mix.wuxing.service.WuxingService;
 import org.openyu.mix.wuxing.service.adapter.WuxingChangeAdapter;
 import org.openyu.commons.io.FileHelper;
-import org.openyu.commons.job.supporter.BaseJobSupporter;
 import org.openyu.commons.lang.StringHelper;
 import org.openyu.socklet.message.vo.Message;
 
@@ -566,39 +565,6 @@ public class CoreServiceImpl extends AppServiceSupporter implements CoreService 
 	/**
 	 * 排程每日00:00執行
 	 */
-	public static class Day00_00Job extends BaseJobSupporter {
-
-		private transient CoreService coreService;
-
-		public Day00_00Job() {
-		}
-
-		public CoreService getCoreService() {
-			return coreService;
-		}
-
-		public void setCoreService(CoreService coreService) {
-			this.coreService = coreService;
-		}
-
-		public void execute() {
-			if (isCancel()) {
-				return;
-			}
-			//
-			StopWatch stopWatch = new StopWatch();
-			stopWatch.start();
-			// --------------------------------------------------
-			coreService.day00_00();
-			// --------------------------------------------------
-			stopWatch.stop();
-			log(LOGGER, CoreService.class, "day00_00", stopWatch);
-		}
-	}
-
-	/**
-	 * 排程每日00:00執行
-	 */
 	public void day00_00() {
 		// 訓練,重置每日可訓練毫秒限制,所有線上玩家
 		trainService.reset(true);
@@ -611,80 +577,14 @@ public class CoreServiceImpl extends AppServiceSupporter implements CoreService 
 	/**
 	 * 排程每日00:03執行
 	 */
-	public static class Day00_03Job extends BaseJobSupporter {
-
-		private transient CoreService coreService;
-
-		public Day00_03Job() {
-		}
-
-		public CoreService getCoreService() {
-			return coreService;
-		}
-
-		public void setCoreService(CoreService coreService) {
-			this.coreService = coreService;
-		}
-
-		public void execute() {
-			if (isCancel()) {
-				return;
-			}
-			//
-			StopWatch stopWatch = new StopWatch();
-			stopWatch.start();
-			// --------------------------------------------------
-			coreService.day00_03();
-			// --------------------------------------------------
-			stopWatch.stop();
-			log(LOGGER, CoreService.class, "day00_03", stopWatch);
-		}
-	}
-
-	/**
-	 * 排程每日00:03執行
-	 */
 	public void day00_03() {
 
 	}
 
 	/**
-	 * 排程每日00:07執行
+	 * 排程每日00:06執行
 	 */
-	public static class Day00_07Job extends BaseJobSupporter {
-
-		private transient CoreService coreService;
-
-		public Day00_07Job() {
-		}
-
-		public CoreService getCoreService() {
-			return coreService;
-		}
-
-		public void setCoreService(CoreService coreService) {
-			this.coreService = coreService;
-		}
-
-		public void execute() {
-			if (isCancel()) {
-				return;
-			}
-			//
-			StopWatch stopWatch = new StopWatch();
-			stopWatch.start();
-			// --------------------------------------------------
-			coreService.day00_07();
-			// --------------------------------------------------
-			stopWatch.stop();
-			log(LOGGER, CoreService.class, "day00_07", stopWatch);
-		}
-	}
-
-	/**
-	 * 排程每日00:07執行
-	 */
-	public void day00_07() {
+	public void day00_06() {
 
 	}
 

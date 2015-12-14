@@ -122,10 +122,10 @@ public interface CoreService extends AppService {
 	void day00_03();
 
 	/**
-	 * 排程每日00:07執行
+	 * 排程每日00:06執行
 	 */
 
-	void day00_07();
+	void day00_06();
 
 	// --------------------------------------------------
 	// 20140919
