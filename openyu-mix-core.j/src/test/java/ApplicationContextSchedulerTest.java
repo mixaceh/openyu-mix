@@ -10,7 +10,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.openyu.commons.junit.supporter.BaseTestSupporter;
 import org.openyu.commons.thread.ThreadHelper;
 
-public class ApplicationContextQuartzTest extends BaseTestSupporter {
+public class ApplicationContextSchedulerTest extends BaseTestSupporter {
 
 	private static ApplicationContext applicationContext;
 
@@ -23,7 +23,7 @@ public class ApplicationContextQuartzTest extends BaseTestSupporter {
 				"applicationContext-acceptor.xml", //
 				"applicationContext-database.xml", //
 				"applicationContext-database-log.xml", //
-				"applicationContext-quartz.xml", // 排程
+				"applicationContext-scheduler.xml", // 排程
 				"org/openyu/mix/app/applicationContext-app.xml", //
 				// biz
 				"org/openyu/mix/system/applicationContext-system.xml", //
@@ -42,43 +42,43 @@ public class ApplicationContextQuartzTest extends BaseTestSupporter {
 	}
 
 	@Test
-	public void coreDay00_00Job() {
-		JobDetail bean = (JobDetail) applicationContext.getBean("coreDay00_00Job");
+	public void day00_00JobDetail() {
+		JobDetail bean = (JobDetail) applicationContext.getBean("day00_00JobDetail");
 		System.out.println(bean);
 		assertNotNull(bean);
 	}
 
 	@Test
-	public void coreDay00_00Trigger() {
-		CronTrigger bean = (CronTrigger) applicationContext.getBean("coreDay00_00Trigger");
+	public void day00_00Trigger() {
+		CronTrigger bean = (CronTrigger) applicationContext.getBean("day00_00Trigger");
 		System.out.println(bean);
 		assertNotNull(bean);
 	}
 
 	@Test
-	public void coreDay00_03Job() {
-		JobDetail bean = (JobDetail) applicationContext.getBean("coreDay00_03Job");
+	public void day00_03JobDetail() {
+		JobDetail bean = (JobDetail) applicationContext.getBean("day00_03JobDetail");
 		System.out.println(bean);
 		assertNotNull(bean);
 	}
 
 	@Test
-	public void coreDay00_03Trigger() {
-		CronTrigger bean = (CronTrigger) applicationContext.getBean("coreDay00_03Trigger");
+	public void day00_03Trigger() {
+		CronTrigger bean = (CronTrigger) applicationContext.getBean("day00_03Trigger");
 		System.out.println(bean);
 		assertNotNull(bean);
 	}
 
 	@Test
-	public void coreDay00_06Job() {
-		JobDetail bean = (JobDetail) applicationContext.getBean("coreDay00_06Job");
+	public void day00_06JobDetail() {
+		JobDetail bean = (JobDetail) applicationContext.getBean("day00_06JobDetail");
 		System.out.println(bean);
 		assertNotNull(bean);
 	}
 
 	@Test
-	public void coreDay00_06Trigger() {
-		CronTrigger bean = (CronTrigger) applicationContext.getBean("coreDay00_06Trigger");
+	public void day00_06Trigger() {
+		CronTrigger bean = (CronTrigger) applicationContext.getBean("day00_06Trigger");
 		System.out.println(bean);
 		assertNotNull(bean);
 	}

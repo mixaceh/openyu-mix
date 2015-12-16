@@ -12,7 +12,7 @@
 	<!-- service -->
 	<!-- 四象機 -->
 	<bean id="sasangMachine" class="org.openyu.mix.sasang.service.impl.SasangMachineImpl"
-		parent="baseServiceSupporter">
+		parent="appServiceSupporter">
 	</bean>
 
 	<!-- 四象服務 -->

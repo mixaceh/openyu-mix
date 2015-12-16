@@ -16,8 +16,6 @@ import org.openyu.commons.enumz.IntEnum;
  * 1.處理角色連線/斷線
  * 
  * 2.處理伺服器關連連線/斷線
- * 
- * 3.處理定時儲存角色
  */
 public interface CoreService extends AppService {
 	/**
@@ -72,8 +70,7 @@ public interface CoreService extends AppService {
 		}
 
 		public String toString() {
-			ToStringBuilder builder = new ToStringBuilder(this,
-					ToStringStyle.SIMPLE_STYLE);
+			ToStringBuilder builder = new ToStringBuilder(this, ToStringStyle.SIMPLE_STYLE);
 			builder.append("(" + value + ") " + super.toString());
 			return builder.toString();
 		}
@@ -109,23 +106,6 @@ public interface CoreService extends AppService {
 	 * @return
 	 */
 	Chat checkChat(String roleId);
-
-	/**
-	 * 排程每日00:00執行
-	 */
-	void day00_00();
-
-	/**
-	 * 排程每日00:03執行
-	 */
-
-	void day00_03();
-
-	/**
-	 * 排程每日00:06執行
-	 */
-
-	void day00_06();
 
 	// --------------------------------------------------
 	// 20140919

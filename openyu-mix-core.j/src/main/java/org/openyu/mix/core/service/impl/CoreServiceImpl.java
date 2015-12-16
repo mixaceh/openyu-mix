@@ -6,7 +6,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.util.StopWatch;
 import org.openyu.mix.account.service.AccountService;
 import org.openyu.mix.account.vo.Account;
 import org.openyu.mix.app.service.supporter.AppServiceSupporter;
@@ -205,8 +204,8 @@ public class CoreServiceImpl extends AppServiceSupporter implements CoreService 
 			// attatch=account
 			wuxingService.roleConnect(roleId, account);// 五行 2013/03/18
 
-		} catch (Exception ex) {
-			ex.printStackTrace();
+		} catch (Exception e) {
+			LOGGER.error(new StringBuilder("Exception encountered during roleConnect()").toString(), e);
 		}
 		return result;
 	}
@@ -270,8 +269,8 @@ public class CoreServiceImpl extends AppServiceSupporter implements CoreService 
 
 			// 發送斷線
 			sendRoleDisconnect(result, attatch);
-		} catch (Exception ex) {
-			ex.printStackTrace();
+		} catch (Exception e) {
+			LOGGER.error(new StringBuilder("Exception encountered during roleDisconnect()").toString(), e);
 		}
 		//
 		return result;
@@ -536,8 +535,8 @@ public class CoreServiceImpl extends AppServiceSupporter implements CoreService 
 	protected void storeChat(Chat chat) {
 		try {
 			storeChatService.storeChat(false, chat);
-		} catch (Exception ex) {
-			ex.printStackTrace();
+		} catch (Exception e) {
+			LOGGER.error(new StringBuilder("Exception encountered during storeChat()").toString(), e);
 		} finally {
 			// 從mem移除
 			chatSetService.removeChat(chat);
@@ -552,40 +551,12 @@ public class CoreServiceImpl extends AppServiceSupporter implements CoreService 
 	protected void storeRole(Role role) {
 		try {
 			storeRoleService.storeRole(false, role);
-		} catch (Exception ex) {
-			ex.printStackTrace();
+		} catch (Exception e) {
+			LOGGER.error(new StringBuilder("Exception encountered during storeChat()").toString(), e);
 		} finally {
 			// 從mem移除
 			roleSetService.removeRole(role);
 		}
-	}
-
-	// --------------------------------------------------
-
-	/**
-	 * 排程每日00:00執行
-	 */
-	public void day00_00() {
-		// 訓練,重置每日可訓練毫秒限制,所有線上玩家
-		trainService.reset(true);
-		// 四象,重置每日已玩的次數,所有線上玩家
-		sasangService.reset(true);
-		// 五行,重置每日已玩的次數,所有線上玩家
-		wuxingService.reset(true);
-	}
-
-	/**
-	 * 排程每日00:03執行
-	 */
-	public void day00_03() {
-
-	}
-
-	/**
-	 * 排程每日00:06執行
-	 */
-	public void day00_06() {
-
 	}
 
 	// --------------------------------------------------
@@ -659,8 +630,8 @@ public class CoreServiceImpl extends AppServiceSupporter implements CoreService 
 			systemService.setContext(result);
 			// 系統服務, 本文連線
 			result = systemService.contextConnect(contextId, attatch);
-		} catch (Exception ex) {
-			ex.printStackTrace();
+		} catch (Exception e) {
+			LOGGER.error(new StringBuilder("Exception encountered during contextConnect()").toString(), e);
 		}
 		return result;
 	}
@@ -672,8 +643,8 @@ public class CoreServiceImpl extends AppServiceSupporter implements CoreService 
 			result = systemService.contextDisconnect(contextId, attatch);
 			// 系統服務,設定本文
 			systemService.setContext(null);
-		} catch (Exception ex) {
-			ex.printStackTrace();
+		} catch (Exception e) {
+			LOGGER.error(new StringBuilder("Exception encountered during contextDisconnect()").toString(), e);
 		}
 		//
 		return result;
@@ -763,8 +734,8 @@ public class CoreServiceImpl extends AppServiceSupporter implements CoreService 
 			relationSetService.addRelation(result);
 			// 系統服務, 伺服器關連連線
 			result = systemService.relationConnect(relationId, attatch);
-		} catch (Exception ex) {
-			ex.printStackTrace();
+		} catch (Exception e) {
+			LOGGER.error(new StringBuilder("Exception encountered during relationConnect()").toString(), e);
 		}
 		return result;
 	}
@@ -787,8 +758,8 @@ public class CoreServiceImpl extends AppServiceSupporter implements CoreService 
 			result = systemService.relationDisconnect(relationId, attatch);
 			// 伺服器關連集合服務
 			relationSetService.removeRelation(result);
-		} catch (Exception ex) {
-			ex.printStackTrace();
+		} catch (Exception e) {
+			LOGGER.error(new StringBuilder("Exception encountered during relationDisconnect()").toString(), e);
 		}
 		//
 		return result;
@@ -806,8 +777,8 @@ public class CoreServiceImpl extends AppServiceSupporter implements CoreService 
 		try {
 			// 系統服務, 伺服器關連無法連線
 			result = systemService.relationRefused(relationId, attatch);
-		} catch (Exception ex) {
-			ex.printStackTrace();
+		} catch (Exception e) {
+			LOGGER.error(new StringBuilder("Exception encountered during relationRefused()").toString(), e);
 		}
 		//
 		return result;

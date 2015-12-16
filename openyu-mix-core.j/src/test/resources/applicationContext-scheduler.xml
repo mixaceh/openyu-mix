@@ -14,21 +14,21 @@
 
 	<!-- 每天 0時0分0秒 執行 -->
 	<bean
-		id="coreDay00_00JobDetail"
+		id="day00_00JobDetail"
 		class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
 		<property
 			name="jobClass"
-			value="org.openyu.mix.core.service.impl.CoreDay00_00Job" />
+			value="org.openyu.mix.job.Day00_00Job" />
 		<property
 			name="durability"
 			value="true" />
 	</bean>
 
 	<bean
-		id="coreDay00_00Trigger"
+		id="day00_00Trigger"
 		class="org.openyu.commons.quartz.PersistableCronTriggerFactoryBean">
 		<property name="jobDetail">
-			<ref bean="coreDay00_00JobDetail" />
+			<ref bean="day00_00JobDetail" />
 		</property>
 		<property name="cronExpression">
 			<value>0 0 0 * * ? *</value>
@@ -37,21 +37,21 @@
 
 	<!-- 每天 3時0分0秒 執行 -->
 	<bean
-		id="coreDay00_03JobDetail"
+		id="day00_03JobDetail"
 		class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
 		<property
 			name="jobClass"
-			value="org.openyu.mix.core.service.impl.CoreDay00_03Job" />
+			value="org.openyu.mix.job.Day00_03Job" />
 		<property
 			name="durability"
 			value="true" />
 	</bean>
 
 	<bean
-		id="coreDay00_03Trigger"
+		id="day00_03Trigger"
 		class="org.openyu.commons.quartz.PersistableCronTriggerFactoryBean">
 		<property name="jobDetail">
-			<ref bean="coreDay00_03JobDetail" />
+			<ref bean="day00_03JobDetail" />
 		</property>
 		<property name="cronExpression">
 			<value>0 0 3 * * ? *</value>
@@ -60,21 +60,21 @@
 
 	<!-- 每天 6時0分0秒 執行 -->
 	<bean
-		id="coreDay00_06JobDetail"
+		id="day00_06JobDetail"
 		class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
 		<property
 			name="jobClass"
-			value="org.openyu.mix.core.service.impl.CoreDay00_06Job" />
+			value="org.openyu.mix.job.Day00_06Job" />
 		<property
 			name="durability"
 			value="true" />
 	</bean>
 
 	<bean
-		id="coreDay00_06Trigger"
+		id="day00_06Trigger"
 		class="org.openyu.commons.quartz.PersistableCronTriggerFactoryBean">
 		<property name="jobDetail">
-			<ref bean="coreDay00_06JobDetail" />
+			<ref bean="day00_06JobDetail" />
 		</property>
 		<property name="cronExpression">
 			<value>0 0 6 * * ? *</value>
@@ -105,16 +105,16 @@
 		<!-- NOTE: Must add both the jobDetail and trigger to the scheduler! -->
 		<property name="jobDetails">
 			<list>
-				<ref bean="coreDay00_00JobDetail" />
-				<ref bean="coreDay00_03JobDetail" />
-				<ref bean="coreDay00_06JobDetail" />
+				<ref bean="day00_00JobDetail" />
+				<ref bean="day00_03JobDetail" />
+				<ref bean="day00_06JobDetail" />
 			</list>
 		</property>
 		<property name="triggers">
 			<list>
-				<ref bean="coreDay00_00Trigger" />
-				<ref bean="coreDay00_03Trigger" />
-				<ref bean="coreDay00_06Trigger" />
+				<ref bean="day00_00Trigger" />
+				<ref bean="day00_03Trigger" />
+				<ref bean="day00_06Trigger" />
 			</list>
 		</property>
 	</bean>

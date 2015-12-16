@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:jaxws="http://cxf.apache.org/jaxws"
+	xsi:schemaLocation="
+             http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+             http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd
+             http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd
+             http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd">
+
+	<!-- 重建索引: OjServiceSupporter.reindex -->
+	<bean id="ojServiceReindexJobDetail" class="org.springframework.scheduling.quartz.JobDetailBean">
+		<property name="jobClass">
+			<value>org.openyu.commons.service.supporter.OjServiceSupporter.ReindexJob
+			</value>
+		</property>
+		<property name="jobDataAsMap">
+			<map>
+				<entry key="disable" value="true" />
+				<entry key="logEnable" value="true" />
+				<entry key="annotationSessionFactoryBean">
+					<ref bean="&amp;sessionFactory" />
+				</entry>
+				<entry key="ojService">
+					<ref bean="ojServiceSupporter" />
+				</entry>
+			</map>
+		</property>
+	</bean>
+
+	<!-- 每天 0時0分0秒 執行 -->
+	<bean id="ojServiceReindexTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail">
+			<ref bean="ojServiceReindexJobDetail" />
+		</property>
+		<property name="cronExpression">
+			<!-- <value>0/10/20/30/40/50 * * * * ? *</value> -->
+			<!-- <value>0 0 0 * * ? *</value> -->
+			<value>0 0 0 * * ? *</value>
+		</property>
+	</bean>
+
+	<!-- 儲存log: LogServiceImpl.saveLog #1 
+	<bean id="logServiceSaveLogJobDetail" class="org.springframework.scheduling.quartz.JobDetailBean">
+		<property name="jobClass">
+			<value>org.openyu.commons.service.impl.LogServiceImpl.SaveLogJob</value>
+		</property>
+		<property name="jobDataAsMap">
+			<map>
+				<entry key="disable" value="false" />
+				<entry key="logEnable" value="false" />
+				<entry key="logService">
+					<ref bean="logService" />
+				</entry>
+			</map>
+		</property>
+	</bean>
+-->
+	<!-- LogServiceImpl.save #2 目前不用,供參考 
+	<bean id="logServiceSaveLogJobDetail2"
+		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="logService" />
+		<property name="targetMethod" value="saveLog" />
+	</bean>
+-->
+	<!-- 每隔 2秒 執行 
+	<bean id="logServiceSaveLogTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail">
+			<ref bean="logServiceSaveLogJobDetail" />
+		</property>
+		<property name="cronExpression">
+			<value>0/2 * * * * ? *</value>
+		</property>
+	</bean>
+-->
+	<!-- fourSymbolService -->
+	<bean id="fourSymbolServiceResetTimesJobDetail" class="org.springframework.scheduling.quartz.JobDetailBean">
+		<property name="jobClass">
+			<value>org.openyu.mix.fourSymbol.service.impl.FourSymbolServiceImpl.ResetTimesJob
+			</value>
+		</property>
+		<property name="jobDataAsMap">
+			<map>
+				<entry key="disable" value="false" />
+				<entry key="logEnable" value="true" />
+				<entry key="fourSymbolService">
+					<ref bean="fourSymbolService" />
+				</entry>
+			</map>
+		</property>
+	</bean>
+
+	<!-- 每天 0時0分0秒 執行 -->
+	<bean id="fourSymbolServiceResetTimesTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail">
+			<ref bean="fourSymbolServiceResetTimesJobDetail" />
+		</property>
+		<property name="cronExpression">
+			<value>0 0 0 * * ? *</value>
+		</property>
+	</bean>
+
+	<!-- 排程 -->
+	<bean id="stdScheduler"
+		class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<property name="triggers">
+			<list>
+				<ref bean="ojServiceReindexTrigger" />
+				<!--  
+				<ref bean="logServiceSaveLogTrigger" />
+				-->
+				<ref bean="fourSymbolServiceResetTimesTrigger" />
+			</list>
+		</property>
+	</bean>
+</beans>

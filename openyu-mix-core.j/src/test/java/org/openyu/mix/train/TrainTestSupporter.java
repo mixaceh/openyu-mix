@@ -56,7 +56,7 @@ public class TrainTestSupporter extends AppTestSupporter {
 				"applicationContext-acceptor.xml", //
 				"applicationContext-database.xml", //
 				"applicationContext-database-log.xml", //
-				// "applicationContext-schedule.xml",// 排程
+				// "applicationContext-scheduler.xml",// 排程
 				"org/openyu/mix/app/applicationContext-app.xml", //
 				// biz
 				"org/openyu/mix/account/applicationContext-account.xml", //

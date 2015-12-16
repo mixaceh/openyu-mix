@@ -9,6 +9,11 @@
              http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd">
 
 	<!-- supporter -->
+	<bean id="appJobSupporter"
+		class="org.openyu.mix.app.job.supporter.AppJobSupporter"
+		parent="baseJobSupporter" abstract="true">
+	</bean>
+		
 	<bean id="appMethodInterceptorSupporter"
 		class="org.openyu.mix.app.aop.supporter.AppMethodInterceptorSupporter"
 		parent="baseMethodInterceptorSupporter" abstract="true">

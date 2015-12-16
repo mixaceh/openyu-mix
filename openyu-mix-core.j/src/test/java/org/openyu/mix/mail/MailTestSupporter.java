@@ -38,7 +38,7 @@ public class MailTestSupporter extends AppTestSupporter {
 				"applicationContext-i18n.xml",//
 				"applicationContext-database.xml",//
 				"applicationContext-database-log.xml",//
-				// "applicationContext-schedule.xml",// 排程
+				// "applicationContext-scheduler.xml",// 排程
 				"META-INF/applicationContext-sls.xml",//
 				"org/openyu/mix/app/applicationContext-app.xml",//
 				// biz
