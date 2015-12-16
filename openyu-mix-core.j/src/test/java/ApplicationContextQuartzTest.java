@@ -23,7 +23,7 @@ public class ApplicationContextQuartzTest extends BaseTestSupporter {
 				"applicationContext-acceptor.xml", //
 				"applicationContext-database.xml", //
 				"applicationContext-database-log.xml", //
-				"applicationContext-schedule.xml", // 排程
+				"applicationContext-quartz.xml", // 排程
 				"org/openyu/mix/app/applicationContext-app.xml", //
 				// biz
 				"org/openyu/mix/system/applicationContext-system.xml", //
@@ -70,15 +70,15 @@ public class ApplicationContextQuartzTest extends BaseTestSupporter {
 	}
 
 	@Test
-	public void coreDay00_07Job() {
-		JobDetail bean = (JobDetail) applicationContext.getBean("coreDay00_07Job");
+	public void coreDay00_06Job() {
+		JobDetail bean = (JobDetail) applicationContext.getBean("coreDay00_06Job");
 		System.out.println(bean);
 		assertNotNull(bean);
 	}
 
 	@Test
-	public void coreDay00_07Trigger() {
-		CronTrigger bean = (CronTrigger) applicationContext.getBean("coreDay00_07Trigger");
+	public void coreDay00_06Trigger() {
+		CronTrigger bean = (CronTrigger) applicationContext.getBean("coreDay00_06Trigger");
 		System.out.println(bean);
 		assertNotNull(bean);
 	}
@@ -89,6 +89,6 @@ public class ApplicationContextQuartzTest extends BaseTestSupporter {
 		System.out.println(bean);
 		assertNotNull(bean);
 		//
-		ThreadHelper.sleep(3 * 1000);
+		ThreadHelper.sleep(5 * 1000);
 	}
 }

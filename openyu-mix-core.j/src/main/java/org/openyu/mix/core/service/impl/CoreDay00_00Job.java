@@ -7,19 +7,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
 /**
- * 排程每日00:06執行
+ * Core每日00:00執行
  */
-public class Day00_06Job extends BaseJobSupporter {
+public class CoreDay00_00Job extends BaseJobSupporter {
 
 	@Autowired
 	@Qualifier("coreService")
 	private transient CoreService coreService;
 
-	public Day00_06Job() {
+	public CoreDay00_00Job() {
 
 	}
 
 	protected void doExecute(JobExecutionContext jobExecutionContext) throws Exception {
-		coreService.day00_06();
+		coreService.day00_00();
 	}
 }

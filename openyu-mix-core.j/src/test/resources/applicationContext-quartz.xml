@@ -18,7 +18,7 @@
 		class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
 		<property
 			name="jobClass"
-			value="org.openyu.mix.core.service.impl.Day00_00Job" />
+			value="org.openyu.mix.core.service.impl.CoreDay00_00Job" />
 		<property
 			name="durability"
 			value="true" />
@@ -26,7 +26,7 @@
 
 	<bean
 		id="coreDay00_00Trigger"
-		class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		class="org.openyu.commons.quartz.PersistableCronTriggerFactoryBean">
 		<property name="jobDetail">
 			<ref bean="coreDay00_00JobDetail" />
 		</property>
@@ -41,7 +41,7 @@
 		class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
 		<property
 			name="jobClass"
-			value="org.openyu.mix.core.service.impl.Day00_03Job" />
+			value="org.openyu.mix.core.service.impl.CoreDay00_03Job" />
 		<property
 			name="durability"
 			value="true" />
@@ -49,7 +49,7 @@
 
 	<bean
 		id="coreDay00_03Trigger"
-		class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		class="org.openyu.commons.quartz.PersistableCronTriggerFactoryBean">
 		<property name="jobDetail">
 			<ref bean="coreDay00_03JobDetail" />
 		</property>
@@ -64,7 +64,7 @@
 		class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
 		<property
 			name="jobClass"
-			value="org.openyu.mix.core.service.impl.Day00_06Job" />
+			value="org.openyu.mix.core.service.impl.CoreDay00_06Job" />
 		<property
 			name="durability"
 			value="true" />
@@ -72,7 +72,7 @@
 
 	<bean
 		id="coreDay00_06Trigger"
-		class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		class="org.openyu.commons.quartz.PersistableCronTriggerFactoryBean">
 		<property name="jobDetail">
 			<ref bean="coreDay00_06JobDetail" />
 		</property>
@@ -81,7 +81,6 @@
 		</property>
 	</bean>
 
-	<!-- schedule -->
 	<bean
 		id="scheduler"
 		class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
@@ -94,6 +93,23 @@
 		<property
 			name="autoStartup"
 			value="true" />
+		<property
+			name="applicationContextSchedulerContextKey"
+			value="applicationContext" />
+		<property name="jobFactory">
+			<bean class="org.openyu.commons.quartz.AutowiringSpringBeanJobFactory" />
+		</property>
+		<property
+			name="overwriteExistingJobs"
+			value="true" />
+		<!-- NOTE: Must add both the jobDetail and trigger to the scheduler! -->
+		<property name="jobDetails">
+			<list>
+				<ref bean="coreDay00_00JobDetail" />
+				<ref bean="coreDay00_03JobDetail" />
+				<ref bean="coreDay00_06JobDetail" />
+			</list>
+		</property>
 		<property name="triggers">
 			<list>
 				<ref bean="coreDay00_00Trigger" />

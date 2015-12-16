@@ -21,7 +21,7 @@
 	<!-- mix -->
 	<import resource="classpath:META-INF/applicationContext-mix-core.xml" />
 
-	<!-- schedule -->
-	<import resource="classpath:applicationContext-schedule.xml" />
+	<!-- quartz -->
+	<import resource="classpath:applicationContext-quartz.xml" />
 
 </beans>
