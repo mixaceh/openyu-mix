@@ -159,7 +159,7 @@ public class SystemServiceImpl extends AppServiceSupporter implements SystemServ
 			return null;
 		}
 		// acceptor
-		result.setAcceptor(getAcceptor());
+		result.setAcceptor(getAcceptorId());
 		// 上線時間
 		result.setEnterTime(System.currentTimeMillis());
 		// 已連線
@@ -262,8 +262,8 @@ public class SystemServiceImpl extends AppServiceSupporter implements SystemServ
 		if (result == null) {
 			return null;
 		}
-		// acceptor
-		result.setAcceptor(getAcceptor());
+		// acceptor id
+		result.setAcceptorId(getAcceptorId());
 		// 上線時間
 		result.setEnterTime(System.currentTimeMillis());
 		// 已連線

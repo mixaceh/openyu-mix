@@ -421,6 +421,7 @@ public class CoreServiceImpl extends AppServiceSupporter implements CoreService 
 				}
 				//
 				role.setAccountId(account.getId());
+				role.setAcceptorId(getAcceptorId());
 				// 存到DB
 				roleService.insert(role);
 

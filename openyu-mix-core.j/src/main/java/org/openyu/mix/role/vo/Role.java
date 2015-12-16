@@ -41,8 +41,7 @@ import com.sun.xml.bind.AnyTypeAdapter;
  * 5.官階屬性群 officialGroup
  */
 @XmlJavaTypeAdapter(AnyTypeAdapter.class)
-public interface Role extends Flutter
-{
+public interface Role extends Flutter {
 
 	String KEY = Role.class.getName();
 
@@ -66,14 +65,14 @@ public interface Role extends Flutter
 
 	void setValid(boolean valid);
 
-	//	/**
-	//	 * 帳戶,不做關連,改直接用accountId,增加效率
-	//	 * 
-	//	 * @return
-	//	 */
-	//	Account getAccount();
+	// /**
+	// * 帳戶,不做關連,改直接用accountId,增加效率
+	// *
+	// * @return
+	// */
+	// Account getAccount();
 	//
-	//	void setAccount(Account account);
+	// void setAccount(Account account);
 
 	/**
 	 * 帳戶id
@@ -103,13 +102,13 @@ public interface Role extends Flutter
 	void setLeaveTime(long leaveTime);
 
 	/**
-	 * acceptor
+	 * 取得接收器 id
 	 * 
 	 * @return
 	 */
-	String getAcceptor();
+	String getAcceptorId();
 
-	void setAcceptor(String acceptor);
+	void setAcceptorId(String acceptorId);
 
 	/**
 	 * vip類別,由account.accuCoin來決定
@@ -159,9 +158,9 @@ public interface Role extends Flutter
 
 	void setEquipmentPen(EquipmentPen equipmentPen);
 
-	//---------------------------------------------------
+	// ---------------------------------------------------
 	// 其他模組相關欄位
-	//---------------------------------------------------
+	// ---------------------------------------------------
 	/**
 	 * 四象欄位
 	 * 

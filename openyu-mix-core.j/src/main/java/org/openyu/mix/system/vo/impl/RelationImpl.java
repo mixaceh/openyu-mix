@@ -41,9 +41,9 @@ public class RelationImpl extends SeqIdAuditNamesBeanSupporter implements
 	private long leaveTime;
 
 	/**
-	 * acceptor
+	 * acceptor id
 	 */
-	private String acceptor;
+	private String acceptorId;
 
 	public RelationImpl() {
 	}
@@ -85,12 +85,12 @@ public class RelationImpl extends SeqIdAuditNamesBeanSupporter implements
 		this.leaveTime = leaveTime;
 	}
 
-	public String getAcceptor() {
-		return acceptor;
+	public String getAcceptorId() {
+		return acceptorId;
 	}
 
-	public void setAcceptor(String acceptor) {
-		this.acceptor = acceptor;
+	public void setAcceptorId(String acceptorId) {
+		this.acceptorId = acceptorId;
 	}
 
 	public String toString() {
@@ -101,7 +101,7 @@ public class RelationImpl extends SeqIdAuditNamesBeanSupporter implements
 		//
 		builder.append("enterTime", enterTime);
 		builder.append("leaveTime", leaveTime);
-		builder.append("acceptor", acceptor);
+		builder.append("acceptorId", acceptorId);
 		return builder.toString();
 	}
 }

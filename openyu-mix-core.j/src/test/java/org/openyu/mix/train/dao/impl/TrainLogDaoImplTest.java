@@ -33,7 +33,7 @@ public class TrainLogDaoImplTest extends TrainTestSupporter {
 			result.setAccountId(ACCOUNT_ID);
 			result.setRoleId(ROLE_ID);
 			result.setRoleName(ROLE_NAME);
-			result.setAcceptor(randomSlave());
+			result.setAcceptorId(randomSlave());
 			result.setServerIp(randomIp("10.0.0"));
 			//
 			result.setActionType(randomType(ActionType.class));
@@ -57,7 +57,7 @@ public class TrainLogDaoImplTest extends TrainTestSupporter {
 				// assertEquals(expected.getLogDate(), actual.getLogDate());
 				assertEquals(expected.getAccountId(), actual.getAccountId());
 				assertEquals(expected.getRoleId(), actual.getRoleId());
-				assertEquals(expected.getAcceptor(), actual.getAcceptor());
+				assertEquals(expected.getAcceptorId(), actual.getAcceptorId());
 				//
 				assertEquals(expected.getActionType(), actual.getActionType());
 				assertEquals(expected.getInspireTime(), actual.getInspireTime());

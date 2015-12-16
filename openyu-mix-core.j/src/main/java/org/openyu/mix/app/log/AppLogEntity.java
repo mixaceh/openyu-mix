@@ -5,8 +5,7 @@ import org.openyu.commons.entity.SeqLogEntity;
 /**
  * log不做bean,直接用entity處理掉
  */
-public interface AppLogEntity extends SeqLogEntity
-{
+public interface AppLogEntity extends SeqLogEntity {
 	String KEY = AppLogEntity.class.getName();
 
 	/**
@@ -37,13 +36,13 @@ public interface AppLogEntity extends SeqLogEntity
 	void setRoleName(String roleName);
 
 	/**
-	 * acceptor
+	 * 取得接收器 id
 	 * 
 	 * @return
 	 */
-	String getAcceptor();
+	String getAcceptorId();
 
-	void setAcceptor(String acceptor);
+	void setAcceptorId(String acceptorId);
 
 	/**
 	 * 伺服器ip

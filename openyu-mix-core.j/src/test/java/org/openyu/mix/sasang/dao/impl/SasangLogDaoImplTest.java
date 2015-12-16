@@ -38,7 +38,7 @@ public class SasangLogDaoImplTest extends SasangTestSupporter {
 			result.setAccountId(ACCOUNT_ID);
 			result.setRoleId(ROLE_ID);
 			result.setRoleName(ROLE_NAME);
-			result.setAcceptor(randomSlave());
+			result.setAcceptorId(randomSlave());
 			result.setServerIp(randomIp("10.0.0"));
 			//
 			result.setPlayType(randomType(PlayType.class));
@@ -65,7 +65,7 @@ public class SasangLogDaoImplTest extends SasangTestSupporter {
 				// assertEquals(expected.getLogDate(), actual.getLogDate());
 				assertEquals(expected.getAccountId(), actual.getAccountId());
 				assertEquals(expected.getRoleId(), actual.getRoleId());
-				assertEquals(expected.getAcceptor(), actual.getAcceptor());
+				assertEquals(expected.getAcceptorId(), actual.getAcceptorId());
 				//
 				assertEquals(expected.getPlayType(), actual.getPlayType());
 				assertEquals(expected.getPlayTime(), actual.getPlayTime());
@@ -199,7 +199,7 @@ public class SasangLogDaoImplTest extends SasangTestSupporter {
 			result.setAccountId(ACCOUNT_ID);
 			result.setRoleId(ROLE_ID);
 			result.setRoleName(ROLE_NAME);
-			result.setAcceptor(randomSlave());
+			result.setAcceptorId(randomSlave());
 			result.setServerIp(randomIp("10.0.0"));
 			//
 			result.setPutType(randomType(PutType.class));
@@ -222,7 +222,7 @@ public class SasangLogDaoImplTest extends SasangTestSupporter {
 				// assertEquals(expected.getLogDate(), actual.getLogDate());
 				assertEquals(expected.getAccountId(), actual.getAccountId());
 				assertEquals(expected.getRoleId(), actual.getRoleId());
-				assertEquals(expected.getAcceptor(), actual.getAcceptor());
+				assertEquals(expected.getAcceptorId(), actual.getAcceptorId());
 				//
 				assertEquals(expected.getPutType(), actual.getPutType());
 			}
@@ -351,7 +351,7 @@ public class SasangLogDaoImplTest extends SasangTestSupporter {
 			result.setAccountId(ACCOUNT_ID);
 			result.setRoleId(ROLE_ID);
 			result.setRoleName(ROLE_NAME);
-			result.setAcceptor(randomSlave());
+			result.setAcceptorId(randomSlave());
 			result.setServerIp(randomIp("10.0.0"));
 			//
 			result.setPlayType(randomType(PlayType.class));
@@ -374,7 +374,7 @@ public class SasangLogDaoImplTest extends SasangTestSupporter {
 				// assertEquals(expected.getLogDate(), actual.getLogDate());
 				assertEquals(expected.getAccountId(), actual.getAccountId());
 				assertEquals(expected.getRoleId(), actual.getRoleId());
-				assertEquals(expected.getAcceptor(), actual.getAcceptor());
+				assertEquals(expected.getAcceptorId(), actual.getAcceptorId());
 				//
 				assertEquals(expected.getPlayType(), actual.getPlayType());
 				assertEquals(expected.getPlayTime(), actual.getPlayTime());

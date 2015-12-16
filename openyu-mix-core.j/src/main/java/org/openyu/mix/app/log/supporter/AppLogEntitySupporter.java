@@ -33,9 +33,9 @@ public abstract class AppLogEntitySupporter extends SeqLogEntitySupporter implem
 	private String roleName;
 
 	/**
-	 * acceptor
+	 * 取得接收器 id
 	 */
-	private String acceptor;
+	private String acceptorId;
 
 	/**
 	 * 伺服器ip
@@ -81,16 +81,16 @@ public abstract class AppLogEntitySupporter extends SeqLogEntitySupporter implem
 		this.roleName = roleName;
 	}
 
-	@Column(name = "acceptor", length = 30)
+	@Column(name = "acceptor_id", length = 30)
 	@Field(store = Store.YES, index = Index.YES, analyze = Analyze.NO)
-	public String getAcceptor()
+	public String getAcceptorId()
 	{
-		return acceptor;
+		return acceptorId;
 	}
 
-	public void setAcceptor(String acceptor)
+	public void setAcceptorId(String acceptorId)
 	{
-		this.acceptor = acceptor;
+		this.acceptorId = acceptorId;
 	}
 
 	@Column(name = "server_ip", length = 15)
@@ -112,7 +112,7 @@ public abstract class AppLogEntitySupporter extends SeqLogEntitySupporter implem
 		builder.append("accountId", accountId);
 		builder.append("roleId", roleId);
 		builder.append("roleName", roleName);
-		builder.append("acceptor", acceptor);
+		builder.append("acceptorId", acceptorId);
 		builder.append("slaveIp", serverIp);
 		return builder.toString();
 	}

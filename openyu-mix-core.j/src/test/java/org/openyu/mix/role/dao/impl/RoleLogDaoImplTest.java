@@ -38,7 +38,7 @@ public class RoleLogDaoImplTest extends RoleTestSupporter {
 			result.setAccountId(ACCOUNT_ID);
 			result.setRoleId(ROLE_ID);
 			result.setRoleName(ROLE_NAME);
-			result.setAcceptor(randomSlave());
+			result.setAcceptorId(randomSlave());
 			result.setServerIp(randomIp("10.0.0"));
 			//
 			result.setBeforeLevel(randomInt(10));
@@ -62,7 +62,7 @@ public class RoleLogDaoImplTest extends RoleTestSupporter {
 				// assertEquals(expected.getLogDate(), actual.getLogDate());
 				assertEquals(expected.getAccountId(), actual.getAccountId());
 				assertEquals(expected.getRoleId(), actual.getRoleId());
-				assertEquals(expected.getAcceptor(), actual.getAcceptor());
+				assertEquals(expected.getAcceptorId(), actual.getAcceptorId());
 				assertEquals(expected.getBeforeLevel(), actual.getBeforeLevel());
 				assertEquals(expected.getAfterLevel(), actual.getAfterLevel());
 			}
@@ -193,7 +193,7 @@ public class RoleLogDaoImplTest extends RoleTestSupporter {
 			result.setAccountId(ACCOUNT_ID);
 			result.setRoleId(ROLE_ID);
 			result.setRoleName(ROLE_NAME);
-			result.setAcceptor(randomSlave());
+			result.setAcceptorId(randomSlave());
 			result.setServerIp(randomIp("10.0.0"));
 			//
 			result.setActionType(randomType(ActionType.class));
@@ -218,7 +218,7 @@ public class RoleLogDaoImplTest extends RoleTestSupporter {
 				// assertEquals(expected.getLogDate(), actual.getLogDate());
 				assertEquals(expected.getAccountId(), actual.getAccountId());
 				assertEquals(expected.getRoleId(), actual.getRoleId());
-				assertEquals(expected.getAcceptor(), actual.getAcceptor());
+				assertEquals(expected.getAcceptorId(), actual.getAcceptorId());
 				assertEquals(expected.getActionType(), actual.getActionType());
 				assertEquals(expected.getBeforeGold(), actual.getBeforeGold());
 				assertEquals(expected.getAfterGold(), actual.getAfterGold());
@@ -350,7 +350,7 @@ public class RoleLogDaoImplTest extends RoleTestSupporter {
 			result.setAccountId(ACCOUNT_ID);
 			result.setRoleId(ROLE_ID);
 			result.setRoleName(ROLE_NAME);
-			result.setAcceptor(randomSlave());
+			result.setAcceptorId(randomSlave());
 			result.setServerIp(randomIp("10.0.0"));
 			//
 			result.setBeforeFame(randomInt(10));
@@ -374,7 +374,7 @@ public class RoleLogDaoImplTest extends RoleTestSupporter {
 				// assertEquals(expected.getLogDate(), actual.getLogDate());
 				assertEquals(expected.getAccountId(), actual.getAccountId());
 				assertEquals(expected.getRoleId(), actual.getRoleId());
-				assertEquals(expected.getAcceptor(), actual.getAcceptor());
+				assertEquals(expected.getAcceptorId(), actual.getAcceptorId());
 				assertEquals(expected.getBeforeFame(), actual.getBeforeFame());
 				assertEquals(expected.getAfterFame(), actual.getAfterFame());
 			}

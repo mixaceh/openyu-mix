@@ -46,17 +46,16 @@ import org.openyu.mix.wuxing.vo.impl.WuxingPenImpl;
 @org.hibernate.annotations.Entity(dynamicInsert = true, dynamicUpdate = true)
 @Table(name = "mix_role")
 @SequenceGenerator(name = "mix_role_g", sequenceName = "mix_role_s", allocationSize = 1)
-//when use ehcache, config in ehcache.xml
+// when use ehcache, config in ehcache.xml
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = "org.openyu.mix.role.po.impl.RolePoImpl")
 @Proxy(lazy = false)
-@org.hibernate.annotations.Table(appliesTo = "mix_role", indexes = { @org.hibernate.annotations.Index(name = "idx_mix_role_1", columnNames = {
-		"valid", "id" }) })
-//--------------------------------------------------
-//search
-//--------------------------------------------------
-//@Indexed
-public class RolePoImpl extends FlutterPoSupporter implements RolePo
-{
+@org.hibernate.annotations.Table(appliesTo = "mix_role", indexes = {
+		@org.hibernate.annotations.Index(name = "idx_mix_role_1", columnNames = { "valid", "id" }) })
+// --------------------------------------------------
+// search
+// --------------------------------------------------
+// @Indexed
+public class RolePoImpl extends FlutterPoSupporter implements RolePo {
 
 	private static final long serialVersionUID = 3612195473621975166L;
 
@@ -70,7 +69,7 @@ public class RolePoImpl extends FlutterPoSupporter implements RolePo
 	/**
 	 * 帳號
 	 */
-	//	private AccountPo account;
+	// private AccountPo account;
 
 	private String accountId;
 
@@ -85,18 +84,18 @@ public class RolePoImpl extends FlutterPoSupporter implements RolePo
 	private Long leaveTime;
 
 	/**
-	 * acceptor
+	 * 取得接收器 id
 	 */
-	private String acceptor;
+	private String acceptorId;
 
 	/**
 	 * 包包欄位
 	 */
 	private BagPen bagPen = new BagPenImpl();
 
-	//---------------------------------------------------
+	// ---------------------------------------------------
 	// 其他模組相關欄位
-	//---------------------------------------------------
+	// ---------------------------------------------------
 
 	/**
 	 * 四象欄位
@@ -123,185 +122,162 @@ public class RolePoImpl extends FlutterPoSupporter implements RolePo
 	 */
 	private WuxingPen wuxingPen = new WuxingPenImpl();
 
-	public RolePoImpl()
-	{}
+	public RolePoImpl() {
+	}
 
 	@Id
 	@Column(name = "seq")
 	@GeneratedValue(strategy = GenerationType.AUTO, generator = "mix_role_g")
-	public Long getSeq()
-	{
+	public Long getSeq() {
 		return seq;
 	}
 
-	public void setSeq(Long seq)
-	{
+	public void setSeq(Long seq) {
 		this.seq = seq;
 	}
 
 	@Column(name = "valid")
 	@Field(store = Store.YES, index = Index.YES, analyze = Analyze.NO)
-	public Boolean getValid()
-	{
+	public Boolean getValid() {
 		return valid;
 	}
 
-	public void setValid(Boolean valid)
-	{
+	public void setValid(Boolean valid) {
 		this.valid = valid;
 	}
 
-	//	@ManyToOne(targetEntity = AccountPoImpl.class, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	//	@NotFound(action = NotFoundAction.IGNORE)
-	//	@JoinColumn(name = "account_id")
-	//	@IndexedEmbedded(targetElement = AccountPoImpl.class, depth = 1)
-	//	public AccountPo getAccount()
-	//	{
-	//		return account;
-	//	}
+	// @ManyToOne(targetEntity = AccountPoImpl.class, cascade = CascadeType.ALL,
+	// fetch = FetchType.EAGER)
+	// @NotFound(action = NotFoundAction.IGNORE)
+	// @JoinColumn(name = "account_id")
+	// @IndexedEmbedded(targetElement = AccountPoImpl.class, depth = 1)
+	// public AccountPo getAccount()
+	// {
+	// return account;
+	// }
 	//
-	//	public void setAccount(AccountPo account)
-	//	{
-	//		this.account = account;
-	//	}
+	// public void setAccount(AccountPo account)
+	// {
+	// this.account = account;
+	// }
 	@Column(name = "account_id", length = 255)
 	@Field(store = Store.YES, index = Index.YES, analyze = Analyze.NO)
-	public String getAccountId()
-	{
+	public String getAccountId() {
 		return accountId;
 	}
 
-	public void setAccountId(String accountId)
-	{
+	public void setAccountId(String accountId) {
 		this.accountId = accountId;
 	}
 
 	@Column(name = "enter_time")
 	@Field(store = Store.YES, index = Index.YES, analyze = Analyze.NO)
-	public Long getEnterTime()
-	{
+	public Long getEnterTime() {
 		return enterTime;
 	}
 
-	public void setEnterTime(Long enterTime)
-	{
+	public void setEnterTime(Long enterTime) {
 		this.enterTime = enterTime;
 	}
 
 	@Column(name = "leave_time")
 	@Field(store = Store.YES, index = Index.YES, analyze = Analyze.NO)
-	public Long getLeaveTime()
-	{
+	public Long getLeaveTime() {
 		return leaveTime;
 	}
 
-	public void setLeaveTime(Long leaveTime)
-	{
+	public void setLeaveTime(Long leaveTime) {
 		this.leaveTime = leaveTime;
 	}
 
-	@Column(name = "acceptor", length = 30)
+	@Column(name = "acceptor_id", length = 30)
 	@Field(store = Store.YES, index = Index.YES, analyze = Analyze.NO)
-	public String getAcceptor()
-	{
-		return acceptor;
+	public String getAcceptorId() {
+		return acceptorId;
 	}
 
-	public void setAcceptor(String acceptor)
-	{
-		this.acceptor = acceptor;
+	public void setAcceptorId(String acceptorId) {
+		this.acceptorId = acceptorId;
 	}
 
-	@Column(name = "bag_pen", length = 8192)
+	@Column(name = "bag_info", length = 8192)
 	@Type(type = "org.openyu.mix.role.po.userType.BagPenUserType")
 	@Field(store = Store.YES, index = Index.YES, analyze = Analyze.NO)
 	@FieldBridge(impl = BagPenBridge.class)
-	public BagPen getBagPen()
-	{
+	public BagPen getBagPen() {
 		return bagPen;
 	}
 
-	public void setBagPen(BagPen bagPen)
-	{
+	public void setBagPen(BagPen bagPen) {
 		this.bagPen = bagPen;
 	}
 
-	@Column(name = "sasang_pen", length = 1024)
+	@Column(name = "sasang_info", length = 1024)
 	@Type(type = "org.openyu.mix.sasang.po.userType.SasangPenUserType")
 	@Field(store = Store.YES, index = Index.YES, analyze = Analyze.NO)
 	@FieldBridge(impl = SasangPenBridge.class)
-	public SasangPen getSasangPen()
-	{
+	public SasangPen getSasangPen() {
 		return sasangPen;
 	}
 
-	public void setSasangPen(SasangPen sasangPen)
-	{
+	public void setSasangPen(SasangPen sasangPen) {
 		this.sasangPen = sasangPen;
 	}
 
-	@Column(name = "manor_pen", length = 2048)
+	@Column(name = "manor_info", length = 2048)
 	@Type(type = "org.openyu.mix.manor.po.userType.ManorPenUserType")
 	@Field(store = Store.YES, index = Index.YES, analyze = Analyze.NO)
 	@FieldBridge(impl = ManorPenBridge.class)
-	public ManorPen getManorPen()
-	{
+	public ManorPen getManorPen() {
 		return manorPen;
 	}
 
-	public void setManorPen(ManorPen manorPen)
-	{
+	public void setManorPen(ManorPen manorPen) {
 		this.manorPen = manorPen;
 	}
 
-	@Column(name = "treasure_pen", length = 1024)
+	@Column(name = "treasure_info", length = 1024)
 	@Type(type = "org.openyu.mix.treasure.po.userType.TreasurePenUserType")
 	@Field(store = Store.YES, index = Index.YES, analyze = Analyze.NO)
 	@FieldBridge(impl = TreasurePenBridge.class)
-	public TreasurePen getTreasurePen()
-	{
+	public TreasurePen getTreasurePen() {
 		return treasurePen;
 	}
 
-	public void setTreasurePen(TreasurePen treasurePen)
-	{
+	public void setTreasurePen(TreasurePen treasurePen) {
 		this.treasurePen = treasurePen;
 	}
 
-	@Column(name = "train_pen", length = 255)
+	@Column(name = "train_info", length = 512)
 	@Type(type = "org.openyu.mix.train.po.userType.TrainPenUserType")
 	@Field(store = Store.YES, index = Index.YES, analyze = Analyze.NO)
 	@FieldBridge(impl = TrainPenBridge.class)
-	public TrainPen getTrainPen()
-	{
+	public TrainPen getTrainPen() {
 		return trainPen;
 	}
 
-	public void setTrainPen(TrainPen trainPen)
-	{
+	public void setTrainPen(TrainPen trainPen) {
 		this.trainPen = trainPen;
 	}
 
-	@Column(name = "wuxing_pen", length = 1024)
+	@Column(name = "wuxing_info", length = 1024)
 	@Type(type = "org.openyu.mix.wuxing.po.userType.WuxingPenUserType")
 	@Field(store = Store.YES, index = Index.YES, analyze = Analyze.NO)
 	@FieldBridge(impl = WuxingPenBridge.class)
-	public WuxingPen getWuxingPen()
-	{
+	public WuxingPen getWuxingPen() {
 		return wuxingPen;
 	}
 
-	public void setWuxingPen(WuxingPen wuxingPen)
-	{
+	public void setWuxingPen(WuxingPen wuxingPen) {
 		this.wuxingPen = wuxingPen;
 	}
 
-	public String toString()
-	{
+	public String toString() {
 		ToStringBuilder builder = new ToStringBuilder(this);
 		builder.appendSuper(super.toString());
 		builder.append("valid", valid);
-		//builder.append("account", (account != null ? account.getId() : null));
+		// builder.append("account", (account != null ? account.getId() :
+		// null));
 		builder.append("accountId", accountId);
 		builder.append("enterTime", enterTime);
 		builder.append("leaveTime", leaveTime);
@@ -315,11 +291,10 @@ public class RolePoImpl extends FlutterPoSupporter implements RolePo
 		return builder.toString();
 	}
 
-	public Object clone()
-	{
+	public Object clone() {
 		RolePoImpl copy = null;
 		copy = (RolePoImpl) super.clone();
-		//		copy.account = clone(copy);
+		// copy.account = clone(copy);
 		copy.bagPen = clone(bagPen);
 		copy.sasangPen = clone(sasangPen);
 		copy.manorPen = clone(manorPen);

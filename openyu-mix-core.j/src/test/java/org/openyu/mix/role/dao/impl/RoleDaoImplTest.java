@@ -46,7 +46,7 @@ public class RoleDaoImplTest extends RoleTestSupporter {
 				RoleServiceImplTest.randomAttributes());
 		//
 		result.setLeaveTime(randomLong());
-		result.setAcceptor("slave1");
+		result.setAcceptorId("slave1");
 		// 帳號
 		result.setAccountId(ACCOUNT_ID);
 

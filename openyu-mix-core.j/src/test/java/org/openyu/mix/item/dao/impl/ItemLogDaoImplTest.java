@@ -44,7 +44,7 @@ public class ItemLogDaoImplTest extends ItemTestSupporter {
 			result.setAccountId(ACCOUNT_ID);
 			result.setRoleId(ROLE_ID);
 			result.setRoleName(ROLE_NAME);
-			result.setAcceptor(randomSlave());
+			result.setAcceptorId(randomSlave());
 			result.setServerIp(randomIp("10.0.0"));
 			//
 			Item item = ThingCollector.getInstance().createThing(
@@ -70,7 +70,7 @@ public class ItemLogDaoImplTest extends ItemTestSupporter {
 				// assertEquals(expected.getLogDate(), actual.getLogDate());
 				assertEquals(expected.getAccountId(), actual.getAccountId());
 				assertEquals(expected.getRoleId(), actual.getRoleId());
-				assertEquals(expected.getAcceptor(), actual.getAcceptor());
+				assertEquals(expected.getAcceptorId(), actual.getAcceptorId());
 				assertEquals(expected.getActionType(), actual.getActionType());
 				assertCollectionEquals(expected.getItems(), actual.getItems());
 			}
@@ -201,7 +201,7 @@ public class ItemLogDaoImplTest extends ItemTestSupporter {
 			result.setAccountId(ACCOUNT_ID);
 			result.setRoleId(ROLE_ID);
 			result.setRoleName(ROLE_NAME);
-			result.setAcceptor(randomSlave());
+			result.setAcceptorId(randomSlave());
 			result.setServerIp(randomIp("10.0.0"));
 			//
 			Item item = ThingCollector.getInstance().createThing(
@@ -227,7 +227,7 @@ public class ItemLogDaoImplTest extends ItemTestSupporter {
 				// assertEquals(expected.getLogDate(), actual.getLogDate());
 				assertEquals(expected.getAccountId(), actual.getAccountId());
 				assertEquals(expected.getRoleId(), actual.getRoleId());
-				assertEquals(expected.getAcceptor(), actual.getAcceptor());
+				assertEquals(expected.getAcceptorId(), actual.getAcceptorId());
 				assertEquals(expected.getActionType(), actual.getActionType());
 				assertCollectionEquals(expected.getItems(), actual.getItems());
 			}
@@ -359,7 +359,7 @@ public class ItemLogDaoImplTest extends ItemTestSupporter {
 			result.setAccountId(ACCOUNT_ID);
 			result.setRoleId(ROLE_ID);
 			result.setRoleName(ROLE_NAME);
-			result.setAcceptor(randomSlave());
+			result.setAcceptorId(randomSlave());
 			result.setServerIp(randomIp("10.0.0"));
 			// 被強化後的道具
 			Weapon item = WeaponCollector.getInstance().createWeapon(
@@ -395,7 +395,7 @@ public class ItemLogDaoImplTest extends ItemTestSupporter {
 				// assertEquals(expected.getLogDate(), actual.getLogDate());
 				assertEquals(expected.getAccountId(), actual.getAccountId());
 				assertEquals(expected.getRoleId(), actual.getRoleId());
-				assertEquals(expected.getAcceptor(), actual.getAcceptor());
+				assertEquals(expected.getAcceptorId(), actual.getAcceptorId());
 				assertEquals(expected.getActionType(), actual.getActionType());
 				//
 				assertEquals(expected.getBeforeEnhance(),

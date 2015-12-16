@@ -4,11 +4,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.openyu.mix.app.service.AppService;
 import org.openyu.mix.role.vo.Role;
+
+import java.util.Map;
+
 import org.openyu.commons.service.supporter.CommonServiceSupporter;
 import org.openyu.commons.thread.ThreadService;
 import org.openyu.commons.thread.anno.DefaultThreadService;
 import org.openyu.socklet.acceptor.service.AcceptorService;
-import org.openyu.socklet.acceptor.vo.AcceptorStarter;
 import org.openyu.socklet.connector.vo.AcceptorConnector;
 import org.openyu.socklet.message.anno.DefaultMessageService;
 import org.openyu.socklet.message.service.MessageService;
@@ -19,7 +21,7 @@ public class AppServiceSupporter extends CommonServiceSupporter implements AppSe
 	private static final long serialVersionUID = -8839967232533601475L;
 
 	private static transient final Logger LOGGER = LoggerFactory.getLogger(AppServiceSupporter.class);
-	
+
 	/**
 	 * 線程服務
 	 */
@@ -32,15 +34,7 @@ public class AppServiceSupporter extends CommonServiceSupporter implements AppSe
 	@DefaultMessageService
 	protected transient MessageService messageService;
 
-	private transient AcceptorStarter acceptorStarter;
-
 	private transient AcceptorService acceptorService;
-
-	private transient String acceptor;
-
-	private transient String instanceId;
-
-	private transient String outputId;
 
 	public AppServiceSupporter() {
 	}
@@ -115,79 +109,43 @@ public class AppServiceSupporter extends CommonServiceSupporter implements AppSe
 	}
 
 	// --------------------------------------------------
-	/**
-	 * 當單元測試時,是沒有真正啟動acceptor,所以沒有acceptorStarter
-	 * 
-	 * @return
-	 */
-	protected AcceptorStarter getAcceptorStarter() {
-		if (acceptorStarter == null) {
-			try {
-				acceptorStarter = (AcceptorStarter) applicationContext.getBean("acceptorStarter");
-			} catch (Exception ex) {
-			}
-		}
-		return acceptorStarter;
-	}
 
-	/**
-	 * 當有acceptorStarter,就應有acceptorService
-	 * 
-	 * @return
-	 */
-	protected AcceptorService getAcceptorService() {
+	protected synchronized AcceptorService getAcceptorService() {
 		if (acceptorService == null) {
-			AcceptorStarter starter = getAcceptorStarter();
-			if (starter != null) {
-				acceptorService = starter.getAcceptorService();
+			Map<String, AcceptorService> acceptorServices = applicationContext.getBeansOfType(AcceptorService.class);
+			for (AcceptorService entry : acceptorServices.values()) {
+				boolean started = entry.isStarted();
+				if (started) {
+					acceptorService = entry;
+				}
+				break;
 			}
 		}
 		return acceptorService;
 	}
 
 	/**
-	 * 取得acceptor id
+	 * 取得接收器 id
 	 * 
 	 * @return
 	 */
-	protected String getAcceptor() {
-		if (acceptor == null) {
-			AcceptorService service = getAcceptorService();
-			if (service != null) {
-				acceptor = service.getId();
-			}
-		}
-		return acceptor;
+	protected String getAcceptorId() {
+		return getAcceptorService().getId();
 	}
 
 	/**
-	 * 取得實例id
-	 * 
+	 * 取得接收器 實例id
 	 * @return
 	 */
-	protected String getInstanceId() {
-		if (instanceId == null) {
-			AcceptorService service = getAcceptorService();
-			if (service != null) {
-				instanceId = service.getInstanceId();
-			}
-		}
-		return instanceId;
+	protected String getAcceptorInstanceId() {
+		return getAcceptorService().getInstanceId();
 	}
-
 	/**
-	 * 取得輸出id
-	 * 
+	 * 取得接收器 輸出id
 	 * @return
 	 */
-	protected String getOutputId() {
-		if (outputId == null) {
-			AcceptorService service = getAcceptorService();
-			if (service != null) {
-				outputId = service.getOutputId();
-			}
-		}
-		return outputId;
+	protected String getAcceptorOutputId() {
+		return getAcceptorService().getOutputId();
 	}
 
 	/**

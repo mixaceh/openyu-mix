@@ -146,7 +146,7 @@ public class AppLogServiceSupporter extends BaseLogServiceSupporter
 			entity.setAccountId(role.getAccountId());
 			entity.setRoleId(role.getId());
 			entity.setRoleName(role.getName());
-			entity.setAcceptor(role.getAcceptor());
+			entity.setAcceptorId(role.getAcceptorId());
 			entity.setServerIp(getServerIp(role.getId()));
 		}
 	}

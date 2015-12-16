@@ -30,8 +30,7 @@ import org.openyu.commons.lang.event.EventAttach;
 
 @XmlRootElement(name = "role")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class RoleImpl extends FlutterSupporter implements Role
-{
+public class RoleImpl extends FlutterSupporter implements Role {
 
 	private static final long serialVersionUID = 245178220482833596L;
 
@@ -46,11 +45,11 @@ public class RoleImpl extends FlutterSupporter implements Role
 	 */
 	private boolean valid;
 
-	//	/**
-	//	 * 帳號
-	//	 */
-	//	@XmlJavaTypeAdapter(AccountIdXmlAdapter.class)
-	//	private Account account;
+	// /**
+	// * 帳號
+	// */
+	// @XmlJavaTypeAdapter(AccountIdXmlAdapter.class)
+	// private Account account;
 
 	private String accountId;
 
@@ -65,9 +64,9 @@ public class RoleImpl extends FlutterSupporter implements Role
 	private long leaveTime;
 
 	/**
-	 * acceptor
+	 * 取得接收器 id
 	 */
-	private String acceptor;
+	private String acceptorId;
 
 	/**
 	 * vip類別
@@ -92,9 +91,9 @@ public class RoleImpl extends FlutterSupporter implements Role
 	@XmlElement(type = EquipmentPenImpl.class)
 	private EquipmentPen equipmentPen = new EquipmentPenImpl(this);
 
-	//---------------------------------------------------
+	// ---------------------------------------------------
 	// 其他模組相關欄位
-	//---------------------------------------------------
+	// ---------------------------------------------------
 	/**
 	 * 四象欄位
 	 */
@@ -125,89 +124,76 @@ public class RoleImpl extends FlutterSupporter implements Role
 	@XmlElement(type = WuxingPenImpl.class)
 	private WuxingPen wuxingPen = new WuxingPenImpl(this);
 
-	public RoleImpl()
-	{}
+	public RoleImpl() {
+	}
 
 	/**
 	 * 是否已連線
 	 * 
 	 * @return
 	 */
-	public boolean isConnected()
-	{
+	public boolean isConnected() {
 		return connected;
 	}
 
-	public void setConnected(boolean connected)
-	{
+	public void setConnected(boolean connected) {
 		this.connected = connected;
 	}
 
-	public boolean getValid()
-	{
+	public boolean getValid() {
 		return valid;
 	}
 
-	public void setValid(boolean valid)
-	{
+	public void setValid(boolean valid) {
 		this.valid = valid;
 	}
 
-	//	public Account getAccount()
-	//	{
-	//		return account;
-	//	}
+	// public Account getAccount()
+	// {
+	// return account;
+	// }
 	//
-	//	public void setAccount(Account account)
-	//	{
-	//		this.account = account;
-	//	}
+	// public void setAccount(Account account)
+	// {
+	// this.account = account;
+	// }
 
-	public String getAccountId()
-	{
+	public String getAccountId() {
 		return accountId;
 	}
 
-	public void setAccountId(String accountId)
-	{
+	public void setAccountId(String accountId) {
 		this.accountId = accountId;
 	}
 
-	public long getEnterTime()
-	{
+	public long getEnterTime() {
 		return enterTime;
 	}
 
-	public void setEnterTime(long enterTime)
-	{
+	public void setEnterTime(long enterTime) {
 		this.enterTime = enterTime;
 	}
 
-	public long getLeaveTime()
-	{
+	public long getLeaveTime() {
 		return leaveTime;
 	}
 
-	public void setLeaveTime(long leaveTime)
-	{
+	public void setLeaveTime(long leaveTime) {
 		this.leaveTime = leaveTime;
 	}
 
-	public String getAcceptor()
-	{
-		return acceptor;
+	public String getAcceptorId() {
+		return acceptorId;
 	}
 
-	public void setAcceptor(String acceptor)
-	{
-		this.acceptor = acceptor;
+	public void setAcceptorId(String acceptorId) {
+		this.acceptorId = acceptorId;
 	}
 
 	/**
 	 * vip類別,由account.accuCoin來決定
 	 */
-	public VipType getVipType()
-	{
+	public VipType getVipType() {
 		return vipType;
 	}
 
@@ -217,8 +203,7 @@ public class RoleImpl extends FlutterSupporter implements Role
 	 * @param vipType
 	 */
 
-	public void setVipType(VipType vipType)
-	{
+	public void setVipType(VipType vipType) {
 		EventAttach<VipType, VipType> eventAttach = eventAttach(this.vipType, vipType);
 		//
 		fireBeanChanging(this, RoleField.VIP_TYPE, eventAttach);
@@ -226,21 +211,18 @@ public class RoleImpl extends FlutterSupporter implements Role
 		fireBeanChanged(this, RoleField.VIP_TYPE, eventAttach);
 	}
 
-	public boolean isVipType()
-	{
+	public boolean isVipType() {
 		return (vipType != null && vipType.getValue() > 0);
 	}
 
 	/**
 	 * 裝備屬性群
 	 */
-	public AttributeGroup getEquipmentGroup()
-	{
+	public AttributeGroup getEquipmentGroup() {
 		return equipmentGroup;
 	}
 
-	public void setEquipmentGroup(AttributeGroup equipmentGroup)
-	{
+	public void setEquipmentGroup(AttributeGroup equipmentGroup) {
 		this.equipmentGroup = equipmentGroup;
 	}
 
@@ -249,13 +231,11 @@ public class RoleImpl extends FlutterSupporter implements Role
 	 * 
 	 * @return
 	 */
-	public BagPen getBagPen()
-	{
+	public BagPen getBagPen() {
 		return bagPen;
 	}
 
-	public void setBagPen(BagPen bagPen)
-	{
+	public void setBagPen(BagPen bagPen) {
 		this.bagPen = bagPen;
 	}
 
@@ -264,95 +244,83 @@ public class RoleImpl extends FlutterSupporter implements Role
 	 * 
 	 * @return
 	 */
-	public EquipmentPen getEquipmentPen()
-	{
+	public EquipmentPen getEquipmentPen() {
 		return equipmentPen;
 	}
 
-	public void setEquipmentPen(EquipmentPen equipmentPen)
-	{
+	public void setEquipmentPen(EquipmentPen equipmentPen) {
 		this.equipmentPen = equipmentPen;
 	}
 
-	//---------------------------------------------------
+	// ---------------------------------------------------
 	// 其他模組相關欄位
-	//---------------------------------------------------
+	// ---------------------------------------------------
 	/**
 	 * 四象欄位
 	 */
-	public SasangPen getSasangPen()
-	{
+	public SasangPen getSasangPen() {
 		return sasangPen;
 	}
 
-	public void setSasangPen(SasangPen sasangPen)
-	{
+	public void setSasangPen(SasangPen sasangPen) {
 		this.sasangPen = sasangPen;
 	}
 
 	/**
 	 * 莊園欄位
 	 */
-	public ManorPen getManorPen()
-	{
+	public ManorPen getManorPen() {
 		return manorPen;
 	}
 
-	public void setManorPen(ManorPen manorPen)
-	{
+	public void setManorPen(ManorPen manorPen) {
 		this.manorPen = manorPen;
 	}
 
 	/**
 	 * 祕寶欄位
 	 */
-	public TreasurePen getTreasurePen()
-	{
+	public TreasurePen getTreasurePen() {
 		return treasurePen;
 	}
 
-	public void setTreasurePen(TreasurePen treasurePen)
-	{
+	public void setTreasurePen(TreasurePen treasurePen) {
 		this.treasurePen = treasurePen;
 	}
 
 	/**
 	 * 訓練欄位
 	 */
-	public TrainPen getTrainPen()
-	{
+	public TrainPen getTrainPen() {
 		return trainPen;
 	}
 
-	public void setTrainPen(TrainPen trainPen)
-	{
+	public void setTrainPen(TrainPen trainPen) {
 		this.trainPen = trainPen;
 	}
 
 	/**
 	 * 五行欄位
 	 */
-	public WuxingPen getWuxingPen()
-	{
+	public WuxingPen getWuxingPen() {
 		return wuxingPen;
 	}
 
-	public void setWuxingPen(WuxingPen wuxingPen)
-	{
+	public void setWuxingPen(WuxingPen wuxingPen) {
 		this.wuxingPen = wuxingPen;
 	}
 
-	public String toString()
-	{
+	public String toString() {
 		ToStringBuilder builder = new ToStringBuilder(this);
 		builder.appendSuper(super.toString());
 		builder.append("connected", connected);
 		builder.append("valid", valid);
-		//		builder.append("account", (account != null ? account.getId() : null));
+		// builder.append("account", (account != null ? account.getId() :
+		// null));
 		builder.append("accountId", accountId);
 		builder.append("enterTime", enterTime);
 		builder.append("leaveTime", leaveTime);
-		builder.append("acceptor", acceptor);
+		builder.append("acceptorId", acceptorId);
 		//
 		builder.append("vipType", vipType);
 		builder.append("equipmentGroup", equipmentGroup);
@@ -367,11 +335,10 @@ public class RoleImpl extends FlutterSupporter implements Role
 		return builder.toString();
 	}
 
-	public Object clone()
-	{
+	public Object clone() {
 		RoleImpl copy = null;
 		copy = (RoleImpl) super.clone();
-		//		copy.account = clone(account);
+		// copy.account = clone(account);
 		copy.equipmentGroup = clone(equipmentGroup);
 		copy.bagPen = clone(bagPen);
 		copy.equipmentPen = clone(equipmentPen);

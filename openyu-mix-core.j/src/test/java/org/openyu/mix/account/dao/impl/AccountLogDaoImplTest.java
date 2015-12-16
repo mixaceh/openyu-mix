@@ -35,7 +35,7 @@ public class AccountLogDaoImplTest extends AccountTestSupporter {
 			result.setRoleId(ROLE_ID);
 			result.setRoleName(ROLE_NAME);
 			result.setServerIp(randomIp("192.168.0"));
-			result.setAcceptor(randomString());
+			result.setAcceptorId(randomString());
 			//
 			result.setActionType(randomType(ActionType.class));
 			result.setCoinType(randomType(CoinType.class));
@@ -58,7 +58,7 @@ public class AccountLogDaoImplTest extends AccountTestSupporter {
 				// assertEquals(expected.getLogDate(), actual.getLogDate());
 				assertEquals(expected.getAccountId(), actual.getAccountId());
 				assertEquals(expected.getAccountId(), actual.getAccountId());
-				assertEquals(expected.getAcceptor(), actual.getAcceptor());
+				assertEquals(expected.getAcceptorId(), actual.getAcceptorId());
 				assertEquals(expected.getActionType(), actual.getActionType());
 				assertEquals(expected.getCoinType(), actual.getCoinType());
 				assertEquals(expected.getCoin(), actual.getCoin());

@@ -345,7 +345,7 @@ public class RoleTestSupporter extends AppTestSupporter {
 		//
 		result.setEnterTime(randomDateLong());
 		result.setLeaveTime(result.getEnterTime() + randomLong(10000000));
-		result.setAcceptor("slave1");
+		result.setAcceptorId("slave1");
 		// 帳號
 		result.setAccountId(ACCOUNT_ID);
 		result.setBagPen(BagPenImplTest

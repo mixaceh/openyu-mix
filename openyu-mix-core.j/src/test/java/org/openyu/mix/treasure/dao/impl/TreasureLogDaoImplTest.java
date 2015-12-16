@@ -38,7 +38,7 @@ public class TreasureLogDaoImplTest extends TreasureTestSupporter {
 			result.setAccountId(ACCOUNT_ID);
 			result.setRoleId(ROLE_ID);
 			result.setRoleName(ROLE_NAME);
-			result.setAcceptor(randomSlave());
+			result.setAcceptorId(randomSlave());
 			result.setServerIp(randomIp("10.0.0"));
 			//
 			result.setRefreshTime(System.currentTimeMillis());
@@ -71,7 +71,7 @@ public class TreasureLogDaoImplTest extends TreasureTestSupporter {
 				// assertEquals(expected.getLogDate(), actual.getLogDate());
 				assertEquals(expected.getAccountId(), actual.getAccountId());
 				assertEquals(expected.getRoleId(), actual.getRoleId());
-				assertEquals(expected.getAcceptor(), actual.getAcceptor());
+				assertEquals(expected.getAcceptorId(), actual.getAcceptorId());
 				//
 				assertEquals(expected.getRefreshTime(), actual.getRefreshTime());
 				assertMapEquals(expected.getTreasures(), actual.getTreasures());
@@ -201,7 +201,7 @@ public class TreasureLogDaoImplTest extends TreasureTestSupporter {
 			result.setAccountId(ACCOUNT_ID);
 			result.setRoleId(ROLE_ID);
 			result.setRoleName(ROLE_NAME);
-			result.setAcceptor(randomSlave());
+			result.setAcceptorId(randomSlave());
 			result.setServerIp(randomIp("10.0.0"));
 			//
 			result.setBuyType(randomType(BuyType.class));
@@ -238,7 +238,7 @@ public class TreasureLogDaoImplTest extends TreasureTestSupporter {
 				// assertEquals(expected.getLogDate(), actual.getLogDate());
 				assertEquals(expected.getAccountId(), actual.getAccountId());
 				assertEquals(expected.getRoleId(), actual.getRoleId());
-				assertEquals(expected.getAcceptor(), actual.getAcceptor());
+				assertEquals(expected.getAcceptorId(), actual.getAcceptorId());
 				//
 				assertEquals(expected.getBuyType(), actual.getBuyType());
 				assertEquals(expected.getGridIndex(), actual.getGridIndex());

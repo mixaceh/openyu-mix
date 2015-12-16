@@ -11,8 +11,7 @@ import org.openyu.mix.wuxing.vo.WuxingPen;
 /**
  * 角色
  */
-public interface RolePo extends FlutterPo
-{
+public interface RolePo extends FlutterPo {
 	String KEY = RolePo.class.getName();
 
 	/**
@@ -29,9 +28,9 @@ public interface RolePo extends FlutterPo
 	 * 
 	 * @return
 	 */
-	//	AccountPo getAccount();
+	// AccountPo getAccount();
 	//
-	//	void setAccount(AccountPo account);
+	// void setAccount(AccountPo account);
 
 	/**
 	 * 帳戶id
@@ -61,13 +60,13 @@ public interface RolePo extends FlutterPo
 	void setLeaveTime(Long leaveTime);
 
 	/**
-	 * acceptor
+	 * 取得接收器 id
 	 * 
 	 * @return
 	 */
-	String getAcceptor();
+	String getAcceptorId();
 
-	void setAcceptor(String acceptor);
+	void setAcceptorId(String acceptorId);
 
 	/**
 	 * 包包欄位
@@ -78,9 +77,9 @@ public interface RolePo extends FlutterPo
 
 	void setBagPen(BagPen bagPen);
 
-	//---------------------------------------------------
+	// ---------------------------------------------------
 	// 其他模組相關欄位
-	//---------------------------------------------------
+	// ---------------------------------------------------
 	/**
 	 * 四象欄位
 	 * 

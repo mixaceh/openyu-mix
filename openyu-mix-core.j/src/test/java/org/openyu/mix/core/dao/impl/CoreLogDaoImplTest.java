@@ -34,7 +34,7 @@ public class CoreLogDaoImplTest extends CoreTestSupporter {
 			result.setAccountId(ACCOUNT_ID);
 			result.setRoleId(ROLE_ID);
 			result.setRoleName(ROLE_NAME);
-			result.setAcceptor(randomSlave());
+			result.setAcceptorId(randomSlave());
 			result.setServerIp(randomIp("10.10.1"));
 			//
 			result.setConnectAction(randomType(ConnectAction.class));
@@ -61,7 +61,7 @@ public class CoreLogDaoImplTest extends CoreTestSupporter {
 				assertEquals(expected.getAccountId(), actual.getAccountId());
 				assertEquals(expected.getRoleId(), actual.getRoleId());
 				assertEquals(expected.getRoleName(), actual.getRoleName());
-				assertEquals(expected.getAcceptor(), actual.getAcceptor());
+				assertEquals(expected.getAcceptorId(), actual.getAcceptorId());
 				assertEquals(expected.getServerIp(), actual.getServerIp());
 				//
 				assertEquals(expected.getClientIp(), actual.getClientIp());

@@ -52,11 +52,11 @@ public interface Relation extends SeqIdAuditNamesBean {
 	void setLeaveTime(long leaveTime);
 
 	/**
-	 * acceptor
+	 * 取得接收器 id
 	 * 
 	 * @return
 	 */
-	String getAcceptor();
+	String getAcceptorId();
 
-	void setAcceptor(String acceptor);
+	void setAcceptorId(String acceptorId);
 }

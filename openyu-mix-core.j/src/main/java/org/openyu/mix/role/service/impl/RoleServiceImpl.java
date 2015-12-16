@@ -146,8 +146,8 @@ public class RoleServiceImpl extends AppServiceSupporter implements RoleService 
 		}
 		Account account = (Account) attatch;
 
-		// acceptor
-		result.setAcceptor(getAcceptor());
+		// acceptor id
+		result.setAcceptorId(getAcceptorId());
 
 		// 上線時間
 		result.setEnterTime(System.currentTimeMillis());
