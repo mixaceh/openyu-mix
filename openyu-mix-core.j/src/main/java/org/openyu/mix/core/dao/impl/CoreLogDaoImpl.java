@@ -15,6 +15,8 @@ import org.slf4j.LoggerFactory;
 
 public class CoreLogDaoImpl extends AppLogDaoSupporter implements CoreLogDao {
 	
+	private static final long serialVersionUID = -9031106724111344122L;
+
 	private static transient final Logger LOGGER = LoggerFactory
 			.getLogger(CoreLogDaoImpl.class);
 

@@ -34,6 +34,9 @@ public class AppServiceSupporter extends CommonServiceSupporter implements AppSe
 	@DefaultMessageService
 	protected transient MessageService messageService;
 
+	/**
+	 * 接收器服務
+	 */
 	private transient AcceptorService acceptorService;
 
 	public AppServiceSupporter() {
@@ -111,17 +114,17 @@ public class AppServiceSupporter extends CommonServiceSupporter implements AppSe
 	// --------------------------------------------------
 
 	protected synchronized AcceptorService getAcceptorService() {
-		if (acceptorService == null) {
+		if (this.acceptorService == null) {
 			Map<String, AcceptorService> acceptorServices = applicationContext.getBeansOfType(AcceptorService.class);
 			for (AcceptorService entry : acceptorServices.values()) {
 				boolean started = entry.isStarted();
 				if (started) {
-					acceptorService = entry;
+					this.acceptorService = entry;
 				}
 				break;
 			}
 		}
-		return acceptorService;
+		return this.acceptorService;
 	}
 
 	/**
@@ -135,13 +138,16 @@ public class AppServiceSupporter extends CommonServiceSupporter implements AppSe
 
 	/**
 	 * 取得接收器 實例id
+	 * 
 	 * @return
 	 */
 	protected String getAcceptorInstanceId() {
 		return getAcceptorService().getInstanceId();
 	}
+
 	/**
 	 * 取得接收器 輸出id
+	 * 
 	 * @return
 	 */
 	protected String getAcceptorOutputId() {
@@ -149,7 +155,7 @@ public class AppServiceSupporter extends CommonServiceSupporter implements AppSe
 	}
 
 	/**
-	 * 取得client的server ip
+	 * 取得server ip
 	 * 
 	 * @param sender
 	 * @return
@@ -167,7 +173,7 @@ public class AppServiceSupporter extends CommonServiceSupporter implements AppSe
 	}
 
 	/**
-	 * 取得client的server port
+	 * 取得server port
 	 * 
 	 * @param sender
 	 * @return

@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 /**
  * 每日00:00執行
  */
-public class Day00_00Job extends AppJobSupporter {
+public class Day_00_00Job extends AppJobSupporter {
 
 	@Autowired
 	@Qualifier("trainService")
@@ -25,7 +25,7 @@ public class Day00_00Job extends AppJobSupporter {
 	@Qualifier("wuxingService")
 	protected transient WuxingService wuxingService;
 
-	public Day00_00Job() {
+	public Day_00_00Job() {
 
 	}
 

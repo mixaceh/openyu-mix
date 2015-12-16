@@ -32,16 +32,14 @@ import org.openyu.mix.core.vo.Core.ConnectAction;
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = "org.openyu.mix.core.log.impl.CoreConnectLogImpl")
 @Proxy(lazy = false)
 @org.hibernate.annotations.Table(appliesTo = "mix_core_connect_log", indexes = {
-		@org.hibernate.annotations.Index(name = "idx_mix_core_connect_log_1", columnNames = {
-				"role_id", "log_date" }),
-		@org.hibernate.annotations.Index(name = "idx_mix_core_connect_log_2", columnNames = {
-				"connect_action", "role_id", "enter_time" }) })
+		@org.hibernate.annotations.Index(name = "idx_mix_core_connect_log_1", columnNames = { "role_id", "log_date" }),
+		@org.hibernate.annotations.Index(name = "idx_mix_core_connect_log_2", columnNames = { "connect_action",
+				"role_id", "enter_time" }) })
 // --------------------------------------------------
 // hibernate search
 // --------------------------------------------------
 // @Indexed
-public class CoreConnectLogImpl extends AppLogEntitySupporter implements
-		CoreConnectLog {
+public class CoreConnectLogImpl extends AppLogEntitySupporter implements CoreConnectLog {
 
 	private static final long serialVersionUID = 651695262563051995L;
 
@@ -49,7 +47,15 @@ public class CoreConnectLogImpl extends AppLogEntitySupporter implements
 
 	private ConnectAction connectAction;
 
+	/**
+	 * 客戶端ip
+	 */
 	private String clientIp;
+
+	/**
+	 * 客戶端port
+	 */
+	private Integer clientPort;
 
 	private Long enterTime;
 
@@ -93,6 +99,16 @@ public class CoreConnectLogImpl extends AppLogEntitySupporter implements
 		this.clientIp = clientIp;
 	}
 
+	@Column(name = "client_port")
+	@Field(store = Store.YES, index = Index.YES, analyze = Analyze.NO)
+	public Integer getClientPort() {
+		return clientPort;
+	}
+
+	public void setClientPort(Integer clientPort) {
+		this.clientPort = clientPort;
+	}
+
 	@Column(name = "enter_time")
 	@Field(store = Store.YES, index = Index.YES, analyze = Analyze.NO)
 	public Long getEnterTime() {
@@ -128,6 +144,7 @@ public class CoreConnectLogImpl extends AppLogEntitySupporter implements
 		builder.appendSuper(super.toString());
 		builder.append("connectAction", connectAction);
 		builder.append("clientIp", clientIp);
+		builder.append("clientPort", clientPort);
 		builder.append("enterTime", enterTime);
 		builder.append("leaveTime", leaveTime);
 		builder.append("onlineMills", onlineMills);

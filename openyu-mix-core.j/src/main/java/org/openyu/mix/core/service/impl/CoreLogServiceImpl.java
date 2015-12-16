@@ -79,6 +79,7 @@ public class CoreLogServiceImpl extends AppLogServiceSupporter implements CoreLo
 		recordRole(role, log);
 		//
 		log.setClientIp(getClientIp(role.getId()));
+		log.setClientPort(getClientPort(role.getId()));
 		log.setConnectAction(ConnectAction.CONNECT);
 		log.setEnterTime(role.getEnterTime());
 		//

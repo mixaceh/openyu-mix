@@ -6,8 +6,7 @@ import org.openyu.mix.core.vo.Core.ConnectAction;
 /**
  * 角色連線log,不做bean,直接用entity處理掉
  */
-public interface CoreConnectLog extends AppLogEntity
-{
+public interface CoreConnectLog extends AppLogEntity {
 
 	String KEY = CoreConnectLog.class.getName();
 
@@ -21,13 +20,22 @@ public interface CoreConnectLog extends AppLogEntity
 	void setConnectAction(ConnectAction connectAction);
 
 	/**
-	 * client ip
+	 * 客戶端ip
 	 * 
 	 * @return
 	 */
 	String getClientIp();
 
 	void setClientIp(String clientIp);
+
+	/**
+	 * 客戶端port
+	 * 
+	 * @return
+	 */
+	Integer getClientPort();
+
+	void setClientPort(Integer clientPort);
 
 	/**
 	 * 上線時間
@@ -46,7 +54,7 @@ public interface CoreConnectLog extends AppLogEntity
 	Long getLeaveTime();
 
 	void setLeaveTime(Long leaveTime);
-	
+
 	/**
 	 * 在線毫秒
 	 * 

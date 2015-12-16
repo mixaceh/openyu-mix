@@ -1,4 +1,4 @@
-package org.openyu.mix.core.service.aop;
+package org.openyu.mix.core.aop;
 
 import org.aopalliance.intercept.MethodInvocation;
 import org.slf4j.Logger;

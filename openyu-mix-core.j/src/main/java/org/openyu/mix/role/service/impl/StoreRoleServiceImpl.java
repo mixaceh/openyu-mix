@@ -119,10 +119,7 @@ public class StoreRoleServiceImpl extends AppServiceSupporter implements StoreRo
 			while (true) {
 				try {
 					// 自動儲存就不發訊息給client了
-					int count = storeRoles(false);
-					if (count > 0) {
-						LOGGER.info("Automatic save roles to DB, total count [" + count + "]");
-					}
+					storeRoles(false);
 					ThreadHelper.sleep(roleCollector.getListenMills());
 				} catch (Exception ex) {
 					// ex.printStackTrace();
@@ -152,6 +149,12 @@ public class StoreRoleServiceImpl extends AppServiceSupporter implements StoreRo
 				ex.printStackTrace();
 			}
 		}
+		//
+		if (result > 0) {
+			LOGGER.info("Every " + roleCollector.getListenMills() + " mills., "
+					+ "automatic save roles to DB, total count [" + result + "]");
+
+		}
 		return result;
 	}
 
@@ -179,7 +182,7 @@ public class StoreRoleServiceImpl extends AppServiceSupporter implements StoreRo
 		int version = role.getVersion();
 		for (;;) {
 			try {
-				LOGGER.info("T[" + Thread.currentThread().getId() + "] Store the role [" + roleId + "]");
+				LOGGER.info("T[" + Thread.currentThread().getId() + "] Save the role [" + roleId + "]");
 				// 使用roleService來存檔
 				updated = roleService.update(role);
 				// 存檔成功

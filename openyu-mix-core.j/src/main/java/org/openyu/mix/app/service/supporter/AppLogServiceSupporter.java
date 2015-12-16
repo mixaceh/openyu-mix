@@ -3,6 +3,9 @@ package org.openyu.mix.app.service.supporter;
 import org.openyu.mix.app.log.AppLogEntity;
 import org.openyu.mix.app.service.AppLogService;
 import org.openyu.mix.role.vo.Role;
+
+import java.util.Map;
+
 import org.openyu.commons.service.supporter.BaseLogServiceSupporter;
 import org.openyu.socklet.acceptor.service.AcceptorService;
 import org.openyu.socklet.acceptor.vo.AcceptorStarter;
@@ -13,56 +16,63 @@ import org.slf4j.LoggerFactory;
 /**
  * 日誌服務
  */
-public class AppLogServiceSupporter extends BaseLogServiceSupporter
-		implements AppLogService {
-	
+public class AppLogServiceSupporter extends BaseLogServiceSupporter implements AppLogService {
+
 	private static final long serialVersionUID = 5897073418058666600L;
 
-	private static transient final Logger LOGGER = LoggerFactory
-			.getLogger(AppLogServiceSupporter.class);
+	private static transient final Logger LOGGER = LoggerFactory.getLogger(AppLogServiceSupporter.class);
 
 	protected transient AcceptorStarter acceptorStarter;
 
 	protected transient AcceptorService acceptorService;
 
+	/**
+	 * 接收器服務
+	 */
 	public AppLogServiceSupporter() {
 	}
 
-	/**
-	 * 當單元測試時,是沒有真正啟動acceptor,所以沒有acceptorStarter
-	 * 
-	 * @return
-	 */
-	protected AcceptorStarter getAcceptorStarter() {
-		if (acceptorStarter == null) {
-			try {
-				acceptorStarter = (AcceptorStarter) applicationContext
-						.getBean("acceptorStarter");
-			} catch (Exception ex) {
+	// --------------------------------------------------
+
+	protected synchronized AcceptorService getAcceptorService() {
+		if (this.acceptorService == null) {
+			Map<String, AcceptorService> acceptorServices = applicationContext.getBeansOfType(AcceptorService.class);
+			for (AcceptorService entry : acceptorServices.values()) {
+				boolean started = entry.isStarted();
+				if (started) {
+					this.acceptorService = entry;
+				}
+				break;
 			}
 		}
-		return acceptorStarter;
-	}
-
-	protected AcceptorService getAcceptorService() {
-		AcceptorStarter starter = getAcceptorStarter();
-		if (starter != null) {
-			return starter.getAcceptorService();
-		}
-		return null;
+		return this.acceptorService;
 	}
 
 	/**
-	 * 取得acceptor id
+	 * 取得接收器 id
 	 * 
 	 * @return
 	 */
-	protected String getAcceptor() {
-		AcceptorService service = getAcceptorService();
-		if (service != null) {
-			return service.getId();
-		}
-		return null;
+	protected String getAcceptorId() {
+		return getAcceptorService().getId();
+	}
+
+	/**
+	 * 取得接收器 實例id
+	 * 
+	 * @return
+	 */
+	protected String getAcceptorInstanceId() {
+		return getAcceptorService().getInstanceId();
+	}
+
+	/**
+	 * 取得接收器 輸出id
+	 * 
+	 * @return
+	 */
+	protected String getAcceptorOutputId() {
+		return getAcceptorService().getOutputId();
 	}
 
 	/**
@@ -147,7 +157,9 @@ public class AppLogServiceSupporter extends BaseLogServiceSupporter
 			entity.setRoleId(role.getId());
 			entity.setRoleName(role.getName());
 			entity.setAcceptorId(role.getAcceptorId());
+			//
 			entity.setServerIp(getServerIp(role.getId()));
+			entity.setServerPort(getServerPort(role.getId()));
 		}
 	}
 

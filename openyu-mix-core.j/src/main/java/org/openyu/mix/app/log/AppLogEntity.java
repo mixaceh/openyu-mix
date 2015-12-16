@@ -53,4 +53,13 @@ public interface AppLogEntity extends SeqLogEntity {
 
 	void setServerIp(String serverIp);
 
+	/**
+	 * 伺服器port
+	 * 
+	 * @return
+	 */
+	Integer getServerPort();
+
+	void setServerPort(Integer serverPort);
+
 }

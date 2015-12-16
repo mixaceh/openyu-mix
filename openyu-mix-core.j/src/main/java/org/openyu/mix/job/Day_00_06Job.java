@@ -6,9 +6,9 @@ import org.quartz.JobExecutionContext;
 /**
  * 每日00:06執行
  */
-public class Day00_06Job extends AppJobSupporter {
+public class Day_00_06Job extends AppJobSupporter {
 
-	public Day00_06Job() {
+	public Day_00_06Job() {
 
 	}
 

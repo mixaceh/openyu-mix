@@ -148,7 +148,9 @@ public class StoreChatServiceImpl extends AppServiceSupporter implements StoreCh
 		}
 		//
 		if (result > 0) {
-			LOGGER.info("Automatic save chats to DB, total count [" + result + "]");
+			LOGGER.info("Every " + chatCollector.getListenMills() + " mills., "
+					+ "automatic save chats to DB, total count [" + result + "]");
+
 		}
 		return result;
 	}
@@ -177,7 +179,7 @@ public class StoreChatServiceImpl extends AppServiceSupporter implements StoreCh
 		int version = chat.getVersion();
 		for (;;) {
 			try {
-				LOGGER.info("T[" + Thread.currentThread().getId() + "] Store the chat [" + chat.getId() + "]");
+				LOGGER.info("T[" + Thread.currentThread().getId() + "] Save the chat [" + chat.getId() + "]");
 				// 使用chatService來存檔
 				updated = chatService.update(chat);
 				// 存檔成功

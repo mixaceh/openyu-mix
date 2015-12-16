@@ -21,7 +21,7 @@
 	<!-- 角色連線 -->
 	<bean
 		id="coreRoleConnectAdvice"
-		class="org.openyu.mix.core.service.aop.CoreRoleConnectInterceptor"
+		class="org.openyu.mix.core.aop.CoreRoleConnectInterceptor"
 		parent="appMethodInterceptorSupporter" />
 
 	<aop:config>
@@ -37,7 +37,7 @@
 	<!-- 角色斷線 -->
 	<bean
 		id="coreRoleDisconnectAdvice"
-		class="org.openyu.mix.core.service.aop.CoreRoleDisconnectInterceptor"
+		class="org.openyu.mix.core.aop.CoreRoleDisconnectInterceptor"
 		parent="appMethodInterceptorSupporter" />
 
 	<aop:config>
