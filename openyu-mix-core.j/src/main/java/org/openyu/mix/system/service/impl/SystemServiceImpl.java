@@ -16,6 +16,7 @@ import org.openyu.mix.system.vo.Context;
 import org.openyu.mix.system.vo.Relation;
 import org.openyu.mix.system.vo.impl.ContextImpl;
 import org.openyu.mix.system.vo.impl.RelationImpl;
+import org.openyu.socklet.bootstrap.server.AcceptorBootstrap;
 import org.openyu.socklet.message.vo.Message;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -164,9 +165,8 @@ public class SystemServiceImpl extends AppServiceSupporter implements SystemServ
 		result.setEnterTime(System.currentTimeMillis());
 		// 已連線
 		result.setConnected(true);
-
 		// 載入欲加入的伺服器關連
-		Set<String> relations = getAcceptorService().getRelations().keySet();
+		Set<String> relations = AcceptorBootstrap.getRelations().keySet();
 		for (String rationId : relations) {
 			Relation relation = new RelationImpl();
 			relation.setId(rationId);
