@@ -102,7 +102,7 @@ public interface Role extends Flutter {
 	void setLeaveTime(long leaveTime);
 
 	/**
-	 * 取得接收器 id
+	 * 取得接收器id
 	 * 
 	 * @return
 	 */

@@ -14,8 +14,7 @@ import org.openyu.commons.bean.supporter.SeqIdAuditNamesBeanSupporter;
  */
 @XmlRootElement(name = "relation")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class RelationImpl extends SeqIdAuditNamesBeanSupporter implements
-		Relation {
+public class RelationImpl extends SeqIdAuditNamesBeanSupporter implements Relation {
 
 	private static final long serialVersionUID = -4045957311344008929L;
 
@@ -41,7 +40,7 @@ public class RelationImpl extends SeqIdAuditNamesBeanSupporter implements
 	private long leaveTime;
 
 	/**
-	 * acceptor id
+	 * 接收器id
 	 */
 	private String acceptorId;
 

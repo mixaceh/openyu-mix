@@ -4,12 +4,8 @@ import org.openyu.mix.app.log.AppLogEntity;
 import org.openyu.mix.app.service.AppLogService;
 import org.openyu.mix.role.vo.Role;
 
-import java.util.Map;
-
 import org.openyu.commons.service.supporter.BaseLogServiceSupporter;
-import org.openyu.socklet.acceptor.service.AcceptorService;
-import org.openyu.socklet.acceptor.vo.AcceptorStarter;
-import org.openyu.socklet.connector.vo.AcceptorConnector;
+import org.openyu.socklet.bootstrap.server.AcceptorBootstrap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,57 +18,34 @@ public class AppLogServiceSupporter extends BaseLogServiceSupporter implements A
 
 	private static transient final Logger LOGGER = LoggerFactory.getLogger(AppLogServiceSupporter.class);
 
-	protected transient AcceptorStarter acceptorStarter;
-
-	protected transient AcceptorService acceptorService;
-
-	/**
-	 * 接收器服務
-	 */
 	public AppLogServiceSupporter() {
 	}
 
-	// --------------------------------------------------
-
-	protected synchronized AcceptorService getAcceptorService() {
-		if (this.acceptorService == null) {
-			Map<String, AcceptorService> acceptorServices = applicationContext.getBeansOfType(AcceptorService.class);
-			for (AcceptorService entry : acceptorServices.values()) {
-				boolean started = entry.isStarted();
-				if (started) {
-					this.acceptorService = entry;
-				}
-				break;
-			}
-		}
-		return this.acceptorService;
-	}
-
 	/**
-	 * 取得接收器 id
+	 * 取得接收器id
 	 * 
 	 * @return
 	 */
 	protected String getAcceptorId() {
-		return getAcceptorService().getId();
+		return AcceptorBootstrap.getId();
 	}
 
 	/**
-	 * 取得接收器 實例id
+	 * 取得接收器實例id
 	 * 
 	 * @return
 	 */
 	protected String getAcceptorInstanceId() {
-		return getAcceptorService().getInstanceId();
+		return AcceptorBootstrap.getInstanceId();
 	}
 
 	/**
-	 * 取得接收器 輸出id
+	 * 取得接收器輸出id
 	 * 
 	 * @return
 	 */
 	protected String getAcceptorOutputId() {
-		return getAcceptorService().getOutputId();
+		return AcceptorBootstrap.getOutputId();
 	}
 
 	/**
@@ -82,14 +55,7 @@ public class AppLogServiceSupporter extends BaseLogServiceSupporter implements A
 	 * @return
 	 */
 	protected String getServerIp(String sender) {
-		AcceptorService service = getAcceptorService();
-		if (service != null) {
-			AcceptorConnector connector = service.getAcceptorConnector(sender);
-			if (connector != null) {
-				return connector.getServerIp();
-			}
-		}
-		return null;
+		return AcceptorBootstrap.getServerIp(sender);
 	}
 
 	/**
@@ -99,14 +65,7 @@ public class AppLogServiceSupporter extends BaseLogServiceSupporter implements A
 	 * @return
 	 */
 	protected int getServerPort(String sender) {
-		AcceptorService service = getAcceptorService();
-		if (service != null) {
-			AcceptorConnector connector = service.getAcceptorConnector(sender);
-			if (connector != null) {
-				return connector.getServerPort();
-			}
-		}
-		return 0;
+		return AcceptorBootstrap.getServerPort(sender);
 	}
 
 	/**
@@ -116,14 +75,7 @@ public class AppLogServiceSupporter extends BaseLogServiceSupporter implements A
 	 * @return
 	 */
 	protected String getClientIp(String sender) {
-		AcceptorService service = getAcceptorService();
-		if (service != null) {
-			AcceptorConnector connector = service.getAcceptorConnector(sender);
-			if (connector != null) {
-				return connector.getClientIp();
-			}
-		}
-		return null;
+		return AcceptorBootstrap.getClientIp(sender);
 	}
 
 	/**
@@ -133,14 +85,7 @@ public class AppLogServiceSupporter extends BaseLogServiceSupporter implements A
 	 * @return
 	 */
 	protected int getClientPort(String sender) {
-		AcceptorService service = getAcceptorService();
-		if (service != null) {
-			AcceptorConnector connector = service.getAcceptorConnector(sender);
-			if (connector != null) {
-				return connector.getClientPort();
-			}
-		}
-		return 0;
+		return AcceptorBootstrap.getClientPort(sender);
 	}
 
 	// --------------------------------------------------

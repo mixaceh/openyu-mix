@@ -52,7 +52,7 @@ public interface Relation extends SeqIdAuditNamesBean {
 	void setLeaveTime(long leaveTime);
 
 	/**
-	 * 取得接收器 id
+	 * 取得接收器id
 	 * 
 	 * @return
 	 */

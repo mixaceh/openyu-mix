@@ -60,7 +60,7 @@ public interface RolePo extends FlutterPo {
 	void setLeaveTime(Long leaveTime);
 
 	/**
-	 * 取得接收器 id
+	 * 取得接收器id
 	 * 
 	 * @return
 	 */

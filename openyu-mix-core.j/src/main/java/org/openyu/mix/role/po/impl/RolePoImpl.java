@@ -84,7 +84,7 @@ public class RolePoImpl extends FlutterPoSupporter implements RolePo {
 	private Long leaveTime;
 
 	/**
-	 * 取得接收器 id
+	 * 取得接收器id
 	 */
 	private String acceptorId;
 

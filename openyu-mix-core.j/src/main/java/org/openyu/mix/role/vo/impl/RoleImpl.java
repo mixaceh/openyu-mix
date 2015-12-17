@@ -64,7 +64,7 @@ public class RoleImpl extends FlutterSupporter implements Role {
 	private long leaveTime;
 
 	/**
-	 * 取得接收器 id
+	 * 取得接收器id
 	 */
 	private String acceptorId;
 

@@ -11,6 +11,7 @@ import org.openyu.commons.service.supporter.CommonServiceSupporter;
 import org.openyu.commons.thread.ThreadService;
 import org.openyu.commons.thread.anno.DefaultThreadService;
 import org.openyu.socklet.acceptor.service.AcceptorService;
+import org.openyu.socklet.bootstrap.server.AcceptorBootstrap;
 import org.openyu.socklet.connector.vo.AcceptorConnector;
 import org.openyu.socklet.message.anno.DefaultMessageService;
 import org.openyu.socklet.message.service.MessageService;
@@ -40,6 +41,73 @@ public class AppServiceSupporter extends CommonServiceSupporter implements AppSe
 	private transient AcceptorService acceptorService;
 
 	public AppServiceSupporter() {
+	}
+
+	/**
+	 * 取得接收器id
+	 * 
+	 * @return
+	 */
+	protected String getAcceptorId() {
+		return AcceptorBootstrap.getId();
+	}
+
+	/**
+	 * 取得接收器實例id
+	 * 
+	 * @return
+	 */
+	protected String getAcceptorInstanceId() {
+		return AcceptorBootstrap.getInstanceId();
+	}
+
+	/**
+	 * 取得接收器輸出id
+	 * 
+	 * @return
+	 */
+	protected String getAcceptorOutputId() {
+		return AcceptorBootstrap.getOutputId();
+	}
+
+	/**
+	 * 取得server ip
+	 * 
+	 * @param sender
+	 * @return
+	 */
+	protected String getServerIp(String sender) {
+		return AcceptorBootstrap.getServerIp(sender);
+	}
+
+	/**
+	 * 取得server port
+	 * 
+	 * @param sender
+	 * @return
+	 */
+	protected int getServerPort(String sender) {
+		return AcceptorBootstrap.getServerPort(sender);
+	}
+
+	/**
+	 * 取得client ip
+	 * 
+	 * @param sender
+	 * @return
+	 */
+	protected String getClientIp(String sender) {
+		return AcceptorBootstrap.getClientIp(sender);
+	}
+
+	/**
+	 * 取得client port
+	 * 
+	 * @param sender
+	 * @return
+	 */
+	protected int getClientPort(String sender) {
+		return AcceptorBootstrap.getClientPort(sender);
 	}
 
 	// --------------------------------------------------
@@ -111,118 +179,4 @@ public class AppServiceSupporter extends CommonServiceSupporter implements AppSe
 		return null;
 	}
 
-	// --------------------------------------------------
-
-	protected synchronized AcceptorService getAcceptorService() {
-		if (this.acceptorService == null) {
-			Map<String, AcceptorService> acceptorServices = applicationContext.getBeansOfType(AcceptorService.class);
-			for (AcceptorService entry : acceptorServices.values()) {
-				boolean started = entry.isStarted();
-				if (started) {
-					this.acceptorService = entry;
-				}
-				break;
-			}
-		}
-		return this.acceptorService;
-	}
-
-	/**
-	 * 取得接收器 id
-	 * 
-	 * @return
-	 */
-	protected String getAcceptorId() {
-		return getAcceptorService().getId();
-	}
-
-	/**
-	 * 取得接收器 實例id
-	 * 
-	 * @return
-	 */
-	protected String getAcceptorInstanceId() {
-		return getAcceptorService().getInstanceId();
-	}
-
-	/**
-	 * 取得接收器 輸出id
-	 * 
-	 * @return
-	 */
-	protected String getAcceptorOutputId() {
-		return getAcceptorService().getOutputId();
-	}
-
-	/**
-	 * 取得server ip
-	 * 
-	 * @param sender
-	 * @return
-	 */
-	protected String getServerIp(String sender) {
-		String result = null;
-		AcceptorService service = getAcceptorService();
-		if (service != null) {
-			AcceptorConnector connector = service.getAcceptorConnector(sender);
-			if (connector != null) {
-				result = connector.getServerIp();
-			}
-		}
-		return result;
-	}
-
-	/**
-	 * 取得server port
-	 * 
-	 * @param sender
-	 * @return
-	 */
-	protected int getServerPort(String sender) {
-		int result = 0;
-		AcceptorService service = getAcceptorService();
-		if (service != null) {
-			AcceptorConnector connector = service.getAcceptorConnector(sender);
-			if (connector != null) {
-				result = connector.getServerPort();
-			}
-		}
-		return result;
-	}
-
-	/**
-	 * 取得client ip
-	 * 
-	 * @param sender
-	 * @return
-	 */
-	protected String getClientIp(String sender) {
-		String result = null;
-		AcceptorService service = getAcceptorService();
-		if (service != null) {
-			AcceptorConnector connector = service.getAcceptorConnector(sender);
-			if (connector != null) {
-				result = connector.getClientIp();
-			}
-		}
-		return result;
-	}
-
-	/**
-	 * 取得client port
-	 * 
-	 * @param sender
-	 * @return
-	 */
-	protected int getClientPort(String sender) {
-		int result = 0;
-		AcceptorService service = getAcceptorService();
-		if (service != null) {
-			AcceptorConnector connector = service.getAcceptorConnector(sender);
-			if (connector != null) {
-				result = connector.getClientPort();
-			}
-		}
-		return result;
-	}
 }
