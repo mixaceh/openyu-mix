@@ -4,7 +4,7 @@ import org.openyu.mix.app.log.AppLogEntity;
 import org.openyu.mix.app.service.AppLogService;
 import org.openyu.mix.role.vo.Role;
 
-import org.openyu.commons.service.supporter.BaseLogServiceSupporter;
+import org.openyu.commons.service.supporter.LogServiceSupporter;
 import org.openyu.socklet.bootstrap.server.AcceptorBootstrap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,7 +12,7 @@ import org.slf4j.LoggerFactory;
 /**
  * 日誌服務
  */
-public class AppLogServiceSupporter extends BaseLogServiceSupporter implements AppLogService {
+public class AppLogServiceSupporter extends LogServiceSupporter implements AppLogService {
 
 	private static final long serialVersionUID = 5897073418058666600L;
 

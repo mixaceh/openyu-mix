@@ -20,7 +20,7 @@ import org.openyu.mix.app.service.AppLogService;
 import org.openyu.commons.dao.supporter.CommonDaoSupporter;
 import org.openyu.commons.junit.supporter.BaseTestSupporter;
 import org.openyu.commons.service.AsyncService;
-import org.openyu.commons.service.BaseLogService;
+import org.openyu.commons.service.LogService;
 import org.openyu.commons.thread.ThreadHelper;
 
 public class ApplicationContextDatabaseLogTest extends BaseTestSupporter {
@@ -94,7 +94,7 @@ public class ApplicationContextDatabaseLogTest extends BaseTestSupporter {
 
 	@Test
 	public void baseLogServiceSupporter() {
-		BaseLogService bean = (BaseLogService) applicationContext.getBean("baseLogServiceSupporter");
+		LogService bean = (LogService) applicationContext.getBean("baseLogServiceSupporter");
 		System.out.println(bean);
 		assertNotNull(bean);
 	}
