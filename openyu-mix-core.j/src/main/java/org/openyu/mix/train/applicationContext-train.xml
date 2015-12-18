@@ -34,13 +34,6 @@
 	<bean id="trainLogService" class="org.openyu.mix.train.service.impl.TrainLogServiceImpl"
 		parent="appLogServiceSupporter" />
 
-	<!-- advisor -->
-	<aop:config>
-		<aop:pointcut id="trainLogServiceTxPointcut" expression="bean(trainLogService)" />
-		<aop:advisor id="trainLogServiceTxAdvisor" advice-ref="logTxAdvice"
-			pointcut-ref="trainLogServiceTxPointcut" />
-	</aop:config>
-
 	<!-- socklet -->
 	<bean id="trainSocklet" class="org.openyu.mix.train.socklet.TrainSocklet"
 		parent="slaveSockletServiceSupporter">

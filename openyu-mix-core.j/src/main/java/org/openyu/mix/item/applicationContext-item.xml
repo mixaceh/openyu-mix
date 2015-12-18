@@ -67,13 +67,6 @@
 	<bean id="itemLogService" class="org.openyu.mix.item.service.impl.ItemLogServiceImpl"
 		parent="appLogServiceSupporter" />
 
-	<!-- advisor -->
-	<aop:config>
-		<aop:pointcut id="itemLogServiceTxPointcut" expression="bean(itemLogService)" />
-		<aop:advisor id="itemLogServiceTxAdvisor" advice-ref="logTxAdvice"
-			pointcut-ref="itemLogServiceTxPointcut" />
-	</aop:config>
-
 	<!-- socklet -->
 	<bean id="itemSocklet" class="org.openyu.mix.item.socklet.ItemSocklet"
 		parent="slaveSockletServiceSupporter" >

@@ -61,13 +61,6 @@
 		parent="appLogServiceSupporter">
 	</bean>
 
-	<!-- advisor -->
-	<aop:config>
-		<aop:pointcut id="manorLogServiceTxPointcut" expression="bean(manorLogService)" />
-		<aop:advisor id="manorLogServiceTxAdvisor" advice-ref="logTxAdvice"
-			pointcut-ref="manorLogServiceTxPointcut" />
-	</aop:config>
-
 	<!-- socklet -->
 	<bean id="manorSocklet" class="org.openyu.mix.manor.socklet.ManorSocklet"
 		parent="slaveSockletServiceSupporter">

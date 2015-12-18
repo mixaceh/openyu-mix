@@ -142,17 +142,6 @@
 		class="org.openyu.mix.role.service.impl.RoleLogServiceImpl"
 		parent="appLogServiceSupporter" />
 
-	<!-- advisor -->
-	<aop:config>
-		<aop:pointcut
-			id="roleLogServiceTxPointcut"
-			expression="bean(roleLogService)" />
-		<aop:advisor
-			id="roleLogServiceTxAdvisor"
-			advice-ref="logTxAdvice"
-			pointcut-ref="roleLogServiceTxPointcut" />
-	</aop:config>
-
 	<!-- socklet -->
 	<bean
 		id="roleSocklet"

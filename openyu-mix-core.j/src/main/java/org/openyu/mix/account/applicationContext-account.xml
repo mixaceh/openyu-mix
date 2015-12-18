@@ -78,14 +78,6 @@
 		class="org.openyu.mix.account.service.impl.AccountLogServiceImpl"
 		parent="appLogServiceSupporter" />
 
-	<!-- advisor -->
-	<aop:config>
-		<aop:pointcut id="accountLogServiceTxPointcut"
-			expression="bean(accountLogService)" />
-		<aop:advisor id="accountLogServiceTxAdvisor" advice-ref="logTxAdvice"
-			pointcut-ref="accountLogServiceTxPointcut" />
-	</aop:config>
-
 	<!-- socklet -->
 	<bean id="accountSocklet" class="org.openyu.mix.account.socklet.AccountSocklet"
 		parent="accountSockletServiceSupporter">

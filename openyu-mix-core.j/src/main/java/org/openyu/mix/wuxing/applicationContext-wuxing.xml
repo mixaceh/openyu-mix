@@ -66,13 +66,6 @@
 		parent="appLogServiceSupporter">
 	</bean>
 
-	<!-- advisor -->
-	<aop:config>
-		<aop:pointcut id="wuxingLogServiceTxPointcut" expression="bean(wuxingLogService)" />
-		<aop:advisor id="wuxingLogServiceTxAdvisor" advice-ref="logTxAdvice"
-			pointcut-ref="wuxingLogServiceTxPointcut" />
-	</aop:config>
-
 	<!-- socklet -->
 	<bean id="wuxingSocklet" class="org.openyu.mix.wuxing.socklet.WuxingSocklet"
 		parent="slaveSockletServiceSupporter">

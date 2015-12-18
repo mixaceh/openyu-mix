@@ -46,13 +46,6 @@
 	<bean id="treasureLogService"
 		class="org.openyu.mix.treasure.service.impl.TreasureLogServiceImpl"
 		parent="appLogServiceSupporter"/>
-
-	<!-- advisor -->
-	<aop:config>
-		<aop:pointcut id="treasureLogServiceTxPointcut" expression="bean(treasureLogService)" />
-		<aop:advisor id="treasureLogServiceTxAdvisor" advice-ref="logTxAdvice"
-			pointcut-ref="treasureLogServiceTxPointcut" />
-	</aop:config>
 	
 	<!-- socklet -->
 	<bean id="treasureSocklet" class="org.openyu.mix.treasure.socklet.TreasureSocklet"
