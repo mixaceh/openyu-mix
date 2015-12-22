@@ -14,7 +14,6 @@ import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.orm.hibernate4.HibernateTransactionManager;
-import org.springframework.transaction.interceptor.TransactionInterceptor;
 import org.openyu.mix.app.dao.AppLogDao;
 import org.openyu.mix.app.service.AppLogService;
 import org.openyu.commons.dao.supporter.CommonDaoSupporter;
@@ -64,6 +63,14 @@ public class ApplicationContextDatabaseLogTest extends BaseTestSupporter {
 		});
 	}
 
+	// @Test
+	// public void logTxAdvice() {
+	// TransactionInterceptor bean = (TransactionInterceptor)
+	// applicationContext.getBean("logTxAdvice");
+	// System.out.println(bean);
+	// assertNotNull(bean);
+	// }
+
 	@Test
 	public void logTx() {
 		HibernateTransactionManager bean = (HibernateTransactionManager) applicationContext.getBean("logTx");
@@ -72,15 +79,8 @@ public class ApplicationContextDatabaseLogTest extends BaseTestSupporter {
 	}
 
 	@Test
-	public void logTxAdvice() {
-		TransactionInterceptor bean = (TransactionInterceptor) applicationContext.getBean("logTxAdvice");
-		System.out.println(bean);
-		assertNotNull(bean);
-	}
-
-	@Test
-	public void logCommonDaoSupporter() {
-		CommonDaoSupporter bean = (CommonDaoSupporter) applicationContext.getBean("logCommonDaoSupporter");
+	public void logDaoSupporter() {
+		CommonDaoSupporter bean = (CommonDaoSupporter) applicationContext.getBean("logDaoSupporter");
 		System.out.println(bean);
 		assertNotNull(bean);
 	}
@@ -93,8 +93,8 @@ public class ApplicationContextDatabaseLogTest extends BaseTestSupporter {
 	}
 
 	@Test
-	public void baseLogServiceSupporter() {
-		LogService bean = (LogService) applicationContext.getBean("baseLogServiceSupporter");
+	public void logServiceSupporter() {
+		LogService bean = (LogService) applicationContext.getBean("logServiceSupporter");
 		System.out.println(bean);
 		assertNotNull(bean);
 	}
@@ -112,9 +112,10 @@ public class ApplicationContextDatabaseLogTest extends BaseTestSupporter {
 		System.out.println(bean);
 		assertNotNull(bean);
 		//
-		ThreadHelper.sleep(3 * 1000);
-		BeanDefinitionRegistry factory = (BeanDefinitionRegistry) applicationContext.getAutowireCapableBeanFactory();
-		factory.removeBeanDefinition("logAsyncService");
-		ThreadHelper.sleep(3 * 1000);
+		// ThreadHelper.sleep(3 * 1000);
+		// BeanDefinitionRegistry factory = (BeanDefinitionRegistry)
+		// applicationContext.getAutowireCapableBeanFactory();
+		// factory.removeBeanDefinition("logAsyncService");
+		// ThreadHelper.sleep(3 * 1000);
 	}
 }

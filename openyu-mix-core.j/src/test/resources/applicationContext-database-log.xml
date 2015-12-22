@@ -10,7 +10,6 @@
              http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
              http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd">
 
-	<!-- bonecp -->
 	<bean
 		id="logDataSourceTarget"
 		class="org.openyu.commons.commons.dbcp.BasicDataSourceFactoryBean"
@@ -74,6 +73,7 @@
 		class="org.springframework.orm.hibernate4.HibernateTransactionManager"
 		p:sessionFactory-ref="logSessionFactory" />
 
+	<!-- use @LogTx insteadof logTxAdvice
 	<tx:advice
 		id="logTxAdvice"
 		transaction-manager="logTx">
@@ -108,8 +108,6 @@
 				rollback-for="java.lang.Exception"
 				propagation="REQUIRED"
 				read-only="false" />
-				
-			<!-- addtional -->
 			<tx:method
 				name="record*"
 				rollback-for="java.lang.Exception"
@@ -122,32 +120,33 @@
 				read-only="false" />
 		</tx:attributes>
 	</tx:advice>
+	-->
 
 	<tx:annotation-driven transaction-manager="logTx" />
 
 	<!-- log dao supporter, use sessionFactory 
-	<bean id="logCommonDaoSupporter" class="org.openyu.commons.dao.supporter.CommonDaoSupporter"
+	<bean id="logDaoSupporter" class="org.openyu.commons.dao.supporter.CommonDaoSupporter"
 		p:sessionFactory-ref="logSessionFactory" />
 	-->
 
 	<bean
-		id="logCommonDaoSupporter"
+		id="logDaoSupporter"
 		class="org.openyu.commons.dao.supporter.CommonDaoSupporter"
 		p:hibernateTemplate-ref="logHibernateTemplate" />
 
 	<bean
 		id="appLogDaoSupporter"
 		class="org.openyu.mix.app.dao.supporter.AppLogDaoSupporter"
-		parent="logCommonDaoSupporter" />
+		parent="logDaoSupporter" />
 	
 	<!-- log async service -->
 	<bean
 		id="logAsyncService"
 		class="org.openyu.commons.service.impl.AsyncServiceImpl"
 		parent="baseServiceSupporter"
-		p:commonDao-ref="logCommonDaoSupporter" />
+		p:commonDao-ref="logDaoSupporter" />
 		
-	<!-- log async service advisor -->
+	<!-- log async service advisor
 	<aop:config>
 		<aop:pointcut
 			id="logAsyncServiceTxPointcut"
@@ -156,18 +155,19 @@
 			id="logAsyncServiceTxAdvisor"
 			advice-ref="logTxAdvice"
 			pointcut-ref="logAsyncServiceTxPointcut" />
-	</aop:config>		
+	</aop:config>
+	 -->		
 
 	<!-- log service supporter -->
 	<bean
-		id="baseLogServiceSupporter"
-		class="org.openyu.commons.service.supporter.BaseLogServiceSupporter"
+		id="logServiceSupporter"
+		class="org.openyu.commons.service.supporter.LogServiceSupporter"
 		parent="baseServiceSupporter">
 	</bean>
 
 	<bean
 		id="appLogServiceSupporter"
 		class="org.openyu.mix.app.service.supporter.AppLogServiceSupporter"
-		parent="baseLogServiceSupporter">
+		parent="logServiceSupporter">
 	</bean>
 </beans>

@@ -36,8 +36,8 @@ public class ApplicationContextDatabaseTest extends BaseTestSupporter {
 	}
 
 	@Test
-	public void dataSource() throws Exception {
-		DataSource bean = (DataSource) applicationContext.getBean("dataSource");
+	public void commonDataSource() throws Exception {
+		DataSource bean = (DataSource) applicationContext.getBean("commonDataSource");
 		System.out.println(bean);
 		assertNotNull(bean);
 		//
@@ -47,8 +47,8 @@ public class ApplicationContextDatabaseTest extends BaseTestSupporter {
 	}
 
 	@Test
-	public void sessionFactory() throws Exception {
-		SessionFactory bean = (SessionFactory) applicationContext.getBean("sessionFactory");
+	public void commonSessionFactory() throws Exception {
+		SessionFactory bean = (SessionFactory) applicationContext.getBean("commonSessionFactory");
 		System.out.println(bean);
 		assertNotNull(bean);
 		//
@@ -63,22 +63,23 @@ public class ApplicationContextDatabaseTest extends BaseTestSupporter {
 	}
 
 	@Test
-	public void hibernateTemplate() {
-		HibernateTemplate bean = (HibernateTemplate) applicationContext.getBean("hibernateTemplate");
+	public void commonHibernateTemplate() {
+		HibernateTemplate bean = (HibernateTemplate) applicationContext.getBean("commonHibernateTemplate");
 		System.out.println(bean);
 		assertNotNull(bean);
 	}
+
+	// @Test
+	// public void commonTxAdvice() {
+	// TransactionInterceptor bean = (TransactionInterceptor)
+	// applicationContext.getBean("commonTxAdvice");
+	// System.out.println(bean);
+	// assertNotNull(bean);
+	// }
 
 	@Test
 	public void commonTx() {
 		HibernateTransactionManager bean = (HibernateTransactionManager) applicationContext.getBean("commonTx");
-		System.out.println(bean);
-		assertNotNull(bean);
-	}
-
-	@Test
-	public void commonTxAdvice() {
-		TransactionInterceptor bean = (TransactionInterceptor) applicationContext.getBean("commonTxAdvice");
 		System.out.println(bean);
 		assertNotNull(bean);
 	}
@@ -91,15 +92,15 @@ public class ApplicationContextDatabaseTest extends BaseTestSupporter {
 	}
 
 	@Test
-	public void commonServiceSupporter() {
-		CommonService bean = (CommonService) applicationContext.getBean("commonServiceSupporter");
+	public void appDaoSupporter() {
+		AppDao bean = (AppDao) applicationContext.getBean("appDaoSupporter");
 		System.out.println(bean);
 		assertNotNull(bean);
 	}
 
 	@Test
-	public void appDaoSupporter() {
-		AppDao bean = (AppDao) applicationContext.getBean("appDaoSupporter");
+	public void commonServiceSupporter() {
+		CommonService bean = (CommonService) applicationContext.getBean("commonServiceSupporter");
 		System.out.println(bean);
 		assertNotNull(bean);
 	}
@@ -117,9 +118,11 @@ public class ApplicationContextDatabaseTest extends BaseTestSupporter {
 		System.out.println(bean);
 		assertNotNull(bean);
 		//
-		ThreadHelper.sleep(3 * 1000);
-		BeanDefinitionRegistry factory = (BeanDefinitionRegistry) applicationContext.getAutowireCapableBeanFactory();
-		factory.removeBeanDefinition("asyncService");
-		ThreadHelper.sleep(3 * 1000);
+		// ThreadHelper.sleep(3 * 1000);
+		// BeanDefinitionRegistry factory = (BeanDefinitionRegistry)
+		// applicationContext.getAutowireCapableBeanFactory();
+		// factory.removeBeanDefinition("asyncService");
+		// ThreadHelper.sleep(3 * 1000);
 	}
+
 }
