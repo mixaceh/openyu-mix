@@ -14,6 +14,8 @@ import org.slf4j.LoggerFactory;
 
 public class AccountDaoImpl extends AppDaoSupporter implements AccountDao {
 	
+	private static final long serialVersionUID = 7087071329864995838L;
+
 	private static transient final Logger LOGGER = LoggerFactory
 			.getLogger(AccountDaoImpl.class);
 
