@@ -91,7 +91,6 @@ public class AccountLogServiceImpl extends AppLogServiceSupporter implements Acc
 		AccountCoinLog log = new AccountCoinLogImpl();
 		// 紀錄角色相關資訊
 		recordRole(role, log);
-		log.setAccountId(accountId);
 		//
 		log.setActionType(coinAction);
 		log.setCoinType(coinReason);
