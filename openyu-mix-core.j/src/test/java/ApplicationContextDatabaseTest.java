@@ -19,7 +19,6 @@ import org.openyu.mix.app.dao.AppDao;
 import org.openyu.mix.app.service.AppService;
 import org.openyu.commons.dao.supporter.CommonDaoSupporter;
 import org.openyu.commons.junit.supporter.BaseTestSupporter;
-import org.openyu.commons.service.AsyncService;
 import org.openyu.commons.service.CommonService;
 import org.openyu.commons.thread.ThreadHelper;
 
@@ -111,18 +110,4 @@ public class ApplicationContextDatabaseTest extends BaseTestSupporter {
 		System.out.println(bean);
 		assertNotNull(bean);
 	}
-
-	@Test
-	public void asyncService() {
-		AsyncService bean = (AsyncService) applicationContext.getBean("asyncService");
-		System.out.println(bean);
-		assertNotNull(bean);
-		//
-		// ThreadHelper.sleep(3 * 1000);
-		// BeanDefinitionRegistry factory = (BeanDefinitionRegistry)
-		// applicationContext.getAutowireCapableBeanFactory();
-		// factory.removeBeanDefinition("asyncService");
-		// ThreadHelper.sleep(3 * 1000);
-	}
-
 }
