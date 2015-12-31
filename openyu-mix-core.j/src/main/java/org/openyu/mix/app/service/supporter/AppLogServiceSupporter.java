@@ -21,6 +21,11 @@ public class AppLogServiceSupporter extends LogServiceSupporter implements AppLo
 	public AppLogServiceSupporter() {
 	}
 
+	@Override
+	protected void checkConfig() throws Exception {
+
+	}
+
 	/**
 	 * 取得接收器id
 	 * 

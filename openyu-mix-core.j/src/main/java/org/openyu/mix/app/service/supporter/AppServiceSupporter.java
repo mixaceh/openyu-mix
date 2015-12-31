@@ -5,14 +5,10 @@ import org.slf4j.LoggerFactory;
 import org.openyu.mix.app.service.AppService;
 import org.openyu.mix.role.vo.Role;
 
-import java.util.Map;
-
 import org.openyu.commons.service.supporter.CommonServiceSupporter;
 import org.openyu.commons.thread.ThreadService;
 import org.openyu.commons.thread.anno.DefaultThreadService;
-import org.openyu.socklet.acceptor.service.AcceptorService;
 import org.openyu.socklet.bootstrap.server.AcceptorBootstrap;
-import org.openyu.socklet.connector.vo.AcceptorConnector;
 import org.openyu.socklet.message.anno.DefaultMessageService;
 import org.openyu.socklet.message.service.MessageService;
 import org.openyu.socklet.message.vo.Message;
@@ -35,12 +31,12 @@ public class AppServiceSupporter extends CommonServiceSupporter implements AppSe
 	@DefaultMessageService
 	protected transient MessageService messageService;
 
-	/**
-	 * 接收器服務
-	 */
-	private transient AcceptorService acceptorService;
-
 	public AppServiceSupporter() {
+	}
+
+	@Override
+	protected void checkConfig() throws Exception {
+
 	}
 
 	/**
