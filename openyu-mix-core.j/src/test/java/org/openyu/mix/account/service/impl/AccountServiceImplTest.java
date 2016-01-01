@@ -261,14 +261,8 @@ public class AccountServiceImplTest extends AccountTestSupporter {
 		Role role = mockRole();// accountId=TEST_ACCOUNT,roleId=TEST_ROLE
 		//
 		int result = 0;
-		int count = 1;
-		long beg = System.currentTimeMillis();
-		for (int i = 0; i < count; i++) {
-			result = accountService.increaseCoin(true, role.getAccountId(), role, 100, true,
-					CoinType.ITEM_ACCOUNT_COIN_THING);
-		}
-		long end = System.currentTimeMillis();
-		System.out.println(count + " times: " + (end - beg) + " mills. ");
+		result = accountService.increaseCoin(true, role.getAccountId(), role, 100, true,
+				CoinType.ITEM_ACCOUNT_COIN_THING);
 		System.out.println(result);
 		assertEquals(100, result);
 
