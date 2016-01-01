@@ -27,9 +27,6 @@
 	<bean
 		id="logSessionFactory"
 		class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
-	    <!-- hibernate 3 
-		class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
-		-->
 		<property
 			name="dataSource"
 			ref="logDataSource" />
@@ -124,11 +121,7 @@
 
 	<tx:annotation-driven transaction-manager="logTx" />
 
-	<!-- log dao supporter, use sessionFactory 
-	<bean id="logDaoSupporter" class="org.openyu.commons.dao.supporter.CommonDaoSupporter"
-		p:sessionFactory-ref="logSessionFactory" />
-	-->
-
+	<!-- dao supporter -->
 	<bean
 		id="logDaoSupporter"
 		class="org.openyu.commons.dao.supporter.CommonDaoSupporter"
@@ -139,7 +132,7 @@
 		class="org.openyu.mix.app.dao.supporter.AppLogDaoSupporter"
 		parent="logDaoSupporter" />
 	
-	<!-- log service supporter -->
+	<!-- service supporter -->
 	<bean
 		id="logServiceSupporter"
 		class="org.openyu.commons.service.supporter.LogServiceSupporter"
