@@ -54,14 +54,14 @@ public class AppTestSupporter extends BaseTestSupporter {
 	// 本系統共用的service
 	// --------------------------------------------------
 	/**
-	 * db
+	 * common
 	 */
 	protected static HibernateTransactionManager commonTx;
 
-	protected static SessionFactory sessionFactory;
+	protected static SessionFactory commonSessionFactory;
 
 	/**
-	 * log db
+	 * log
 	 */
 	protected static HibernateTransactionManager logTx;
 
@@ -131,7 +131,7 @@ public class AppTestSupporter extends BaseTestSupporter {
 
 	protected static void initialize() {
 		commonTx = (HibernateTransactionManager) applicationContext.getBean("commonTx");
-		sessionFactory = (SessionFactory) applicationContext.getBean("sessionFactory");
+		commonSessionFactory = (SessionFactory) applicationContext.getBean("commonSessionFactory");
 		logTx = (HibernateTransactionManager) applicationContext.getBean("logTx");
 		logSessionFactory = (SessionFactory) applicationContext.getBean("logSessionFactory");
 		//
@@ -168,8 +168,8 @@ public class AppTestSupporter extends BaseTestSupporter {
 
 		@Test
 		public void sessionFactory() {
-			System.out.println(sessionFactory);
-			assertNotNull(sessionFactory);
+			System.out.println(commonSessionFactory);
+			assertNotNull(commonSessionFactory);
 		}
 
 		@Test

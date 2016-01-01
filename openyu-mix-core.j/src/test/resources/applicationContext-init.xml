@@ -16,9 +16,9 @@
 		class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor" />
 	-->
 	<context:annotation-config />
+	<aop:aspectj-autoproxy />	
 
 	<!-- service -->
-	<import
-		resource="classpath:org/openyu/commons/service/applicationContext-service.xml" />
+	<import resource="classpath:org/openyu/commons/service/applicationContext-service.xml" />
 
 </beans>

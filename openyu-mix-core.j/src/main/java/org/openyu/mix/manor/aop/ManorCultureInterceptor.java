@@ -7,7 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.openyu.mix.app.aop.supporter.AppMethodInterceptorSupporter;
+import org.openyu.mix.app.aop.supporter.AppAroundAdviceSupporter;
 import org.openyu.mix.manor.service.ManorLogService;
 import org.openyu.mix.manor.service.ManorService;
 import org.openyu.mix.manor.service.ManorService.CultureAllResult;
@@ -18,7 +18,7 @@ import org.openyu.commons.lang.ClassHelper;
 /**
  * 莊園耕種攔截器
  */
-public class ManorCultureInterceptor extends AppMethodInterceptorSupporter {
+public class ManorCultureInterceptor extends AppAroundAdviceSupporter {
 
 	private static final long serialVersionUID = -8666906155488242300L;
 

@@ -13,7 +13,7 @@ import org.openyu.socklet.message.anno.DefaultMessageService;
 import org.openyu.socklet.message.service.MessageService;
 import org.openyu.socklet.message.vo.Message;
 
-public class AppServiceSupporter extends CommonServiceSupporter implements AppService {
+public abstract class AppServiceSupporter extends CommonServiceSupporter implements AppService {
 
 	private static final long serialVersionUID = -8839967232533601475L;
 
@@ -32,11 +32,6 @@ public class AppServiceSupporter extends CommonServiceSupporter implements AppSe
 	protected transient MessageService messageService;
 
 	public AppServiceSupporter() {
-	}
-
-	@Override
-	protected void checkConfig() throws Exception {
-
 	}
 
 	/**

@@ -32,6 +32,10 @@ public class RoleSetServiceImpl extends AppServiceSupporter implements RoleSetSe
 	public RoleSetServiceImpl() {
 	}
 
+	@Override
+	protected void checkConfig() throws Exception {
+
+	}
 	// --------------------------------------------------
 	// biz
 	// --------------------------------------------------

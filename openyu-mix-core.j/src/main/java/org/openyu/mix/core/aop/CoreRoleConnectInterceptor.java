@@ -5,14 +5,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.openyu.mix.app.aop.supporter.AppMethodInterceptorSupporter;
+import org.openyu.mix.app.aop.supporter.AppAroundAdviceSupporter;
 import org.openyu.mix.core.service.CoreLogService;
 import org.openyu.mix.role.vo.Role;
 
 /**
  * 角色連線攔截器
  */
-public class CoreRoleConnectInterceptor extends AppMethodInterceptorSupporter {
+public class CoreRoleConnectInterceptor extends AppAroundAdviceSupporter {
 
 	private static final long serialVersionUID = 8460810589591167479L;
 

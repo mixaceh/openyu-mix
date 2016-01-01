@@ -7,7 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.openyu.mix.app.aop.supporter.AppMethodInterceptorSupporter;
+import org.openyu.mix.app.aop.supporter.AppAroundAdviceSupporter;
 import org.openyu.mix.role.service.RoleLogService;
 import org.openyu.mix.role.service.RoleService.GoldType;
 import org.openyu.mix.role.vo.Role;
@@ -15,7 +15,7 @@ import org.openyu.mix.role.vo.Role;
 /**
  * 減少金幣攔截器
  */
-public class RoleDecreaseGoldInterceptor extends AppMethodInterceptorSupporter {
+public class RoleDecreaseGoldInterceptor extends AppAroundAdviceSupporter {
 
 	private static transient final Logger LOGGER = LoggerFactory.getLogger(RoleDecreaseGoldInterceptor.class);
 

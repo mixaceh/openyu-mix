@@ -52,6 +52,12 @@ public class SystemServiceImpl extends AppServiceSupporter implements SystemServ
 	private Context context;
 
 	public SystemServiceImpl() {
+
+	}
+
+	@Override
+	protected void checkConfig() throws Exception {
+
 	}
 
 	/**

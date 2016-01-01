@@ -5,7 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.openyu.mix.app.aop.supporter.AppMethodInterceptorSupporter;
+import org.openyu.mix.app.aop.supporter.AppAroundAdviceSupporter;
 import org.openyu.mix.role.vo.Role;
 import org.openyu.mix.train.service.TrainLogService;
 import org.openyu.mix.train.service.TrainService.InspireResult;
@@ -13,7 +13,7 @@ import org.openyu.mix.train.service.TrainService.InspireResult;
 /**
  * 訓練鼓舞攔截器
  */
-public class TrainInspireInterceptor extends AppMethodInterceptorSupporter {
+public class TrainInspireInterceptor extends AppAroundAdviceSupporter {
 
 	private static final long serialVersionUID = -3463487277608619783L;
 

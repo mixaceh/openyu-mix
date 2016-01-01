@@ -5,7 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.openyu.mix.app.aop.supporter.AppMethodInterceptorSupporter;
+import org.openyu.mix.app.aop.supporter.AppAroundAdviceSupporter;
 import org.openyu.mix.manor.service.ManorLogService;
 import org.openyu.mix.manor.service.ManorService.DisuseResult;
 import org.openyu.mix.role.vo.Role;
@@ -13,7 +13,7 @@ import org.openyu.mix.role.vo.Role;
 /**
  * 莊園休耕攔截器
  */
-public class ManorDisuseInterceptor extends AppMethodInterceptorSupporter {
+public class ManorDisuseInterceptor extends AppAroundAdviceSupporter {
 
 	private static final long serialVersionUID = -8779897326476699636L;
 

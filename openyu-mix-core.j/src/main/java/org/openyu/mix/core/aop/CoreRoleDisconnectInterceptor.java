@@ -6,7 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.openyu.mix.app.aop.supporter.AppMethodInterceptorSupporter;
+import org.openyu.mix.app.aop.supporter.AppAroundAdviceSupporter;
 import org.openyu.mix.core.service.CoreLogService;
 import org.openyu.mix.role.vo.Role;
 
@@ -15,7 +15,7 @@ import org.openyu.mix.role.vo.Role;
  * 
  * 不要用多緒處理 因threadPool滿了, 當很多role斷線時, 會把threadPool撐爆
  */
-public class CoreRoleDisconnectInterceptor extends AppMethodInterceptorSupporter {
+public class CoreRoleDisconnectInterceptor extends AppAroundAdviceSupporter {
 
 	private static final long serialVersionUID = -8497969453177168222L;
 

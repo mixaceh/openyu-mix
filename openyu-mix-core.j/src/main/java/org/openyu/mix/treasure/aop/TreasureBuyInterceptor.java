@@ -5,7 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.openyu.mix.app.aop.supporter.AppMethodInterceptorSupporter;
+import org.openyu.mix.app.aop.supporter.AppAroundAdviceSupporter;
 import org.openyu.mix.role.vo.Role;
 import org.openyu.mix.treasure.service.TreasureLogService;
 import org.openyu.mix.treasure.service.TreasureService.BuyResult;
@@ -13,7 +13,7 @@ import org.openyu.mix.treasure.service.TreasureService.BuyResult;
 /**
  * 祕寶購買攔截器
  */
-public class TreasureBuyInterceptor extends AppMethodInterceptorSupporter {
+public class TreasureBuyInterceptor extends AppAroundAdviceSupporter {
 
 	private static final long serialVersionUID = 6260420634235652046L;
 

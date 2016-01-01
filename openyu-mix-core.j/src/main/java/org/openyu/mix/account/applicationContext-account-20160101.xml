@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:jaxws="http://cxf.apache.org/jaxws"
+	xsi:schemaLocation="
+             http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+             http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+             http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+             http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd">
+
+	<!-- dao -->
+	<bean id="accountDao" class="org.openyu.mix.account.dao.impl.AccountDaoImpl"
+		parent="appDaoSupporter" />
+
+	<!-- service -->
+	<!-- 帳戶服務 -->
+	<bean id="accountService" class="org.openyu.mix.account.service.impl.AccountServiceImpl"
+		parent="appServiceSupporter" />
+
+	<!-- advisor -->
+	<aop:config>
+		<aop:pointcut id="accountServiceTxPointcut" expression="bean(accountService)" />
+		<aop:advisor id="accountServiceTxAdvisor" advice-ref="commonTxAdvice"
+			pointcut-ref="accountServiceTxPointcut" />
+	</aop:config>
+
+	<!-- 增加帳戶的儲值幣 -->
+	<bean id="accountIncreaseCoinAdvice"
+		class="org.openyu.mix.account.aop.AccountIncreaseCoinInterceptor"
+		parent="appMethodInterceptorSupporter" />
+	<aop:config>
+		<aop:pointcut id="accountIncreaseCoinPointcut"
+			expression="execution(public * org.openyu.mix.account.service.impl.AccountServiceImpl.increaseCoin*(..))" />
+		<aop:advisor id="accountIncreaseCoinAdvisor" advice-ref="accountIncreaseCoinAdvice"
+			pointcut-ref="accountIncreaseCoinPointcut" />
+	</aop:config>
+
+	<!-- 減少帳戶的儲值幣 -->
+	<bean id="accountDecreaseCoinAdvice"
+		class="org.openyu.mix.account.aop.AccountDecreaseCoinInterceptor"
+		parent="appMethodInterceptorSupporter" />
+	<aop:config>
+		<aop:pointcut id="accountDecreaseCoinPointcut"
+			expression="execution(public * org.openyu.mix.account.service.impl.AccountServiceImpl.decreaseCoin*(..))" />
+		<aop:advisor id="accountDecreaseCoinAdvisor" advice-ref="accountDecreaseCoinAdvice"
+			pointcut-ref="accountDecreaseCoinPointcut" />
+	</aop:config>
+
+	<!--增減帳戶的儲值幣 -->
+	<bean id="accountChangeCoinAdvice"
+		class="org.openyu.mix.account.aop.AccountChangeCoinInterceptor"
+		parent="appMethodInterceptorSupporter" />
+	<aop:config>
+		<aop:pointcut id="accountChangeCoinPointcut"
+			expression="execution(public * org.openyu.mix.account.service.impl.AccountServiceImpl.changeCoin*(..))" />
+		<aop:advisor id="accountChangeCoinAdvisor" advice-ref="accountChangeCoinAdvice"
+			pointcut-ref="accountChangeCoinPointcut" />
+	</aop:config>
+
+	<!--重置帳戶儲值幣 -->
+	<bean id="accountResetCoinAdvice"
+		class="org.openyu.mix.account.aop.AccountResetCoinInterceptor"
+		parent="appMethodInterceptorSupporter" />
+	<aop:config>
+		<aop:pointcut id="accountResetCoinPointcut"
+			expression="execution(public * org.openyu.mix.account.service.impl.AccountServiceImpl.resetCoin*(..))" />
+		<aop:advisor id="accountResetCoinAdvisor" advice-ref="accountResetCoinAdvice"
+			pointcut-ref="accountResetCoinPointcut" />
+	</aop:config>
+
+	<!-- dao -->
+	<bean id="accountLogDao" class="org.openyu.mix.account.dao.impl.AccountLogDaoImpl"
+		parent="appLogDaoSupporter" />
+
+	<!-- service -->
+	<!-- 帳戶日誌服務 -->
+	<bean id="accountLogService"
+		class="org.openyu.mix.account.service.impl.AccountLogServiceImpl"
+		parent="appLogServiceSupporter" />
+
+	<!-- socklet -->
+	<bean id="accountSocklet" class="org.openyu.mix.account.socklet.AccountSocklet"
+		parent="accountSockletServiceSupporter">
+		<property name="id" value="ACCOUNT" />
+	</bean>
+
+</beans>

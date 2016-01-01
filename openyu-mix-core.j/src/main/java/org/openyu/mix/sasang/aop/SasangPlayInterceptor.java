@@ -6,7 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.openyu.mix.app.aop.supporter.AppMethodInterceptorSupporter;
+import org.openyu.mix.app.aop.supporter.AppAroundAdviceSupporter;
 import org.openyu.mix.role.vo.Role;
 import org.openyu.mix.sasang.service.SasangService.PlayResult;
 import org.openyu.mix.sasang.service.SasangLogService;
@@ -14,7 +14,7 @@ import org.openyu.mix.sasang.service.SasangLogService;
 /**
  * 四象玩的攔截器
  */
-public class SasangPlayInterceptor extends AppMethodInterceptorSupporter {
+public class SasangPlayInterceptor extends AppAroundAdviceSupporter {
 
 	private static final long serialVersionUID = -8510371894911249679L;
 

@@ -16,11 +16,13 @@ import org.openyu.mix.app.service.supporter.AppServiceSupporter;
 import org.openyu.mix.core.service.CoreMessageType;
 import org.openyu.mix.core.service.CoreModuleType;
 import org.openyu.mix.role.vo.Role;
+import org.openyu.commons.dao.anno.CommonTx;
 import org.openyu.commons.lang.ClassHelper;
 import org.openyu.commons.lang.NumberHelper;
 import org.openyu.commons.security.AuthKey;
 import org.openyu.commons.security.AuthKeyService;
 import org.openyu.commons.security.anno.DefaultAuthKeyService;
+import org.openyu.commons.util.AssertHelper;
 import org.openyu.socklet.message.vo.Message;
 
 /**
@@ -46,6 +48,15 @@ public class AccountServiceImpl extends AppServiceSupporter implements AccountSe
 	@Qualifier("accountDao")
 	public void setAccountDao(AccountDao accountDao) {
 		setCommonDao(accountDao);
+	}
+
+	/**
+	 * 檢查設置
+	 * 
+	 * @throws Exception
+	 */
+	protected final void checkConfig() throws Exception {
+		AssertHelper.notNull(this.commonDao, "The AccountDao is required");
 	}
 
 	// --------------------------------------------------
@@ -151,6 +162,7 @@ public class AccountServiceImpl extends AppServiceSupporter implements AccountSe
 	 *            log用,儲值增加的原因
 	 * @return 真正增加的儲值幣,0=無改變, >0有改變
 	 */
+	@CommonTx
 	public int increaseCoin(boolean sendable, String accountId, Role role, int coin, boolean accuable,
 			CoinType coinReason) {
 		int result = 0;
@@ -194,6 +206,7 @@ public class AccountServiceImpl extends AppServiceSupporter implements AccountSe
 	 *            log用,儲值增減的原因
 	 * @return 真正減少的儲值幣,0=無改變, <0有改變
 	 */
+	@CommonTx
 	public int decreaseCoin(boolean sendable, String accountId, Role role, int coin, CoinType coinReason) {
 		int result = 0;
 		if (coin > 0) {
@@ -223,6 +236,7 @@ public class AccountServiceImpl extends AppServiceSupporter implements AccountSe
 	 *            log用,儲值增減的原因
 	 * @return 真正增減的儲值幣,0=無改變, !=0有改變
 	 */
+	@CommonTx
 	public int changeCoin(boolean sendable, String accountId, Role role, int coin, boolean accuable,
 			ActionType coinAction, CoinType coinReason) {
 		int result = 0;
@@ -273,6 +287,7 @@ public class AccountServiceImpl extends AppServiceSupporter implements AccountSe
 	 * @param coinReason
 	 * @return
 	 */
+	@CommonTx
 	public boolean resetCoin(boolean sendable, String accountId, Role role, boolean accuable, CoinType coinReason) {
 		boolean result = false;
 		// 檢查條件

@@ -14,9 +14,14 @@
 		parent="baseJobSupporter" abstract="true">
 	</bean>
 		
-	<bean id="appMethodInterceptorSupporter"
-		class="org.openyu.mix.app.aop.supporter.AppMethodInterceptorSupporter"
-		parent="baseMethodInterceptorSupporter" abstract="true">
+	<bean id="appAroundAdviceSupporter"
+		class="org.openyu.mix.app.aop.supporter.AppAroundAdviceSupporter"
+		parent="baseAroundAdviceSupporter" abstract="true">
+	</bean>
+
+	<bean id="appAspectSupporter"
+		class="org.openyu.mix.app.aop.supporter.AppAspectSupporter"
+		parent="baseAspectSupporter" abstract="true">
 	</bean>
 
 	<bean id="appSockletServiceSupporter"
@@ -130,7 +135,6 @@
 		</property>
 	</bean>
 
-	<!-- service -->
 	<!-- 伺服器關連集合服務 -->
 	<bean id="relationSetService"
 		class="org.openyu.mix.system.service.impl.RelationSetServiceImpl"

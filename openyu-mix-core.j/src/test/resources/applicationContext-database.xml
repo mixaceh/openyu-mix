@@ -112,21 +112,25 @@
 	<bean
 		id="commonDaoSupporter"
 		class="org.openyu.commons.dao.supporter.CommonDaoSupporter"
+		abstract="true"
 		p:hibernateTemplate-ref="commonHibernateTemplate" />
 
 	<bean
 		id="appDaoSupporter"
 		class="org.openyu.mix.app.dao.supporter.AppDaoSupporter"
-		parent="commonDaoSupporter" />
+		parent="commonDaoSupporter"
+		abstract="true" />
 		
 	<!-- service supporter -->
 	<bean
 		id="commonServiceSupporter"
+		class="org.openyu.commons.service.supporter.CommonServiceSupporter"
 		parent="baseServiceSupporter"
-		class="org.openyu.commons.service.supporter.CommonServiceSupporter" />
+		abstract="true" />
 
 	<bean
 		id="appServiceSupporter"
 		class="org.openyu.mix.app.service.supporter.AppServiceSupporter"
-		parent="commonServiceSupporter" />
+		parent="commonServiceSupporter"
+		abstract="true" />
 </beans>

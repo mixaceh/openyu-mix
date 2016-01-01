@@ -16,13 +16,11 @@ import org.openyu.commons.util.concurrent.impl.MapCacheImpl;
 /**
  * 聊天角色集合服務, 存放所有本地/同步的角色在mem中
  */
-public class ChatSetServiceImpl extends AppServiceSupporter implements
-		ChatSetService {
+public class ChatSetServiceImpl extends AppServiceSupporter implements ChatSetService {
 
 	private static final long serialVersionUID = -6007699325820709918L;
 
-	private static transient final Logger LOGGER = LoggerFactory
-			.getLogger(ChatSetServiceImpl.class);
+	private static transient final Logger LOGGER = LoggerFactory.getLogger(ChatSetServiceImpl.class);
 
 	/**
 	 * 同步chat, 來自於其它server上的chat
@@ -34,6 +32,10 @@ public class ChatSetServiceImpl extends AppServiceSupporter implements
 	public ChatSetServiceImpl() {
 	}
 
+	@Override
+	protected void checkConfig() throws Exception {
+
+	}
 	// --------------------------------------------------
 	// biz
 	// --------------------------------------------------

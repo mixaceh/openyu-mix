@@ -7,7 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.openyu.mix.app.aop.supporter.AppMethodInterceptorSupporter;
+import org.openyu.mix.app.aop.supporter.AppAroundAdviceSupporter;
 import org.openyu.mix.role.vo.Role;
 import org.openyu.mix.wuxing.service.WuxingLogService;
 import org.openyu.mix.wuxing.service.WuxingService.PutResult;
@@ -16,7 +16,7 @@ import org.openyu.mix.wuxing.service.WuxingService.PutType;
 /**
  * 五行單擊獎勵放入包包攔截器
  */
-public class WuxingPutOneInterceptor extends AppMethodInterceptorSupporter {
+public class WuxingPutOneInterceptor extends AppAroundAdviceSupporter {
 
 	private static final long serialVersionUID = -8493472739461972215L;
 

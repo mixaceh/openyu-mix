@@ -4,14 +4,14 @@ import java.lang.reflect.Method;
 
 import org.aopalliance.intercept.MethodInvocation;
 import org.openyu.commons.util.ConfigHelper;
-import org.openyu.mix.app.aop.supporter.AppMethodInterceptorSupporter;
+import org.openyu.mix.app.aop.supporter.AppAroundAdviceSupporter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
  * 請求攔截器
  */
-public class DebugRequestInterceptor extends AppMethodInterceptorSupporter {
+public class DebugRequestInterceptor extends AppAroundAdviceSupporter {
 
 	private static transient final Logger LOGGER = LoggerFactory.getLogger(DebugRequestInterceptor.class);
 

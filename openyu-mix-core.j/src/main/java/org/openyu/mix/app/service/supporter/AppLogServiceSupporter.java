@@ -12,18 +12,13 @@ import org.slf4j.LoggerFactory;
 /**
  * 日誌服務
  */
-public class AppLogServiceSupporter extends LogServiceSupporter implements AppLogService {
+public abstract class AppLogServiceSupporter extends LogServiceSupporter implements AppLogService {
 
 	private static final long serialVersionUID = 5897073418058666600L;
 
 	private static transient final Logger LOGGER = LoggerFactory.getLogger(AppLogServiceSupporter.class);
 
 	public AppLogServiceSupporter() {
-	}
-
-	@Override
-	protected void checkConfig() throws Exception {
-
 	}
 
 	/**

@@ -7,7 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.openyu.mix.app.aop.supporter.AppMethodInterceptorSupporter;
+import org.openyu.mix.app.aop.supporter.AppAroundAdviceSupporter;
 import org.openyu.mix.item.service.ItemLogService;
 import org.openyu.mix.item.service.ItemService;
 import org.openyu.mix.item.service.ItemService.ErrorType;
@@ -19,7 +19,7 @@ import org.openyu.commons.lang.ClassHelper;
 /**
  * 消耗強化道具,強化道具攔截器
  */
-public class ItemUseEnhanceInterceptor extends AppMethodInterceptorSupporter {
+public class ItemUseEnhanceInterceptor extends AppAroundAdviceSupporter {
 
 	private static final long serialVersionUID = -5869597744635175480L;
 

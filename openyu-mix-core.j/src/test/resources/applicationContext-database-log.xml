@@ -125,23 +125,25 @@
 	<bean
 		id="logDaoSupporter"
 		class="org.openyu.commons.dao.supporter.CommonDaoSupporter"
+		abstract="true"
 		p:hibernateTemplate-ref="logHibernateTemplate" />
 
 	<bean
 		id="appLogDaoSupporter"
 		class="org.openyu.mix.app.dao.supporter.AppLogDaoSupporter"
-		parent="logDaoSupporter" />
+		parent="logDaoSupporter"
+		abstract="true" />
 	
 	<!-- service supporter -->
 	<bean
 		id="logServiceSupporter"
 		class="org.openyu.commons.service.supporter.LogServiceSupporter"
-		parent="baseServiceSupporter">
-	</bean>
+		parent="baseServiceSupporter"
+		abstract="true" />
 
 	<bean
 		id="appLogServiceSupporter"
 		class="org.openyu.mix.app.service.supporter.AppLogServiceSupporter"
-		parent="logServiceSupporter">
-	</bean>
+		parent="logServiceSupporter"
+		abstract="true" />
 </beans>

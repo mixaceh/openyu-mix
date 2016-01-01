@@ -4,12 +4,8 @@ import static org.junit.Assert.assertNotNull;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.springframework.aop.aspectj.AspectJExpressionPointcut;
-import org.springframework.aop.support.DefaultBeanFactoryPointcutAdvisor;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-import org.openyu.mix.account.aop.AccountChangeCoinInterceptor;
-import org.openyu.mix.account.aop.AccountDecreaseCoinInterceptor;
-import org.openyu.mix.account.aop.AccountIncreaseCoinInterceptor;
+import org.openyu.mix.account.aop.AccountAspect;
 import org.openyu.mix.account.dao.AccountDao;
 import org.openyu.mix.account.dao.AccountLogDao;
 import org.openyu.mix.account.service.AccountLogService;
@@ -21,15 +17,13 @@ public class AccountTestSupporter extends AppTestSupporter {
 
 	protected static AccountDao accountDao;
 
-	/**
-	 * 帳戶服務
-	 */
 	protected static AccountService accountService;
 
-	// log
 	protected static AccountLogDao accountLogDao;
 
 	protected static AccountLogService accountLogService;
+
+	protected static AccountAspect accountAspect;
 
 	protected static AccountSocklet accountSocklet;
 
@@ -52,11 +46,12 @@ public class AccountTestSupporter extends AppTestSupporter {
 		// ---------------------------------------------------
 		initialize();
 		// ---------------------------------------------------
-		accountDao = (AccountDao) applicationContext.getBean("accountDao");
-		accountService = (AccountService) applicationContext.getBean("accountService");
-		accountLogDao = (AccountLogDao) applicationContext.getBean("accountLogDao");
-		accountLogService = (AccountLogService) applicationContext.getBean("accountLogService");
-		accountSocklet = (AccountSocklet) applicationContext.getBean("accountSocklet");
+		accountDao = applicationContext.getBean("accountDao", AccountDao.class);
+		accountService = applicationContext.getBean("accountService", AccountService.class);
+		accountLogDao = applicationContext.getBean("accountLogDao", AccountLogDao.class);
+		accountLogService = applicationContext.getBean("accountLogService", AccountLogService.class);
+		accountAspect = applicationContext.getBean("accountAspect", AccountAspect.class);
+		accountSocklet = applicationContext.getBean("accountSocklet", AccountSocklet.class);
 	}
 
 	// --------------------------------------------------
@@ -76,94 +71,6 @@ public class AccountTestSupporter extends AppTestSupporter {
 		}
 
 		@Test
-		public void accountServiceTxPointcut() {
-			AspectJExpressionPointcut bean = (AspectJExpressionPointcut) applicationContext
-					.getBean("accountServiceTxPointcut");
-			System.out.println(bean);
-			assertNotNull(bean);
-		}
-
-		@Test
-		public void accountServiceTxAdvisor() {
-			DefaultBeanFactoryPointcutAdvisor bean = (DefaultBeanFactoryPointcutAdvisor) applicationContext
-					.getBean("accountServiceTxAdvisor");
-			System.out.println(bean);
-			assertNotNull(bean);
-		}
-
-		@Test
-		public void accountIncreaseCoinAdvice() {
-			AccountIncreaseCoinInterceptor bean = (AccountIncreaseCoinInterceptor) applicationContext
-					.getBean("accountIncreaseCoinAdvice");
-			System.out.println(bean);
-			assertNotNull(bean);
-		}
-
-		@Test
-		public void accountIncreaseCoinPointcut() {
-			AspectJExpressionPointcut bean = (AspectJExpressionPointcut) applicationContext
-					.getBean("accountIncreaseCoinPointcut");
-			System.out.println(bean);
-			assertNotNull(bean);
-		}
-
-		@Test
-		public void accountIncreaseCoinAdvisor() {
-			DefaultBeanFactoryPointcutAdvisor bean = (DefaultBeanFactoryPointcutAdvisor) applicationContext
-					.getBean("accountIncreaseCoinAdvisor");
-			System.out.println(bean);
-			assertNotNull(bean);
-		}
-
-		@Test
-		public void accountDecreaseCoinAdvice() {
-			AccountDecreaseCoinInterceptor bean = (AccountDecreaseCoinInterceptor) applicationContext
-					.getBean("accountDecreaseCoinAdvice");
-			System.out.println(bean);
-			assertNotNull(bean);
-		}
-
-		@Test
-		public void accountDecreaseCoinPointcut() {
-			AspectJExpressionPointcut bean = (AspectJExpressionPointcut) applicationContext
-					.getBean("accountDecreaseCoinPointcut");
-			System.out.println(bean);
-			assertNotNull(bean);
-		}
-
-		@Test
-		public void accountDecreaseCoinAdvisor() {
-			DefaultBeanFactoryPointcutAdvisor bean = (DefaultBeanFactoryPointcutAdvisor) applicationContext
-					.getBean("accountDecreaseCoinAdvisor");
-			System.out.println(bean);
-			assertNotNull(bean);
-		}
-
-		@Test
-		public void accountChangeCoinAdvice() {
-			AccountChangeCoinInterceptor bean = (AccountChangeCoinInterceptor) applicationContext
-					.getBean("accountChangeCoinAdvice");
-			System.out.println(bean);
-			assertNotNull(bean);
-		}
-
-		@Test
-		public void accountChangeCoinPointcut() {
-			AspectJExpressionPointcut bean = (AspectJExpressionPointcut) applicationContext
-					.getBean("accountChangeCoinPointcut");
-			System.out.println(bean);
-			assertNotNull(bean);
-		}
-
-		@Test
-		public void accountChangeCoinAdvisor() {
-			DefaultBeanFactoryPointcutAdvisor bean = (DefaultBeanFactoryPointcutAdvisor) applicationContext
-					.getBean("accountChangeCoinAdvisor");
-			System.out.println(bean);
-			assertNotNull(bean);
-		}
-
-		@Test
 		public void accountLogDao() {
 			System.out.println(accountLogDao);
 			assertNotNull(accountLogDao);
@@ -173,6 +80,12 @@ public class AccountTestSupporter extends AppTestSupporter {
 		public void accountLogService() {
 			System.out.println(accountLogService);
 			assertNotNull(accountLogService);
+		}
+
+		@Test
+		public void accountAspect() {
+			System.out.println(accountAspect);
+			assertNotNull(accountAspect);
 		}
 
 		@Test

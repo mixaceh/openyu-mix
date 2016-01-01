@@ -7,7 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.openyu.mix.app.aop.supporter.AppMethodInterceptorSupporter;
+import org.openyu.mix.app.aop.supporter.AppAroundAdviceSupporter;
 import org.openyu.mix.role.vo.Role;
 import org.openyu.mix.wuxing.service.WuxingService.PlayResult;
 import org.openyu.mix.wuxing.service.WuxingLogService;
@@ -15,7 +15,7 @@ import org.openyu.mix.wuxing.service.WuxingLogService;
 /**
  * 五行玩的攔截器
  */
-public class WuxingPlayInterceptor extends AppMethodInterceptorSupporter {
+public class WuxingPlayInterceptor extends AppAroundAdviceSupporter {
 
 	private static final long serialVersionUID = 3244885022032659905L;
 

@@ -7,14 +7,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.openyu.mix.app.aop.supporter.AppMethodInterceptorSupporter;
+import org.openyu.mix.app.aop.supporter.AppAroundAdviceSupporter;
 import org.openyu.mix.role.service.RoleLogService;
 import org.openyu.mix.role.vo.Role;
 
 /**
  * 增減等級攔截器
  */
-public class RoleChangeLevelInterceptor extends AppMethodInterceptorSupporter {
+public class RoleChangeLevelInterceptor extends AppAroundAdviceSupporter {
 
 	private static transient final Logger LOGGER = LoggerFactory
 			.getLogger(RoleChangeLevelInterceptor.class);

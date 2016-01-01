@@ -8,13 +8,13 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.openyu.mix.account.service.AccountLogService;
 import org.openyu.mix.account.service.AccountService.ActionType;
 import org.openyu.mix.account.service.AccountService.CoinType;
-import org.openyu.mix.app.aop.supporter.AppMethodInterceptorSupporter;
+import org.openyu.mix.app.aop.supporter.AppAroundAdviceSupporter;
 import org.openyu.mix.role.vo.Role;
 
 /**
  * 增加帳戶的儲值幣攔截器
  */
-public class AccountResetCoinInterceptor extends AppMethodInterceptorSupporter {
+public class AccountResetCoinInterceptor extends AppAroundAdviceSupporter {
 
 	private static transient final Logger LOGGER = LoggerFactory.getLogger(AccountResetCoinInterceptor.class);
 

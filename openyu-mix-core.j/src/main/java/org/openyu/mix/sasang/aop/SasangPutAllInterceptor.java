@@ -6,7 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.openyu.mix.app.aop.supporter.AppMethodInterceptorSupporter;
+import org.openyu.mix.app.aop.supporter.AppAroundAdviceSupporter;
 import org.openyu.mix.role.vo.Role;
 import org.openyu.mix.sasang.service.SasangLogService;
 import org.openyu.mix.sasang.service.SasangService.PutResult;
@@ -15,7 +15,7 @@ import org.openyu.mix.sasang.service.SasangService.PutType;
 /**
  * 四象所有中獎區獎勵放入包包攔截器
  */
-public class SasangPutAllInterceptor extends AppMethodInterceptorSupporter {
+public class SasangPutAllInterceptor extends AppAroundAdviceSupporter {
 
 	private static final long serialVersionUID = -6607503394143359290L;
 

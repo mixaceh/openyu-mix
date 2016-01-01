@@ -24,6 +24,7 @@ import org.openyu.mix.role.vo.Role;
 import org.openyu.commons.lang.EncodingHelper;
 import org.openyu.commons.lang.SystemHelper;
 import org.openyu.commons.security.SecurityHelper;
+import org.openyu.commons.thread.ThreadHelper;
 import org.openyu.socklet.message.vo.Message;
 
 public class AccountServiceImplTest extends AccountTestSupporter {
@@ -99,8 +100,7 @@ public class AccountServiceImplTest extends AccountTestSupporter {
 			assertNotNull(pk);
 
 			// retrieve
-			Account foundEntity = accountService.find(AccountImpl.class,
-					account.getSeq());
+			Account foundEntity = accountService.find(AccountImpl.class, account.getSeq());
 			printFind(i, foundEntity);
 			assertAccount(account, foundEntity);
 
@@ -117,8 +117,7 @@ public class AccountServiceImplTest extends AccountTestSupporter {
 			assertTrue(updated > 0);
 
 			// delete
-			Account deletedEntity = accountService.delete(AccountImpl.class,
-					account.getSeq());
+			Account deletedEntity = accountService.delete(AccountImpl.class, account.getSeq());
 			printDelete(i, deletedEntity);
 			assertNotNull(deletedEntity);
 		}
@@ -139,8 +138,7 @@ public class AccountServiceImplTest extends AccountTestSupporter {
 			printInsert(i, pk);
 			assertNotNull(pk);
 
-			Account foundEntity = accountService.find(AccountPoImpl.class,
-					account.getSeq());
+			Account foundEntity = accountService.find(AccountPoImpl.class, account.getSeq());
 			assertAccount(account, foundEntity);
 
 			System.out.println(account);
@@ -248,14 +246,12 @@ public class AccountServiceImplTest extends AccountTestSupporter {
 		System.out.println(result);
 		assertTrue(result);
 		//
-		result = accountService
-				.checkIncreaseCoin(role.getAccountId(), -1 * 100);
+		result = accountService.checkIncreaseCoin(role.getAccountId(), -1 * 100);
 		System.out.println(result);
 		assertFalse(result);
 
 		// 溢位了
-		result = accountService.checkIncreaseCoin(role.getAccountId(),
-				Integer.MAX_VALUE);
+		result = accountService.checkIncreaseCoin(role.getAccountId(), Integer.MAX_VALUE);
 		System.out.println(result);
 		assertFalse(result);
 	}
@@ -268,8 +264,8 @@ public class AccountServiceImplTest extends AccountTestSupporter {
 		int count = 1;
 		long beg = System.currentTimeMillis();
 		for (int i = 0; i < count; i++) {
-			result = accountService.increaseCoin(true, role.getAccountId(),
-					role, 100, true, CoinType.ITEM_ACCOUNT_COIN_THING);
+			result = accountService.increaseCoin(true, role.getAccountId(), role, 100, true,
+					CoinType.ITEM_ACCOUNT_COIN_THING);
 		}
 		long end = System.currentTimeMillis();
 		System.out.println(count + " times: " + (end - beg) + " mills. ");
@@ -277,12 +273,12 @@ public class AccountServiceImplTest extends AccountTestSupporter {
 		assertEquals(100, result);
 
 		// coin=0
-		result = accountService.increaseCoin(true, role.getAccountId(), role,
-				0, true, CoinType.ITEM_ACCOUNT_COIN_THING);
+		result = accountService.increaseCoin(true, role.getAccountId(), role, 0, true,
+				CoinType.ITEM_ACCOUNT_COIN_THING);
 		System.out.println(result);
 		assertEquals(0, result);
 		//
-		// ThreadHelper.sleep(3 * 1000);
+		ThreadHelper.sleep(3 * 1000);
 	}
 
 	@Test
@@ -314,8 +310,7 @@ public class AccountServiceImplTest extends AccountTestSupporter {
 		int count = 1;
 		long beg = System.currentTimeMillis();
 		for (int i = 0; i < count; i++) {
-			result = accountService.decreaseCoin(true, role.getAccountId(),
-					role, 10, CoinType.SASANG_PLAY);
+			result = accountService.decreaseCoin(true, role.getAccountId(), role, 10, CoinType.SASANG_PLAY);
 		}
 		long end = System.currentTimeMillis();
 		System.out.println(count + " times: " + (end - beg) + " mills. ");
@@ -324,8 +319,7 @@ public class AccountServiceImplTest extends AccountTestSupporter {
 		assertEquals(-10, result);
 
 		// coin=0
-		result = accountService.decreaseCoin(true, role.getAccountId(), role,
-				0, CoinType.SASANG_PLAY);
+		result = accountService.decreaseCoin(true, role.getAccountId(), role, 0, CoinType.SASANG_PLAY);
 		System.out.println(result);
 		assertEquals(0, result);
 		//
@@ -340,8 +334,7 @@ public class AccountServiceImplTest extends AccountTestSupporter {
 		int count = 1;
 		long beg = System.currentTimeMillis();
 		for (int i = 0; i < count; i++) {
-			result = accountService.changeCoin(true, role.getAccountId(), role,
-					2, true, ActionType.INCREASE,
+			result = accountService.changeCoin(true, role.getAccountId(), role, 2, true, ActionType.INCREASE,
 					CoinType.ITEM_ACCOUNT_COIN_THING);
 		}
 		long end = System.currentTimeMillis();
@@ -351,20 +344,20 @@ public class AccountServiceImplTest extends AccountTestSupporter {
 		assertEquals(2, result);
 
 		//
-		result = accountService.changeCoin(true, role.getAccountId(), role,
-				(-1) * 1, true, ActionType.DECREASE, CoinType.SASANG_PLAY);
+		result = accountService.changeCoin(true, role.getAccountId(), role, (-1) * 1, true, ActionType.DECREASE,
+				CoinType.SASANG_PLAY);
 		System.out.println(result);
 		assertEquals(-1, result);
 
 		// coin=0
-		result = accountService.changeCoin(true, role.getAccountId(), role, 0,
-				true, ActionType.INCREASE, CoinType.ITEM_ACCOUNT_COIN_THING);
+		result = accountService.changeCoin(true, role.getAccountId(), role, 0, true, ActionType.INCREASE,
+				CoinType.ITEM_ACCOUNT_COIN_THING);
 		System.out.println(result);
 		assertEquals(0, result);
 
 		// coin=0
-		result = accountService.changeCoin(true, role.getAccountId(), role, 0,
-				true, ActionType.DECREASE, CoinType.SASANG_PLAY);
+		result = accountService.changeCoin(true, role.getAccountId(), role, 0, true, ActionType.DECREASE,
+				CoinType.SASANG_PLAY);
 		System.out.println(result);
 		assertEquals(0, result);
 		//
@@ -434,8 +427,7 @@ public class AccountServiceImplTest extends AccountTestSupporter {
 		final String ASSIGN_KEY = "FarFarAway";
 		final String ALGORITHM = "HmacMD5";
 		// b5f01d3a0898d8016b5633edfe6106b0
-		SecretKey secretKey = SecurityHelper.createSecretKey(ASSIGN_KEY,
-				ALGORITHM);
+		SecretKey secretKey = SecurityHelper.createSecretKey(ASSIGN_KEY, ALGORITHM);
 		byte[] buff = SecurityHelper.mac("1111", secretKey, ALGORITHM);
 		final String PASSWORD = EncodingHelper.encodeHex(buff);
 		System.out.println(PASSWORD);
@@ -449,8 +441,7 @@ public class AccountServiceImplTest extends AccountTestSupporter {
 		final String ASSIGN_KEY = "FarFarAway";
 		final String ALGORITHM = "HmacMD5";
 		// b5f01d3a0898d8016b5633edfe6106b0
-		SecretKey secretKey = SecurityHelper.createSecretKey(ASSIGN_KEY,
-				ALGORITHM);
+		SecretKey secretKey = SecurityHelper.createSecretKey(ASSIGN_KEY, ALGORITHM);
 		byte[] buff = SecurityHelper.mac("1111", secretKey, ALGORITHM);
 		final String PASSWORD = EncodingHelper.encodeHex(buff);
 		System.out.println(PASSWORD);
@@ -477,8 +468,7 @@ public class AccountServiceImplTest extends AccountTestSupporter {
 
 		long beg = System.currentTimeMillis();
 		for (int i = 0; i < count; i++) {
-			result = accountService.sendAuthorize(ErrorType.NO_ERROR,
-					ACCOUNT_ID, AUTH_KEY);
+			result = accountService.sendAuthorize(ErrorType.NO_ERROR, ACCOUNT_ID, AUTH_KEY);
 		}
 		long end = System.currentTimeMillis();
 		System.out.println(count + " times: " + (end - beg) + " mills. ");

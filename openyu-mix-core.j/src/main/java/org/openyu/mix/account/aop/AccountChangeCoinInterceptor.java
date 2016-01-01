@@ -8,13 +8,13 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.openyu.mix.account.service.AccountLogService;
 import org.openyu.mix.account.service.AccountService.ActionType;
 import org.openyu.mix.account.service.AccountService.CoinType;
-import org.openyu.mix.app.aop.supporter.AppMethodInterceptorSupporter;
+import org.openyu.mix.app.aop.supporter.AppAroundAdviceSupporter;
 import org.openyu.mix.role.vo.Role;
 
 /**
  * 增減帳戶的儲值幣攔截器
  */
-public class AccountChangeCoinInterceptor extends AppMethodInterceptorSupporter {
+public class AccountChangeCoinInterceptor extends AppAroundAdviceSupporter {
 
 	private static final long serialVersionUID = -6116656191642710414L;
 

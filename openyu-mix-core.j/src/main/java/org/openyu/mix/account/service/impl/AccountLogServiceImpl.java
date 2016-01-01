@@ -14,7 +14,9 @@ import org.openyu.mix.account.service.AccountService.ActionType;
 import org.openyu.mix.account.service.AccountService.CoinType;
 import org.openyu.mix.app.service.supporter.AppLogServiceSupporter;
 import org.openyu.mix.role.vo.Role;
+import org.openyu.commons.dao.anno.LogTx;
 import org.openyu.commons.dao.inquiry.Inquiry;
+import org.openyu.commons.util.AssertHelper;
 
 /**
  * 帳戶日誌服務
@@ -25,11 +27,26 @@ public class AccountLogServiceImpl extends AppLogServiceSupporter implements Acc
 
 	private static transient final Logger LOGGER = LoggerFactory.getLogger(AccountLogServiceImpl.class);
 
+	public AccountLogServiceImpl() {
+	}
+
+	public AccountLogDao getAccountLogDao() {
+		return (AccountLogDao) getCommonDao();
+	}
+
 	@Autowired
 	@Qualifier("accountLogDao")
-	private transient AccountLogDao accountLogDao;
+	public void setAccountLogDao(AccountLogDao accountLogDao) {
+		setCommonDao(accountLogDao);
+	}
 
-	public AccountLogServiceImpl() {
+	/**
+	 * 檢查設置
+	 * 
+	 * @throws Exception
+	 */
+	protected final void checkConfig() throws Exception {
+		AssertHelper.notNull(this.commonDao, "The AccountLogDao is required");
 	}
 
 	// --------------------------------------------------
@@ -40,15 +57,15 @@ public class AccountLogServiceImpl extends AppLogServiceSupporter implements Acc
 	// AccountCoinLog
 	// --------------------------------------------------
 	public List<AccountCoinLog> findAccountCoinLog(String accountId) {
-		return accountLogDao.findAccountCoinLog(accountId);
+		return getAccountLogDao().findAccountCoinLog(accountId);
 	}
 
 	public List<AccountCoinLog> findAccountCoinLog(Inquiry inquiry, String accountId) {
-		return accountLogDao.findAccountCoinLog(inquiry, accountId);
+		return getAccountLogDao().findAccountCoinLog(inquiry, accountId);
 	}
 
 	public int deleteAccountCoinLog(String accountId) {
-		return accountLogDao.deleteAccountCoinLog(accountId);
+		return getAccountLogDao().deleteAccountCoinLog(accountId);
 	}
 
 	// --------------------------------------------------
@@ -62,6 +79,7 @@ public class AccountLogServiceImpl extends AppLogServiceSupporter implements Acc
 	 * @param coin
 	 * @param coinReason
 	 */
+	@LogTx
 	public void recordIncreaseCoin(String accountId, Role role, int coin, CoinType coinReason) {
 		recordChangeCoin(accountId, role, coin, ActionType.INCREASE, coinReason);
 	}
@@ -74,6 +92,7 @@ public class AccountLogServiceImpl extends AppLogServiceSupporter implements Acc
 	 * @param coin
 	 * @param coinReason
 	 */
+	@LogTx
 	public void recordDecreaseCoin(String accountId, Role role, int coin, CoinType coinReason) {
 		recordChangeCoin(accountId, role, -1 * coin, ActionType.DECREASE, coinReason);
 	}
@@ -87,6 +106,7 @@ public class AccountLogServiceImpl extends AppLogServiceSupporter implements Acc
 	 * @param coinAction
 	 * @param coinReason
 	 */
+	@LogTx
 	public void recordChangeCoin(String accountId, Role role, int coin, ActionType coinAction, CoinType coinReason) {
 		AccountCoinLog log = new AccountCoinLogImpl();
 		// 紀錄角色相關資訊

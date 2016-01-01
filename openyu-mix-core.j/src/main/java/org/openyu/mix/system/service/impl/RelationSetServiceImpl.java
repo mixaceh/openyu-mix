@@ -16,13 +16,11 @@ import org.slf4j.LoggerFactory;
 /**
  * 伺服器關連服務
  */
-public class RelationSetServiceImpl extends AppServiceSupporter implements
-		RelationSetService {
+public class RelationSetServiceImpl extends AppServiceSupporter implements RelationSetService {
 
 	private static final long serialVersionUID = -1599710087845689459L;
 
-	private static transient final Logger LOGGER = LoggerFactory
-			.getLogger(RelationSetServiceImpl.class);
+	private static transient final Logger LOGGER = LoggerFactory.getLogger(RelationSetServiceImpl.class);
 
 	/**
 	 * 所有註冊的伺服器關連, connected=是否已連線
@@ -32,6 +30,10 @@ public class RelationSetServiceImpl extends AppServiceSupporter implements
 	public RelationSetServiceImpl() {
 	}
 
+	@Override
+	protected void checkConfig() throws Exception {
+
+	}
 	// --------------------------------------------------
 	// biz
 	// --------------------------------------------------
@@ -174,8 +176,7 @@ public class RelationSetServiceImpl extends AppServiceSupporter implements
 	public Relation addRegisterRelation(Relation relation) {
 		Relation result = null;
 		if (relation != null) {
-			result = (Relation) registerRelations.put(relation.getId(),
-					relation);
+			result = (Relation) registerRelations.put(relation.getId(), relation);
 		}
 		return result;
 	}

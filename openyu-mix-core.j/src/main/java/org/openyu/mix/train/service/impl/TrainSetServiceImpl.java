@@ -14,19 +14,19 @@ import org.openyu.mix.train.service.TrainSetService;
 /**
  * 訓練角色集合服務, 存放所有本地/同步的訓練角色在mem中
  */
-public class TrainSetServiceImpl extends AppServiceSupporter implements
-		TrainSetService {
+public class TrainSetServiceImpl extends AppServiceSupporter implements TrainSetService {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 281568249375735970L;
-	private static transient final Logger LOGGER = LoggerFactory
-			.getLogger(TrainSetServiceImpl.class);
+
+	private static transient final Logger LOGGER = LoggerFactory.getLogger(TrainSetServiceImpl.class);
 
 	public TrainSetServiceImpl() {
 	}
 
+	@Override
+	protected void checkConfig() throws Exception {
+
+	}
 	// --------------------------------------------------
 	// biz
 	// --------------------------------------------------

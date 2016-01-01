@@ -8,7 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.openyu.mix.app.aop.supporter.AppMethodInterceptorSupporter;
+import org.openyu.mix.app.aop.supporter.AppAroundAdviceSupporter;
 import org.openyu.mix.item.service.ItemLogService;
 import org.openyu.mix.item.service.ItemService;
 import org.openyu.mix.item.service.ItemService.DecreaseItemResult;
@@ -20,7 +20,7 @@ import org.openyu.commons.lang.ClassHelper;
 /**
  * 道具減少攔截器
  */
-public class ItemDecreaseItemInterceptor extends AppMethodInterceptorSupporter {
+public class ItemDecreaseItemInterceptor extends AppAroundAdviceSupporter {
 
 	private static final long serialVersionUID = -6372664297794476330L;
 
