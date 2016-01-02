@@ -14,6 +14,7 @@ import org.openyu.mix.role.vo.Role;
 /**
  * 增減帳戶的儲值幣攔截器
  */
+@Deprecated
 public class AccountChangeCoinInterceptor extends AppAroundAdviceSupporter {
 
 	private static final long serialVersionUID = -6116656191642710414L;

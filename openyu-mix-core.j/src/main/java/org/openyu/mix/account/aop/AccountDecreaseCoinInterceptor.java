@@ -13,6 +13,7 @@ import org.openyu.mix.role.vo.Role;
 /**
  * 減少帳戶的儲值幣攔截器
  */
+@Deprecated
 public class AccountDecreaseCoinInterceptor extends AppAroundAdviceSupporter {
 
 	private static final long serialVersionUID = 2994293721064879272L;

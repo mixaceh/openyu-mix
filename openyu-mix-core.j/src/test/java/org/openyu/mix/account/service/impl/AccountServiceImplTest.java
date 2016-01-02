@@ -301,13 +301,7 @@ public class AccountServiceImplTest extends AccountTestSupporter {
 		Role role = mockRole();// accountId=TEST_ACCOUNT,roleId=TEST_ROLE
 		//
 		int result = 0;
-		int count = 1;
-		long beg = System.currentTimeMillis();
-		for (int i = 0; i < count; i++) {
-			result = accountService.decreaseCoin(true, role.getAccountId(), role, 10, CoinType.SASANG_PLAY);
-		}
-		long end = System.currentTimeMillis();
-		System.out.println(count + " times: " + (end - beg) + " mills. ");
+		result = accountService.decreaseCoin(true, role.getAccountId(), role, 10, CoinType.SASANG_PLAY);
 
 		System.out.println(result);
 		assertEquals(-10, result);
@@ -317,7 +311,7 @@ public class AccountServiceImplTest extends AccountTestSupporter {
 		System.out.println(result);
 		assertEquals(0, result);
 		//
-		// ThreadHelper.sleep(3 * 1000);
+		ThreadHelper.sleep(3 * 1000);
 	}
 
 	@Test
@@ -325,18 +319,11 @@ public class AccountServiceImplTest extends AccountTestSupporter {
 		Role role = mockRole();// accountId=TEST_ACCOUNT,roleId=TEST_ROLE
 		//
 		int result = 0;
-		int count = 1;
-		long beg = System.currentTimeMillis();
-		for (int i = 0; i < count; i++) {
-			result = accountService.changeCoin(true, role.getAccountId(), role, 2, true, ActionType.INCREASE,
-					CoinType.ITEM_ACCOUNT_COIN_THING);
-		}
-		long end = System.currentTimeMillis();
-		System.out.println(count + " times: " + (end - beg) + " mills. ");
+		result = accountService.changeCoin(true, role.getAccountId(), role, 2, true, ActionType.INCREASE,
+				CoinType.ITEM_ACCOUNT_COIN_THING);
 
 		System.out.println(result);
 		assertEquals(2, result);
-
 		//
 		result = accountService.changeCoin(true, role.getAccountId(), role, (-1) * 1, true, ActionType.DECREASE,
 				CoinType.SASANG_PLAY);
@@ -355,7 +342,7 @@ public class AccountServiceImplTest extends AccountTestSupporter {
 		System.out.println(result);
 		assertEquals(0, result);
 		//
-		// ThreadHelper.sleep(3 * 1000);
+		ThreadHelper.sleep(3 * 1000);
 	}
 
 	@Test
