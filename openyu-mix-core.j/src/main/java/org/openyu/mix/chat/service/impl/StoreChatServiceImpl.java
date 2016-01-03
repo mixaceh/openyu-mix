@@ -22,6 +22,7 @@ import org.openyu.mix.core.service.CoreMessageType;
 import org.openyu.mix.core.service.CoreModuleType;
 import org.openyu.mix.core.vo.StoreType;
 import org.openyu.mix.chat.service.ChatService.ErrorType;
+import org.openyu.commons.dao.anno.CommonTx;
 import org.openyu.commons.io.FileHelper;
 import org.openyu.commons.io.IoHelper;
 import org.openyu.commons.lang.StringHelper;
@@ -140,6 +141,7 @@ public class StoreChatServiceImpl extends AppServiceSupporter implements StoreCh
 	 * 
 	 * @return
 	 */
+	@CommonTx
 	public int storeChats(boolean sendable) {
 		int result = 0;
 		//
@@ -150,8 +152,8 @@ public class StoreChatServiceImpl extends AppServiceSupporter implements StoreCh
 				if (stored) {
 					result++;
 				}
-			} catch (Exception ex) {
-				ex.printStackTrace();
+			} catch (Exception e) {
+				LOGGER.error(new StringBuilder("Exception encountered during storeChats()").toString(), e);
 			}
 		}
 		//
@@ -175,6 +177,7 @@ public class StoreChatServiceImpl extends AppServiceSupporter implements StoreCh
 	 * @param chat
 	 * @return
 	 */
+	@CommonTx
 	public boolean storeChat(boolean sendable, Chat chat) {
 		boolean result = false;
 		//

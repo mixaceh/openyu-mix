@@ -48,7 +48,7 @@ public class AccountSocklet extends AppSockletServiceSupporter {
 			break;
 		}
 		default: {
-			LOGGER.warn("Can't resolve: " + message);
+			LOGGER.error("Can't resolve: " + message);
 			break;
 		}
 		}

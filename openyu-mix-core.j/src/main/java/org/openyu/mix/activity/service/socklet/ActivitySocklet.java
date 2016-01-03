@@ -12,8 +12,9 @@ import org.openyu.socklet.message.vo.Message;
 
 public class ActivitySocklet extends AppSockletServiceSupporter {
 
-	private static transient final Logger LOGGER = LoggerFactory
-			.getLogger(ActivitySocklet.class);
+	private static final long serialVersionUID = 1750563505056309852L;
+
+	private static transient final Logger LOGGER = LoggerFactory.getLogger(ActivitySocklet.class);
 
 	@Autowired
 	@Qualifier("roleSetService")
@@ -30,8 +31,7 @@ public class ActivitySocklet extends AppSockletServiceSupporter {
 		super.service(message);
 
 		// 訊息
-		CoreMessageType messageType = (CoreMessageType) message
-				.getMessageType();
+		CoreMessageType messageType = (CoreMessageType) message.getMessageType();
 		switch (messageType) {
 		default: {
 			LOGGER.error("Can't resolve: " + message);

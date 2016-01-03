@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:jaxws="http://cxf.apache.org/jaxws"
+	xsi:schemaLocation="
+             http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+             http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+             http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+             http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd">
+
+	<!-- debug -->
+	<!-- 偵錯服務 -->
+	<bean id="debugService" class="org.openyu.mix.chat.service.impl.DebugServiceImpl"
+		parent="appServiceSupporter" />
+
+	<!-- advisor -->
+	<bean id="debugCheatAdvice" class="org.openyu.mix.chat.aop.DebugCheatInterceptor"
+		parent="appMethodInterceptorSupporter">
+	</bean>
+	<aop:config>
+		<aop:pointcut id="debugCheatPointcut"
+			expression="execution(* org.openyu.mix.chat.service.impl.DebugServiceImpl.cheat*(..))" />
+		<aop:advisor id="debugCheatAdvisor" advice-ref="debugCheatAdvice"
+			pointcut-ref="debugCheatPointcut" />
+	</aop:config>
+
+	<bean id="debugRequestAdvice" class="org.openyu.mix.chat.aop.DebugRequestInterceptor"
+		parent="appMethodInterceptorSupporter" />
+	<aop:config>
+		<aop:pointcut id="debugRequestPointcut"
+			expression="execution(* org.openyu.mix.chat.service.impl.DebugServiceImpl.request*(..))" />
+		<aop:advisor id="debugRequestAdvisor" advice-ref="debugRequestAdvice"
+			pointcut-ref="debugRequestPointcut" />
+	</aop:config>
+
+	<!-- dao -->
+	<bean id="chatDao" class="org.openyu.mix.chat.dao.impl.ChatDaoImpl"
+		parent="appDaoSupporter" />
+
+	<!-- 聊天服務 -->
+	<bean id="chatService" class="org.openyu.mix.chat.service.impl.ChatServiceImpl"
+		parent="appServiceSupporter" />
+
+	<!-- advisor -->
+	<aop:config>
+		<aop:pointcut id="chatServiceTxPointcut" expression="bean(chatService)" />
+		<aop:advisor id="chatServiceTxAdvisor" advice-ref="commonTxAdvice"
+			pointcut-ref="chatServiceTxPointcut" />
+	</aop:config>
+
+	<!-- 儲存聊天角色服務 -->
+	<bean id="storeChatService" class="org.openyu.mix.chat.service.impl.StoreChatServiceImpl"
+		parent="appServiceSupporter" />
+
+	<!-- socklet -->
+	<bean id="chatSocklet" class="org.openyu.mix.chat.socklet.ChatSocklet"
+		parent="slaveSockletServiceSupporter">
+		<property name="id" value="CHAT" />
+	</bean>
+
+</beans>

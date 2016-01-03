@@ -35,7 +35,7 @@ public class AccountAspect extends AppAspectSupporter {
 	 * boolean accuable, CoinReason coinReason);
 	 */
 	@AfterReturning(pointcut = "execution(public * org.openyu.mix.account.service.AccountService.increaseCoin*(..))", returning = "result")
-	public void recordIncreaseCoin(JoinPoint joinPoint, Object result) throws Throwable {
+	public void increaseCoin(JoinPoint joinPoint, Object result) throws Throwable {
 		try {
 			String method = joinPoint.getSignature().getName();
 			// 參數
@@ -52,7 +52,7 @@ public class AccountAspect extends AppAspectSupporter {
 				accountLogService.recordIncreaseCoin(accountId, role, returnValue, coinReason);
 			}
 		} catch (Throwable e) {
-			LOGGER.error(new StringBuilder("Exception encountered during recordIncreaseCoin()").toString(), e);
+			LOGGER.error(new StringBuilder("Exception encountered during increaseCoin()").toString(), e);
 		}
 	}
 
@@ -63,7 +63,7 @@ public class AccountAspect extends AppAspectSupporter {
 	 * CoinReason coinReason);
 	 */
 	@AfterReturning(pointcut = "execution(public * org.openyu.mix.account.service.AccountService.decreaseCoin*(..))", returning = "result")
-	public void recordDecreaseCoin(JoinPoint joinPoint, Object result) throws Throwable {
+	public void decreaseCoin(JoinPoint joinPoint, Object result) throws Throwable {
 		try {
 			String method = joinPoint.getSignature().getName();
 			// 參數
@@ -79,7 +79,7 @@ public class AccountAspect extends AppAspectSupporter {
 				accountLogService.recordDecreaseCoin(accountId, role, returnValue, coinReason);
 			}
 		} catch (Throwable e) {
-			LOGGER.error(new StringBuilder("Exception encountered during recordDecreaseCoin()").toString(), e);
+			LOGGER.error(new StringBuilder("Exception encountered during decreaseCoin()").toString(), e);
 		}
 	}
 
@@ -90,7 +90,7 @@ public class AccountAspect extends AppAspectSupporter {
 	 * boolean accuable, CoinAction coinAction, CoinReason coinReason);
 	 */
 	@AfterReturning(pointcut = "execution(public * org.openyu.mix.account.service.AccountService.changeCoin*(..))", returning = "result")
-	public void recordChangeCoin(JoinPoint joinPoint, Object result) throws Throwable {
+	public void changeCoin(JoinPoint joinPoint, Object result) throws Throwable {
 		try {
 			String method = joinPoint.getSignature().getName();
 			// 參數
@@ -108,7 +108,7 @@ public class AccountAspect extends AppAspectSupporter {
 				accountLogService.recordChangeCoin(accountId, role, returnValue, coinAction, coinReason);
 			}
 		} catch (Throwable e) {
-			LOGGER.error(new StringBuilder("Exception encountered during recordChangeCoin()").toString(), e);
+			LOGGER.error(new StringBuilder("Exception encountered during changeCoin()").toString(), e);
 		}
 	}
 
@@ -119,7 +119,7 @@ public class AccountAspect extends AppAspectSupporter {
 	 * accuable, CoinReason coinReason);
 	 */
 	@AfterReturning(pointcut = "execution(public * org.openyu.mix.account.service.AccountService.resetCoin*(..))", returning = "result")
-	public void recordResetCoin(JoinPoint joinPoint, Object result) throws Throwable {
+	public void resetCoin(JoinPoint joinPoint, Object result) throws Throwable {
 		try {
 			String method = joinPoint.getSignature().getName();
 			// 參數
@@ -135,7 +135,7 @@ public class AccountAspect extends AppAspectSupporter {
 				accountLogService.recordChangeCoin(accountId, role, 0, ActionType.RESET, coinReason);
 			}
 		} catch (Throwable e) {
-			LOGGER.error(new StringBuilder("Exception encountered during recordChangeCoin()").toString(), e);
+			LOGGER.error(new StringBuilder("Exception encountered during resetCoin()").toString(), e);
 		}
 	}
 }

@@ -1,7 +1,5 @@
 package org.openyu.mix.chat.aop;
 
-import java.lang.reflect.Method;
-
 import org.aopalliance.intercept.MethodInvocation;
 import org.openyu.commons.util.ConfigHelper;
 import org.openyu.mix.app.aop.supporter.AppAroundAdviceSupporter;
@@ -11,6 +9,7 @@ import org.slf4j.LoggerFactory;
 /**
  * 秘技攔截器
  */
+@Deprecated
 public class DebugCheatInterceptor extends AppAroundAdviceSupporter {
 
 	private static transient final Logger LOGGER = LoggerFactory.getLogger(DebugCheatInterceptor.class);
