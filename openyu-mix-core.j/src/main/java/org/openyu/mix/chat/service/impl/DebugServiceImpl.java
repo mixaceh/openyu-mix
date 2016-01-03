@@ -11,15 +11,22 @@ import org.openyu.socklet.message.vo.Message;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class DebugServiceImpl extends AppServiceSupporter implements
-		DebugService {
-	
+public class DebugServiceImpl extends AppServiceSupporter implements DebugService {
+
 	private static final long serialVersionUID = 8901022041095041996L;
-	
-	private static transient final Logger LOGGER = LoggerFactory
-			.getLogger(DebugServiceImpl.class);
+
+	private static transient final Logger LOGGER = LoggerFactory.getLogger(DebugServiceImpl.class);
 
 	public DebugServiceImpl() {
+	}
+
+	/**
+	 * 檢查設置
+	 * 
+	 * @throws Exception
+	 */
+	protected final void checkConfig() throws Exception {
+
 	}
 
 	/**
@@ -139,8 +146,7 @@ public class DebugServiceImpl extends AppServiceSupporter implements
 		if (text.length() > pos && buff.substring(0, pos).equals("exp ")) {
 			long exp = NumberHelper.toLong(buff.substring(pos));
 			//
-			Message message = messageService.createMessage(CoreModuleType.CHAT,
-					CoreModuleType.ROLE,
+			Message message = messageService.createMessage(CoreModuleType.CHAT, CoreModuleType.ROLE,
 					CoreMessageType.ROLE_DEBUG_CHANGE_EXP_REQUEST);
 			message.addString(roleId);// 角色id
 			message.addLong(exp);// 增減的經驗
@@ -156,8 +162,7 @@ public class DebugServiceImpl extends AppServiceSupporter implements
 		if (text.length() > pos && buff.substring(0, pos).equals("level ")) {
 			int level = NumberHelper.toInt(buff.substring(pos));
 			//
-			Message message = messageService.createMessage(CoreModuleType.CHAT,
-					CoreModuleType.ROLE,
+			Message message = messageService.createMessage(CoreModuleType.CHAT, CoreModuleType.ROLE,
 					CoreMessageType.ROLE_DEBUG_CHANGE_LEVEL_REQUEST);
 			message.addString(roleId);// 角色id
 			message.addInt(level);// 增減的等級
@@ -173,8 +178,7 @@ public class DebugServiceImpl extends AppServiceSupporter implements
 		if (text.length() > pos && buff.substring(0, pos).equals("gold ")) {
 			long gold = NumberHelper.toLong(buff.substring(pos));
 			//
-			Message message = messageService.createMessage(CoreModuleType.CHAT,
-					CoreModuleType.ROLE,
+			Message message = messageService.createMessage(CoreModuleType.CHAT, CoreModuleType.ROLE,
 					CoreMessageType.ROLE_DEBUG_CHANGE_GOLD_REQUEST);
 			message.addString(roleId);// 角色id
 			message.addLong(gold);// 增減的金幣
@@ -190,8 +194,7 @@ public class DebugServiceImpl extends AppServiceSupporter implements
 		if (text.length() > pos && buff.substring(0, pos).equals("fame ")) {
 			int fame = NumberHelper.toInt(buff.substring(pos));
 			//
-			Message message = messageService.createMessage(CoreModuleType.CHAT,
-					CoreModuleType.ROLE,
+			Message message = messageService.createMessage(CoreModuleType.CHAT, CoreModuleType.ROLE,
 					CoreMessageType.ROLE_DEBUG_CHANGE_FAME_REQUEST);
 			message.addString(roleId);// 角色id
 			message.addInt(fame);// 增減的聲望
@@ -205,8 +208,7 @@ public class DebugServiceImpl extends AppServiceSupporter implements
 		// 01
 		pos = 2;
 		if (text.length() == pos && buff.substring(0, pos).equals("sr")) {
-			Message message = messageService.createMessage(CoreModuleType.CHAT,
-					CoreModuleType.ROLE,
+			Message message = messageService.createMessage(CoreModuleType.CHAT, CoreModuleType.ROLE,
 					CoreMessageType.ROLE_DEBUG_STORE_ROLE_REQUEST);
 			message.addString(roleId);// 角色id
 			//
@@ -220,8 +222,7 @@ public class DebugServiceImpl extends AppServiceSupporter implements
 		pos = 5;
 		if (text.length() > pos && buff.substring(0, pos).equals("attr ")) {
 
-			String[] buffs = StringUtils.splitPreserveAllTokens(
-					buff.substring(pos), StringHelper.COMMA);
+			String[] buffs = StringUtils.splitPreserveAllTokens(buff.substring(pos), StringHelper.COMMA);
 			//
 			int attributeValue = 0;
 			int point = 0;
@@ -243,8 +244,7 @@ public class DebugServiceImpl extends AppServiceSupporter implements
 				}
 			}
 			//
-			Message message = messageService.createMessage(CoreModuleType.CHAT,
-					CoreModuleType.ROLE,
+			Message message = messageService.createMessage(CoreModuleType.CHAT, CoreModuleType.ROLE,
 					CoreMessageType.ROLE_DEBUG_CHANGE_ATTRIBUTE_REQUEST);
 			message.addString(roleId);// 角色id
 			message.addInt(attributeValue);// 屬性類型
@@ -263,8 +263,7 @@ public class DebugServiceImpl extends AppServiceSupporter implements
 		if (text.length() > pos && buff.substring(0, pos).equals("coin ")) {
 			int coin = NumberHelper.toInt(buff.substring(pos));
 			//
-			Message message = messageService.createMessage(CoreModuleType.CHAT,
-					CoreModuleType.ROLE,
+			Message message = messageService.createMessage(CoreModuleType.CHAT, CoreModuleType.ROLE,
 					CoreMessageType.ROLE_DEBUG_CHANGE_COIN_REQUEST);
 			message.addString(roleId);// 角色id
 			message.addInt(coin);// 增減的儲值幣
@@ -280,8 +279,7 @@ public class DebugServiceImpl extends AppServiceSupporter implements
 		if (text.length() > pos && buff.substring(0, pos).equals("vip ")) {
 			int vip = NumberHelper.toInt(buff.substring(pos));
 			//
-			Message message = messageService.createMessage(CoreModuleType.CHAT,
-					CoreModuleType.ROLE,
+			Message message = messageService.createMessage(CoreModuleType.CHAT, CoreModuleType.ROLE,
 					CoreMessageType.ROLE_DEBUG_CHANGE_VIP_REQUEST);
 			message.addString(roleId);// 角色id
 			message.addInt(vip);// 增減的vip等級
@@ -298,8 +296,7 @@ public class DebugServiceImpl extends AppServiceSupporter implements
 		// 01
 		pos = 2;
 		if (text.length() == pos && buff.substring(0, pos).equals("sc")) {
-			Message message = messageService.createMessage(CoreModuleType.CHAT,
-					CoreModuleType.CHAT,
+			Message message = messageService.createMessage(CoreModuleType.CHAT, CoreModuleType.CHAT,
 					CoreMessageType.CHAT_DEBUG_STORE_REQUEST);
 			message.addString(roleId);// 角色id
 			//
@@ -317,8 +314,7 @@ public class DebugServiceImpl extends AppServiceSupporter implements
 		if (text.length() > pos && buff.substring(0, pos).equals("sasangp ")) {
 			int playValue = NumberHelper.toInt(buff.substring(pos));
 			//
-			Message message = messageService.createMessage(CoreModuleType.CHAT,
-					CoreModuleType.SASANG,
+			Message message = messageService.createMessage(CoreModuleType.CHAT, CoreModuleType.SASANG,
 					CoreMessageType.SASANG_DEBUG_PLAY_REQUEST);
 			message.addString(roleId);// 角色id
 			message.addInt(playValue);// 玩的類別
@@ -332,8 +328,7 @@ public class DebugServiceImpl extends AppServiceSupporter implements
 		// 0123456
 		pos = 7;
 		if (text.length() == pos && buff.substring(0, pos).equals("sasanga")) {
-			Message message = messageService.createMessage(CoreModuleType.CHAT,
-					CoreModuleType.SASANG,
+			Message message = messageService.createMessage(CoreModuleType.CHAT, CoreModuleType.SASANG,
 					CoreMessageType.SASANG_DEBUG_PUT_ALL_REQUEST);
 			message.addString(roleId);// 角色id
 			//
@@ -346,8 +341,7 @@ public class DebugServiceImpl extends AppServiceSupporter implements
 		// 0123456
 		pos = 7;
 		if (text.length() == pos && buff.substring(0, pos).equals("sasangr")) {
-			Message message = messageService.createMessage(CoreModuleType.CHAT,
-					CoreModuleType.SASANG,
+			Message message = messageService.createMessage(CoreModuleType.CHAT, CoreModuleType.SASANG,
 					CoreMessageType.SASANG_DEBUG_RESET_REQUEST);
 			message.addString(roleId);// 角色id
 			//
@@ -363,14 +357,12 @@ public class DebugServiceImpl extends AppServiceSupporter implements
 		// 012345
 		pos = 5;
 		if (text.length() > pos && buff.substring(0, pos).equals("item ")) {
-			String[] buffs = StringUtils.splitPreserveAllTokens(
-					buff.substring(pos), ",");
+			String[] buffs = StringUtils.splitPreserveAllTokens(buff.substring(pos), ",");
 			if (buffs.length == 2) {
 				String itemId = buffs[0];
 				int amount = NumberHelper.toInt(buffs[1]);
 				//
-				Message message = messageService.createMessage(
-						CoreModuleType.CHAT, CoreModuleType.ITEM,
+				Message message = messageService.createMessage(CoreModuleType.CHAT, CoreModuleType.ITEM,
 						CoreMessageType.ITEM_DEBUG_CHANGE_ITEM_REQUEST);
 				message.addString(roleId);// 角色id
 				message.addString(itemId);// 道具id
@@ -392,8 +384,7 @@ public class DebugServiceImpl extends AppServiceSupporter implements
 				tabIndex = NumberHelper.toInt(buff.substring(pos + 1));
 			}
 			//
-			Message message = messageService.createMessage(CoreModuleType.CHAT,
-					CoreModuleType.ITEM,
+			Message message = messageService.createMessage(CoreModuleType.CHAT, CoreModuleType.ITEM,
 					CoreMessageType.ITEM_DEBUG_CLEAR_BAG_REQUEST);
 			message.addString(roleId);// 角色id
 			message.addInt(tabIndex);// 包包頁id,tabIndex
@@ -410,14 +401,12 @@ public class DebugServiceImpl extends AppServiceSupporter implements
 		// 01234567
 		pos = 7;
 		if (text.length() > pos && buff.substring(0, pos).equals("manorr ")) {
-			String[] buffs = StringUtils.splitPreserveAllTokens(
-					buff.substring(pos), ",");
+			String[] buffs = StringUtils.splitPreserveAllTokens(buff.substring(pos), ",");
 			if (buffs.length == 2) {
 				int farmIndex = NumberHelper.toInt(buffs[0]);
 				String itemId = buffs[1];
 				//
-				Message message = messageService.createMessage(
-						CoreModuleType.CHAT, CoreModuleType.MANOR,
+				Message message = messageService.createMessage(CoreModuleType.CHAT, CoreModuleType.MANOR,
 						CoreMessageType.MANOR_DEBUG_RECLAIM_REQUEST);
 				message.addString(roleId);// 角色id
 				message.addInt(farmIndex);// 農場id,farmIndex
@@ -440,8 +429,7 @@ public class DebugServiceImpl extends AppServiceSupporter implements
 			}
 			//
 			//
-			Message message = messageService.createMessage(CoreModuleType.CHAT,
-					CoreModuleType.MANOR,
+			Message message = messageService.createMessage(CoreModuleType.CHAT, CoreModuleType.MANOR,
 					CoreMessageType.MANOR_DEBUG_DISUSE_REQUEST);
 			message.addString(roleId);// 角色id
 			message.addInt(farmIndex);// 農場id,farmIndex
@@ -457,8 +445,7 @@ public class DebugServiceImpl extends AppServiceSupporter implements
 		if (text.length() > pos && buff.substring(0, pos).equals("manorp ")) {
 			String itemId = buff.substring(pos);
 			//
-			Message message = messageService.createMessage(CoreModuleType.CHAT,
-					CoreModuleType.MANOR,
+			Message message = messageService.createMessage(CoreModuleType.CHAT, CoreModuleType.MANOR,
 					CoreMessageType.MANOR_DEBUG_PLANT_REQUEST);
 			message.addString(roleId);// 角色id
 			message.addString(itemId);// 道具id
@@ -476,16 +463,14 @@ public class DebugServiceImpl extends AppServiceSupporter implements
 			int farmIndex = -1;
 			int gridIndex = -1;
 			if (buff.length() > pos) {
-				String[] buffs = StringUtils.splitPreserveAllTokens(
-						buff.substring(pos + 1), ",");
+				String[] buffs = StringUtils.splitPreserveAllTokens(buff.substring(pos + 1), ",");
 				if (buffs.length == 2) {
 					farmIndex = NumberHelper.toInt(buffs[0]);
 					gridIndex = NumberHelper.toInt(buffs[1]);
 				}
 			}
 			//
-			Message message = messageService.createMessage(CoreModuleType.CHAT,
-					CoreModuleType.MANOR,
+			Message message = messageService.createMessage(CoreModuleType.CHAT, CoreModuleType.MANOR,
 					CoreMessageType.MANOR_DEBUG_WATER_REQUEST);
 			message.addString(roleId);// 角色id
 			message.addInt(farmIndex);// 農場id,farmIndex
@@ -504,16 +489,14 @@ public class DebugServiceImpl extends AppServiceSupporter implements
 			int farmIndex = -1;
 			int gridIndex = -1;
 			if (buff.length() > pos) {
-				String[] buffs = StringUtils.splitPreserveAllTokens(
-						buff.substring(pos + 1), ",");
+				String[] buffs = StringUtils.splitPreserveAllTokens(buff.substring(pos + 1), ",");
 				if (buffs.length == 2) {
 					farmIndex = NumberHelper.toInt(buffs[0]);
 					gridIndex = NumberHelper.toInt(buffs[1]);
 				}
 			}
 			//
-			Message message = messageService.createMessage(CoreModuleType.CHAT,
-					CoreModuleType.MANOR,
+			Message message = messageService.createMessage(CoreModuleType.CHAT, CoreModuleType.MANOR,
 					CoreMessageType.MANOR_DEBUG_PRAY_REQUEST);
 			message.addString(roleId);// 角色id
 			message.addInt(farmIndex);// 農場id,farmIndex
@@ -532,16 +515,14 @@ public class DebugServiceImpl extends AppServiceSupporter implements
 			int farmIndex = -1;
 			int gridIndex = -1;
 			if (buff.length() > pos) {
-				String[] buffs = StringUtils.splitPreserveAllTokens(
-						buff.substring(pos + 1), ",");
+				String[] buffs = StringUtils.splitPreserveAllTokens(buff.substring(pos + 1), ",");
 				if (buffs.length == 2) {
 					farmIndex = NumberHelper.toInt(buffs[0]);
 					gridIndex = NumberHelper.toInt(buffs[1]);
 				}
 			}
 			//
-			Message message = messageService.createMessage(CoreModuleType.CHAT,
-					CoreModuleType.MANOR,
+			Message message = messageService.createMessage(CoreModuleType.CHAT, CoreModuleType.MANOR,
 					CoreMessageType.MANOR_DEBUG_SPEED_REQUEST);
 			message.addString(roleId);// 角色id
 			message.addInt(farmIndex);// 農場id,farmIndex
@@ -560,16 +541,14 @@ public class DebugServiceImpl extends AppServiceSupporter implements
 			int farmIndex = -1;
 			int gridIndex = -1;
 			if (buff.length() > pos) {
-				String[] buffs = StringUtils.splitPreserveAllTokens(
-						buff.substring(pos + 1), ",");
+				String[] buffs = StringUtils.splitPreserveAllTokens(buff.substring(pos + 1), ",");
 				if (buffs.length == 2) {
 					farmIndex = NumberHelper.toInt(buffs[0]);
 					gridIndex = NumberHelper.toInt(buffs[1]);
 				}
 			}
 			//
-			Message message = messageService.createMessage(CoreModuleType.CHAT,
-					CoreModuleType.MANOR,
+			Message message = messageService.createMessage(CoreModuleType.CHAT, CoreModuleType.MANOR,
 					CoreMessageType.MANOR_DEBUG_HARVEST_REQUEST);
 			message.addString(roleId);// 角色id
 			message.addInt(farmIndex);// 農場id,farmIndex
@@ -588,16 +567,14 @@ public class DebugServiceImpl extends AppServiceSupporter implements
 			int farmIndex = -1;
 			int gridIndex = -1;
 			if (buff.length() > pos) {
-				String[] buffs = StringUtils.splitPreserveAllTokens(
-						buff.substring(pos + 1), ",");
+				String[] buffs = StringUtils.splitPreserveAllTokens(buff.substring(pos + 1), ",");
 				if (buffs.length == 2) {
 					farmIndex = NumberHelper.toInt(buffs[0]);
 					gridIndex = NumberHelper.toInt(buffs[1]);
 				}
 			}
 			//
-			Message message = messageService.createMessage(CoreModuleType.CHAT,
-					CoreModuleType.MANOR,
+			Message message = messageService.createMessage(CoreModuleType.CHAT, CoreModuleType.MANOR,
 					CoreMessageType.MANOR_DEBUG_REVIVE_REQUEST);
 			message.addString(roleId);// 角色id
 			message.addInt(farmIndex);// 農場id,farmIndex
@@ -616,16 +593,14 @@ public class DebugServiceImpl extends AppServiceSupporter implements
 			int farmIndex = -1;
 			int gridIndex = -1;
 			if (buff.length() > pos) {
-				String[] buffs = StringUtils.splitPreserveAllTokens(
-						buff.substring(pos + 1), ",");
+				String[] buffs = StringUtils.splitPreserveAllTokens(buff.substring(pos + 1), ",");
 				if (buffs.length == 2) {
 					farmIndex = NumberHelper.toInt(buffs[0]);
 					gridIndex = NumberHelper.toInt(buffs[1]);
 				}
 			}
 			//
-			Message message = messageService.createMessage(CoreModuleType.CHAT,
-					CoreModuleType.MANOR,
+			Message message = messageService.createMessage(CoreModuleType.CHAT, CoreModuleType.MANOR,
 					CoreMessageType.MANOR_DEBUG_CLEAR_REQUEST);
 			//
 			message.addString(roleId);// 角色id
@@ -645,16 +620,14 @@ public class DebugServiceImpl extends AppServiceSupporter implements
 			int farmIndex = -1;
 			int gridIndex = -1;
 			if (buff.length() > pos) {
-				String[] buffs = StringUtils.splitPreserveAllTokens(
-						buff.substring(pos + 1), ",");
+				String[] buffs = StringUtils.splitPreserveAllTokens(buff.substring(pos + 1), ",");
 				if (buffs.length == 2) {
 					farmIndex = NumberHelper.toInt(buffs[0]);
 					gridIndex = NumberHelper.toInt(buffs[1]);
 				}
 			}
 			//
-			Message message = messageService.createMessage(CoreModuleType.CHAT,
-					CoreModuleType.MANOR,
+			Message message = messageService.createMessage(CoreModuleType.CHAT, CoreModuleType.MANOR,
 					CoreMessageType.MANOR_DEBUG_MATURE_REQUEST);
 			//
 			message.addString(roleId);// 角色id
@@ -674,16 +647,14 @@ public class DebugServiceImpl extends AppServiceSupporter implements
 			int farmIndex = -1;
 			int gridIndex = -1;
 			if (buff.length() > pos) {
-				String[] buffs = StringUtils.splitPreserveAllTokens(
-						buff.substring(pos + 1), ",");
+				String[] buffs = StringUtils.splitPreserveAllTokens(buff.substring(pos + 1), ",");
 				if (buffs.length == 2) {
 					farmIndex = NumberHelper.toInt(buffs[0]);
 					gridIndex = NumberHelper.toInt(buffs[1]);
 				}
 			}
 			//
-			Message message = messageService.createMessage(CoreModuleType.CHAT,
-					CoreModuleType.MANOR,
+			Message message = messageService.createMessage(CoreModuleType.CHAT, CoreModuleType.MANOR,
 					CoreMessageType.MANOR_DEBUG_WITHER_REQUEST);
 			//
 			message.addString(roleId);// 角色id
@@ -701,8 +672,7 @@ public class DebugServiceImpl extends AppServiceSupporter implements
 		// 012345678
 		pos = 9;
 		if (text.length() == pos && buff.substring(0, pos).equals("treasurer")) {
-			Message message = messageService.createMessage(CoreModuleType.CHAT,
-					CoreModuleType.TREASURE,
+			Message message = messageService.createMessage(CoreModuleType.CHAT, CoreModuleType.TREASURE,
 					CoreMessageType.TREASURE_DEBUG_REFRESH_REQUEST);
 			message.addString(roleId);// 角色id
 			//
@@ -719,16 +689,14 @@ public class DebugServiceImpl extends AppServiceSupporter implements
 			int buyValue = -1;
 			int index = -1;
 			if (buff.length() > pos) {
-				String[] buffs = StringUtils.splitPreserveAllTokens(
-						buff.substring(pos + 1), ",");
+				String[] buffs = StringUtils.splitPreserveAllTokens(buff.substring(pos + 1), ",");
 				if (buffs.length == 2) {
 					buyValue = NumberHelper.toInt(buffs[0]);
 					index = NumberHelper.toInt(buffs[1]);
 				}
 			}
 			//
-			Message message = messageService.createMessage(CoreModuleType.CHAT,
-					CoreModuleType.TREASURE,
+			Message message = messageService.createMessage(CoreModuleType.CHAT, CoreModuleType.TREASURE,
 					CoreMessageType.TREASURE_DEBUG_BUY_REQUEST);
 			//
 			message.addString(roleId);// 角色id
@@ -747,8 +715,7 @@ public class DebugServiceImpl extends AppServiceSupporter implements
 		// 012345
 		pos = 6;
 		if (text.length() == pos && buff.substring(0, pos).equals("trainj")) {
-			Message message = messageService.createMessage(CoreModuleType.CHAT,
-					CoreModuleType.TRAIN,
+			Message message = messageService.createMessage(CoreModuleType.CHAT, CoreModuleType.TRAIN,
 					CoreMessageType.TRAIN_DEBUG_JOIN_REQUEST);
 			message.addString(roleId);// 角色id
 			//
@@ -761,8 +728,7 @@ public class DebugServiceImpl extends AppServiceSupporter implements
 		// 012345
 		pos = 6;
 		if (text.length() == pos && buff.substring(0, pos).equals("trainq")) {
-			Message message = messageService.createMessage(CoreModuleType.CHAT,
-					CoreModuleType.TRAIN,
+			Message message = messageService.createMessage(CoreModuleType.CHAT, CoreModuleType.TRAIN,
 					CoreMessageType.TRAIN_DEBUG_QUIT_REQUEST);
 			message.addString(roleId);// 角色id
 			//
@@ -775,8 +741,7 @@ public class DebugServiceImpl extends AppServiceSupporter implements
 		// 012345
 		pos = 6;
 		if (text.length() == pos && buff.substring(0, pos).equals("traini")) {
-			Message message = messageService.createMessage(CoreModuleType.CHAT,
-					CoreModuleType.TRAIN,
+			Message message = messageService.createMessage(CoreModuleType.CHAT, CoreModuleType.TRAIN,
 					CoreMessageType.TRAIN_DEBUG_INSPIRE_REQUEST);
 			message.addString(roleId);// 角色id
 			//
@@ -789,8 +754,7 @@ public class DebugServiceImpl extends AppServiceSupporter implements
 		// 012345
 		pos = 6;
 		if (text.length() == pos && buff.substring(0, pos).equals("trainr")) {
-			Message message = messageService.createMessage(CoreModuleType.CHAT,
-					CoreModuleType.TRAIN,
+			Message message = messageService.createMessage(CoreModuleType.CHAT, CoreModuleType.TRAIN,
 					CoreMessageType.TRAIN_DEBUG_RESET_REQUEST);
 			message.addString(roleId);// 角色id
 			//
@@ -808,8 +772,7 @@ public class DebugServiceImpl extends AppServiceSupporter implements
 		if (text.length() > pos && buff.substring(0, pos).equals("wuxingp ")) {
 			int playValue = NumberHelper.toInt(buff.substring(pos));
 			//
-			Message message = messageService.createMessage(CoreModuleType.CHAT,
-					CoreModuleType.WUXING,
+			Message message = messageService.createMessage(CoreModuleType.CHAT, CoreModuleType.WUXING,
 					CoreMessageType.WUXING_DEBUG_PLAY_REQUEST);
 			message.addString(roleId);// 角色id
 			message.addInt(playValue);// 玩的類別
@@ -823,8 +786,7 @@ public class DebugServiceImpl extends AppServiceSupporter implements
 		// 0123456
 		pos = 7;
 		if (text.length() == pos && buff.substring(0, pos).equals("wuxinga")) {
-			Message message = messageService.createMessage(CoreModuleType.CHAT,
-					CoreModuleType.WUXING,
+			Message message = messageService.createMessage(CoreModuleType.CHAT, CoreModuleType.WUXING,
 					CoreMessageType.WUXING_DEBUG_PUT_ALL_REQUEST);
 			message.addString(roleId);// 角色id
 			//
@@ -837,8 +799,7 @@ public class DebugServiceImpl extends AppServiceSupporter implements
 		// 0123456
 		pos = 7;
 		if (text.length() == pos && buff.substring(0, pos).equals("wuxingr")) {
-			Message message = messageService.createMessage(CoreModuleType.CHAT,
-					CoreModuleType.WUXING,
+			Message message = messageService.createMessage(CoreModuleType.CHAT, CoreModuleType.WUXING,
 					CoreMessageType.WUXING_DEBUG_RESET_REQUEST);
 			message.addString(roleId);// 角色id
 			//

@@ -23,23 +23,38 @@ import org.openyu.mix.item.vo.EnhanceLevelBean;
 import org.openyu.mix.item.vo.Item;
 import org.openyu.mix.role.vo.Role;
 import org.openyu.commons.dao.inquiry.Inquiry;
+import org.openyu.commons.util.AssertHelper;
 
 /**
  * 道具日誌服務
  */
-public class ItemLogServiceImpl extends AppLogServiceSupporter implements
-		ItemLogService {
+public class ItemLogServiceImpl extends AppLogServiceSupporter implements ItemLogService {
 
-	private static transient final Logger LOGGER = LoggerFactory
-			.getLogger(ItemLogServiceImpl.class);
-	
-	@Autowired
-	@Qualifier("itemLogDao")
-	private transient ItemLogDao itemLogDao;
+	private static final long serialVersionUID = 6787119250468284108L;
+
+	private static transient final Logger LOGGER = LoggerFactory.getLogger(ItemLogServiceImpl.class);
 
 	public ItemLogServiceImpl() {
 	}
 
+	public ItemLogDao getItemLogDao() {
+		return (ItemLogDao) getCommonDao();
+	}
+
+	@Autowired
+	@Qualifier("itemLogDao")
+	public void setItemLogDao(ItemLogDao itemLogDao) {
+		setCommonDao(itemLogDao);
+	}
+
+	/**
+	 * 檢查設置
+	 * 
+	 * @throws Exception
+	 */
+	protected final void checkConfig() throws Exception {
+		AssertHelper.notNull(this.commonDao, "The AccountLogDao is required");
+	}
 	// --------------------------------------------------
 	// db
 	// --------------------------------------------------
@@ -48,48 +63,45 @@ public class ItemLogServiceImpl extends AppLogServiceSupporter implements
 	// ItemIncreaseLog
 	// --------------------------------------------------
 	public List<ItemIncreaseLog> findItemIncreaseLog(String roleId) {
-		return itemLogDao.findItemIncreaseLog(roleId);
+		return getItemLogDao().findItemIncreaseLog(roleId);
 	}
 
-	public List<ItemIncreaseLog> findItemIncreaseLog(Inquiry inquiry,
-			String roleId) {
-		return itemLogDao.findItemIncreaseLog(inquiry, roleId);
+	public List<ItemIncreaseLog> findItemIncreaseLog(Inquiry inquiry, String roleId) {
+		return getItemLogDao().findItemIncreaseLog(inquiry, roleId);
 	}
 
 	public int deleteItemIncreaseLog(String roleId) {
-		return itemLogDao.deleteItemIncreaseLog(roleId);
+		return getItemLogDao().deleteItemIncreaseLog(roleId);
 	}
 
 	// --------------------------------------------------
 	// ItemDecreaseLog
 	// --------------------------------------------------
 	public List<ItemDecreaseLog> findItemDecreaseLog(String roleId) {
-		return itemLogDao.findItemDecreaseLog(roleId);
+		return getItemLogDao().findItemDecreaseLog(roleId);
 	}
 
-	public List<ItemDecreaseLog> findItemDecreaseLog(Inquiry inquiry,
-			String roleId) {
-		return itemLogDao.findItemDecreaseLog(inquiry, roleId);
+	public List<ItemDecreaseLog> findItemDecreaseLog(Inquiry inquiry, String roleId) {
+		return getItemLogDao().findItemDecreaseLog(inquiry, roleId);
 	}
 
 	public int deleteItemDecreaseLog(String roleId) {
-		return itemLogDao.deleteItemDecreaseLog(roleId);
+		return getItemLogDao().deleteItemDecreaseLog(roleId);
 	}
 
 	// --------------------------------------------------
 	// ItemEnhanceLog
 	// --------------------------------------------------
 	public List<ItemEnhanceLog> findItemEnhanceLog(String roleId) {
-		return itemLogDao.findItemEnhanceLog(roleId);
+		return getItemLogDao().findItemEnhanceLog(roleId);
 	}
 
-	public List<ItemEnhanceLog> findItemEnhanceLog(Inquiry inquiry,
-			String roleId) {
-		return itemLogDao.findItemEnhanceLog(inquiry, roleId);
+	public List<ItemEnhanceLog> findItemEnhanceLog(Inquiry inquiry, String roleId) {
+		return getItemLogDao().findItemEnhanceLog(inquiry, roleId);
 	}
 
 	public int deleteItemEnhanceLog(String roleId) {
-		return itemLogDao.deleteItemEnhanceLog(roleId);
+		return getItemLogDao().deleteItemEnhanceLog(roleId);
 	}
 
 	// --------------------------------------------------
@@ -106,8 +118,7 @@ public class ItemLogServiceImpl extends AppLogServiceSupporter implements
 	 * @param actionType
 	 * @param increaseItemResults
 	 */
-	public void recordIncreaseItem(Role role, ActionType actionType,
-			List<IncreaseItemResult> increaseItemResults) {
+	public void recordIncreaseItem(Role role, ActionType actionType, List<IncreaseItemResult> increaseItemResults) {
 		ItemIncreaseLog log = new ItemIncreaseLogImpl();
 		recordRole(role, log);
 
@@ -133,8 +144,7 @@ public class ItemLogServiceImpl extends AppLogServiceSupporter implements
 	 * @param actionType
 	 * @param decreaseItemResults
 	 */
-	public void recordDecreaseItem(Role role, ActionType actionType,
-			List<DecreaseItemResult> decreaseItemResults) {
+	public void recordDecreaseItem(Role role, ActionType actionType, List<DecreaseItemResult> decreaseItemResults) {
 		ItemDecreaseLog log = new ItemDecreaseLogImpl();
 		recordRole(role, log);
 
@@ -156,8 +166,7 @@ public class ItemLogServiceImpl extends AppLogServiceSupporter implements
 	 * @param actionType
 	 * @param decreaseItemResult
 	 */
-	public void recordDecreaseItem(Role role, ActionType actionType,
-			DecreaseItemResult decreaseItemResult) {
+	public void recordDecreaseItem(Role role, ActionType actionType, DecreaseItemResult decreaseItemResult) {
 		ItemDecreaseLog log = new ItemDecreaseLogImpl();
 		recordRole(role, log);
 		//
@@ -186,8 +195,7 @@ public class ItemLogServiceImpl extends AppLogServiceSupporter implements
 	 *            消耗的道具
 	 * @param actionType
 	 */
-	public void recordChangeEnhance(Role role, ActionType actionType,
-			Item beforeItem, Item afterItem, Item spendItem) {
+	public void recordChangeEnhance(Role role, ActionType actionType, Item beforeItem, Item afterItem, Item spendItem) {
 		ItemEnhanceLog log = new ItemEnhanceLogImpl();
 		recordRole(role, log);
 

@@ -15,6 +15,7 @@ import org.openyu.mix.core.vo.Core.ConnectAction;
 import org.openyu.mix.role.service.RoleService;
 import org.openyu.mix.role.vo.Role;
 import org.openyu.commons.dao.inquiry.Inquiry;
+import org.openyu.commons.util.AssertHelper;
 import org.openyu.commons.util.concurrent.MapCache;
 import org.openyu.commons.util.concurrent.impl.MapCacheImpl;
 
@@ -28,10 +29,6 @@ public class CoreLogServiceImpl extends AppLogServiceSupporter implements CoreLo
 	@Qualifier("roleService")
 	protected transient RoleService roleService;
 
-	@Autowired
-	@Qualifier("coreLogDao")
-	protected transient CoreLogDao coreLogDao;
-
 	/**
 	 * mem,連線上放入CoreConnectLog,斷線時取出,改善效率
 	 */
@@ -40,6 +37,25 @@ public class CoreLogServiceImpl extends AppLogServiceSupporter implements CoreLo
 	public CoreLogServiceImpl() {
 	}
 
+	public CoreLogDao getAccountLogDao() {
+		return (CoreLogDao) getCommonDao();
+	}
+
+	@Autowired
+	@Qualifier("coreLogDao")
+	public void setAccountLogDao(CoreLogDao coreLogDao) {
+		setCommonDao(coreLogDao);
+	}
+
+	/**
+	 * 檢查設置
+	 * 
+	 * @throws Exception
+	 */
+	protected final void checkConfig() throws Exception {
+		AssertHelper.notNull(this.commonDao, "The CoreLogDao is required");
+	}
+	
 	// --------------------------------------------------
 	// db
 	// --------------------------------------------------
@@ -48,23 +64,23 @@ public class CoreLogServiceImpl extends AppLogServiceSupporter implements CoreLo
 	// CoreConnectLog
 	// --------------------------------------------------
 	public List<CoreConnectLog> findCoreConnectLog(String roleId) {
-		return coreLogDao.findCoreConnectLog(roleId);
+		return getAccountLogDao().findCoreConnectLog(roleId);
 	}
 
 	public List<CoreConnectLog> findCoreConnectLog(Inquiry inquiry, String roleId) {
-		return coreLogDao.findCoreConnectLog(inquiry, roleId);
+		return getAccountLogDao().findCoreConnectLog(inquiry, roleId);
 	}
 
 	public int deleteCoreConnectLog(String roleId) {
-		return coreLogDao.deleteCoreConnectLog(roleId);
+		return getAccountLogDao().deleteCoreConnectLog(roleId);
 	}
 
 	public CoreConnectLog findCoreConnectLog(String roleId, Long enterTime) {
-		return coreLogDao.findCoreConnectLog(roleId, enterTime);
+		return getAccountLogDao().findCoreConnectLog(roleId, enterTime);
 	}
 
 	public CoreConnectLog findCoreConnectLogByLatest(String roleId) {
-		return coreLogDao.findCoreConnectLogByLatest(roleId);
+		return getAccountLogDao().findCoreConnectLogByLatest(roleId);
 	}
 
 	// --------------------------------------------------
@@ -126,13 +142,7 @@ public class CoreLogServiceImpl extends AppLogServiceSupporter implements CoreLo
 		if (insert) {
 			offerInsert(log);
 		} else {
-			// 修改log
-			// offerUpdate(log);//沒存
-			// queueService.offerUpdate(log);//沒存
-
-			// update(log);//ok
-
-			offerUpdate(log);// ok
+			offerUpdate(log);
 		}
 
 		// 從mem移除

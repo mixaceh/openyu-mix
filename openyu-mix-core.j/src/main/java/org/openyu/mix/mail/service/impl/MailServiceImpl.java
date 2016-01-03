@@ -56,6 +56,15 @@ public class MailServiceImpl extends AppServiceSupporter implements MailService 
 	}
 
 	/**
+	 * 檢查設置
+	 * 
+	 * @throws Exception
+	 */
+	protected final void checkConfig() throws Exception {
+
+	}
+
+	/**
 	 * 建構郵件
 	 * 
 	 * @param mailType

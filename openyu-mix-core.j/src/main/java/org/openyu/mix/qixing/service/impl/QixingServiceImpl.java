@@ -18,10 +18,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
-public class QixingServiceImpl extends AppServiceSupporter implements
-		QixingService {
-	private static transient final Logger LOGGER = LoggerFactory
-			.getLogger(QixingServiceImpl.class);
+public class QixingServiceImpl extends AppServiceSupporter implements QixingService {
+
+	private static final long serialVersionUID = -5454198253702830528L;
+
+	private static transient final Logger LOGGER = LoggerFactory.getLogger(QixingServiceImpl.class);
 
 	@Autowired
 	@Qualifier("accountService")
@@ -43,8 +44,7 @@ public class QixingServiceImpl extends AppServiceSupporter implements
 	@Qualifier("qixingMachine")
 	protected transient QixingMachine qixingMachine;
 
-	private transient QixingCollector qixingCollector = QixingCollector
-			.getInstance();
+	private transient QixingCollector qixingCollector = QixingCollector.getInstance();
 
 	private transient VipCollector vipCollector = VipCollector.getInstance();
 
@@ -59,6 +59,15 @@ public class QixingServiceImpl extends AppServiceSupporter implements
 	private Queue<Notice> board = new ConcurrentLinkedQueue<Notice>();
 
 	public QixingServiceImpl() {
+	}
+
+	/**
+	 * 檢查設置
+	 * 
+	 * @throws Exception
+	 */
+	protected final void checkConfig() throws Exception {
+
 	}
 
 	// // --------------------------------------------------

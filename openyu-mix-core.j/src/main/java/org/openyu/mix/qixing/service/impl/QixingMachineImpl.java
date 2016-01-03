@@ -8,6 +8,8 @@ import org.slf4j.LoggerFactory;
 
 public class QixingMachineImpl extends AppServiceSupporter implements QixingMachine {
 
+	private static final long serialVersionUID = 885739044661959983L;
+
 	private static transient final Logger LOGGER = LoggerFactory.getLogger(QixingMachineImpl.class);
 
 	private static QixingMachineImpl qixingMachineImpl;
@@ -24,6 +26,15 @@ public class QixingMachineImpl extends AppServiceSupporter implements QixingMach
 	// {
 	// outcomeTypes = buildOutcomeTypes();
 	// }
+
+	/**
+	 * 檢查設置
+	 * 
+	 * @throws Exception
+	 */
+	protected final void checkConfig() throws Exception {
+
+	}
 	//
 	// public synchronized static QixingMachine getInstance()
 	// {

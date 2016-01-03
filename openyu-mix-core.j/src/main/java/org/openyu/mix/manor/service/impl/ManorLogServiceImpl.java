@@ -20,46 +20,59 @@ import org.openyu.mix.manor.vo.Land;
 import org.openyu.mix.manor.vo.Seed;
 import org.openyu.mix.role.vo.Role;
 import org.openyu.commons.dao.inquiry.Inquiry;
+import org.openyu.commons.util.AssertHelper;
 
-public class ManorLogServiceImpl extends AppLogServiceSupporter implements
-		ManorLogService {
+public class ManorLogServiceImpl extends AppLogServiceSupporter implements ManorLogService {
 
-	private static transient final Logger LOGGER = LoggerFactory
-			.getLogger(ManorLogServiceImpl.class);
-
-	@Autowired
-	@Qualifier("manorLogDao")
-	protected transient ManorLogDao manorLogDao;
+	private static transient final Logger LOGGER = LoggerFactory.getLogger(ManorLogServiceImpl.class);
 
 	public ManorLogServiceImpl() {
 	}
 
+	public ManorLogDao getManorLogDao() {
+		return (ManorLogDao) getCommonDao();
+	}
+
+	@Autowired
+	@Qualifier("manorLogDao")
+	public void setManorLogDao(ManorLogDao manorLogDao) {
+		setCommonDao(manorLogDao);
+	}
+
+	/**
+	 * 檢查設置
+	 * 
+	 * @throws Exception
+	 */
+	protected final void checkConfig() throws Exception {
+		AssertHelper.notNull(this.commonDao, "The AccountLogDao is required");
+	}
 	// --------------------------------------------------
 	// db
 	// --------------------------------------------------
 
 	public List<ManorLandLog> findManorLandLog(String roleId) {
-		return manorLogDao.findManorLandLog(roleId);
+		return getManorLogDao().findManorLandLog(roleId);
 	}
 
 	public List<ManorLandLog> findManorLandLog(Inquiry inquiry, String roleId) {
-		return manorLogDao.findManorLandLog(inquiry, roleId);
+		return getManorLogDao().findManorLandLog(inquiry, roleId);
 	}
 
 	public int deleteManorLandLog(String roleId) {
-		return manorLogDao.deleteManorLandLog(roleId);
+		return getManorLogDao().deleteManorLandLog(roleId);
 	}
 
 	public List<ManorSeedLog> findManorSeedLog(String roleId) {
-		return manorLogDao.findManorSeedLog(roleId);
+		return getManorLogDao().findManorSeedLog(roleId);
 	}
 
 	public List<ManorSeedLog> findManorSeedLog(Inquiry inquiry, String roleId) {
-		return manorLogDao.findManorSeedLog(inquiry, roleId);
+		return getManorLogDao().findManorSeedLog(inquiry, roleId);
 	}
 
 	public int deleteManorSeedLog(String roleId) {
-		return manorLogDao.deleteManorSeedLog(roleId);
+		return getManorLogDao().deleteManorSeedLog(roleId);
 	}
 
 	// --------------------------------------------------
@@ -74,8 +87,7 @@ public class ManorLogServiceImpl extends AppLogServiceSupporter implements
 	 * @param land
 	 * @param spendGold
 	 */
-	public void recordReclaim(Role role, int farmIndex, Land land,
-			long spendGold) {
+	public void recordReclaim(Role role, int farmIndex, Land land, long spendGold) {
 		ManorLandLog log = new ManorLandLogImpl();
 		recordRole(role, log);
 		//
@@ -122,9 +134,8 @@ public class ManorLogServiceImpl extends AppLogServiceSupporter implements
 	 * @param spendItems
 	 * @param spendCoin
 	 */
-	public void recordCulture(Role role, CultureType cultureType,
-			int farmIndex, int gridIndex, Seed seed, List<Item> spendItems,
-			int spendCoin) {
+	public void recordCulture(Role role, CultureType cultureType, int farmIndex, int gridIndex, Seed seed,
+			List<Item> spendItems, int spendCoin) {
 		ManorSeedLog log = new ManorSeedLogImpl();
 		recordRole(role, log);
 		//

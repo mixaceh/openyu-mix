@@ -104,7 +104,10 @@ public abstract class AppLogServiceSupporter extends LogServiceSupporter impleme
 			entity.setAcceptorId(role.getAcceptorId());
 			//
 			entity.setServerIp(getServerIp(role.getId()));
-			entity.setServerPort(getServerPort(role.getId()));
+			int serverPort = getServerPort(role.getId());
+			if (serverPort > 0) {
+				entity.setServerPort(serverPort);
+			}
 		}
 	}
 

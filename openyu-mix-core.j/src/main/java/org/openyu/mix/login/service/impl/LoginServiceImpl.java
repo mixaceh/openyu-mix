@@ -17,6 +17,15 @@ public class LoginServiceImpl extends AppServiceSupporter implements LoginServic
 	public LoginServiceImpl() {
 	}
 
+	/**
+	 * 檢查設置
+	 * 
+	 * @throws Exception
+	 */
+	protected final void checkConfig() throws Exception {
+
+	}
+
 	public void authorize(String accountId, String authKey, String ip) {
 		Message message = messageService.createMessage(CoreModuleType.LOGIN, CoreModuleType.ACCOUNT,
 				CoreMessageType.ACCOUNT_AUTHORIZE_FROM_LOGIN_REQUEST);

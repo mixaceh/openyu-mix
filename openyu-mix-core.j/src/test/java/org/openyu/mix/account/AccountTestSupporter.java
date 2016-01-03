@@ -3,8 +3,13 @@ package org.openyu.mix.account;
 import static org.junit.Assert.assertNotNull;
 
 import org.junit.BeforeClass;
+import org.junit.Rule;
 import org.junit.Test;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+import com.carrotsearch.junitbenchmarks.BenchmarkOptions;
+import com.carrotsearch.junitbenchmarks.BenchmarkRule;
+
 import org.openyu.mix.account.aop.AccountAspect;
 import org.openyu.mix.account.dao.AccountDao;
 import org.openyu.mix.account.dao.AccountLogDao;
@@ -14,6 +19,9 @@ import org.openyu.mix.account.socklet.AccountSocklet;
 import org.openyu.mix.app.AppTestSupporter;
 
 public class AccountTestSupporter extends AppTestSupporter {
+
+	@Rule
+	public BenchmarkRule benchmarkRule = new BenchmarkRule();
 
 	protected static AccountDao accountDao;
 
@@ -59,36 +67,42 @@ public class AccountTestSupporter extends AppTestSupporter {
 	public static class BeanTest extends AccountTestSupporter {
 
 		@Test
+		@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 		public void accountDao() {
 			System.out.println(accountDao);
 			assertNotNull(accountDao);
 		}
 
 		@Test
+		@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 		public void accountService() {
 			System.out.println(accountService);
 			assertNotNull(accountService);
 		}
 
 		@Test
+		@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 		public void accountLogDao() {
 			System.out.println(accountLogDao);
 			assertNotNull(accountLogDao);
 		}
 
 		@Test
+		@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 		public void accountLogService() {
 			System.out.println(accountLogService);
 			assertNotNull(accountLogService);
 		}
 
 		@Test
+		@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 		public void accountAspect() {
 			System.out.println(accountAspect);
 			assertNotNull(accountAspect);
 		}
 
 		@Test
+		@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 		public void accountSocklet() {
 			System.out.println(accountSocklet);
 			assertNotNull(accountSocklet);

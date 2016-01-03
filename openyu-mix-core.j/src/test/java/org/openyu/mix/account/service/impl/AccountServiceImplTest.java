@@ -27,6 +27,8 @@ import org.openyu.commons.security.SecurityHelper;
 import org.openyu.commons.thread.ThreadHelper;
 import org.openyu.socklet.message.vo.Message;
 
+import com.carrotsearch.junitbenchmarks.BenchmarkOptions;
+
 public class AccountServiceImplTest extends AccountTestSupporter {
 
 	/**
@@ -80,71 +82,60 @@ public class AccountServiceImplTest extends AccountTestSupporter {
 		SystemHelper.println(methods);
 	}
 
-	@Test
 	// insert -> find -> delete
-	//
-	// 10 times: 7237 mills.
-	// 10 times: 6825 mills.
-	// 10 times: 6693 mills.
-	//
-	// verified: ok
+	@Test
+	@BenchmarkOptions(benchmarkRounds = 10, warmupRounds = 0, concurrency = 1)
+	// round: 0.24 [+- 0.30], round.block: 0.00 [+- 0.00], round.gc: 0.00 [+-
+	// 0.00], GC.calls: 0, GC.time: 0.00, time.total: 2.45, time.warmup: 0.00,
+	// time.bench: 2.45
 	public void crud() {
-		int count = 10;
-		long beg = System.currentTimeMillis();
-		for (int i = 0; i < count; i++) {
-			// 隨機
-			Account account = randomAccount();
-			// create
-			Serializable pk = accountService.insert(account);
-			printInsert(i, pk);
-			assertNotNull(pk);
+		// 隨機
+		Account account = randomAccount();
+		// create
+		Serializable pk = accountService.insert(account);
+		printInsert(pk);
+		assertNotNull(pk);
 
-			// retrieve
-			Account foundEntity = accountService.find(AccountImpl.class, account.getSeq());
-			printFind(i, foundEntity);
-			assertAccount(account, foundEntity);
+		// retrieve
+		Account foundEntity = accountService.find(AccountImpl.class, account.getSeq());
+		printFind(foundEntity);
+		assertAccount(account, foundEntity);
 
-			// update
-			account.setValid(true);
-			int updated = accountService.update(account);
-			printUpdate(i, updated);
-			assertTrue(updated > 0);
+		// update
+		account.setValid(true);
+		int updated = accountService.update(account);
+		printUpdate(updated);
+		assertTrue(updated > 0);
 
-			// update2
-			account.setCoin(100);
-			updated = accountService.update(account);
-			printUpdate(i, updated);
-			assertTrue(updated > 0);
+		// update2
+		account.setCoin(100);
+		updated = accountService.update(account);
+		printUpdate(updated);
+		assertTrue(updated > 0);
 
-			// delete
-			Account deletedEntity = accountService.delete(AccountImpl.class, account.getSeq());
-			printDelete(i, deletedEntity);
-			assertNotNull(deletedEntity);
-		}
-		long end = System.currentTimeMillis();
-		System.out.println(count + " times: " + (end - beg) + " mills. ");
+		// delete
+		Account deletedEntity = accountService.delete(AccountImpl.class, account.getSeq());
+		printDelete(deletedEntity);
+		assertNotNull(deletedEntity);
 	}
 
 	@Test
-	// verified: ok
+	@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
+	// round: 1.02 [+- 0.00], round.block: 0.00 [+- 0.00], round.gc: 0.00 [+-
+	// 0.00], GC.calls: 0, GC.time: 0.00, time.total: 1.05, time.warmup: 0.00,
+	// time.bench: 1.05
 	public void insert() {
-		int count = 1;
-		long beg = System.currentTimeMillis();
-		for (int i = 0; i < count; i++) {
-			// 隨機
-			Account account = randomAccount();
-			//
-			Serializable pk = accountService.insert(account);
-			printInsert(i, pk);
-			assertNotNull(pk);
+		// 隨機
+		Account account = randomAccount();
+		//
+		Serializable pk = accountService.insert(account);
+		printInsert(pk);
+		assertNotNull(pk);
 
-			Account foundEntity = accountService.find(AccountPoImpl.class, account.getSeq());
-			assertAccount(account, foundEntity);
+		Account foundEntity = accountService.find(AccountPoImpl.class, account.getSeq());
+		assertAccount(account, foundEntity);
 
-			System.out.println(account);
-		}
-		long end = System.currentTimeMillis();
-		System.out.println(count + " times: " + (end - beg) + " mills. ");
+		System.out.println(account);
 	}
 
 	@Test
@@ -341,6 +332,19 @@ public class AccountServiceImplTest extends AccountTestSupporter {
 				CoinType.SASANG_PLAY);
 		System.out.println(result);
 		assertEquals(0, result);
+		//
+		ThreadHelper.sleep(3 * 1000);
+	}
+
+	@Test
+	public void restCoin() {
+		Role role = mockRole();// accountId=TEST_ACCOUNT,roleId=TEST_ROLE
+		//
+		boolean result = false;
+		result = accountService.resetCoin(true, role.getAccountId(), role, false, CoinType.DEBUG_RESET);
+
+		System.out.println(result);
+		assertTrue(result);
 		//
 		ThreadHelper.sleep(3 * 1000);
 	}

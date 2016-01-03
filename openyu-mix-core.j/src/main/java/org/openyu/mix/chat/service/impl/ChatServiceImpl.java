@@ -28,6 +28,7 @@ import org.openyu.mix.role.service.RoleSetService;
 import org.openyu.mix.role.vo.Role;
 import org.openyu.commons.enumz.EnumHelper;
 import org.openyu.commons.lang.ClassHelper;
+import org.openyu.commons.util.AssertHelper;
 import org.openyu.socklet.message.vo.Message;
 
 /**
@@ -71,6 +72,15 @@ public class ChatServiceImpl extends AppServiceSupporter implements ChatService 
 	@Qualifier("chatDao")
 	public void setChatDao(ChatDao chatDao) {
 		setCommonDao(chatDao);
+	}
+	
+	/**
+	 * 檢查設置
+	 * 
+	 * @throws Exception
+	 */
+	protected final void checkConfig() throws Exception {
+		AssertHelper.notNull(this.commonDao, "The ChatDao is required");
 	}
 
 	// --------------------------------------------------

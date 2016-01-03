@@ -14,6 +14,7 @@ import org.openyu.mix.role.vo.Role;
 /**
  * 增加帳戶的儲值幣攔截器
  */
+@Deprecated
 public class AccountResetCoinInterceptor extends AppAroundAdviceSupporter {
 
 	private static transient final Logger LOGGER = LoggerFactory.getLogger(AccountResetCoinInterceptor.class);

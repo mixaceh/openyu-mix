@@ -102,11 +102,37 @@ public class AccountAspect extends AppAspectSupporter {
 			boolean accuable = (Boolean) args[4];
 			ActionType coinAction = (ActionType) args[5];
 			CoinType coinReason = (CoinType) args[6];
-			;
 			//
 			int returnValue = safeGet((Integer) result);
 			if (returnValue != 0 && coinAction != null && coinReason != null) {
 				accountLogService.recordChangeCoin(accountId, role, returnValue, coinAction, coinReason);
+			}
+		} catch (Throwable e) {
+			LOGGER.error(new StringBuilder("Exception encountered during recordChangeCoin()").toString(), e);
+		}
+	}
+
+	/**
+	 * AccountService
+	 * 
+	 * boolean resetCoin(boolean sendable, String accountId, Role role, boolean
+	 * accuable, CoinReason coinReason);
+	 */
+	@AfterReturning(pointcut = "execution(public * org.openyu.mix.account.service.AccountService.resetCoin*(..))", returning = "result")
+	public void recordResetCoin(JoinPoint joinPoint, Object result) throws Throwable {
+		try {
+			String method = joinPoint.getSignature().getName();
+			// 參數
+			Object[] args = joinPoint.getArgs();
+			boolean sendable = (Boolean) args[0];
+			String accountId = (String) args[1];
+			Role role = (Role) args[2];
+			boolean accuable = (Boolean) args[3];
+			CoinType coinReason = (CoinType) args[4];
+			//
+			boolean returnValue = safeGet((Boolean) result);
+			if (returnValue && coinReason != null) {
+				accountLogService.recordChangeCoin(accountId, role, 0, ActionType.RESET, coinReason);
 			}
 		} catch (Throwable e) {
 			LOGGER.error(new StringBuilder("Exception encountered during recordChangeCoin()").toString(), e);

@@ -137,6 +137,15 @@ public class CoreServiceImpl extends AppServiceSupporter implements CoreService 
 	}
 
 	/**
+	 * 檢查設置
+	 * 
+	 * @throws Exception
+	 */
+	protected final void checkConfig() throws Exception {
+
+	}
+
+	/**
 	 * 角色連線,用多緒處理
 	 * 
 	 * @param roleId

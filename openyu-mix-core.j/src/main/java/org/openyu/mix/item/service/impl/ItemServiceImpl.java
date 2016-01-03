@@ -100,6 +100,15 @@ public class ItemServiceImpl extends AppServiceSupporter implements ItemService 
 	public ItemServiceImpl() {
 	}
 
+	/**
+	 * 檢查設置
+	 * 
+	 * @throws Exception
+	 */
+	protected final void checkConfig() throws Exception {
+
+	}
+
 	// --------------------------------------------------
 	/**
 	 * 建構道具,依序為Thing,Material,Armor,Weapon
