@@ -81,6 +81,15 @@ public class StoreRoleServiceImpl extends AppServiceSupporter implements StoreRo
 	}
 
 	/**
+	 * 檢查設置
+	 * 
+	 * @throws Exception
+	 */
+	protected final void checkConfig() throws Exception {
+
+	}
+
+	/**
 	 * 內部啟動
 	 */
 	@Override

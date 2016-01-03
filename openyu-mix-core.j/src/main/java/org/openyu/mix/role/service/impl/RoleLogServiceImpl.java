@@ -19,20 +19,35 @@ import org.openyu.mix.role.service.RoleService.ActionType;
 import org.openyu.mix.role.service.RoleService.GoldType;
 import org.openyu.mix.role.vo.Role;
 import org.openyu.commons.dao.inquiry.Inquiry;
+import org.openyu.commons.util.AssertHelper;
 
-public class RoleLogServiceImpl extends AppLogServiceSupporter implements
-		RoleLogService {
-	
-	private static transient final Logger LOGGER = LoggerFactory
-			.getLogger(RoleLogServiceImpl.class);
-	
-	@Autowired
-	@Qualifier("roleLogDao")
-	protected transient RoleLogDao roleLogDao;
+public class RoleLogServiceImpl extends AppLogServiceSupporter implements RoleLogService {
+
+	private static final long serialVersionUID = 6038962261669226696L;
+
+	private static transient final Logger LOGGER = LoggerFactory.getLogger(RoleLogServiceImpl.class);
 
 	public RoleLogServiceImpl() {
 	}
 
+	public RoleLogDao getRoleLogDao() {
+		return (RoleLogDao) getCommonDao();
+	}
+
+	@Autowired
+	@Qualifier("roleLogDao")
+	public void setRoleLogDao(RoleLogDao roleLogDao) {
+		setCommonDao(roleLogDao);
+	}
+
+	/**
+	 * 檢查設置
+	 * 
+	 * @throws Exception
+	 */
+	protected final void checkConfig() throws Exception {
+		AssertHelper.notNull(this.commonDao, "The CoreLogDao is required");
+	}
 	// --------------------------------------------------
 	// db
 	// --------------------------------------------------
@@ -41,45 +56,45 @@ public class RoleLogServiceImpl extends AppLogServiceSupporter implements
 	// RoleLevelLog
 	// --------------------------------------------------
 	public List<RoleLevelLog> findRoleLevelLog(String roleId) {
-		return roleLogDao.findRoleLevelLog(roleId);
+		return getRoleLogDao().findRoleLevelLog(roleId);
 	}
 
 	public List<RoleLevelLog> findRoleLevelLog(Inquiry inquiry, String roleId) {
-		return roleLogDao.findRoleLevelLog(inquiry, roleId);
+		return getRoleLogDao().findRoleLevelLog(inquiry, roleId);
 	}
 
 	public int deleteRoleLevelLog(String roleId) {
-		return roleLogDao.deleteRoleLevelLog(roleId);
+		return getRoleLogDao().deleteRoleLevelLog(roleId);
 	}
 
 	// --------------------------------------------------
 	// RoleGoldLog
 	// --------------------------------------------------
 	public List<RoleGoldLog> findRoleGoldLog(String roleId) {
-		return roleLogDao.findRoleGoldLog(roleId);
+		return getRoleLogDao().findRoleGoldLog(roleId);
 	}
 
 	public List<RoleGoldLog> findRoleGoldLog(Inquiry inquiry, String roleId) {
-		return roleLogDao.findRoleGoldLog(inquiry, roleId);
+		return getRoleLogDao().findRoleGoldLog(inquiry, roleId);
 	}
 
 	public int deleteRoleGoldLog(String roleId) {
-		return roleLogDao.deleteRoleGoldLog(roleId);
+		return getRoleLogDao().deleteRoleGoldLog(roleId);
 	}
 
 	// --------------------------------------------------
 	// RoleFameLog
 	// --------------------------------------------------
 	public List<RoleFameLog> findRoleFameLog(String roleId) {
-		return roleLogDao.findRoleFameLog(roleId);
+		return getRoleLogDao().findRoleFameLog(roleId);
 	}
 
 	public List<RoleFameLog> findRoleFameLog(Inquiry inquiry, String roleId) {
-		return roleLogDao.findRoleFameLog(inquiry, roleId);
+		return getRoleLogDao().findRoleFameLog(inquiry, roleId);
 	}
 
 	public int deleteRoleFameLog(String roleId) {
-		return roleLogDao.deleteRoleFameLog(roleId);
+		return getRoleLogDao().deleteRoleFameLog(roleId);
 	}
 
 	// --------------------------------------------------
@@ -110,10 +125,8 @@ public class RoleLogServiceImpl extends AppLogServiceSupporter implements
 	 * @param gold
 	 * @param beforeGold
 	 */
-	public void recordIncreaseGold(Role role, long gold, long beforeGold,
-			GoldType goldReason) {
-		recordChangeGold(role, gold, beforeGold, ActionType.INCREASE,
-				goldReason);
+	public void recordIncreaseGold(Role role, long gold, long beforeGold, GoldType goldReason) {
+		recordChangeGold(role, gold, beforeGold, ActionType.INCREASE, goldReason);
 
 	}
 
@@ -124,10 +137,8 @@ public class RoleLogServiceImpl extends AppLogServiceSupporter implements
 	 * @param gold
 	 * @param beforeGold
 	 */
-	public void recordDecreaseGold(Role role, long gold, long beforeGold,
-			GoldType goldReason) {
-		recordChangeGold(role, -1 * gold, beforeGold, ActionType.DECREASE,
-				goldReason);
+	public void recordDecreaseGold(Role role, long gold, long beforeGold, GoldType goldReason) {
+		recordChangeGold(role, -1 * gold, beforeGold, ActionType.DECREASE, goldReason);
 	}
 
 	/**
@@ -138,8 +149,7 @@ public class RoleLogServiceImpl extends AppLogServiceSupporter implements
 	 * @param beforeGold
 	 * @param goldAction
 	 */
-	public void recordChangeGold(Role role, long gold, long beforeGold,
-			ActionType goldAction, GoldType goldReason) {
+	public void recordChangeGold(Role role, long gold, long beforeGold, ActionType goldAction, GoldType goldReason) {
 		RoleGoldLog log = new RoleGoldLogImpl();
 		recordRole(role, log);
 		//

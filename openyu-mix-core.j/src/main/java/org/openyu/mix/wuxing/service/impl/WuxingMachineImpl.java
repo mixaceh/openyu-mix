@@ -24,8 +24,6 @@ public class WuxingMachineImpl extends AppServiceSupporter implements WuxingMach
 
 	private static transient final Logger LOGGER = LoggerFactory.getLogger(WuxingMachineImpl.class);
 
-	private static WuxingMachineImpl instance;
-
 	private transient WuxingCollector wuxingCollector = WuxingCollector.getInstance();
 
 	/**
@@ -37,11 +35,12 @@ public class WuxingMachineImpl extends AppServiceSupporter implements WuxingMach
 		outcomeTypes = buildOutcomeTypes();
 	}
 
-	public synchronized static WuxingMachine getInstance() {
-		if (instance == null) {
-			instance = new WuxingMachineImpl();
-		}
-		return instance;
+	/**
+	 * 檢查設置
+	 * 
+	 * @throws Exception
+	 */
+	protected final void checkConfig() throws Exception {
 	}
 
 	/**

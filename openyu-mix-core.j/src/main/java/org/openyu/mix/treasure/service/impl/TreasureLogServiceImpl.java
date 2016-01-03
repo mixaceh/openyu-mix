@@ -19,48 +19,61 @@ import org.openyu.mix.treasure.service.TreasureService.BuyType;
 import org.openyu.mix.treasure.vo.Treasure;
 import org.openyu.mix.role.vo.Role;
 import org.openyu.commons.dao.inquiry.Inquiry;
+import org.openyu.commons.util.AssertHelper;
 
-public class TreasureLogServiceImpl extends AppLogServiceSupporter implements
-		TreasureLogService {
+public class TreasureLogServiceImpl extends AppLogServiceSupporter implements TreasureLogService {
 
-	private static transient final Logger LOGGER = LoggerFactory
-			.getLogger(TreasureLogServiceImpl.class);
+	private static final long serialVersionUID = 3040247702602465776L;
 
-	@Autowired
-	@Qualifier("treasureLogDao")
-	protected transient TreasureLogDao treasureLogDao;
+	private static transient final Logger LOGGER = LoggerFactory.getLogger(TreasureLogServiceImpl.class);
 
 	public TreasureLogServiceImpl() {
 	}
 
+	public TreasureLogDao getTreasureLogDao() {
+		return (TreasureLogDao) getCommonDao();
+	}
+
+	@Autowired
+	@Qualifier("treasureLogDao")
+	public void setTreasureLogDao(TreasureLogDao treasureLogDao) {
+		setCommonDao(treasureLogDao);
+	}
+
+	/**
+	 * 檢查設置
+	 * 
+	 * @throws Exception
+	 */
+	protected final void checkConfig() throws Exception {
+		AssertHelper.notNull(this.commonDao, "The TreasureLogDao is required");
+	}
 	// --------------------------------------------------
 	// db
 	// --------------------------------------------------
 
 	public List<TreasureRefreshLog> findTreasureRefreshLog(String roleId) {
-		return treasureLogDao.findTreasureRefreshLog(roleId);
+		return getTreasureLogDao().findTreasureRefreshLog(roleId);
 	}
 
-	public List<TreasureRefreshLog> findTreasureRefreshLog(Inquiry inquiry,
-			String roleId) {
-		return treasureLogDao.findTreasureRefreshLog(inquiry, roleId);
+	public List<TreasureRefreshLog> findTreasureRefreshLog(Inquiry inquiry, String roleId) {
+		return getTreasureLogDao().findTreasureRefreshLog(inquiry, roleId);
 	}
 
 	public int deleteTreasureRefreshLog(String roleId) {
-		return treasureLogDao.deleteTreasureRefreshLog(roleId);
+		return getTreasureLogDao().deleteTreasureRefreshLog(roleId);
 	}
 
 	public List<TreasureBuyLog> findTreasureBuyLog(String roleId) {
-		return treasureLogDao.findTreasureBuyLog(roleId);
+		return getTreasureLogDao().findTreasureBuyLog(roleId);
 	}
 
-	public List<TreasureBuyLog> findTreasureBuyLog(Inquiry inquiry,
-			String roleId) {
-		return treasureLogDao.findTreasureBuyLog(inquiry, roleId);
+	public List<TreasureBuyLog> findTreasureBuyLog(Inquiry inquiry, String roleId) {
+		return getTreasureLogDao().findTreasureBuyLog(inquiry, roleId);
 	}
 
 	public int deleteTreasureBuyLog(String roleId) {
-		return treasureLogDao.deleteTreasureBuyLog(roleId);
+		return getTreasureLogDao().deleteTreasureBuyLog(roleId);
 	}
 
 	// --------------------------------------------------
@@ -76,8 +89,7 @@ public class TreasureLogServiceImpl extends AppLogServiceSupporter implements
 	 * @param spendItems
 	 * @param spendCoin
 	 */
-	public void recordRefresh(Role role, long refreshTime,
-			Map<Integer, Treasure> treasures, List<Item> spendItems,
+	public void recordRefresh(Role role, long refreshTime, Map<Integer, Treasure> treasures, List<Item> spendItems,
 			int spendCoin) {
 		TreasureRefreshLog log = new TreasureRefreshLogImpl();
 		recordRole(role, log);
@@ -103,8 +115,8 @@ public class TreasureLogServiceImpl extends AppLogServiceSupporter implements
 	 * @param spendGold
 	 * @param spendCoin
 	 */
-	public void recordBuy(Role role, BuyType buyType, int index,
-			Treasure treasure, Item item, long spendGold, int spendCoin) {
+	public void recordBuy(Role role, BuyType buyType, int index, Treasure treasure, Item item, long spendGold,
+			int spendCoin) {
 		TreasureBuyLog log = new TreasureBuyLogImpl();
 		recordRole(role, log);
 		//

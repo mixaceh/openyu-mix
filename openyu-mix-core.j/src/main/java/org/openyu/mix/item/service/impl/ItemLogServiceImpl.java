@@ -53,7 +53,7 @@ public class ItemLogServiceImpl extends AppLogServiceSupporter implements ItemLo
 	 * @throws Exception
 	 */
 	protected final void checkConfig() throws Exception {
-		AssertHelper.notNull(this.commonDao, "The AccountLogDao is required");
+		AssertHelper.notNull(this.commonDao, "The ItemLogDao is required");
 	}
 	// --------------------------------------------------
 	// db

@@ -39,6 +39,7 @@ import org.openyu.mix.role.vo.BagPen;
 import org.openyu.mix.role.vo.Role;
 import org.openyu.mix.vip.vo.VipCollector;
 import org.openyu.commons.enumz.EnumHelper;
+import org.openyu.commons.util.AssertHelper;
 import org.openyu.commons.util.CalendarHelper;
 import org.openyu.commons.util.CollectionHelper;
 import org.openyu.commons.util.DateHelper;
@@ -85,6 +86,15 @@ public class SasangServiceImpl extends AppServiceSupporter implements SasangServ
 	private Queue<Notice> board = new ConcurrentLinkedQueue<Notice>();
 
 	public SasangServiceImpl() {
+	}
+
+	/**
+	 * 檢查設置
+	 * 
+	 * @throws Exception
+	 */
+	protected final void checkConfig() throws Exception {
+		AssertHelper.notNull(this.sasangMachine, "The SasangMachine is required");
 	}
 
 	/**

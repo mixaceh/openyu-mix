@@ -23,18 +23,34 @@ import org.openyu.mix.sasang.service.SasangService.PutType;
 import org.openyu.mix.sasang.vo.Outcome;
 import org.openyu.mix.role.vo.Role;
 import org.openyu.commons.dao.inquiry.Inquiry;
+import org.openyu.commons.util.AssertHelper;
 
-public class SasangLogServiceImpl extends AppLogServiceSupporter implements
-		SasangLogService {
+public class SasangLogServiceImpl extends AppLogServiceSupporter implements SasangLogService {
 
-	private static transient final Logger LOGGER = LoggerFactory
-			.getLogger(SasangLogServiceImpl.class);
+	private static final long serialVersionUID = -4829299050153182066L;
+
+	private static transient final Logger LOGGER = LoggerFactory.getLogger(SasangLogServiceImpl.class);
+
+	public SasangLogServiceImpl() {
+	}
+
+	public SasangLogDao getSasangLogDao() {
+		return (SasangLogDao) getCommonDao();
+	}
 
 	@Autowired
 	@Qualifier("sasangLogDao")
-	protected transient SasangLogDao sasangLogDao;
+	public void setSasangLogDao(SasangLogDao sasangLogDao) {
+		setCommonDao(sasangLogDao);
+	}
 
-	public SasangLogServiceImpl() {
+	/**
+	 * 檢查設置
+	 * 
+	 * @throws Exception
+	 */
+	protected final void checkConfig() throws Exception {
+		AssertHelper.notNull(this.commonDao, "The SasangLogDao is required");
 	}
 
 	// --------------------------------------------------
@@ -42,40 +58,39 @@ public class SasangLogServiceImpl extends AppLogServiceSupporter implements
 	// --------------------------------------------------
 
 	public List<SasangPlayLog> findSasangPlayLog(String roleId) {
-		return sasangLogDao.findSasangPlayLog(roleId);
+		return getSasangLogDao().findSasangPlayLog(roleId);
 	}
 
 	public List<SasangPlayLog> findSasangPlayLog(Inquiry inquiry, String roleId) {
-		return sasangLogDao.findSasangPlayLog(inquiry, roleId);
+		return getSasangLogDao().findSasangPlayLog(inquiry, roleId);
 	}
 
 	public int deleteSasangPlayLog(String roleId) {
-		return sasangLogDao.deleteSasangPlayLog(roleId);
+		return getSasangLogDao().deleteSasangPlayLog(roleId);
 	}
 
 	public List<SasangPutLog> findSasangPutLog(String roleId) {
-		return sasangLogDao.findSasangPutLog(roleId);
+		return getSasangLogDao().findSasangPutLog(roleId);
 	}
 
 	public List<SasangPutLog> findSasangPutLog(Inquiry inquiry, String roleId) {
-		return sasangLogDao.findSasangPutLog(inquiry, roleId);
+		return getSasangLogDao().findSasangPutLog(inquiry, roleId);
 	}
 
 	public int deleteSasangPutLog(String roleId) {
-		return sasangLogDao.deleteSasangPutLog(roleId);
+		return getSasangLogDao().deleteSasangPutLog(roleId);
 	}
 
 	public List<SasangFamousLog> findSasangFamousLog(String roleId) {
-		return sasangLogDao.findSasangFamousLog(roleId);
+		return getSasangLogDao().findSasangFamousLog(roleId);
 	}
 
-	public List<SasangFamousLog> findSasangFamousLog(Inquiry inquiry,
-			String roleId) {
-		return sasangLogDao.findSasangFamousLog(inquiry, roleId);
+	public List<SasangFamousLog> findSasangFamousLog(Inquiry inquiry, String roleId) {
+		return getSasangLogDao().findSasangFamousLog(inquiry, roleId);
 	}
 
 	public int deleteSasangFamousLog(String roleId) {
-		return sasangLogDao.deleteSasangFamousLog(roleId);
+		return getSasangLogDao().deleteSasangFamousLog(roleId);
 	}
 
 	// --------------------------------------------------
@@ -94,8 +109,7 @@ public class SasangLogServiceImpl extends AppLogServiceSupporter implements
 	 * @param spendItems
 	 * @param spendCoin
 	 */
-	public void recordPlay(Role role, PlayType playType, long playTime,
-			Outcome outcome, int totalTimes, long spendGold,
+	public void recordPlay(Role role, PlayType playType, long playTime, Outcome outcome, int totalTimes, long spendGold,
 			List<Item> spendItems, int spendCoin) {
 		SasangPlayLog log = new SasangPlayLogImpl();
 		recordRole(role, log);
@@ -122,8 +136,7 @@ public class SasangLogServiceImpl extends AppLogServiceSupporter implements
 	 * @param putType
 	 * @param awards
 	 */
-	public void recordPut(Role role, PutType putType,
-			Map<String, Integer> awards) {
+	public void recordPut(Role role, PutType putType, Map<String, Integer> awards) {
 		SasangPutLog log = new SasangPutLogImpl();
 		recordRole(role, log);
 		//
@@ -144,8 +157,7 @@ public class SasangLogServiceImpl extends AppLogServiceSupporter implements
 	 * @param playTime
 	 * @param outcomes
 	 */
-	public void recordFamous(Role role, PlayType playType, long playTime,
-			List<Outcome> outcomes) {
+	public void recordFamous(Role role, PlayType playType, long playTime, List<Outcome> outcomes) {
 		// clone
 		List<Outcome> cloneOutcomes = clone(outcomes);
 		for (Outcome outcome : cloneOutcomes) {

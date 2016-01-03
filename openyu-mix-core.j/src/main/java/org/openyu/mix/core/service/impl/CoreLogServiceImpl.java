@@ -37,13 +37,13 @@ public class CoreLogServiceImpl extends AppLogServiceSupporter implements CoreLo
 	public CoreLogServiceImpl() {
 	}
 
-	public CoreLogDao getAccountLogDao() {
+	public CoreLogDao getCoreLogDao() {
 		return (CoreLogDao) getCommonDao();
 	}
 
 	@Autowired
 	@Qualifier("coreLogDao")
-	public void setAccountLogDao(CoreLogDao coreLogDao) {
+	public void setCoreLogDao(CoreLogDao coreLogDao) {
 		setCommonDao(coreLogDao);
 	}
 
@@ -64,23 +64,23 @@ public class CoreLogServiceImpl extends AppLogServiceSupporter implements CoreLo
 	// CoreConnectLog
 	// --------------------------------------------------
 	public List<CoreConnectLog> findCoreConnectLog(String roleId) {
-		return getAccountLogDao().findCoreConnectLog(roleId);
+		return getCoreLogDao().findCoreConnectLog(roleId);
 	}
 
 	public List<CoreConnectLog> findCoreConnectLog(Inquiry inquiry, String roleId) {
-		return getAccountLogDao().findCoreConnectLog(inquiry, roleId);
+		return getCoreLogDao().findCoreConnectLog(inquiry, roleId);
 	}
 
 	public int deleteCoreConnectLog(String roleId) {
-		return getAccountLogDao().deleteCoreConnectLog(roleId);
+		return getCoreLogDao().deleteCoreConnectLog(roleId);
 	}
 
 	public CoreConnectLog findCoreConnectLog(String roleId, Long enterTime) {
-		return getAccountLogDao().findCoreConnectLog(roleId, enterTime);
+		return getCoreLogDao().findCoreConnectLog(roleId, enterTime);
 	}
 
 	public CoreConnectLog findCoreConnectLogByLatest(String roleId) {
-		return getAccountLogDao().findCoreConnectLogByLatest(roleId);
+		return getCoreLogDao().findCoreConnectLogByLatest(roleId);
 	}
 
 	// --------------------------------------------------

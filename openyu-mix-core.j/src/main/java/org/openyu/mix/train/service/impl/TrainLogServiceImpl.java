@@ -16,38 +16,53 @@ import org.openyu.mix.train.log.impl.TrainLogImpl;
 import org.openyu.mix.train.service.TrainLogService;
 import org.openyu.mix.train.service.TrainService.ActionType;
 import org.openyu.commons.dao.inquiry.Inquiry;
+import org.openyu.commons.util.AssertHelper;
 
-public class TrainLogServiceImpl extends AppLogServiceSupporter implements
-		TrainLogService {
+public class TrainLogServiceImpl extends AppLogServiceSupporter implements TrainLogService {
 
-	private static transient final Logger LOGGER = LoggerFactory
-			.getLogger(TrainLogServiceImpl.class);
+	private static final long serialVersionUID = 1077467409712083702L;
+
+	private static transient final Logger LOGGER = LoggerFactory.getLogger(TrainLogServiceImpl.class);
 
 	@Autowired
 	@Qualifier("roleService")
 	protected transient RoleService roleService;
 
-	@Autowired
-	@Qualifier("trainLogDao")
-	protected transient TrainLogDao trainLogDao;
-
 	public TrainLogServiceImpl() {
 	}
 
+	public TrainLogDao getTrainLogDao() {
+		return (TrainLogDao) getCommonDao();
+	}
+
+	@Autowired
+	@Qualifier("trainLogDao")
+	public void setTrainLogDao(TrainLogDao trainLogDao) {
+		setCommonDao(trainLogDao);
+	}
+
+	/**
+	 * 檢查設置
+	 * 
+	 * @throws Exception
+	 */
+	protected final void checkConfig() throws Exception {
+		AssertHelper.notNull(this.commonDao, "The TrainLogDao is required");
+	}
 	// --------------------------------------------------
 	// db
 	// --------------------------------------------------
 
 	public List<TrainLog> findTrainLog(String roleId) {
-		return trainLogDao.findTrainLog(roleId);
+		return getTrainLogDao().findTrainLog(roleId);
 	}
 
 	public List<TrainLog> findTrainLog(Inquiry inquiry, String roleId) {
-		return trainLogDao.findTrainLog(inquiry, roleId);
+		return getTrainLogDao().findTrainLog(inquiry, roleId);
 	}
 
 	public int deleteTrainLog(String roleId) {
-		return trainLogDao.deleteTrainLog(roleId);
+		return getTrainLogDao().deleteTrainLog(roleId);
 	}
 
 	// --------------------------------------------------
@@ -61,8 +76,7 @@ public class TrainLogServiceImpl extends AppLogServiceSupporter implements
 	 * @param spendItems
 	 * @param spendCoin
 	 */
-	public void recordInspire(Role role, long inspireTime,
-			List<Item> spendItems, int spendCoin) {
+	public void recordInspire(Role role, long inspireTime, List<Item> spendItems, int spendCoin) {
 		TrainLog log = new TrainLogImpl();
 		recordRole(role, log);
 		//

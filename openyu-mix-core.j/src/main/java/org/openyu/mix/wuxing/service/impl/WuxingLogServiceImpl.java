@@ -23,59 +23,73 @@ import org.openyu.mix.wuxing.service.WuxingService.PutType;
 import org.openyu.mix.wuxing.vo.Outcome;
 import org.openyu.mix.role.vo.Role;
 import org.openyu.commons.dao.inquiry.Inquiry;
+import org.openyu.commons.util.AssertHelper;
 
-public class WuxingLogServiceImpl extends AppLogServiceSupporter implements
-		WuxingLogService {
+public class WuxingLogServiceImpl extends AppLogServiceSupporter implements WuxingLogService {
 
-	private static transient final Logger LOGGER = LoggerFactory
-			.getLogger(WuxingLogServiceImpl.class);
+	private static final long serialVersionUID = -4552052837216867641L;
 
-	@Autowired
-	@Qualifier("wuxingLogDao")
-	protected transient WuxingLogDao wuxingLogDao;
+	private static transient final Logger LOGGER = LoggerFactory.getLogger(WuxingLogServiceImpl.class);
 
 	public WuxingLogServiceImpl() {
 	}
 
+	public WuxingLogDao getWuxingLogDao() {
+		return (WuxingLogDao) getCommonDao();
+	}
+
+	@Autowired
+	@Qualifier("wuxingLogDao")
+	public void setWuxingLogDao(WuxingLogDao wuxingLogDao) {
+		setCommonDao(wuxingLogDao);
+	}
+
+	/**
+	 * 檢查設置
+	 * 
+	 * @throws Exception
+	 */
+	protected final void checkConfig() throws Exception {
+		AssertHelper.notNull(this.commonDao, "The WuxingLogDao is required");
+	}
 	// --------------------------------------------------
 	// db
 	// --------------------------------------------------
 
 	public List<WuxingPlayLog> findWuxingPlayLog(String roleId) {
-		return wuxingLogDao.findWuxingPlayLog(roleId);
+		return getWuxingLogDao().findWuxingPlayLog(roleId);
 	}
 
 	public List<WuxingPlayLog> findWuxingPlayLog(Inquiry inquiry, String roleId) {
-		return wuxingLogDao.findWuxingPlayLog(inquiry, roleId);
+		return getWuxingLogDao().findWuxingPlayLog(inquiry, roleId);
 	}
 
 	public int deleteWuxingPlayLog(String roleId) {
-		return wuxingLogDao.deleteWuxingPlayLog(roleId);
+		return getWuxingLogDao().deleteWuxingPlayLog(roleId);
 	}
 
 	public List<WuxingPutLog> findWuxingPutLog(String roleId) {
-		return wuxingLogDao.findWuxingPutLog(roleId);
+		return getWuxingLogDao().findWuxingPutLog(roleId);
 	}
 
 	public List<WuxingPutLog> findWuxingPutLog(Inquiry inquiry, String roleId) {
-		return wuxingLogDao.findWuxingPutLog(inquiry, roleId);
+		return getWuxingLogDao().findWuxingPutLog(inquiry, roleId);
 	}
 
 	public int deleteWuxingPutLog(String roleId) {
-		return wuxingLogDao.deleteWuxingPutLog(roleId);
+		return getWuxingLogDao().deleteWuxingPutLog(roleId);
 	}
 
 	public List<WuxingFamousLog> findWuxingFamousLog(String roleId) {
-		return wuxingLogDao.findWuxingFamousLog(roleId);
+		return getWuxingLogDao().findWuxingFamousLog(roleId);
 	}
 
-	public List<WuxingFamousLog> findWuxingFamousLog(Inquiry inquiry,
-			String roleId) {
-		return wuxingLogDao.findWuxingFamousLog(inquiry, roleId);
+	public List<WuxingFamousLog> findWuxingFamousLog(Inquiry inquiry, String roleId) {
+		return getWuxingLogDao().findWuxingFamousLog(inquiry, roleId);
 	}
 
 	public int deleteWuxingFamousLog(String roleId) {
-		return wuxingLogDao.deleteWuxingFamousLog(roleId);
+		return getWuxingLogDao().deleteWuxingFamousLog(roleId);
 	}
 
 	// --------------------------------------------------
@@ -94,8 +108,7 @@ public class WuxingLogServiceImpl extends AppLogServiceSupporter implements
 	 * @param spendItems
 	 * @param spendCoin
 	 */
-	public void recordPlay(Role role, PlayType playType, long playTime,
-			Outcome outcome, int totalTimes, long spendGold,
+	public void recordPlay(Role role, PlayType playType, long playTime, Outcome outcome, int totalTimes, long spendGold,
 			List<Item> spendItems, int spendCoin) {
 		WuxingPlayLog log = new WuxingPlayLogImpl();
 		recordRole(role, log);
@@ -121,8 +134,7 @@ public class WuxingLogServiceImpl extends AppLogServiceSupporter implements
 	 * @param putType
 	 * @param awards
 	 */
-	public void recordPut(Role role, PutType putType,
-			Map<String, Integer> awards) {
+	public void recordPut(Role role, PutType putType, Map<String, Integer> awards) {
 		WuxingPutLog log = new WuxingPutLogImpl();
 		recordRole(role, log);
 		//
@@ -143,8 +155,7 @@ public class WuxingLogServiceImpl extends AppLogServiceSupporter implements
 	 * @param playTime
 	 * @param outcomes
 	 */
-	public void recordFamous(Role role, PlayType playType, long playTime,
-			List<Outcome> outcomes) {
+	public void recordFamous(Role role, PlayType playType, long playTime, List<Outcome> outcomes) {
 		// clone
 		List<Outcome> cloneOutcomes = clone(outcomes);
 		for (Outcome outcome : cloneOutcomes) {

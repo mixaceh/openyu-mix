@@ -18,7 +18,7 @@ public class OutcomeUserType extends BaseUserTypeSupporter {
 
 	private static final long serialVersionUID = -6499823897737328840L;
 
-	private WuxingMachine wuxingMachine = WuxingMachineImpl.getInstance();
+	private WuxingMachine wuxingMachine = new WuxingMachineImpl();
 
 	public OutcomeUserType() {
 		// --------------------------------------------------

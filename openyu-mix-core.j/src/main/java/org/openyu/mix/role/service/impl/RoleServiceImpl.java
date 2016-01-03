@@ -48,6 +48,7 @@ import org.openyu.mix.vip.vo.VipType;
 import org.openyu.commons.enumz.EnumHelper;
 import org.openyu.commons.lang.ClassHelper;
 import org.openyu.commons.lang.NumberHelper;
+import org.openyu.commons.util.AssertHelper;
 import org.openyu.socklet.message.vo.Message;
 
 /**
@@ -57,8 +58,7 @@ public class RoleServiceImpl extends AppServiceSupporter implements RoleService 
 
 	private static final long serialVersionUID = 6183181261312261182L;
 
-	private static transient final Logger LOGGER = LoggerFactory
-			.getLogger(RoleServiceImpl.class);
+	private static transient final Logger LOGGER = LoggerFactory.getLogger(RoleServiceImpl.class);
 
 	@Autowired
 	@Qualifier("accountService")
@@ -75,8 +75,7 @@ public class RoleServiceImpl extends AppServiceSupporter implements RoleService 
 	/**
 	 * 行業數據
 	 */
-	protected transient IndustryCollector industryCollector = IndustryCollector
-			.getInstance();
+	protected transient IndustryCollector industryCollector = IndustryCollector.getInstance();
 
 	/**
 	 * VIP數據
@@ -91,7 +90,6 @@ public class RoleServiceImpl extends AppServiceSupporter implements RoleService 
 	public RoleServiceImpl() {
 	}
 
-
 	public RoleDao getRoleDao() {
 		return (RoleDao) getCommonDao();
 	}
@@ -100,6 +98,15 @@ public class RoleServiceImpl extends AppServiceSupporter implements RoleService 
 	@Qualifier("roleDao")
 	public void setRoleDao(RoleDao roleDao) {
 		setCommonDao(roleDao);
+	}
+
+	/**
+	 * 檢查設置
+	 * 
+	 * @throws Exception
+	 */
+	protected final void checkConfig() throws Exception {
+		AssertHelper.notNull(this.commonDao, "The RoleDao is required");
 	}
 
 	// --------------------------------------------------
@@ -193,8 +200,7 @@ public class RoleServiceImpl extends AppServiceSupporter implements RoleService 
 	 * @return
 	 */
 	protected Message sendInitialize(Role role, Account account) {
-		Message message = messageService.createMessage(CoreModuleType.ROLE,
-				CoreModuleType.CLIENT,
+		Message message = messageService.createMessage(CoreModuleType.ROLE, CoreModuleType.CLIENT,
 				CoreMessageType.ROLE_INITIALIZE_RESPONSE, role.getId());
 		//
 		message.addString(role.getId());// id
@@ -289,8 +295,7 @@ public class RoleServiceImpl extends AppServiceSupporter implements RoleService 
 	 * @param role
 	 */
 	public Message sendSyncRoleConnect(Role role) {
-		Message message = messageService.createSync(CoreModuleType.ROLE,
-				CoreModuleType.ROLE,
+		Message message = messageService.createSync(CoreModuleType.ROLE, CoreModuleType.ROLE,
 				CoreMessageType.ROLE_SYNC_ROLE_CONNECT_REQUEST);
 
 		message.addObject(role);
@@ -318,8 +323,7 @@ public class RoleServiceImpl extends AppServiceSupporter implements RoleService 
 	 * @return
 	 */
 	public Message sendSyncRoleDisconnect(Role syncRole) {
-		Message message = messageService.createSync(CoreModuleType.ROLE,
-				CoreModuleType.ROLE,
+		Message message = messageService.createSync(CoreModuleType.ROLE, CoreModuleType.ROLE,
 				CoreMessageType.ROLE_SYNC_ROLE_DISCONNECT_REQUEST);
 		message.addString(syncRole.getId());
 		//
@@ -347,10 +351,8 @@ public class RoleServiceImpl extends AppServiceSupporter implements RoleService 
 	 * @param value
 	 * @return
 	 */
-	public Message sendSyncRoleField(String syncRoleId, String fieldName,
-			Serializable value) {
-		Message message = messageService.createSync(CoreModuleType.ROLE,
-				CoreModuleType.ROLE,
+	public Message sendSyncRoleField(String syncRoleId, String fieldName, Serializable value) {
+		Message message = messageService.createSync(CoreModuleType.ROLE, CoreModuleType.ROLE,
 				CoreMessageType.ROLE_SYNC_ROLE_FIELD_REQUEST);
 
 		message.addString(syncRoleId);
@@ -370,8 +372,7 @@ public class RoleServiceImpl extends AppServiceSupporter implements RoleService 
 	 * @param value
 	 * @return
 	 */
-	public Object syncRoleField(String syncRoleId, String fieldName,
-			Object value) {
+	public Object syncRoleField(String syncRoleId, String fieldName, Object value) {
 		// LOGGER.info("syncRoleField: " + syncRoleId
 		// +", "+syncRoleId+", "+value);
 
@@ -407,9 +408,8 @@ public class RoleServiceImpl extends AppServiceSupporter implements RoleService 
 	 * @param careerType
 	 * @return
 	 */
-	public Role createRole(String roleId, String name, RaceType raceType,
-			CareerType careerType, GenderType genderType, HairType hairType,
-			FaceType faceType) {
+	public Role createRole(String roleId, String name, RaceType raceType, CareerType careerType, GenderType genderType,
+			HairType hairType, FaceType faceType) {
 		Role result = null;
 		// 行業
 		Industry industry = industryCollector.getIndustry(raceType, careerType);
@@ -512,8 +512,7 @@ public class RoleServiceImpl extends AppServiceSupporter implements RoleService 
 	 * @param industry
 	 * @param attributeType
 	 */
-	protected void calcAttrubute(Role role, Industry industry,
-			AttributeType attributeType) {
+	protected void calcAttrubute(Role role, Industry industry, AttributeType attributeType) {
 		// 等級因子
 		int levelFactor = safeLevel(role.getLevel()) - 1;
 
@@ -523,8 +522,7 @@ public class RoleServiceImpl extends AppServiceSupporter implements RoleService 
 		int addPoint = industry.getAttributeGroup().getAddPoint(attributeType);
 		//
 		AttributeGroup attributeGroup = role.getAttributeGroup();
-		attributeGroup.setPoint(attributeType, initPoint + levelFactor
-				* addPoint);
+		attributeGroup.setPoint(attributeType, initPoint + levelFactor * addPoint);
 	}
 
 	protected int safeLevel(int level) {
@@ -589,20 +587,17 @@ public class RoleServiceImpl extends AppServiceSupporter implements RoleService 
 		// 屬性因子
 		double factor = 1d;
 		double factor2 = 1d;
-		AttributeFactor attributeFactor = industryCollector
-				.getAttributeFactor(attributeType);
+		AttributeFactor attributeFactor = industryCollector.getAttributeFactor(attributeType);
 		if (attributeFactor != null) {
 			factor = ratio(attributeFactor.getFactor());
 			factor2 = ratio(attributeFactor.getFactor2());
 		}
 		//
 		AttributeGroup attributeGroup = role.getAttributeGroup();
-		int weightPoint = (int) (attributeGroup
-				.getFinal(AttributeType.STRENGTH) * factor)
+		int weightPoint = (int) (attributeGroup.getFinal(AttributeType.STRENGTH) * factor)
 				+ (int) (attributeGroup.getFinal(AttributeType.AGILITY) * factor2);
 		//
-		attributeGroup.setPoint(attributeType, initPoint + weightPoint
-				+ levelFactor * addPoint);
+		attributeGroup.setPoint(attributeType, initPoint + weightPoint + levelFactor * addPoint);
 	}
 
 	/**
@@ -625,8 +620,7 @@ public class RoleServiceImpl extends AppServiceSupporter implements RoleService 
 		// 屬性因子
 		double factor = 1d;
 		double factor2 = 1d;
-		AttributeFactor attributeFactor = industryCollector
-				.getAttributeFactor(attributeType);
+		AttributeFactor attributeFactor = industryCollector.getAttributeFactor(attributeType);
 		if (attributeFactor != null) {
 			factor = ratio(attributeFactor.getFactor());
 			factor2 = ratio(attributeFactor.getFactor2());
@@ -635,8 +629,7 @@ public class RoleServiceImpl extends AppServiceSupporter implements RoleService 
 		AttributeGroup attributeGroup = role.getAttributeGroup();
 		int weightPoint = (int) (attributeGroup.getFinal(AttributeType.AGILITY) * factor)
 				+ (int) (attributeGroup.getFinal(AttributeType.STRENGTH) * factor2);
-		attributeGroup.setPoint(attributeType, initPoint + weightPoint
-				+ levelFactor * addPoint);
+		attributeGroup.setPoint(attributeType, initPoint + weightPoint + levelFactor * addPoint);
 	}
 
 	/**
@@ -658,17 +651,14 @@ public class RoleServiceImpl extends AppServiceSupporter implements RoleService 
 
 		// 屬性因子
 		double factor = 1d;
-		AttributeFactor attributeFactor = industryCollector
-				.getAttributeFactor(attributeType);
+		AttributeFactor attributeFactor = industryCollector.getAttributeFactor(attributeType);
 		if (attributeFactor != null) {
 			factor = ratio(attributeFactor.getFactor());
 		}
 		//
 		AttributeGroup attributeGroup = role.getAttributeGroup();
-		int weightPoint = (int) (attributeGroup
-				.getFinal(AttributeType.STRENGTH) * factor);
-		attributeGroup.setPoint(attributeType, initPoint + weightPoint
-				+ levelFactor * addPoint);
+		int weightPoint = (int) (attributeGroup.getFinal(AttributeType.STRENGTH) * factor);
+		attributeGroup.setPoint(attributeType, initPoint + weightPoint + levelFactor * addPoint);
 	}
 
 	/**
@@ -690,16 +680,14 @@ public class RoleServiceImpl extends AppServiceSupporter implements RoleService 
 
 		// 屬性因子
 		double factor = 1d;
-		AttributeFactor attributeFactor = industryCollector
-				.getAttributeFactor(attributeType);
+		AttributeFactor attributeFactor = industryCollector.getAttributeFactor(attributeType);
 		if (attributeFactor != null) {
 			factor = ratio(attributeFactor.getFactor());
 		}
 		//
 		AttributeGroup attributeGroup = role.getAttributeGroup();
 		int weightPoint = (int) (attributeGroup.getFinal(AttributeType.AGILITY) * factor);
-		attributeGroup.setPoint(attributeType, initPoint + weightPoint
-				+ levelFactor * addPoint);
+		attributeGroup.setPoint(attributeType, initPoint + weightPoint + levelFactor * addPoint);
 	}
 
 	/**
@@ -721,16 +709,14 @@ public class RoleServiceImpl extends AppServiceSupporter implements RoleService 
 
 		// 屬性因子
 		double factor = 1d;
-		AttributeFactor attributeFactor = industryCollector
-				.getAttributeFactor(attributeType);
+		AttributeFactor attributeFactor = industryCollector.getAttributeFactor(attributeType);
 		if (attributeFactor != null) {
 			factor = ratio(attributeFactor.getFactor());
 		}
 		//
 		AttributeGroup attributeGroup = role.getAttributeGroup();
 		int weightPoint = (int) (attributeGroup.getFinal(AttributeType.AGILITY) * factor);
-		attributeGroup.setPoint(attributeType, initPoint + weightPoint
-				+ levelFactor * addPoint);
+		attributeGroup.setPoint(attributeType, initPoint + weightPoint + levelFactor * addPoint);
 	}
 
 	/**
@@ -753,20 +739,17 @@ public class RoleServiceImpl extends AppServiceSupporter implements RoleService 
 		// 屬性因子
 		double factor = 1d;
 		double factor2 = 1d;
-		AttributeFactor attributeFactor = industryCollector
-				.getAttributeFactor(attributeType);
+		AttributeFactor attributeFactor = industryCollector.getAttributeFactor(attributeType);
 		if (attributeFactor != null) {
 			factor = ratio(attributeFactor.getFactor());
 			factor2 = ratio(attributeFactor.getFactor2());
 		}
 		//
 		AttributeGroup attributeGroup = role.getAttributeGroup();
-		int weightPoint = (int) (attributeGroup
-				.getFinal(AttributeType.INTELLIGENCE) * factor)
+		int weightPoint = (int) (attributeGroup.getFinal(AttributeType.INTELLIGENCE) * factor)
 				+ (int) (attributeGroup.getFinal(AttributeType.SPIRIT) * factor2);
 		//
-		attributeGroup.setPoint(attributeType, initPoint + weightPoint
-				+ levelFactor * addPoint);
+		attributeGroup.setPoint(attributeType, initPoint + weightPoint + levelFactor * addPoint);
 	}
 
 	/**
@@ -789,8 +772,7 @@ public class RoleServiceImpl extends AppServiceSupporter implements RoleService 
 		// 屬性因子
 		double factor = 1d;
 		double factor2 = 1d;
-		AttributeFactor attributeFactor = industryCollector
-				.getAttributeFactor(attributeType);
+		AttributeFactor attributeFactor = industryCollector.getAttributeFactor(attributeType);
 		if (attributeFactor != null) {
 			factor = ratio(attributeFactor.getFactor());
 			factor2 = ratio(attributeFactor.getFactor2());
@@ -799,8 +781,7 @@ public class RoleServiceImpl extends AppServiceSupporter implements RoleService 
 		AttributeGroup attributeGroup = role.getAttributeGroup();
 		int weightPoint = (int) (attributeGroup.getFinal(AttributeType.SPIRIT) * factor)
 				+ (int) (attributeGroup.getFinal(AttributeType.INTELLIGENCE) * factor2);
-		attributeGroup.setPoint(attributeType, initPoint + weightPoint
-				+ levelFactor * addPoint);
+		attributeGroup.setPoint(attributeType, initPoint + weightPoint + levelFactor * addPoint);
 	}
 
 	/**
@@ -822,17 +803,14 @@ public class RoleServiceImpl extends AppServiceSupporter implements RoleService 
 
 		// 屬性因子
 		double factor = 1d;
-		AttributeFactor attributeFactor = industryCollector
-				.getAttributeFactor(attributeType);
+		AttributeFactor attributeFactor = industryCollector.getAttributeFactor(attributeType);
 		if (attributeFactor != null) {
 			factor = ratio(attributeFactor.getFactor());
 		}
 		//
 		AttributeGroup attributeGroup = role.getAttributeGroup();
-		int weightPoint = (int) (attributeGroup
-				.getFinal(AttributeType.INTELLIGENCE) * factor);
-		attributeGroup.setPoint(attributeType, initPoint + weightPoint
-				+ levelFactor * addPoint);
+		int weightPoint = (int) (attributeGroup.getFinal(AttributeType.INTELLIGENCE) * factor);
+		attributeGroup.setPoint(attributeType, initPoint + weightPoint + levelFactor * addPoint);
 	}
 
 	/**
@@ -854,16 +832,14 @@ public class RoleServiceImpl extends AppServiceSupporter implements RoleService 
 
 		// 屬性因子
 		double factor = 1d;
-		AttributeFactor attributeFactor = industryCollector
-				.getAttributeFactor(attributeType);
+		AttributeFactor attributeFactor = industryCollector.getAttributeFactor(attributeType);
 		if (attributeFactor != null) {
 			factor = ratio(attributeFactor.getFactor());
 		}
 		//
 		AttributeGroup attributeGroup = role.getAttributeGroup();
 		int weightPoint = (int) (attributeGroup.getFinal(AttributeType.SPIRIT) * factor);
-		attributeGroup.setPoint(attributeType, initPoint + weightPoint
-				+ levelFactor * addPoint);
+		attributeGroup.setPoint(attributeType, initPoint + weightPoint + levelFactor * addPoint);
 	}
 
 	/**
@@ -885,16 +861,14 @@ public class RoleServiceImpl extends AppServiceSupporter implements RoleService 
 
 		// 屬性因子
 		double factor = 1d;
-		AttributeFactor attributeFactor = industryCollector
-				.getAttributeFactor(attributeType);
+		AttributeFactor attributeFactor = industryCollector.getAttributeFactor(attributeType);
 		if (attributeFactor != null) {
 			factor = ratio(attributeFactor.getFactor());
 		}
 		//
 		AttributeGroup attributeGroup = role.getAttributeGroup();
 		int weightPoint = (int) (attributeGroup.getFinal(AttributeType.SPIRIT) * factor);
-		attributeGroup.setPoint(attributeType, initPoint + weightPoint
-				+ levelFactor * addPoint);
+		attributeGroup.setPoint(attributeType, initPoint + weightPoint + levelFactor * addPoint);
 	}
 
 	/**
@@ -916,21 +890,17 @@ public class RoleServiceImpl extends AppServiceSupporter implements RoleService 
 
 		// 屬性因子
 		double factor = 1d;
-		AttributeFactor attributeFactor = industryCollector
-				.getAttributeFactor(attributeType);
+		AttributeFactor attributeFactor = industryCollector.getAttributeFactor(attributeType);
 		if (attributeFactor != null) {
 			factor = ratio(attributeFactor.getFactor());
 		}
 		//
 		AttributeGroup attributeGroup = role.getAttributeGroup();
-		int weightPoint = (int) (attributeGroup
-				.getFinal(AttributeType.CONSTITUTION) * factor);
-		attributeGroup.setPoint(attributeType, initPoint + weightPoint
-				+ levelFactor * addPoint);
+		int weightPoint = (int) (attributeGroup.getFinal(AttributeType.CONSTITUTION) * factor);
+		attributeGroup.setPoint(attributeType, initPoint + weightPoint + levelFactor * addPoint);
 		//
 		if (changeHp) {
-			attributeGroup.setPoint(AttributeType.HEALTH,
-					attributeGroup.getFinal(AttributeType.MAX_HEALTH));
+			attributeGroup.setPoint(AttributeType.HEALTH, attributeGroup.getFinal(AttributeType.MAX_HEALTH));
 		}
 	}
 
@@ -953,20 +923,17 @@ public class RoleServiceImpl extends AppServiceSupporter implements RoleService 
 
 		// 屬性因子
 		double factor = 1d;
-		AttributeFactor attributeFactor = industryCollector
-				.getAttributeFactor(attributeType);
+		AttributeFactor attributeFactor = industryCollector.getAttributeFactor(attributeType);
 		if (attributeFactor != null) {
 			factor = ratio(attributeFactor.getFactor());
 		}
 		//
 		AttributeGroup attributeGroup = role.getAttributeGroup();
 		int weightPoint = (int) (attributeGroup.getFinal(AttributeType.SPIRIT) * factor);
-		attributeGroup.setPoint(attributeType, initPoint + weightPoint
-				+ levelFactor * addPoint);
+		attributeGroup.setPoint(attributeType, initPoint + weightPoint + levelFactor * addPoint);
 		//
 		if (changeMp) {
-			attributeGroup.setPoint(AttributeType.MANA,
-					attributeGroup.getFinal(AttributeType.MAX_MANA));
+			attributeGroup.setPoint(AttributeType.MANA, attributeGroup.getFinal(AttributeType.MAX_MANA));
 		}
 	}
 
@@ -1048,9 +1015,8 @@ public class RoleServiceImpl extends AppServiceSupporter implements RoleService 
 	 * @return
 	 */
 	public Message sendExp(Role role, long exp, long diffExp) {
-		Message message = messageService.createMessage(CoreModuleType.ROLE,
-				CoreModuleType.CLIENT, CoreMessageType.ROLE_EXP_RESPONSE,
-				role.getId());
+		Message message = messageService.createMessage(CoreModuleType.ROLE, CoreModuleType.CLIENT,
+				CoreMessageType.ROLE_EXP_RESPONSE, role.getId());
 
 		message.addLong(exp);// 目前等級的經驗
 		message.addLong(diffExp);// 增減的經驗
@@ -1102,9 +1068,8 @@ public class RoleServiceImpl extends AppServiceSupporter implements RoleService 
 	 * @return
 	 */
 	public Message sendSp(Role role, long sp, long diffSp) {
-		Message message = messageService.createMessage(CoreModuleType.ROLE,
-				CoreModuleType.CLIENT, CoreMessageType.ROLE_SP_RESPONSE,
-				role.getId());
+		Message message = messageService.createMessage(CoreModuleType.ROLE, CoreModuleType.CLIENT,
+				CoreMessageType.ROLE_SP_RESPONSE, role.getId());
 
 		message.addLong(sp);// 目前的技魂(sp)
 		message.addLong(diffSp);// 增減的技魂(sp)
@@ -1186,9 +1151,8 @@ public class RoleServiceImpl extends AppServiceSupporter implements RoleService 
 	 * @return
 	 */
 	public Message sendLevel(Role role, int level) {
-		Message message = messageService.createMessage(CoreModuleType.ROLE,
-				CoreModuleType.CLIENT, CoreMessageType.ROLE_LEVEL_RESPONSE,
-				role.getId());
+		Message message = messageService.createMessage(CoreModuleType.ROLE, CoreModuleType.CLIENT,
+				CoreMessageType.ROLE_LEVEL_RESPONSE, role.getId());
 
 		message.addInt(level);// 目前的等級
 		//
@@ -1211,8 +1175,7 @@ public class RoleServiceImpl extends AppServiceSupporter implements RoleService 
 			// 取所有角色id
 			List<String> receivers = roleSetService.getRoleIds();
 			//
-			Message message = messageService.createMessage(CoreModuleType.ROLE,
-					CoreModuleType.CLIENT,
+			Message message = messageService.createMessage(CoreModuleType.ROLE, CoreModuleType.CLIENT,
 					CoreMessageType.ROLE_FAMOUS_LEVEL_RESPONSE, receivers);
 
 			message.addString(role.getName());// 角色名稱
@@ -1278,12 +1241,10 @@ public class RoleServiceImpl extends AppServiceSupporter implements RoleService 
 	 *            log用,金幣增加的原因
 	 * @return
 	 */
-	public long increaseGold(boolean sendable, Role role, long gold,
-			GoldType goldReason) {
+	public long increaseGold(boolean sendable, Role role, long gold, GoldType goldReason) {
 		long result = 0L;
 		if (gold > 0) {
-			result = changeGold(sendable, role, gold, ActionType.INCREASE,
-					goldReason);
+			result = changeGold(sendable, role, gold, ActionType.INCREASE, goldReason);
 		}
 		return result;
 	}
@@ -1317,13 +1278,11 @@ public class RoleServiceImpl extends AppServiceSupporter implements RoleService 
 	 *            log用,金幣減少的原因
 	 * @return
 	 */
-	public long decreaseGold(boolean sendable, Role role, long gold,
-			GoldType goldReason) {
+	public long decreaseGold(boolean sendable, Role role, long gold, GoldType goldReason) {
 		long result = 0L;
 		//
 		if (gold > 0) {
-			result = changeGold(sendable, role, (-1) * gold,
-					ActionType.DECREASE, goldReason);
+			result = changeGold(sendable, role, (-1) * gold, ActionType.DECREASE, goldReason);
 		}
 		return result;
 	}
@@ -1343,8 +1302,7 @@ public class RoleServiceImpl extends AppServiceSupporter implements RoleService 
 	 *            log用,金幣增減的原因
 	 * @return
 	 */
-	public long changeGold(boolean sendable, Role role, long gold,
-			ActionType goldAction, GoldType goldReason) {
+	public long changeGold(boolean sendable, Role role, long gold, ActionType goldAction, GoldType goldReason) {
 		long result = 0L;
 		//
 		// 若=0不改變了
@@ -1407,9 +1365,8 @@ public class RoleServiceImpl extends AppServiceSupporter implements RoleService 
 	 * @return
 	 */
 	public Message sendGold(Role role, long gold, long diffGold) {
-		Message message = messageService.createMessage(CoreModuleType.ROLE,
-				CoreModuleType.CLIENT, CoreMessageType.ROLE_GOLD_RESPONSE,
-				role.getId());
+		Message message = messageService.createMessage(CoreModuleType.ROLE, CoreModuleType.CLIENT,
+				CoreMessageType.ROLE_GOLD_RESPONSE, role.getId());
 
 		message.addLong(gold);// 目前的金幣
 		message.addLong(diffGold);// 增減的金幣
@@ -1460,9 +1417,8 @@ public class RoleServiceImpl extends AppServiceSupporter implements RoleService 
 	 * @return
 	 */
 	public Message sendFame(Role role, int fame, int diffFame) {
-		Message message = messageService.createMessage(CoreModuleType.ROLE,
-				CoreModuleType.CLIENT, CoreMessageType.ROLE_FAME_RESPONSE,
-				role.getId());
+		Message message = messageService.createMessage(CoreModuleType.ROLE, CoreModuleType.CLIENT,
+				CoreMessageType.ROLE_FAME_RESPONSE, role.getId());
 
 		message.addInt(fame);// 目前的聲望
 		message.addInt(diffFame);// 增減的聲望
@@ -1487,13 +1443,12 @@ public class RoleServiceImpl extends AppServiceSupporter implements RoleService 
 	 *            增減增加的比率值
 	 * @return
 	 */
-	public Attribute changeAttribute(boolean sendable, Role role,
-			int attributeValue, int point, int addPoint, int addRate) {
+	public Attribute changeAttribute(boolean sendable, Role role, int attributeValue, int point, int addPoint,
+			int addRate) {
 		Attribute result = null;
 		// 檢查條件
 		//
-		AttributeType attributeType = EnumHelper.valueOf(AttributeType.class,
-				attributeValue);
+		AttributeType attributeType = EnumHelper.valueOf(AttributeType.class, attributeValue);
 		if (attributeType == null) {
 			return result;
 		}
@@ -1524,9 +1479,8 @@ public class RoleServiceImpl extends AppServiceSupporter implements RoleService 
 	 * @return
 	 */
 	public Message sendAttribute(Role role, Attribute attribute) {
-		Message message = messageService.createMessage(CoreModuleType.ROLE,
-				CoreModuleType.CLIENT, CoreMessageType.ROLE_ATTRIBUTE_RESPONSE,
-				role.getId());
+		Message message = messageService.createMessage(CoreModuleType.ROLE, CoreModuleType.CLIENT,
+				CoreMessageType.ROLE_ATTRIBUTE_RESPONSE, role.getId());
 
 		RoleHelper.fillAttribute(message, attribute);
 		//
@@ -1555,9 +1509,8 @@ public class RoleServiceImpl extends AppServiceSupporter implements RoleService 
 	 * @return
 	 */
 	public Message sendAttributeGroup(Role role, AttributeGroup attributeGroup) {
-		Message message = messageService.createMessage(CoreModuleType.ROLE,
-				CoreModuleType.CLIENT, CoreMessageType.ROLE_ATTRIBUTE_RESPONSE,
-				role.getId());
+		Message message = messageService.createMessage(CoreModuleType.ROLE, CoreModuleType.CLIENT,
+				CoreMessageType.ROLE_ATTRIBUTE_RESPONSE, role.getId());
 
 		RoleHelper.fillAttributeGroup(message, attributeGroup);
 		//
@@ -1657,9 +1610,8 @@ public class RoleServiceImpl extends AppServiceSupporter implements RoleService 
 	 * @return
 	 */
 	public Message sendVip(Role role, VipType vipType, int diffVip) {
-		Message message = messageService.createMessage(CoreModuleType.ROLE,
-				CoreModuleType.CLIENT, CoreMessageType.ROLE_VIP_RESPONSE,
-				role.getId());
+		Message message = messageService.createMessage(CoreModuleType.ROLE, CoreModuleType.CLIENT,
+				CoreMessageType.ROLE_VIP_RESPONSE, role.getId());
 
 		message.addInt(vipType);// 目前的vip等級
 		message.addInt(diffVip);// 增減的vip等級
@@ -1669,8 +1621,7 @@ public class RoleServiceImpl extends AppServiceSupporter implements RoleService 
 		return message;
 	}
 
-	public static class SpendResultImpl extends AppResultSupporter implements
-			SpendResult {
+	public static class SpendResultImpl extends AppResultSupporter implements SpendResult {
 
 		private static final long serialVersionUID = -8640525635625123919L;
 
@@ -1770,8 +1721,7 @@ public class RoleServiceImpl extends AppServiceSupporter implements RoleService 
 		}
 
 		public String toString() {
-			ToStringBuilder builder = new ToStringBuilder(this,
-					ToStringStyle.SIMPLE_STYLE);
+			ToStringBuilder builder = new ToStringBuilder(this, ToStringStyle.SIMPLE_STYLE);
 			builder.appendSuper(super.toString());
 			builder.append("errorType", errorType);
 			builder.append("totalTimes", totalTimes);
@@ -1809,9 +1759,8 @@ public class RoleServiceImpl extends AppServiceSupporter implements RoleService 
 	 *            vip限制
 	 * @return
 	 */
-	public SpendResult spendByItemCoin(boolean sendable, Role role,
-			String itemId, int everyAmount, int everyCoin, CoinType coinType,
-			VipType vipLimit) {
+	public SpendResult spendByItemCoin(boolean sendable, Role role, String itemId, int everyAmount, int everyCoin,
+			CoinType coinType, VipType vipLimit) {
 		SpendResult result = null;
 		//
 		ErrorType errorType = ErrorType.NO_ERROR;
@@ -1823,12 +1772,10 @@ public class RoleServiceImpl extends AppServiceSupporter implements RoleService 
 			return result;
 		}
 
-		BagPen.ErrorType bagError = itemService.checkDecreaseItem(role, itemId,
-				everyAmount);
+		BagPen.ErrorType bagError = itemService.checkDecreaseItem(role, itemId, everyAmount);
 		// 扣道具
 		if (bagError == BagPen.ErrorType.NO_ERROR) {
-			decreaseResults = itemService.decreaseItem(sendable, role, itemId,
-					everyAmount);
+			decreaseResults = itemService.decreaseItem(sendable, role, itemId, everyAmount);
 			// 失敗
 			if (decreaseResults.size() == 0) {
 				errorType = ErrorType.CAN_NOT_DECREASE_ITEM;
@@ -1854,8 +1801,7 @@ public class RoleServiceImpl extends AppServiceSupporter implements RoleService 
 			}
 
 			// 儲值幣不足
-			boolean checkDecrease = accountService.checkDecreaseCoin(
-					role.getAccountId(), everyCoin);
+			boolean checkDecrease = accountService.checkDecreaseCoin(role.getAccountId(), everyCoin);
 			if (!checkDecrease) {
 				errorType = ErrorType.COIN_NOT_ENOUGH;
 				result = new SpendResultImpl(errorType);
@@ -1863,8 +1809,7 @@ public class RoleServiceImpl extends AppServiceSupporter implements RoleService 
 			}
 
 			// 扣儲值幣
-			int decrease = accountService.decreaseCoin(sendable,
-					role.getAccountId(), role, everyCoin, coinType);
+			int decrease = accountService.decreaseCoin(sendable, role.getAccountId(), role, everyCoin, coinType);
 			// 失敗
 			if (decrease == 0) {
 				errorType = ErrorType.COIN_NOT_ENOUGH;
@@ -1901,9 +1846,8 @@ public class RoleServiceImpl extends AppServiceSupporter implements RoleService 
 	 *            vip限制
 	 * @return
 	 */
-	public SpendResult spendByItemCoin(boolean sendable, Role role,
-			int spendTimes, String itemId, int everyAmount, int everyCoin,
-			CoinType coinType, VipType vipLimit) {
+	public SpendResult spendByItemCoin(boolean sendable, Role role, int spendTimes, String itemId, int everyAmount,
+			int everyCoin, CoinType coinType, VipType vipLimit) {
 		SpendResult result = null;
 		//
 		ErrorType errorType = ErrorType.NO_ERROR;
@@ -1949,8 +1893,7 @@ public class RoleServiceImpl extends AppServiceSupporter implements RoleService 
 				return result;
 			}
 			//
-			coinTimes = (canCoinTimes > residualTimes ? residualTimes
-					: canCoinTimes);
+			coinTimes = (canCoinTimes > residualTimes ? residualTimes : canCoinTimes);
 			coin = coinTimes * everyCoin;
 			// 需消耗儲值幣時,檢查消耗儲值幣
 			if (coin > 0) {
@@ -1961,8 +1904,7 @@ public class RoleServiceImpl extends AppServiceSupporter implements RoleService 
 					return result;
 				}
 				// 檢查儲值幣
-				boolean checkDecrease = accountService.checkDecreaseCoin(
-						role.getAccountId(), coin);
+				boolean checkDecrease = accountService.checkDecreaseCoin(role.getAccountId(), coin);
 				if (!checkDecrease) {
 					errorType = ErrorType.COIN_NOT_ENOUGH;
 					result = new SpendResultImpl(errorType);
@@ -1974,8 +1916,7 @@ public class RoleServiceImpl extends AppServiceSupporter implements RoleService 
 
 		// 扣道具
 		if (itemAmount > 0) {
-			decreaseResults = itemService.decreaseItem(sendable, role, itemId,
-					itemAmount);
+			decreaseResults = itemService.decreaseItem(sendable, role, itemId, itemAmount);
 			// 失敗
 			if (decreaseResults.size() == 0) {
 				errorType = ErrorType.CAN_NOT_DECREASE_ITEM;
@@ -1996,8 +1937,7 @@ public class RoleServiceImpl extends AppServiceSupporter implements RoleService 
 
 		// 扣儲值幣
 		if (coin > 0) {
-			int decrease = accountService.decreaseCoin(sendable,
-					role.getAccountId(), role, coin, coinType);
+			int decrease = accountService.decreaseCoin(sendable, role.getAccountId(), role, coin, coinType);
 			// 失敗
 			if (decrease == 0) {
 				// 若有扣道具成功,但扣儲值幣失敗,把剛扣的道具滾回去
@@ -2005,8 +1945,7 @@ public class RoleServiceImpl extends AppServiceSupporter implements RoleService 
 					totalTimes -= itemTimes;
 					itemTimes = 0;
 					//
-					itemService
-							.increaseItem(sendable, role, itemId, itemAmount);
+					itemService.increaseItem(sendable, role, itemId, itemAmount);
 				}
 				errorType = ErrorType.COIN_NOT_ENOUGH;
 				result = new SpendResultImpl(errorType);

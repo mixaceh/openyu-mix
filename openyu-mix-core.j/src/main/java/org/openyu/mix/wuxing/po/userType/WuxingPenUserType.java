@@ -19,7 +19,7 @@ public class WuxingPenUserType extends BaseUserTypeSupporter {
 
 	private static final long serialVersionUID = -2066924784420555409L;
 
-	private WuxingMachine wuxingMachine = WuxingMachineImpl.getInstance();
+	private WuxingMachine wuxingMachine = new WuxingMachineImpl();
 
 	private StringIntegerUserType stringIntegerUserType = new StringIntegerUserType();
 
@@ -136,8 +136,7 @@ public class WuxingPenUserType extends BaseUserTypeSupporter {
 			return result;
 		}
 		//
-		String[] values = StringUtils.splitPreserveAllTokens(src.toString(),
-				SPLITTER);
+		String[] values = StringUtils.splitPreserveAllTokens(src.toString(), SPLITTER);
 		if (ArrayHelper.isEmpty(values)) {
 			return result;
 		}
@@ -156,14 +155,12 @@ public class WuxingPenUserType extends BaseUserTypeSupporter {
 		String outcomeId = toObject(values, idx++, String.class);
 		String bankerId = toObject(values, idx++, String.class);
 		String playerId = toObject(values, idx++, String.class);
-		Outcome outcome = wuxingMachine.createOutcome(outcomeId, bankerId,
-				playerId);
+		Outcome outcome = wuxingMachine.createOutcome(outcomeId, bankerId, playerId);
 		result.setOutcome(outcome);
 		// 中獎區
 		StringBuilder buff = new StringBuilder();
 		buff.append(values[idx++]);
-		Map<String, Integer> awards = stringIntegerUserType
-				.disassembleBy_1(buff);
+		Map<String, Integer> awards = stringIntegerUserType.disassembleBy_1(buff);
 		result.setAwards(awards);
 		return result;
 	}

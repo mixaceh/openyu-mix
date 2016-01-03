@@ -45,7 +45,7 @@ public class ManorLogServiceImpl extends AppLogServiceSupporter implements Manor
 	 * @throws Exception
 	 */
 	protected final void checkConfig() throws Exception {
-		AssertHelper.notNull(this.commonDao, "The AccountLogDao is required");
+		AssertHelper.notNull(this.commonDao, "The ManorLogDao is required");
 	}
 	// --------------------------------------------------
 	// db

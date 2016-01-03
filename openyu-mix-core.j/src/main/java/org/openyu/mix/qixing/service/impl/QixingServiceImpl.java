@@ -3,6 +3,7 @@ package org.openyu.mix.qixing.service.impl;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
+import org.openyu.commons.util.AssertHelper;
 import org.openyu.mix.account.service.AccountService;
 import org.openyu.mix.app.service.supporter.AppServiceSupporter;
 import org.openyu.mix.app.vo.Notice;
@@ -67,7 +68,7 @@ public class QixingServiceImpl extends AppServiceSupporter implements QixingServ
 	 * @throws Exception
 	 */
 	protected final void checkConfig() throws Exception {
-
+		AssertHelper.notNull(this.qixingMachine, "The QixingMachine is required");
 	}
 
 	// // --------------------------------------------------

@@ -39,18 +39,17 @@ import org.openyu.mix.role.vo.BagPen;
 import org.openyu.mix.role.vo.Role;
 import org.openyu.mix.vip.vo.VipCollector;
 import org.openyu.commons.enumz.EnumHelper;
+import org.openyu.commons.util.AssertHelper;
 import org.openyu.commons.util.CalendarHelper;
 import org.openyu.commons.util.CollectionHelper;
 import org.openyu.commons.util.DateHelper;
 import org.openyu.socklet.message.vo.Message;
 
-public class WuxingServiceImpl extends AppServiceSupporter implements
-		WuxingService {
+public class WuxingServiceImpl extends AppServiceSupporter implements WuxingService {
 
 	private static final long serialVersionUID = 1449172726555774863L;
 
-	private static transient final Logger LOGGER = LoggerFactory
-			.getLogger(WuxingServiceImpl.class);
+	private static transient final Logger LOGGER = LoggerFactory.getLogger(WuxingServiceImpl.class);
 
 	@Autowired
 	@Qualifier("accountService")
@@ -72,15 +71,14 @@ public class WuxingServiceImpl extends AppServiceSupporter implements
 	@Qualifier("wuxingMachine")
 	protected transient WuxingMachine wuxingMachine;
 
-	private transient WuxingCollector wuxingCollector = WuxingCollector
-			.getInstance();
+	private transient WuxingCollector wuxingCollector = WuxingCollector.getInstance();
 
 	private transient VipCollector vipCollector = VipCollector.getInstance();
 
 	/**
 	 * 已開出的結果,人氣榜,最大訊息數量
 	 */
-	int MAX_NOTICE_SIZE = 10;
+	public int MAX_NOTICE_SIZE = 10;
 
 	/**
 	 * 已開出的結果,人氣榜
@@ -88,6 +86,15 @@ public class WuxingServiceImpl extends AppServiceSupporter implements
 	private Queue<Notice> board = new ConcurrentLinkedQueue<Notice>();
 
 	public WuxingServiceImpl() {
+	}
+
+	/**
+	 * 檢查設置
+	 * 
+	 * @throws Exception
+	 */
+	protected final void checkConfig() throws Exception {
+		AssertHelper.notNull(this.wuxingMachine, "The WuxingMachine is required");
 	}
 
 	/**
@@ -132,8 +139,7 @@ public class WuxingServiceImpl extends AppServiceSupporter implements
 	}
 
 	protected Message sendInitialize(Role role) {
-		Message message = messageService.createMessage(CoreModuleType.WUXING,
-				CoreModuleType.CLIENT,
+		Message message = messageService.createMessage(CoreModuleType.WUXING, CoreModuleType.CLIENT,
 				CoreMessageType.WUXING_INITIALIZE_RESPONSE, role.getId());
 
 		// 五行欄位
@@ -182,9 +188,8 @@ public class WuxingServiceImpl extends AppServiceSupporter implements
 	 * @return
 	 */
 	public Message sendWuxingPen(Role role, WuxingPen wuxingPen) {
-		Message message = messageService.createMessage(CoreModuleType.WUXING,
-				CoreModuleType.CLIENT, CoreMessageType.WUXING_PEN_RESPONSE,
-				role.getId());
+		Message message = messageService.createMessage(CoreModuleType.WUXING, CoreModuleType.CLIENT,
+				CoreMessageType.WUXING_PEN_RESPONSE, role.getId());
 
 		fillWuxingPen(message, wuxingPen);
 		//
@@ -210,10 +215,8 @@ public class WuxingServiceImpl extends AppServiceSupporter implements
 		// 五行結果
 		Outcome outcome = wuxingPen.getOutcome();
 		message.addString((outcome != null ? safeGet(outcome.getId()) : ""));
-		message.addString((outcome != null ? safeGet(outcome.getBankerId())
-				: ""));
-		message.addString((outcome != null ? safeGet(outcome.getPlayerId())
-				: ""));
+		message.addString((outcome != null ? safeGet(outcome.getBankerId()) : ""));
+		message.addString((outcome != null ? safeGet(outcome.getPlayerId()) : ""));
 
 		// 填充獎勵
 		fillAwards(message, wuxingPen.getAwards());
@@ -259,13 +262,11 @@ public class WuxingServiceImpl extends AppServiceSupporter implements
 	 * @param playerId
 	 * @return
 	 */
-	public Outcome createOutcome(String outcomeId, String bankerId,
-			String playerId) {
+	public Outcome createOutcome(String outcomeId, String bankerId, String playerId) {
 		return wuxingMachine.createOutcome(outcomeId, bankerId, playerId);
 	}
 
-	public static class PlayResultImpl extends AppResultSupporter implements
-			PlayResult {
+	public static class PlayResultImpl extends AppResultSupporter implements PlayResult {
 
 		private static final long serialVersionUID = -4323504616451837011L;
 
@@ -314,9 +315,8 @@ public class WuxingServiceImpl extends AppServiceSupporter implements
 		 */
 		private int spendCoin;
 
-		public PlayResultImpl(PlayType playType, long playTime, int dailyTimes,
-				Outcome outcome, int totalTimes, long spendGold,
-				List<Item> spendItems, int spendCoin) {
+		public PlayResultImpl(PlayType playType, long playTime, int dailyTimes, Outcome outcome, int totalTimes,
+				long spendGold, List<Item> spendItems, int spendCoin) {
 			this.playType = playType;
 			this.playTime = playTime;
 			this.dailyTimes = dailyTimes;
@@ -340,10 +340,9 @@ public class WuxingServiceImpl extends AppServiceSupporter implements
 		 * @param outcome
 		 * @param spendGold
 		 */
-		public PlayResultImpl(PlayType playType, long playTime, int dailyTimes,
-				Outcome outcome, int totalTimes, long spendGold) {
-			this(playType, playTime, dailyTimes, outcome, totalTimes,
-					spendGold, new LinkedList<Item>(), 0);
+		public PlayResultImpl(PlayType playType, long playTime, int dailyTimes, Outcome outcome, int totalTimes,
+				long spendGold) {
+			this(playType, playTime, dailyTimes, outcome, totalTimes, spendGold, new LinkedList<Item>(), 0);
 		}
 
 		/**
@@ -356,9 +355,8 @@ public class WuxingServiceImpl extends AppServiceSupporter implements
 		 * @param spendItems
 		 * @param spendCoin
 		 */
-		public PlayResultImpl(PlayType playType, long playTime,
-				List<Outcome> outcomes, int totalTimes, List<Item> spendItems,
-				int spendCoin) {
+		public PlayResultImpl(PlayType playType, long playTime, List<Outcome> outcomes, int totalTimes,
+				List<Item> spendItems, int spendCoin) {
 			this.playType = playType;
 			this.playTime = playTime;
 			// 所有結果
@@ -451,15 +449,13 @@ public class WuxingServiceImpl extends AppServiceSupporter implements
 		}
 
 		public String toString() {
-			ToStringBuilder builder = new ToStringBuilder(this,
-					ToStringStyle.SIMPLE_STYLE);
+			ToStringBuilder builder = new ToStringBuilder(this, ToStringStyle.SIMPLE_STYLE);
 			builder.appendSuper(super.toString());
 			builder.append("playType", playType);
 			builder.append("playTime", playTime);
 			builder.append("dailyTimes", dailyTimes);
-			builder.append("outcome", (outcome != null ? outcome.getId() + ","
-					+ outcome.getBankerId() + "," + outcome.getPlayerId()
-					: null));
+			builder.append("outcome", (outcome != null
+					? outcome.getId() + "," + outcome.getBankerId() + "," + outcome.getPlayerId() : null));
 			//
 			builder.append("totalTimes", totalTimes);
 			builder.append("spendGold", spendGold);
@@ -499,7 +495,7 @@ public class WuxingServiceImpl extends AppServiceSupporter implements
 			result = goldPlay(sendable, role);
 			break;
 		}
-		// 用道具或儲值幣玩
+			// 用道具或儲值幣玩
 		case GALACTIC:
 		case GOLDEN:
 		case BLACK: {
@@ -551,8 +547,7 @@ public class WuxingServiceImpl extends AppServiceSupporter implements
 				long spendGold = wuxingCollector.getPlayGold();
 				;
 				// 扣金幣
-				long decreaseGold = roleService.decreaseGold(true, role,
-						spendGold, GoldType.WUXING_PLAY);
+				long decreaseGold = roleService.decreaseGold(true, role, spendGold, GoldType.WUXING_PLAY);
 				// 成功
 				if (decreaseGold != 0) {
 					long now = System.currentTimeMillis();
@@ -576,8 +571,7 @@ public class WuxingServiceImpl extends AppServiceSupporter implements
 					}
 
 					// 結果
-					result = new PlayResultImpl(PlayType.BRONZE, now,
-							wuxingPen.getDailyTimes(), cloneOutcome, 1,
+					result = new PlayResultImpl(PlayType.BRONZE, now, wuxingPen.getDailyTimes(), cloneOutcome, 1,
 							spendGold);
 				} else {
 					errorType = ErrorType.GOLD_NOT_ENOUGH;
@@ -635,8 +629,7 @@ public class WuxingServiceImpl extends AppServiceSupporter implements
 
 		// 金幣不足
 		long spendGold = wuxingCollector.getPlayGold();
-		boolean checkDecreaseGold = roleService.checkDecreaseGold(role,
-				spendGold);
+		boolean checkDecreaseGold = roleService.checkDecreaseGold(role, spendGold);
 		if (!checkDecreaseGold) {
 			errorType = ErrorType.GOLD_NOT_ENOUGH;
 			return errorType;
@@ -654,8 +647,7 @@ public class WuxingServiceImpl extends AppServiceSupporter implements
 	 * @see PlayType
 	 * @return
 	 */
-	public PlayResult itemCoinPlay(boolean sendable, Role role,
-			PlayType playType) {
+	public PlayResult itemCoinPlay(boolean sendable, Role role, PlayType playType) {
 		PlayResult result = null;
 		WuxingPen wuxingPen = null;
 		int playTimes = playType.playTimes();// 玩的次數
@@ -679,9 +671,8 @@ public class WuxingServiceImpl extends AppServiceSupporter implements
 			//
 			if (errorType == ErrorType.NO_ERROR) {
 				// 消耗道具或儲值幣
-				SpendResult spendResult = roleService.spendByItemCoin(sendable,
-						role, playTimes, wuxingCollector.getPlayItem(), 1,
-						wuxingCollector.getPlayCoin(), CoinType.WUXING_PLAY,
+				SpendResult spendResult = roleService.spendByItemCoin(sendable, role, playTimes,
+						wuxingCollector.getPlayItem(), 1, wuxingCollector.getPlayCoin(), CoinType.WUXING_PLAY,
 						vipCollector.getWuxingCoinVipType());
 				//
 				RoleService.ErrorType spendError = spendResult.getErrorType();
@@ -695,8 +686,7 @@ public class WuxingServiceImpl extends AppServiceSupporter implements
 					// clone玩的結果
 					List<Outcome> cloneOutcomes = clone(outcomes);
 					// 拿最後一個結果
-					Outcome cloneOutcome = cloneOutcomes.get(cloneOutcomes
-							.size() - 1);
+					Outcome cloneOutcome = cloneOutcomes.get(cloneOutcomes.size() - 1);
 					wuxingPen.setOutcome(cloneOutcome);// 最後的結果
 
 					// 累計每日已玩的次數,不需每日重置
@@ -723,8 +713,7 @@ public class WuxingServiceImpl extends AppServiceSupporter implements
 					}
 
 					// 玩的結果
-					result = new PlayResultImpl(playType, now, cloneOutcomes,
-							spendResult.getTotalTimes(),
+					result = new PlayResultImpl(playType, now, cloneOutcomes, spendResult.getTotalTimes(),
 							spendResult.getItems(), spendResult.getCoin());
 				} else {
 					errorType = roleErrorToWuxingError(spendError);
@@ -884,11 +873,9 @@ public class WuxingServiceImpl extends AppServiceSupporter implements
 	 * @param role
 	 * @param playResult
 	 */
-	public Message sendPlay(ErrorType errorType, Role role,
-			PlayResult playResult) {
-		Message message = messageService.createMessage(CoreModuleType.WUXING,
-				CoreModuleType.CLIENT, CoreMessageType.WUXING_PLAY_RESPONSE,
-				role.getId());
+	public Message sendPlay(ErrorType errorType, Role role, PlayResult playResult) {
+		Message message = messageService.createMessage(CoreModuleType.WUXING, CoreModuleType.CLIENT,
+				CoreMessageType.WUXING_PLAY_RESPONSE, role.getId());
 
 		message.addInt(errorType);// 0, errorType 錯誤碼
 
@@ -959,9 +946,8 @@ public class WuxingServiceImpl extends AppServiceSupporter implements
 		// 取所有角色id,只限本地
 		List<String> receivers = roleSetService.getRoleIds(false);
 		//
-		Message message = messageService.createMessage(CoreModuleType.WUXING,
-				CoreModuleType.CLIENT, CoreMessageType.WUXING_NOTICE_RESPONSE,
-				receivers);
+		Message message = messageService.createMessage(CoreModuleType.WUXING, CoreModuleType.CLIENT,
+				CoreMessageType.WUXING_NOTICE_RESPONSE, receivers);
 
 		fillNotice(message, notice);
 		//
@@ -981,9 +967,8 @@ public class WuxingServiceImpl extends AppServiceSupporter implements
 		// 取所有角色id,只限本地
 		List<String> receivers = roleSetService.getRoleIds(false);
 		//
-		Message message = messageService.createMessage(CoreModuleType.WUXING,
-				CoreModuleType.CLIENT, CoreMessageType.WUXING_NOTICES_RESPONSE,
-				receivers);
+		Message message = messageService.createMessage(CoreModuleType.WUXING, CoreModuleType.CLIENT,
+				CoreMessageType.WUXING_NOTICES_RESPONSE, receivers);
 
 		message.addInt(notices.size());
 		for (Notice notice : notices) {
@@ -1016,9 +1001,8 @@ public class WuxingServiceImpl extends AppServiceSupporter implements
 	 * @param role
 	 */
 	protected void sendBoard(Role role) {
-		Message message = messageService.createMessage(CoreModuleType.WUXING,
-				CoreModuleType.CLIENT, CoreMessageType.WUXING_BOARD_RESPONSE,
-				role.getId());
+		Message message = messageService.createMessage(CoreModuleType.WUXING, CoreModuleType.CLIENT,
+				CoreMessageType.WUXING_BOARD_RESPONSE, role.getId());
 
 		message.addInt(board.size());
 		for (Notice notice : board) {
@@ -1042,8 +1026,7 @@ public class WuxingServiceImpl extends AppServiceSupporter implements
 		// 取所有角色id
 		List<String> receivers = roleSetService.getRoleIds();
 		//
-		Message message = messageService.createMessage(CoreModuleType.WUXING,
-				CoreModuleType.CLIENT,
+		Message message = messageService.createMessage(CoreModuleType.WUXING, CoreModuleType.CLIENT,
 				CoreMessageType.WUXING_FAMOUS_PLAY_RESPONSE, receivers);
 
 		fillFamousPlay(message, role, prize);
@@ -1070,8 +1053,7 @@ public class WuxingServiceImpl extends AppServiceSupporter implements
 		// 取所有角色id
 		List<String> receivers = roleSetService.getRoleIds();
 		//
-		Message message = messageService.createMessage(CoreModuleType.WUXING,
-				CoreModuleType.CLIENT,
+		Message message = messageService.createMessage(CoreModuleType.WUXING, CoreModuleType.CLIENT,
 				CoreMessageType.WUXING_FAMOUS_PLAYS_RESPONSE, receivers);
 
 		message.addInt(prizes.size());
@@ -1089,9 +1071,8 @@ public class WuxingServiceImpl extends AppServiceSupporter implements
 	 * @param bagPen
 	 */
 	public Message sendAwards(Role role, Map<String, Integer> awards) {
-		Message message = messageService.createMessage(CoreModuleType.WUXING,
-				CoreModuleType.CLIENT, CoreMessageType.WUXING_AWARDS_RESPONSE,
-				role.getId());
+		Message message = messageService.createMessage(CoreModuleType.WUXING, CoreModuleType.CLIENT,
+				CoreMessageType.WUXING_AWARDS_RESPONSE, role.getId());
 
 		fillAwards(message, awards);
 		//
@@ -1103,8 +1084,7 @@ public class WuxingServiceImpl extends AppServiceSupporter implements
 	/**
 	 * 放入包包的結果
 	 */
-	public static class PutResultImpl extends AppResultSupporter implements
-			PutResult {
+	public static class PutResultImpl extends AppResultSupporter implements PutResult {
 		private static final long serialVersionUID = -5914943285973752523L;
 
 		private Map<String, Integer> awards = new LinkedHashMap<String, Integer>();
@@ -1125,8 +1105,7 @@ public class WuxingServiceImpl extends AppServiceSupporter implements
 		}
 
 		public String toString() {
-			ToStringBuilder builder = new ToStringBuilder(this,
-					ToStringStyle.SIMPLE_STYLE);
+			ToStringBuilder builder = new ToStringBuilder(this, ToStringStyle.SIMPLE_STYLE);
 			builder.appendSuper(super.toString());
 			builder.append("awards", awards);
 			return builder.toString();
@@ -1147,8 +1126,7 @@ public class WuxingServiceImpl extends AppServiceSupporter implements
 	 * @param itemId
 	 * @param amount
 	 */
-	public PutResult putOne(boolean sendable, Role role, String itemId,
-			int amount) {
+	public PutResult putOne(boolean sendable, Role role, String itemId, int amount) {
 		PutResult result = null;
 		// 檢查條件
 		ErrorType errorType = checkPutOne(role, itemId, amount);
@@ -1157,8 +1135,7 @@ public class WuxingServiceImpl extends AppServiceSupporter implements
 			WuxingPen wuxingPen = role.getWuxingPen();
 
 			// 再判斷放入包包是否成功
-			List<IncreaseItemResult> increaseResults = itemService
-					.increaseItem(true, role, itemId, amount);
+			List<IncreaseItemResult> increaseResults = itemService.increaseItem(true, role, itemId, amount);
 			if (increaseResults.size() >= 0) {
 				wuxingPen.removeAward(itemId);
 				// 結果
@@ -1220,12 +1197,10 @@ public class WuxingServiceImpl extends AppServiceSupporter implements
 	 * @param itemId
 	 * @param amount
 	 */
-	public Message sendPutOne(ErrorType errorType, Role role, String itemId,
-			int amount) {
+	public Message sendPutOne(ErrorType errorType, Role role, String itemId, int amount) {
 
-		Message message = messageService.createMessage(CoreModuleType.WUXING,
-				CoreModuleType.CLIENT, CoreMessageType.WUXING_PUT_ONE_RESPONSE,
-				role.getId());
+		Message message = messageService.createMessage(CoreModuleType.WUXING, CoreModuleType.CLIENT,
+				CoreMessageType.WUXING_PUT_ONE_RESPONSE, role.getId());
 
 		message.addInt(errorType);// 0,錯誤類別
 		switch (errorType) {
@@ -1273,8 +1248,7 @@ public class WuxingServiceImpl extends AppServiceSupporter implements
 					break;
 				}
 				// 再判斷放入包包是否成功
-				List<IncreaseItemResult> increaseResults = itemService
-						.increaseItem(true, role, itemId, amount);
+				List<IncreaseItemResult> increaseResults = itemService.increaseItem(true, role, itemId, amount);
 				if (increaseResults.size() >= 0) {
 					// 結果
 					if (result == null) {
@@ -1307,11 +1281,9 @@ public class WuxingServiceImpl extends AppServiceSupporter implements
 	 * @param role
 	 * @param awards
 	 */
-	public Message sendPutAll(ErrorType errorType, Role role,
-			PutResult putResult) {
-		Message message = messageService.createMessage(CoreModuleType.WUXING,
-				CoreModuleType.CLIENT, CoreMessageType.WUXING_PUT_ALL_RESPONSE,
-				role.getId());
+	public Message sendPutAll(ErrorType errorType, Role role, PutResult putResult) {
+		Message message = messageService.createMessage(CoreModuleType.WUXING, CoreModuleType.CLIENT,
+				CoreMessageType.WUXING_PUT_ALL_RESPONSE, role.getId());
 
 		message.addInt(errorType);// 0,錯誤類別
 		switch (errorType) {
@@ -1382,8 +1354,7 @@ public class WuxingServiceImpl extends AppServiceSupporter implements
 
 		// 玩的時間
 		long playTime = wuxingPen.getPlayTime();
-		boolean overTime = DateHelper.isOverTime(playTime,
-				System.currentTimeMillis(), today.getTimeInMillis(),
+		boolean overTime = DateHelper.isOverTime(playTime, System.currentTimeMillis(), today.getTimeInMillis(),
 				tomorrow.getTimeInMillis());
 		// 超過重置時間
 		if (overTime) {
@@ -1401,9 +1372,8 @@ public class WuxingServiceImpl extends AppServiceSupporter implements
 	 * @param trainPen
 	 */
 	public Message sendReset(Role role, WuxingPen wuxingPen) {
-		Message message = messageService.createMessage(CoreModuleType.WUXING,
-				CoreModuleType.CLIENT, CoreMessageType.WUXING_RESET_RESPONSE,
-				role.getId());
+		Message message = messageService.createMessage(CoreModuleType.WUXING, CoreModuleType.CLIENT,
+				CoreMessageType.WUXING_RESET_RESPONSE, role.getId());
 
 		fillWuxingPen(message, wuxingPen);
 		//
