@@ -35,22 +35,32 @@ import org.openyu.mix.app.log.supporter.AppLogEntitySupporter;
 // when use ehcache, config in ehcache.xml
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = "org.openyu.mix.account.log.impl.AccountCoinLogImpl")
 @Proxy(lazy = false)
-@org.hibernate.annotations.Table(appliesTo = "mix_account_coin_log", indexes = { @org.hibernate.annotations.Index(name = "idx_mix_account_coin_log_1", columnNames = {
-		"account_id", "log_date", "action_type" }) })
+@org.hibernate.annotations.Table(appliesTo = "mix_account_coin_log", indexes = {
+		@org.hibernate.annotations.Index(name = "idx_mix_account_coin_log_1", columnNames = { "account_id", "log_date",
+				"action_type" }) })
 // --------------------------------------------------
 // search
 // --------------------------------------------------
 // @Indexed
-public class AccountCoinLogImpl extends AppLogEntitySupporter implements
-		AccountCoinLog {
+public class AccountCoinLogImpl extends AppLogEntitySupporter implements AccountCoinLog {
 	private static final long serialVersionUID = -29012245968332149L;
 
+	/**
+	 * 流水號
+	 */
 	private Long seq;
 
+	/**
+	 * 操作類別
+	 */
 	private ActionType actionType;
-	//
+	/**
+	 * 儲值增減的原因
+	 */
 	private CoinType coinType;
-	//
+	/**
+	 * 儲值幣
+	 */
 	private Integer coin;
 
 	public AccountCoinLogImpl() {

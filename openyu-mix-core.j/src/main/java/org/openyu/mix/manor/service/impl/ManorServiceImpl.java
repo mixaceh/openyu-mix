@@ -1216,7 +1216,7 @@ public class ManorServiceImpl extends AppServiceSupporter implements ManorServic
 			// 種子
 			Seed seed = (Seed) itemService.getItem(role, seedUniqueId);
 			// 把種子從包包扣除,扣1個種子
-			DecreaseItemResult decreaseResult = itemService.decreaseItemByUniqueId(sendable, role, seedUniqueId, 1);
+			DecreaseItemResult decreaseResult = itemService.decreaseItemWithUniqueId(sendable, role, seedUniqueId, 1);
 			// 成功
 			if (decreaseResult != null) {
 				// clone 1個種子,因包包內種子可能堆疊很多個,不要直接拿來用
@@ -1270,7 +1270,7 @@ public class ManorServiceImpl extends AppServiceSupporter implements ManorServic
 		Seed seed = (Seed) item;
 
 		// 包包是否減少種子,扣1個種子
-		BagPen.ErrorType bagError = itemService.checkDecreaseItemByUniqueId(role, seedUniqueId, 1);
+		BagPen.ErrorType bagError = itemService.checkDecreaseItemWithUniqueId(role, seedUniqueId, 1);
 		if (bagError != BagPen.ErrorType.NO_ERROR) {
 			errorType = ErrorType.CAN_NOT_DECREASE_SEED;
 			return errorType;
@@ -1560,12 +1560,12 @@ public class ManorServiceImpl extends AppServiceSupporter implements ManorServic
 				// 加速將無法感受到土地強化的效果,不增加產量
 				Map<String, Integer> awardItems = seed.getProducts();
 				// 檢查包包增加多個不同道具
-				BagPen.ErrorType bagError = itemService.checkIncreaseItem(role, awardItems);
+				BagPen.ErrorType bagError = itemService.checkIncreaseItems(role, awardItems);
 				if (bagError != BagPen.ErrorType.NO_ERROR) {
 					errorType = ErrorType.CAN_NOT_INCREASE_ITEM;
 				} else {
 					// 增加多個道具
-					List<IncreaseItemResult> increaseResults = itemService.increaseItem(sendable, role, awardItems);
+					List<IncreaseItemResult> increaseResults = itemService.increaseItems(sendable, role, awardItems);
 					// 成功
 					if (increaseResults.size() > 0) {
 						// 移除種子
@@ -1674,12 +1674,12 @@ public class ManorServiceImpl extends AppServiceSupporter implements ManorServic
 			// 計算種子產出數量
 			Map<String, Integer> awardItems = calcProducts(land, seed);
 			// 檢查包包增加多個不同道具
-			BagPen.ErrorType bagError = itemService.checkIncreaseItem(role, awardItems);
+			BagPen.ErrorType bagError = itemService.checkIncreaseItems(role, awardItems);
 			if (bagError != BagPen.ErrorType.NO_ERROR) {
 				errorType = ErrorType.CAN_NOT_INCREASE_ITEM;
 			} else {
 				// 增加多個道具
-				List<IncreaseItemResult> increaseResults = itemService.increaseItem(sendable, role, awardItems);
+				List<IncreaseItemResult> increaseResults = itemService.increaseItems(sendable, role, awardItems);
 				// 成功
 				if (increaseResults.size() > 0) {
 					// 移除種子
@@ -1787,12 +1787,12 @@ public class ManorServiceImpl extends AppServiceSupporter implements ManorServic
 				// 復活將無法感受到土地強化的效果,不增加產量
 				Map<String, Integer> awardItems = seed.getProducts();
 				// 檢查包包增加多個不同道具
-				BagPen.ErrorType bagError = itemService.checkIncreaseItem(role, awardItems);
+				BagPen.ErrorType bagError = itemService.checkIncreaseItems(role, awardItems);
 				if (bagError != BagPen.ErrorType.NO_ERROR) {
 					errorType = ErrorType.CAN_NOT_INCREASE_ITEM;
 				} else {
 					// 增加多個道具
-					List<IncreaseItemResult> increaseResults = itemService.increaseItem(sendable, role, awardItems);
+					List<IncreaseItemResult> increaseResults = itemService.increaseItems(sendable, role, awardItems);
 					// 成功
 					if (increaseResults.size() > 0) {
 						// 移除種子

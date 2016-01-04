@@ -408,7 +408,7 @@ public class ManorServiceImplTest extends ManorTestSupporter {
 		bagPen.addItem(0, 0, seed);
 
 		// 加莊園加速石到包包
-		itemService.increaseItem(true, role, "T_MANOR_SPEED_G001", 1);
+		itemService.increaseItemWithItemId(true, role, "T_MANOR_SPEED_G001", 1);
 
 		// 模擬開墾
 		mockReclaim(role);

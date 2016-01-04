@@ -41,6 +41,8 @@ import org.openyu.mix.role.vo.impl.BagPenImplTest;
 import org.openyu.commons.thread.ThreadHelper;
 import org.openyu.socklet.message.vo.Message;
 
+import com.carrotsearch.junitbenchmarks.BenchmarkOptions;
+
 public class ItemServiceImplTest extends ItemTestSupporter {
 
 	/**
@@ -267,7 +269,7 @@ public class ItemServiceImplTest extends ItemTestSupporter {
 	}
 
 	/**
-	 *  建構土地
+	 * 建構土地
 	 */
 	@Test
 	public void createLand() {
@@ -327,9 +329,8 @@ public class ItemServiceImplTest extends ItemTestSupporter {
 		long beg = System.currentTimeMillis();
 
 		for (int i = 0; i < count; i++) {
-			result = messageService.createMessage(CoreModuleType.ROLE,
-					CoreModuleType.CLIENT, CoreMessageType.ITEM_GET_ITEM_RESPONSE,
-					role.getId());
+			result = messageService.createMessage(CoreModuleType.ROLE, CoreModuleType.CLIENT,
+					CoreMessageType.ITEM_GET_ITEM_RESPONSE, role.getId());
 			itemService.fillItem(result, item);
 		}
 		//
@@ -340,41 +341,36 @@ public class ItemServiceImplTest extends ItemTestSupporter {
 
 		// 材料
 		item = itemService.createItem("M_COTTON_G001");
-		result = messageService.createMessage(CoreModuleType.ROLE,
-				CoreModuleType.CLIENT, CoreMessageType.ITEM_GET_ITEM_RESPONSE,
-				role.getId());
+		result = messageService.createMessage(CoreModuleType.ROLE, CoreModuleType.CLIENT,
+				CoreMessageType.ITEM_GET_ITEM_RESPONSE, role.getId());
 		itemService.fillItem(result, item);
 		System.out.println(result);
 
 		// 防具
 		item = itemService.createEquipment("A_MARS_BODY_HEAD_E001");
-		result = messageService.createMessage(CoreModuleType.ROLE,
-				CoreModuleType.CLIENT, CoreMessageType.ITEM_GET_ITEM_RESPONSE,
-				role.getId());
+		result = messageService.createMessage(CoreModuleType.ROLE, CoreModuleType.CLIENT,
+				CoreMessageType.ITEM_GET_ITEM_RESPONSE, role.getId());
 		itemService.fillItem(result, item);
 		System.out.println(result);
 
 		// 武器
 		item = itemService.createEquipment("W_MARS_SWORD_E001");
-		result = messageService.createMessage(CoreModuleType.ROLE,
-				CoreModuleType.CLIENT, CoreMessageType.ITEM_GET_ITEM_RESPONSE,
-				role.getId());
+		result = messageService.createMessage(CoreModuleType.ROLE, CoreModuleType.CLIENT,
+				CoreMessageType.ITEM_GET_ITEM_RESPONSE, role.getId());
 		itemService.fillItem(result, item);
 		System.out.println(result);
 
 		// 種子
 		item = itemService.createSeed("S_COTTON_G001", 100);
-		result = messageService.createMessage(CoreModuleType.ROLE,
-				CoreModuleType.CLIENT, CoreMessageType.ITEM_GET_ITEM_RESPONSE,
-				role.getId());
+		result = messageService.createMessage(CoreModuleType.ROLE, CoreModuleType.CLIENT,
+				CoreMessageType.ITEM_GET_ITEM_RESPONSE, role.getId());
 		itemService.fillItem(result, item);
 		System.out.println(result);
 
 		// 土地
 		item = itemService.createLand("L_TROPICS_G001");
-		result = messageService.createMessage(CoreModuleType.ROLE,
-				CoreModuleType.CLIENT, CoreMessageType.ITEM_GET_ITEM_RESPONSE,
-				role.getId());
+		result = messageService.createMessage(CoreModuleType.ROLE, CoreModuleType.CLIENT,
+				CoreMessageType.ITEM_GET_ITEM_RESPONSE, role.getId());
 		itemService.fillItem(result, item);
 		System.out.println(result);
 	}
@@ -400,8 +396,7 @@ public class ItemServiceImplTest extends ItemTestSupporter {
 		long beg = System.currentTimeMillis();
 		//
 		for (int i = 0; i < count; i++) {
-			result = messageService.createMessage(CoreModuleType.ROLE,
-					CoreModuleType.CLIENT, null, role.getId());
+			result = messageService.createMessage(CoreModuleType.ROLE, CoreModuleType.CLIENT, null, role.getId());
 			itemService.fillBagPen(result, bagPen);
 		}
 		//
@@ -416,41 +411,34 @@ public class ItemServiceImplTest extends ItemTestSupporter {
 		bagPen.lock(1);
 		bagPen.lock(2);
 		//
-		result = messageService.createMessage(CoreModuleType.ROLE,
-				CoreModuleType.CLIENT, null, role.getId());
+		result = messageService.createMessage(CoreModuleType.ROLE, CoreModuleType.CLIENT, null, role.getId());
 		itemService.fillBagPen(result, bagPen);
 		System.out.println(result);
 	}
 
-	@Test
 	/**
-	 * 測試包包未滿的狀況,檢查增加道具
+	 * 測試包包未滿的狀況 , 檢查增加道具
 	 */
-	// 1000000 times: 17058 mills.
+	@Test
+	@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
+	// round: 0.27 [+- 0.00], round.block: 0.00 [+- 0.00], round.gc: 0.00 [+-
+	// 0.00], GC.calls: 0, GC.time: 0.00, time.total: 0.27, time.warmup: 0.00,
+	// time.bench: 0.27
 	public void checkIncreaseItem() {
 		final String THING_ID = "T_POTION_HP_G001";
 		BagPen.ErrorType result = BagPen.ErrorType.NO_ERROR;
 		//
 		Role role = mockRole();
 		// 道具數量=10,最大堆疊數量=100,有120個道具
-		BagPen bagPen = BagPenImplTest.mockBagPenBySameThing(THING_ID);
+		BagPen bagPen = BagPenImplTest.mockBagPenWithSameThing(THING_ID);
 		bagPen.removeItem(0, 0);// 移除1個道具
 		role.setBagPen(bagPen);
 		//
 		Item item = itemService.createItem(THING_ID, 1);
 		// 最大堆疊數量=0,所以剩餘可放數量=Integer.MAX_VALUE
 		item.setMaxAmount(0);
-
-		int count = 1;
-		long beg = System.currentTimeMillis();
 		//
-		for (int i = 0; i < count; i++) {
-			result = itemService.checkIncreaseItem(role, item);
-		}
-		//
-		long end = System.currentTimeMillis();
-		System.out.println(count + " times: " + (end - beg) + " mills. ");
-
+		result = itemService.checkIncreaseItem(role, item);
 		System.out.println(result);
 		// 沒有錯誤
 		assertEquals(BagPen.ErrorType.NO_ERROR, result);
@@ -489,34 +477,28 @@ public class ItemServiceImplTest extends ItemTestSupporter {
 		assertEquals(BagPen.ErrorType.BAG_FULL, result);
 	}
 
-	@Test
-	// 1000000 times: 5374 mills.
 	/**
 	 * 測試包包滿的狀況,檢查增加道具
 	 */
-	public void checkIncreaseItemByBagFull() {
+	@Test
+	@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
+	// round: 0.34 [+- 0.00], round.block: 0.00 [+- 0.00], round.gc: 0.00 [+-
+	// 0.00], GC.calls: 0, GC.time: 0.00, time.total: 0.34, time.warmup: 0.00,
+	// time.bench: 0.34
+	public void checkIncreaseItemWithBagFull() {
 		final String THING_ID = "T_POTION_HP_G001";
 		BagPen.ErrorType result = BagPen.ErrorType.NO_ERROR;
 		//
 		Role role = mockRole();
 		// 道具數量=10,最大堆疊數量=100,有120個道具
-		BagPen bagPen = BagPenImplTest.mockBagPenBySameThing(THING_ID);
+		BagPen bagPen = BagPenImplTest.mockBagPenWithSameThing(THING_ID);
 		role.setBagPen(bagPen);
 		//
 		Item item = itemService.createItem(THING_ID, 1);
 		// 最大堆疊數量=0,所以剩餘可放數量=Integer.MAX_VALUE
 		item.setMaxAmount(0);
-
-		int count = 1;
-		long beg = System.currentTimeMillis();
 		//
-		for (int i = 0; i < count; i++) {
-			result = itemService.checkIncreaseItem(role, item);
-		}
-		//
-		long end = System.currentTimeMillis();
-		System.out.println(count + " times: " + (end - beg) + " mills. ");
-
+		result = itemService.checkIncreaseItem(role, item);
 		System.out.println(result);
 		// 沒有錯誤
 		assertEquals(BagPen.ErrorType.NO_ERROR, result);
@@ -537,43 +519,40 @@ public class ItemServiceImplTest extends ItemTestSupporter {
 		assertEquals(BagPen.ErrorType.BAG_FULL, result);
 	}
 
-	@Test
-	// 1000000 times: 8806 mills.
 	/**
 	 * 測試包包未滿的狀況,檢查放入道具
 	 */
-	public void checkIncreaseItemByItemId() {
+	@Test
+	@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
+	// round: 0.33 [+- 0.00], round.block: 0.00 [+- 0.00], round.gc: 0.00 [+-
+	// 0.00], GC.calls: 0, GC.time: 0.00, time.total: 0.33, time.warmup: 0.00,
+	// time.bench: 0.33
+	public void checkIncreaseItemWithItemId() {
 		final String THING_ID = "T_POTION_HP_G001";
 		BagPen.ErrorType result = BagPen.ErrorType.NO_ERROR;
 		//
 		Role role = mockRole();
 		// 道具數量=10,最大堆疊數量=100,有120個道具
-		BagPen bagPen = BagPenImplTest.mockBagPenBySameThing(THING_ID);
+		BagPen bagPen = BagPenImplTest.mockBagPenWithSameThing(THING_ID);
 		bagPen.removeItem(0, 0);// 移除1個道具
 		role.setBagPen(bagPen);
 		//
-		int count = 1;
-		long beg = System.currentTimeMillis();
-		//
-		for (int i = 0; i < count; i++) {
-			result = itemService.checkIncreaseItem(role, THING_ID, 1);
-		}
-		//
-		long end = System.currentTimeMillis();
-		System.out.println(count + " times: " + (end - beg) + " mills. ");
-
+		result = itemService.checkIncreaseItemWithItemId(role, THING_ID, 1);
 		System.out.println(result);
 		// 沒有錯誤
 		assertEquals(BagPen.ErrorType.NO_ERROR, result);
 
-		result = itemService.checkIncreaseItem(role, "T_NOT_EXIST_001", 1);
+		result = itemService.checkIncreaseItemWithItemId(role, "T_NOT_EXIST_001", 1);
 		System.out.println(result);
 		// 道具不存在
 		assertEquals(BagPen.ErrorType.ITEM_NOT_EXIST, result);
 	}
 
 	@Test
-	// 1000000 times: 17 mills.
+	@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
+	// round: 2.28 [+- 0.00], round.block: 0.00 [+- 0.00], round.gc: 0.00 [+-
+	// 0.00], GC.calls: 0, GC.time: 0.00, time.total: 2.28, time.warmup: 0.00,
+	// time.bench: 2.28
 	public void increaseItem() {
 		final String THING_ID = "T_POTION_HP_G001";// 治癒藥水
 		final String WEAPON_ID = "W_MARS_SWORD_E001";// E 級單手劍
@@ -582,7 +561,7 @@ public class ItemServiceImplTest extends ItemTestSupporter {
 		//
 		Role role = mockRole();
 		// 道具數量=10,最大堆疊數量=100,有120個道具
-		BagPen bagPen = BagPenImplTest.mockBagPenBySameThing(THING_ID);
+		BagPen bagPen = BagPenImplTest.mockBagPenWithSameThing(THING_ID);
 		bagPen.removeItem(0, 0);// 移除1個道具
 		role.setBagPen(bagPen);
 		//
@@ -590,15 +569,7 @@ public class ItemServiceImplTest extends ItemTestSupporter {
 		// 最大堆疊數量=0,所以剩餘可放數量=Integer.MAX_VALUE
 		item.setMaxAmount(0);
 
-		int count = 1;
-		long beg = System.currentTimeMillis();
-
-		for (int i = 0; i < count; i++) {
-			result = itemService.increaseItem(true, role, item);
-		}
-		//
-		long end = System.currentTimeMillis();
-		System.out.println(count + " times: " + (end - beg) + " mills. ");
+		result = itemService.increaseItem(true, role, item);
 
 		System.out.println(result);
 		// 沒有錯誤
@@ -674,43 +645,69 @@ public class ItemServiceImplTest extends ItemTestSupporter {
 		System.out.println(result);
 		assertTrue(result.size() > 0);
 		//
-		//ThreadHelper.sleep(3 * 1000);
+		ThreadHelper.sleep(3 * 1000);
 	}
 
 	@Test
-	// 1000000 times: 17 mills.
-	public void increaseItemByItemId() {
+	@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
+	// round: 0.86 [+- 0.00], round.block: 0.00 [+- 0.00], round.gc: 0.00 [+-
+	// 0.00], GC.calls: 0, GC.time: 0.00, time.total: 0.87, time.warmup: 0.01,
+	// time.bench: 0.86
+	public void increaseItemWithItemId() {
 		final String THING_ID = "T_POTION_HP_G001";
 		List<IncreaseItemResult> result = null;
 		//
 		Role role = mockRole();
 		// 道具數量=10,最大堆疊數量=100,有120個道具
-		BagPen bagPen = BagPenImplTest.mockBagPenBySameThing(THING_ID);
+		BagPen bagPen = BagPenImplTest.mockBagPenWithSameThing(THING_ID);
 		bagPen.removeItem(0, 0);// 移除1個道具
 		role.setBagPen(bagPen);
-		//
 		// 最大堆疊數量=0,所以剩餘可放數量=Integer.MAX_VALUE
-
-		int count = 1;
-		long beg = System.currentTimeMillis();
-
-		for (int i = 0; i < count; i++) {
-			result = itemService.increaseItem(true, role, THING_ID, 1);
-		}
-		//
-		long end = System.currentTimeMillis();
-		System.out.println(count + " times: " + (end - beg) + " mills. ");
-
+		result = itemService.increaseItemWithItemId(true, role, THING_ID, 1);
 		System.out.println(result);
 		// 沒有錯誤
 		assertNotNull(result);
 
-		result = itemService.increaseItem(true, role, "T_NOT_EXIST_001", 1);
+		result = itemService.increaseItemWithItemId(true, role, "T_NOT_EXIST_001", 1);
 		System.out.println(result);
 		// 道具不存在
 		assertTrue(result.size() == 0);
 		//
-		//ThreadHelper.sleep(3 * 1000);
+		ThreadHelper.sleep(3 * 1000);
+	}
+
+	@Test
+	@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
+	// round: 0.71 [+- 0.00], round.block: 0.00 [+- 0.00], round.gc: 0.00 [+-
+	// 0.00], GC.calls: 0, GC.time: 0.00, time.total: 0.71, time.warmup: 0.00,
+	// time.bench: 0.71
+	public void increaseItems() {
+		final String THING_ID = "T_POTION_HP_G001";
+		List<IncreaseItemResult> result = null;
+		//
+		Role role = mockRole();
+		// 道具數量=10,最大堆疊數量=100,有120個道具
+		BagPen bagPen = BagPenImplTest.mockBagPenWithSameThing(THING_ID);
+		bagPen.removeItem(0, 0);// 移除1個道具
+		role.setBagPen(bagPen);
+		//
+		Map<String, Integer> items = new LinkedHashMap<String, Integer>();
+		items.put(THING_ID, 10);
+
+		// 最大堆疊數量=0,所以剩餘可放數量=Integer.MAX_VALUE
+		result = itemService.increaseItems(true, role, items);
+		System.out.println(result);
+		// 沒有錯誤
+		assertNotNull(result);
+
+		items.clear();
+		items.put("T_NOT_EXIST_001", 10);
+		result = itemService.increaseItems(true, role, items);
+		System.out.println(result);
+		// 道具不存在
+		assertTrue(result.size() == 0);
+		//
+		ThreadHelper.sleep(3 * 1000);
 	}
 
 	@Test
@@ -730,8 +727,7 @@ public class ItemServiceImplTest extends ItemTestSupporter {
 		long beg = System.currentTimeMillis();
 
 		for (int i = 0; i < count; i++) {
-			result = messageService.createMessage(CoreModuleType.ROLE,
-					CoreModuleType.CLIENT,
+			result = messageService.createMessage(CoreModuleType.ROLE, CoreModuleType.CLIENT,
 					CoreMessageType.ITEM_INCREASE_RESPONSE, role.getId());
 			itemService.fillIncreaseItem(result, 0, 0, item);
 		}
@@ -750,7 +746,7 @@ public class ItemServiceImplTest extends ItemTestSupporter {
 		//
 		Role role = mockRole();
 		// 道具數量=10,最大堆疊數量=100,有120個道具
-		BagPen bagPen = BagPenImplTest.mockBagPenBySameThing(THING_ID);
+		BagPen bagPen = BagPenImplTest.mockBagPenWithSameThing(THING_ID);
 		bagPen.removeItem(0, 0);// 移除1個道具
 		role.setBagPen(bagPen);
 		//
@@ -793,7 +789,7 @@ public class ItemServiceImplTest extends ItemTestSupporter {
 		//
 		Role role = mockRole();
 		// 道具數量=10,最大堆疊數量=100,有120個道具
-		BagPen bagPen = BagPenImplTest.mockBagPenBySameThing(THING_ID);
+		BagPen bagPen = BagPenImplTest.mockBagPenWithSameThing(THING_ID);
 		bagPen.removeItem(0, 0);// 移除1個道具
 		role.setBagPen(bagPen);
 		//
@@ -832,7 +828,7 @@ public class ItemServiceImplTest extends ItemTestSupporter {
 		//
 		Role role = mockRole();
 		// 道具數量=10,最大堆疊數量=100,有120個道具
-		BagPen bagPen = BagPenImplTest.mockBagPenBySameThing(THING_ID);
+		BagPen bagPen = BagPenImplTest.mockBagPenWithSameThing(THING_ID);
 		bagPen.removeItem(0, 0);// 移除1個道具
 		role.setBagPen(bagPen);
 		Item item = bagPen.getItem(0, 1);
@@ -841,8 +837,7 @@ public class ItemServiceImplTest extends ItemTestSupporter {
 		long beg = System.currentTimeMillis();
 		//
 		for (int i = 0; i < count; i++) {
-			result = itemService.checkDecreaseItemByUniqueId(role,
-					item.getUniqueId(), 1);
+			result = itemService.checkDecreaseItemWithUniqueId(role, item.getUniqueId(), 1);
 		}
 		//
 		long end = System.currentTimeMillis();
@@ -852,15 +847,14 @@ public class ItemServiceImplTest extends ItemTestSupporter {
 		// 沒有錯誤
 		assertEquals(BagPen.ErrorType.NO_ERROR, result);
 
-		result = itemService.checkDecreaseItemByUniqueId(role, null, 1);
+		result = itemService.checkDecreaseItemWithUniqueId(role, null, 1);
 		System.out.println(result);
 		// 道具不存在
 		assertEquals(BagPen.ErrorType.ITEM_NOT_EXIST, result);
 
 		// 包包全清空
 		bagPen.clearTab();
-		result = itemService.checkDecreaseItemByUniqueId(role,
-				item.getUniqueId(), 1);
+		result = itemService.checkDecreaseItemWithUniqueId(role, item.getUniqueId(), 1);
 		System.out.println(result);
 		// 道具不存在
 		assertEquals(BagPen.ErrorType.ITEM_NOT_EXIST, result);
@@ -874,7 +868,7 @@ public class ItemServiceImplTest extends ItemTestSupporter {
 		//
 		Role role = mockRole();
 		// 道具數量=10,最大堆疊數量=100,有120個道具
-		BagPen bagPen = BagPenImplTest.mockBagPenBySameThing(THING_ID);
+		BagPen bagPen = BagPenImplTest.mockBagPenWithSameThing(THING_ID);
 		bagPen.removeItem(0, 0);// 移除1個道具
 		role.setBagPen(bagPen);
 		//
@@ -907,7 +901,7 @@ public class ItemServiceImplTest extends ItemTestSupporter {
 		// 沒有錯誤
 		assertNotNull(result);
 		//
-		//ThreadHelper.sleep(3 * 1000);
+		// ThreadHelper.sleep(3 * 1000);
 	}
 
 	@Test
@@ -918,7 +912,7 @@ public class ItemServiceImplTest extends ItemTestSupporter {
 		//
 		Role role = mockRole();
 		// 道具數量=10,最大堆疊數量=100,有120個道具
-		BagPen bagPen = BagPenImplTest.mockBagPenBySameThing(THING_ID);
+		BagPen bagPen = BagPenImplTest.mockBagPenWithSameThing(THING_ID);
 		bagPen.removeItem(0, 0);// 移除1個道具
 		role.setBagPen(bagPen);
 		//
@@ -943,7 +937,7 @@ public class ItemServiceImplTest extends ItemTestSupporter {
 		assertNotNull(result);
 		assertEquals(2, result.size());
 		//
-		//ThreadHelper.sleep(3 * 1000);
+		// ThreadHelper.sleep(3 * 1000);
 	}
 
 	@Test
@@ -954,7 +948,7 @@ public class ItemServiceImplTest extends ItemTestSupporter {
 		//
 		Role role = mockRole();
 		// 道具數量=10,最大堆疊數量=100,有120個道具
-		BagPen bagPen = BagPenImplTest.mockBagPenBySameThing(THING_ID);
+		BagPen bagPen = BagPenImplTest.mockBagPenWithSameThing(THING_ID);
 		bagPen.removeItem(0, 0);// 移除1個道具
 		role.setBagPen(bagPen);
 		Item item = bagPen.getItem(0, 1);
@@ -963,8 +957,7 @@ public class ItemServiceImplTest extends ItemTestSupporter {
 		long beg = System.currentTimeMillis();
 
 		for (int i = 0; i < count; i++) {
-			result = itemService.decreaseItemByUniqueId(true, role,
-					item.getUniqueId(), 1);
+			result = itemService.decreaseItemWithUniqueId(true, role, item.getUniqueId(), 1);
 		}
 		//
 		long end = System.currentTimeMillis();
@@ -974,7 +967,7 @@ public class ItemServiceImplTest extends ItemTestSupporter {
 		// 沒有錯誤
 		assertNotNull(result);
 		//
-		//ThreadHelper.sleep(3 * 1000);
+		// ThreadHelper.sleep(3 * 1000);
 	}
 
 	@Test
@@ -1011,17 +1004,15 @@ public class ItemServiceImplTest extends ItemTestSupporter {
 		//
 		Role role = mockRole();
 		Equipment equipment = itemService.createEquipment("W_MARS_SWORD_E001");
-		System.out.println(equipment.getEnhanceLevel() + ", "
-				+ equipment.getAttributeGroup());
+		System.out.println(equipment.getEnhanceLevel() + ", " + equipment.getAttributeGroup());
 		//
-		int count = 1; 
+		int count = 1;
 		long beg = System.currentTimeMillis();
 		//
 		int times = 0;
 		for (int i = 0; i < count; i++) {
 			// 一般強化,若失敗,裝備消失
-			result = itemService.enhanceEquipment(false, role, equipment,
-					EnhanceType.GENERAL);
+			result = itemService.enhanceEquipment(false, role, equipment, EnhanceType.GENERAL);
 			if (result != null && result.isSuccess()) {
 				times += 1;
 			}
@@ -1032,8 +1023,7 @@ public class ItemServiceImplTest extends ItemTestSupporter {
 
 		System.out.println(result);
 		System.out.println("成功: " + times);
-		System.out.println(equipment.getEnhanceLevel() + ", "
-				+ equipment.getAttributeGroup());
+		System.out.println(equipment.getEnhanceLevel() + ", " + equipment.getAttributeGroup());
 	}
 
 	@Test
@@ -1045,17 +1035,15 @@ public class ItemServiceImplTest extends ItemTestSupporter {
 		//
 		Role role = mockRole();
 		Equipment equipment = itemService.createEquipment("W_MARS_SWORD_E001");
-		System.out.println(equipment.getEnhanceLevel() + ", "
-				+ equipment.getAttributeGroup());
+		System.out.println(equipment.getEnhanceLevel() + ", " + equipment.getAttributeGroup());
 		//
-		int count = 1; 
+		int count = 1;
 		long beg = System.currentTimeMillis();
 		//
 		int times = 0;
 		for (int i = 0; i < count; i++) {
 			// 祝福強化,若失敗,強化歸0,裝備還在
-			result = itemService.enhanceEquipment(false, role, equipment,
-					EnhanceType.BLESS);
+			result = itemService.enhanceEquipment(false, role, equipment, EnhanceType.BLESS);
 			if (result != null && result.isSuccess()) {
 				times += 1;
 			}
@@ -1066,8 +1054,7 @@ public class ItemServiceImplTest extends ItemTestSupporter {
 
 		System.out.println(result);
 		System.out.println("成功: " + times);
-		System.out.println(equipment.getEnhanceLevel() + ", "
-				+ equipment.getAttributeGroup());
+		System.out.println(equipment.getEnhanceLevel() + ", " + equipment.getAttributeGroup());
 	}
 
 	@Test
@@ -1079,17 +1066,15 @@ public class ItemServiceImplTest extends ItemTestSupporter {
 		//
 		Role role = mockRole();
 		Equipment equipment = itemService.createEquipment("W_MARS_SWORD_E001");
-		System.out.println(equipment.getEnhanceLevel() + ", "
-				+ equipment.getAttributeGroup());
+		System.out.println(equipment.getEnhanceLevel() + ", " + equipment.getAttributeGroup());
 		//
-		int count = 1; 
+		int count = 1;
 		long beg = System.currentTimeMillis();
 		//
 		int times = 0;
 		for (int i = 0; i < count; i++) {
 			// 幻想強化,若失敗,保有原本強化,不歸0,裝備還在
-			result = itemService.enhanceEquipment(false, role, equipment,
-					EnhanceType.FANTASY);
+			result = itemService.enhanceEquipment(false, role, equipment, EnhanceType.FANTASY);
 			if (result != null && result.isSuccess()) {
 				times += 1;
 			}
@@ -1100,8 +1085,7 @@ public class ItemServiceImplTest extends ItemTestSupporter {
 
 		System.out.println(result);
 		System.out.println("成功: " + times);
-		System.out.println(equipment.getEnhanceLevel() + ", "
-				+ equipment.getAttributeGroup());
+		System.out.println(equipment.getEnhanceLevel() + ", " + equipment.getAttributeGroup());
 	}
 
 	@Test
@@ -1112,19 +1096,16 @@ public class ItemServiceImplTest extends ItemTestSupporter {
 		EnhanceResult result = null;
 		//
 		Role role = mockRole();
-		Equipment equipment = itemService
-				.createEquipment("A_MARS_BODY_HEAD_E001");
-		System.out.println(equipment.getEnhanceLevel() + ", "
-				+ equipment.getAttributeGroup());
+		Equipment equipment = itemService.createEquipment("A_MARS_BODY_HEAD_E001");
+		System.out.println(equipment.getEnhanceLevel() + ", " + equipment.getAttributeGroup());
 		//
-		int count = 1; 
+		int count = 1;
 		long beg = System.currentTimeMillis();
 		//
 		int times = 0;
 		for (int i = 0; i < count; i++) {
 			// 幻想強化,若失敗,保有原本強化,不歸0,裝備還在
-			result = itemService.enhanceEquipment(false, role, equipment,
-					EnhanceType.FANTASY);
+			result = itemService.enhanceEquipment(false, role, equipment, EnhanceType.FANTASY);
 			if (result != null && result.isSuccess()) {
 				times += 1;
 			}
@@ -1135,8 +1116,7 @@ public class ItemServiceImplTest extends ItemTestSupporter {
 
 		System.out.println(result);
 		System.out.println("成功: " + times);
-		System.out.println(equipment.getEnhanceLevel() + ", "
-				+ equipment.getAttributeGroup());
+		System.out.println(equipment.getEnhanceLevel() + ", " + equipment.getAttributeGroup());
 	}
 
 	@Test
@@ -1147,12 +1127,11 @@ public class ItemServiceImplTest extends ItemTestSupporter {
 	 */
 	public void calcEnhanceAttributes() {
 		Equipment equipment = itemService.createEquipment("W_MARS_SWORD_E001");
-		System.out.println(equipment.getEnhanceLevel() + ", "
-				+ equipment.getAttributeGroup());
+		System.out.println(equipment.getEnhanceLevel() + ", " + equipment.getAttributeGroup());
 		// +1
 		equipment.setEnhanceLevel(EnhanceLevel._1);
 		//
-		int count = 1; 
+		int count = 1;
 		long beg = System.currentTimeMillis();
 		//
 		for (int i = 0; i < count; i++) {
@@ -1161,14 +1140,12 @@ public class ItemServiceImplTest extends ItemTestSupporter {
 		//
 		long end = System.currentTimeMillis();
 		System.out.println(count + " times: " + (end - beg) + " mills. ");
-		System.out.println(equipment.getEnhanceLevel() + ", "
-				+ equipment.getAttributeGroup());
+		System.out.println(equipment.getEnhanceLevel() + ", " + equipment.getAttributeGroup());
 
 		// +7
 		equipment.setEnhanceLevel(EnhanceLevel._7);
 		itemService.calcEnhanceAttributes(equipment);
-		System.out.println(equipment.getEnhanceLevel() + ", "
-				+ equipment.getAttributeGroup());
+		System.out.println(equipment.getEnhanceLevel() + ", " + equipment.getAttributeGroup());
 		//
 
 	}
@@ -1179,7 +1156,7 @@ public class ItemServiceImplTest extends ItemTestSupporter {
 		Equipment equipment = itemService.createEquipment("W_MARS_SWORD_E001");
 		EnhanceResult enhanceResult = new EnhanceResultImpl();
 		//
-		int count = 1; 
+		int count = 1;
 		long beg = System.currentTimeMillis();
 
 		for (int i = 0; i < count; i++) {
@@ -1197,12 +1174,11 @@ public class ItemServiceImplTest extends ItemTestSupporter {
 		Role role = mockRole();
 		Equipment equipment = itemService.createEquipment("W_MARS_SWORD_E001");
 		//
-		int count = 1; 
+		int count = 1;
 		long beg = System.currentTimeMillis();
 
 		for (int i = 0; i < count; i++) {
-			result = messageService.createMessage(CoreModuleType.ITEM,
-					CoreModuleType.CLIENT,
+			result = messageService.createMessage(CoreModuleType.ITEM, CoreModuleType.CLIENT,
 					CoreMessageType.ITEM_ENHANCE_RESPONSE, role.getId());
 			itemService.fillEnhance(result, equipment);
 		}
@@ -1226,7 +1202,7 @@ public class ItemServiceImplTest extends ItemTestSupporter {
 		attribute.setPoint(99);
 		equipment.getAttributeGroup().addAttribute(attribute);
 		//
-		int count = 1; 
+		int count = 1;
 		long beg = System.currentTimeMillis();
 
 		for (int i = 0; i < count; i++) {
@@ -1237,8 +1213,7 @@ public class ItemServiceImplTest extends ItemTestSupporter {
 		System.out.println(count + " times: " + (end - beg) + " mills. ");
 		//
 		System.out.println(result);
-		System.out.println(equipment.getEnhanceLevel() + ", "
-				+ equipment.getAttributeGroup());
+		System.out.println(equipment.getEnhanceLevel() + ", " + equipment.getAttributeGroup());
 	}
 
 	@Test
@@ -1246,7 +1221,7 @@ public class ItemServiceImplTest extends ItemTestSupporter {
 		Role role = mockRole();
 		Equipment equipment = itemService.createEquipment("W_MARS_SWORD_E001");
 		//
-		int count = 1; 
+		int count = 1;
 		long beg = System.currentTimeMillis();
 
 		for (int i = 0; i < count; i++) {
@@ -1266,17 +1241,15 @@ public class ItemServiceImplTest extends ItemTestSupporter {
 		//
 		Role role = mockRole();
 		Land land = itemService.createLand("L_TROPICS_G001");
-		System.out.println(land.getEnhanceLevel() + ", "
-				+ land.getAttributeGroup());
+		System.out.println(land.getEnhanceLevel() + ", " + land.getAttributeGroup());
 		//
-		int count = 1; 
+		int count = 1;
 		long beg = System.currentTimeMillis();
 		//
 		int times = 0;
 		for (int i = 0; i < count; i++) {
 			// 一般強化,若失敗,土地消失
-			result = itemService.enhanceLand(false, role, land,
-					EnhanceType.GENERAL);
+			result = itemService.enhanceLand(false, role, land, EnhanceType.GENERAL);
 			if (result != null && result.isSuccess()) {
 				times += 1;
 			}
@@ -1287,8 +1260,7 @@ public class ItemServiceImplTest extends ItemTestSupporter {
 
 		System.out.println(result);
 		System.out.println("成功: " + times);
-		System.out.println(land.getEnhanceLevel() + ", "
-				+ land.getAttributeGroup());
+		System.out.println(land.getEnhanceLevel() + ", " + land.getAttributeGroup());
 	}
 
 	@Test
@@ -1298,46 +1270,40 @@ public class ItemServiceImplTest extends ItemTestSupporter {
 		Role role = mockRole();
 		// +0
 		Equipment equipment = itemService.createEquipment("W_MARS_SWORD_E001");
-		System.out.println(equipment.getEnhanceLevel() + ", "
-				+ equipment.getAttributeGroup());
+		System.out.println(equipment.getEnhanceLevel() + ", " + equipment.getAttributeGroup());
 		//
 		result = itemService.changeEnhance(true, role, equipment, -1);
 		// +0
 		System.out.println(result);
-		System.out.println(equipment.getEnhanceLevel() + ", "
-				+ equipment.getAttributeGroup());
+		System.out.println(equipment.getEnhanceLevel() + ", " + equipment.getAttributeGroup());
 		assertEquals(0, result);
 		assertEquals(0, equipment.getEnhanceLevel().getValue());
 
 		// +7
 		result = itemService.changeEnhance(true, role, equipment, 7);
 		System.out.println(result);
-		System.out.println(equipment.getEnhanceLevel() + ", "
-				+ equipment.getAttributeGroup());
+		System.out.println(equipment.getEnhanceLevel() + ", " + equipment.getAttributeGroup());
 		assertEquals(7, result);
 		assertEquals(7, equipment.getEnhanceLevel().getValue());
 
 		// -1
 		result = itemService.changeEnhance(true, role, equipment, -1);
 		System.out.println(result);
-		System.out.println(equipment.getEnhanceLevel() + ", "
-				+ equipment.getAttributeGroup());
+		System.out.println(equipment.getEnhanceLevel() + ", " + equipment.getAttributeGroup());
 		assertEquals(-1, result);
 		assertEquals(6, equipment.getEnhanceLevel().getValue());
 
 		// -7 變為-1 => 0
 		result = itemService.changeEnhance(true, role, equipment, -7);
 		System.out.println(result);
-		System.out.println(equipment.getEnhanceLevel() + ", "
-				+ equipment.getAttributeGroup());
+		System.out.println(equipment.getEnhanceLevel() + ", " + equipment.getAttributeGroup());
 		assertEquals(-6, result);
 		assertEquals(0, equipment.getEnhanceLevel().getValue());
 
 		// +31 > 最高30 => 30
 		result = itemService.changeEnhance(true, role, equipment, 31);
 		System.out.println(result);
-		System.out.println(equipment.getEnhanceLevel() + ", "
-				+ equipment.getAttributeGroup());
+		System.out.println(equipment.getEnhanceLevel() + ", " + equipment.getAttributeGroup());
 		assertEquals(30, result);
 		assertEquals(30, equipment.getEnhanceLevel().getValue());
 	}
@@ -1349,10 +1315,9 @@ public class ItemServiceImplTest extends ItemTestSupporter {
 		Role role = mockRole();
 		// +0
 		Land land = itemService.createLand("L_TROPICS_G001");
-		System.out.println(land.getEnhanceLevel() + ", "
-				+ land.getAttributeGroup());
+		System.out.println(land.getEnhanceLevel() + ", " + land.getAttributeGroup());
 		//
-		int count = 1; 
+		int count = 1;
 		long beg = System.currentTimeMillis();
 		//
 		for (int i = 0; i < count; i++) {
@@ -1364,40 +1329,35 @@ public class ItemServiceImplTest extends ItemTestSupporter {
 
 		// +0
 		System.out.println(result);
-		System.out.println(land.getEnhanceLevel() + ", "
-				+ land.getAttributeGroup());
+		System.out.println(land.getEnhanceLevel() + ", " + land.getAttributeGroup());
 		assertEquals(0, result);
 		assertEquals(0, land.getEnhanceLevel().getValue());
 
 		// +7
 		result = itemService.changeEnhance(true, role, land, 7);
 		System.out.println(result);
-		System.out.println(land.getEnhanceLevel() + ", "
-				+ land.getAttributeGroup());
+		System.out.println(land.getEnhanceLevel() + ", " + land.getAttributeGroup());
 		assertEquals(7, result);
 		assertEquals(7, land.getEnhanceLevel().getValue());
 
 		// -1
 		result = itemService.changeEnhance(true, role, land, -1);
 		System.out.println(result);
-		System.out.println(land.getEnhanceLevel() + ", "
-				+ land.getAttributeGroup());
+		System.out.println(land.getEnhanceLevel() + ", " + land.getAttributeGroup());
 		assertEquals(-1, result);
 		assertEquals(6, land.getEnhanceLevel().getValue());
 
 		// -7 變為-1 => 0
 		result = itemService.changeEnhance(true, role, land, -7);
 		System.out.println(result);
-		System.out.println(land.getEnhanceLevel() + ", "
-				+ land.getAttributeGroup());
+		System.out.println(land.getEnhanceLevel() + ", " + land.getAttributeGroup());
 		assertEquals(-6, result);
 		assertEquals(0, land.getEnhanceLevel().getValue());
 
 		// +31 > 最高30 => 30
 		result = itemService.changeEnhance(true, role, land, 31);
 		System.out.println(result);
-		System.out.println(land.getEnhanceLevel() + ", "
-				+ land.getAttributeGroup());
+		System.out.println(land.getEnhanceLevel() + ", " + land.getAttributeGroup());
 		assertEquals(30, result);
 		assertEquals(30, land.getEnhanceLevel().getValue());
 	}
@@ -1411,17 +1371,15 @@ public class ItemServiceImplTest extends ItemTestSupporter {
 		//
 		Role role = mockRole();
 		Land land = itemService.createLand("L_TROPICS_G001");
-		System.out.println(land.getEnhanceLevel() + ", "
-				+ land.getAttributeGroup());
+		System.out.println(land.getEnhanceLevel() + ", " + land.getAttributeGroup());
 		//
-		int count = 1; 
+		int count = 1;
 		long beg = System.currentTimeMillis();
 		//
 		int times = 0;
 		for (int i = 0; i < count; i++) {
 			// 祝福強化,若失敗,強化歸0,土地還在
-			result = itemService.enhanceLand(false, role, land,
-					EnhanceType.BLESS);
+			result = itemService.enhanceLand(false, role, land, EnhanceType.BLESS);
 			if (result != null && result.isSuccess()) {
 				times += 1;
 			}
@@ -1432,8 +1390,7 @@ public class ItemServiceImplTest extends ItemTestSupporter {
 
 		System.out.println(result);
 		System.out.println("成功: " + times);
-		System.out.println(land.getEnhanceLevel() + ", "
-				+ land.getAttributeGroup());
+		System.out.println(land.getEnhanceLevel() + ", " + land.getAttributeGroup());
 	}
 
 	@Test
@@ -1445,17 +1402,15 @@ public class ItemServiceImplTest extends ItemTestSupporter {
 		//
 		Role role = mockRole();
 		Land land = itemService.createLand("L_TROPICS_G001");
-		System.out.println(land.getEnhanceLevel() + ", "
-				+ land.getAttributeGroup());
+		System.out.println(land.getEnhanceLevel() + ", " + land.getAttributeGroup());
 		//
-		int count = 1; 
+		int count = 1;
 		long beg = System.currentTimeMillis();
 		//
 		int times = 0;
 		for (int i = 0; i < count; i++) {
 			// 幻想強化,若失敗,保有原本強化,不歸0,土地還在
-			result = itemService.enhanceLand(false, role, land,
-					EnhanceType.FANTASY);
+			result = itemService.enhanceLand(false, role, land, EnhanceType.FANTASY);
 			if (result != null && result.isSuccess()) {
 				times += 1;
 			}
@@ -1466,8 +1421,7 @@ public class ItemServiceImplTest extends ItemTestSupporter {
 
 		System.out.println(result);
 		System.out.println("成功: " + times);
-		System.out.println(land.getEnhanceLevel() + ", "
-				+ land.getAttributeGroup());
+		System.out.println(land.getEnhanceLevel() + ", " + land.getAttributeGroup());
 	}
 
 	@Test
@@ -1488,21 +1442,17 @@ public class ItemServiceImplTest extends ItemTestSupporter {
 		itemService.increaseItem(false, role, armor);
 
 		// 使用道具強化
-		itemService.useItem(true, role, armor.getUniqueId(),
-				armorE_G001.getUniqueId(), 1);
+		itemService.useItem(true, role, armor.getUniqueId(), armorE_G001.getUniqueId(), 1);
 		// 扣1個道具,剩9個
-		assertEquals(9, role.getBagPen().getItem(armorE_G001.getUniqueId())
-				.getAmount());
+		assertEquals(9, role.getBagPen().getItem(armorE_G001.getUniqueId()).getAmount());
 
 		// 強化武器
 		// 10個e武捲放包包
-		Item weaponE_G001 = itemService.createItem("T_ENHANCE_WEAPON_E_G001",
-				10);
+		Item weaponE_G001 = itemService.createItem("T_ENHANCE_WEAPON_E_G001", 10);
 		itemService.increaseItem(false, role, weaponE_G001);
 
 		// 10個d武捲放包包
-		Item weaponD_G001 = itemService.createItem("T_ENHANCE_WEAPON_D_G001",
-				10);
+		Item weaponD_G001 = itemService.createItem("T_ENHANCE_WEAPON_D_G001", 10);
 		itemService.increaseItem(false, role, weaponD_G001);
 
 		// 1件武器放包包
@@ -1510,11 +1460,9 @@ public class ItemServiceImplTest extends ItemTestSupporter {
 		itemService.increaseItem(false, role, weapon);
 
 		// 使用道具強化
-		itemService.useItem(true, role, weapon.getUniqueId(),
-				weaponE_G001.getUniqueId(), 1);
+		itemService.useItem(true, role, weapon.getUniqueId(), weaponE_G001.getUniqueId(), 1);
 		// 扣1個道具,剩9個
-		assertEquals(9, role.getBagPen().getItem(weaponE_G001.getUniqueId())
-				.getAmount());
+		assertEquals(9, role.getBagPen().getItem(weaponE_G001.getUniqueId()).getAmount());
 
 		// 強化土地
 		// 10個土地捲放包包
@@ -1526,11 +1474,9 @@ public class ItemServiceImplTest extends ItemTestSupporter {
 		itemService.increaseItem(false, role, land);
 
 		// 使用道具強化
-		itemService.useItem(true, role, land.getUniqueId(), landG001.getUniqueId(),
-				1);
+		itemService.useItem(true, role, land.getUniqueId(), landG001.getUniqueId(), 1);
 		// 扣1個道具,剩9個
-		assertEquals(9, role.getBagPen().getItem(landG001.getUniqueId())
-				.getAmount());
+		assertEquals(9, role.getBagPen().getItem(landG001.getUniqueId()).getAmount());
 
 	}
 
@@ -1546,7 +1492,7 @@ public class ItemServiceImplTest extends ItemTestSupporter {
 		Item armorE = itemService.createItem("T_ENHANCE_ARMOR_E_G001", 10);
 		itemService.increaseItem(false, role, armorE);
 		//
-		int count = 1; 
+		int count = 1;
 		long beg = System.currentTimeMillis();
 		//
 		for (int i = 0; i < count; i++) {
@@ -1607,45 +1553,38 @@ public class ItemServiceImplTest extends ItemTestSupporter {
 		itemService.increaseItem(false, role, armor);
 
 		// 使用道具
-		result = itemService.useEnhanceArmorThing(true, role,
-				armor.getUniqueId(), armorE_G001);
+		result = itemService.useEnhanceArmorThing(true, role, armor.getUniqueId(), armorE_G001);
 		//
 		System.out.println(result);
 		assertEquals(ErrorType.NO_ERROR, result);
 
 		// 扣1個道具,剩9個
-		assertEquals(9, role.getBagPen().getItem(armorE_G001.getUniqueId())
-				.getAmount());
+		assertEquals(9, role.getBagPen().getItem(armorE_G001.getUniqueId()).getAmount());
 
 		// 不是防具,無法強化
-		result = itemService.useEnhanceArmorThing(true, role,
-				weapon.getUniqueId(), armorE_G001);
+		result = itemService.useEnhanceArmorThing(true, role, weapon.getUniqueId(), armorE_G001);
 		System.out.println(result);
 		assertEquals(ErrorType.EQUIPMENT_NOT_VALID, result);
 
 		// 不是強化防具道具,無法強化
-		result = itemService.useEnhanceArmorThing(true, role,
-				armor.getUniqueId(), potionHp);
+		result = itemService.useEnhanceArmorThing(true, role, armor.getUniqueId(), potionHp);
 		System.out.println(result);
 		assertEquals(ErrorType.ITEM_NOT_VALID, result);
 
 		// 強化道具等級與裝備等級不符,無法強化
-		result = itemService.useEnhanceArmorThing(true, role,
-				armor.getUniqueId(), armorD_G001);
+		result = itemService.useEnhanceArmorThing(true, role, armor.getUniqueId(), armorD_G001);
 		System.out.println(result);
 		assertEquals(ErrorType.EQUIPMENT_LEVEL_NOT_VALID, result);
 
 		// 超過最高強化等級
 		armor.setEnhanceLevel(EnhanceLevel._15);// +15
-		result = itemService.useEnhanceArmorThing(true, role,
-				armor.getUniqueId(), armorE_G001);
+		result = itemService.useEnhanceArmorThing(true, role, armor.getUniqueId(), armorE_G001);
 		System.out.println(result);
 		assertEquals(ErrorType.OVER_MAX_ENHANCE_LEVEL, result);
 
 		// 超過幻想強化,強化等級限制
 		armor.setEnhanceLevel(EnhanceLevel._9);// +9
-		result = itemService.useEnhanceArmorThing(true, role,
-				armor.getUniqueId(), armorE_F001);
+		result = itemService.useEnhanceArmorThing(true, role, armor.getUniqueId(), armorE_F001);
 		System.out.println(result);
 		assertEquals(ErrorType.OVER_FANTASY_ENHANCE_LEVEL, result);
 	}
@@ -1656,18 +1595,15 @@ public class ItemServiceImplTest extends ItemTestSupporter {
 		//
 		Role role = mockRole();
 		// 10個e武捲放包包
-		Item weaponE_G001 = itemService.createItem("T_ENHANCE_WEAPON_E_G001",
-				10);
+		Item weaponE_G001 = itemService.createItem("T_ENHANCE_WEAPON_E_G001", 10);
 		itemService.increaseItem(false, role, weaponE_G001);
 
 		// 10個幻想e武捲放包包
-		Item weaponE_F001 = itemService.createItem("T_ENHANCE_WEAPON_E_F001",
-				10);
+		Item weaponE_F001 = itemService.createItem("T_ENHANCE_WEAPON_E_F001", 10);
 		itemService.increaseItem(false, role, weaponE_F001);
 
 		// 10個d武捲放包包
-		Item weaponD_G001 = itemService.createItem("T_ENHANCE_WEAPON_D_G001",
-				10);
+		Item weaponD_G001 = itemService.createItem("T_ENHANCE_WEAPON_D_G001", 10);
 		itemService.increaseItem(false, role, weaponD_G001);
 
 		// 10個藥水放包包
@@ -1683,39 +1619,32 @@ public class ItemServiceImplTest extends ItemTestSupporter {
 		itemService.increaseItem(false, role, armor);
 
 		// 使用道具
-		result = itemService.useEnhanceWeaponThing(true, role,
-				weapon.getUniqueId(), weaponE_G001);
+		result = itemService.useEnhanceWeaponThing(true, role, weapon.getUniqueId(), weaponE_G001);
 		//
 		System.out.println(result);
 		assertEquals(ErrorType.NO_ERROR, result);
 
 		// 扣1個道具,剩9個
-		assertEquals(9, role.getBagPen().getItem(weaponE_G001.getUniqueId())
-				.getAmount());
+		assertEquals(9, role.getBagPen().getItem(weaponE_G001.getUniqueId()).getAmount());
 
 		// 不是武器,無法強化
-		result = itemService.useEnhanceWeaponThing(true, role,
-				armor.getUniqueId(), weaponE_G001);
+		result = itemService.useEnhanceWeaponThing(true, role, armor.getUniqueId(), weaponE_G001);
 		System.out.println(result);
 		assertEquals(ErrorType.EQUIPMENT_NOT_VALID, result);
 
 		// 不是強化武器道具,無法強化
-		result = itemService.useEnhanceWeaponThing(true, role,
-				weapon.getUniqueId(), potionHp);
+		result = itemService.useEnhanceWeaponThing(true, role, weapon.getUniqueId(), potionHp);
 		System.out.println(result);
 		assertEquals(ErrorType.ITEM_NOT_VALID, result);
 
 		// 強化道具等級與裝備等級不符,無法強化
-		result = itemService.useEnhanceWeaponThing(true, role,
-				weapon.getUniqueId(), weaponD_G001);
+		result = itemService.useEnhanceWeaponThing(true, role, weapon.getUniqueId(), weaponD_G001);
 		System.out.println(result);
 		assertEquals(ErrorType.EQUIPMENT_LEVEL_NOT_VALID, result);
 
 		// 直接改變強化,到最高強化等級
-		itemService.changeEnhance(false, role, weapon, WeaponCollector
-				.getInstance().getMaxEnhanceLevel().getValue());// +30
-		result = itemService.useEnhanceWeaponThing(true, role,
-				weapon.getUniqueId(), weaponE_G001);
+		itemService.changeEnhance(false, role, weapon, WeaponCollector.getInstance().getMaxEnhanceLevel().getValue());// +30
+		result = itemService.useEnhanceWeaponThing(true, role, weapon.getUniqueId(), weaponE_G001);
 		System.out.println(result);
 		// 超過最高強化等級
 		assertEquals(ErrorType.OVER_MAX_ENHANCE_LEVEL, result);
@@ -1723,10 +1652,9 @@ public class ItemServiceImplTest extends ItemTestSupporter {
 		// 清除強化
 		itemService.unenhance(false, role, weapon);
 		// 直接改變強化,到最高幻想強化等級
-		itemService.changeEnhance(false, role, weapon, WeaponCollector
-				.getInstance().getFantasyEnhanceLevel().getValue());// +15
-		result = itemService.useEnhanceWeaponThing(true, role,
-				weapon.getUniqueId(), weaponE_F001);
+		itemService.changeEnhance(false, role, weapon,
+				WeaponCollector.getInstance().getFantasyEnhanceLevel().getValue());// +15
+		result = itemService.useEnhanceWeaponThing(true, role, weapon.getUniqueId(), weaponE_F001);
 		System.out.println(result);
 		// 超過幻想強化,強化等級限制
 		assertEquals(ErrorType.OVER_FANTASY_ENHANCE_LEVEL, result);
@@ -1758,34 +1686,28 @@ public class ItemServiceImplTest extends ItemTestSupporter {
 		itemService.increaseItem(false, role, armor);
 
 		// 使用道具
-		result = itemService.useEnhanceLandThing(true, role,
-				land.getUniqueId(), landG001);
+		result = itemService.useEnhanceLandThing(true, role, land.getUniqueId(), landG001);
 		//
 		System.out.println(result);
 		assertEquals(ErrorType.NO_ERROR, result);
 
 		// 扣1個道具,剩9個
-		assertEquals(9, role.getBagPen().getItem(landG001.getUniqueId())
-				.getAmount());
+		assertEquals(9, role.getBagPen().getItem(landG001.getUniqueId()).getAmount());
 
 		// 不是土地,無法強化
-		result = itemService.useEnhanceLandThing(true, role,
-				armor.getUniqueId(), landG001);
+		result = itemService.useEnhanceLandThing(true, role, armor.getUniqueId(), landG001);
 		System.out.println(result);
 		assertEquals(ErrorType.LAND_NOT_VALID, result);
 
 		// 不是強化土地道具,無法強化
-		result = itemService.useEnhanceLandThing(true, role,
-				land.getUniqueId(), potionHp);
+		result = itemService.useEnhanceLandThing(true, role, land.getUniqueId(), potionHp);
 		System.out.println(result);
 		assertEquals(ErrorType.ITEM_NOT_VALID, result);
 
 		// 直接改變強化,到最高強化等級
-		itemService.changeEnhance(false, role, land, ManorCollector
-				.getInstance().getMaxEnhanceLevel().getValue());// +30
+		itemService.changeEnhance(false, role, land, ManorCollector.getInstance().getMaxEnhanceLevel().getValue());// +30
 
-		result = itemService.useEnhanceLandThing(true, role,
-				land.getUniqueId(), landG001);
+		result = itemService.useEnhanceLandThing(true, role, land.getUniqueId(), landG001);
 		System.out.println(result);
 		// 超過最高強化等級
 		assertEquals(ErrorType.OVER_MAX_ENHANCE_LEVEL, result);
@@ -1816,14 +1738,12 @@ public class ItemServiceImplTest extends ItemTestSupporter {
 		//
 		System.out.println(result);
 		assertEquals(ErrorType.NO_ERROR, result);
-		assertEquals(8, role.getBagPen().getItem(itemG001.getUniqueId())
-				.getAmount());
+		assertEquals(8, role.getBagPen().getItem(itemG001.getUniqueId()).getAmount());
 		//
 		result = itemService.useRoleExpThing(true, role, itemG001, 7);
 		System.out.println(result);
 		assertEquals(ErrorType.NO_ERROR, result);
-		assertEquals(1, role.getBagPen().getItem(itemG001.getUniqueId())
-				.getAmount());
+		assertEquals(1, role.getBagPen().getItem(itemG001.getUniqueId()).getAmount());
 
 		// 使用道具,想願經驗之力
 		for (int i = 0; i < 2; i++) {
@@ -1832,14 +1752,12 @@ public class ItemServiceImplTest extends ItemTestSupporter {
 		//
 		System.out.println(result);
 		assertEquals(ErrorType.NO_ERROR, result);
-		assertEquals(8, role.getBagPen().getItem(itemG002.getUniqueId())
-				.getAmount());
+		assertEquals(8, role.getBagPen().getItem(itemG002.getUniqueId()).getAmount());
 		//
 		result = itemService.useRoleExpThing(true, role, itemG002, 7);
 		System.out.println(result);
 		assertEquals(ErrorType.NO_ERROR, result);
-		assertEquals(1, role.getBagPen().getItem(itemG002.getUniqueId())
-				.getAmount());
+		assertEquals(1, role.getBagPen().getItem(itemG002.getUniqueId()).getAmount());
 
 		// 使用道具,憧憬經驗之力
 		for (int i = 0; i < 2; i++) {
@@ -1848,14 +1766,12 @@ public class ItemServiceImplTest extends ItemTestSupporter {
 		//
 		System.out.println(result);
 		assertEquals(ErrorType.NO_ERROR, result);
-		assertEquals(8, role.getBagPen().getItem(itemG003.getUniqueId())
-				.getAmount());
+		assertEquals(8, role.getBagPen().getItem(itemG003.getUniqueId()).getAmount());
 		//
 		result = itemService.useRoleExpThing(true, role, itemG003, 7);
 		System.out.println(result);
 		assertEquals(ErrorType.NO_ERROR, result);
-		assertEquals(1, role.getBagPen().getItem(itemG003.getUniqueId())
-				.getAmount());
+		assertEquals(1, role.getBagPen().getItem(itemG003.getUniqueId()).getAmount());
 	}
 
 	@Test
@@ -1883,14 +1799,12 @@ public class ItemServiceImplTest extends ItemTestSupporter {
 		//
 		System.out.println(result);
 		assertEquals(ErrorType.NO_ERROR, result);
-		assertEquals(8, role.getBagPen().getItem(itemG001.getUniqueId())
-				.getAmount());
+		assertEquals(8, role.getBagPen().getItem(itemG001.getUniqueId()).getAmount());
 		//
 		result = itemService.useRoleSpThing(true, role, itemG001, 7);
 		System.out.println(result);
 		assertEquals(ErrorType.NO_ERROR, result);
-		assertEquals(1, role.getBagPen().getItem(itemG001.getUniqueId())
-				.getAmount());
+		assertEquals(1, role.getBagPen().getItem(itemG001.getUniqueId()).getAmount());
 
 		// 使用道具,想願技魂之力
 		for (int i = 0; i < 2; i++) {
@@ -1899,14 +1813,12 @@ public class ItemServiceImplTest extends ItemTestSupporter {
 		//
 		System.out.println(result);
 		assertEquals(ErrorType.NO_ERROR, result);
-		assertEquals(8, role.getBagPen().getItem(itemG002.getUniqueId())
-				.getAmount());
+		assertEquals(8, role.getBagPen().getItem(itemG002.getUniqueId()).getAmount());
 		//
 		result = itemService.useRoleSpThing(true, role, itemG002, 7);
 		System.out.println(result);
 		assertEquals(ErrorType.NO_ERROR, result);
-		assertEquals(1, role.getBagPen().getItem(itemG002.getUniqueId())
-				.getAmount());
+		assertEquals(1, role.getBagPen().getItem(itemG002.getUniqueId()).getAmount());
 
 		// 使用道具,憧憬技魂之力
 		for (int i = 0; i < 2; i++) {
@@ -1915,14 +1827,12 @@ public class ItemServiceImplTest extends ItemTestSupporter {
 		//
 		System.out.println(result);
 		assertEquals(ErrorType.NO_ERROR, result);
-		assertEquals(8, role.getBagPen().getItem(itemG003.getUniqueId())
-				.getAmount());
+		assertEquals(8, role.getBagPen().getItem(itemG003.getUniqueId()).getAmount());
 		//
 		result = itemService.useRoleSpThing(true, role, itemG003, 7);
 		System.out.println(result);
 		assertEquals(ErrorType.NO_ERROR, result);
-		assertEquals(1, role.getBagPen().getItem(itemG003.getUniqueId())
-				.getAmount());
+		assertEquals(1, role.getBagPen().getItem(itemG003.getUniqueId()).getAmount());
 	}
 
 	@Test
@@ -1950,14 +1860,12 @@ public class ItemServiceImplTest extends ItemTestSupporter {
 		//
 		System.out.println(result);
 		assertEquals(ErrorType.NO_ERROR, result);
-		assertEquals(8, role.getBagPen().getItem(itemG001.getUniqueId())
-				.getAmount());
+		assertEquals(8, role.getBagPen().getItem(itemG001.getUniqueId()).getAmount());
 		//
 		result = itemService.useRoleGoldThing(true, role, itemG001, 7);
 		System.out.println(result);
 		assertEquals(ErrorType.NO_ERROR, result);
-		assertEquals(1, role.getBagPen().getItem(itemG001.getUniqueId())
-				.getAmount());
+		assertEquals(1, role.getBagPen().getItem(itemG001.getUniqueId()).getAmount());
 
 		// 使用道具,想願金幣之力
 		for (int i = 0; i < 2; i++) {
@@ -1966,14 +1874,12 @@ public class ItemServiceImplTest extends ItemTestSupporter {
 		//
 		System.out.println(result);
 		assertEquals(ErrorType.NO_ERROR, result);
-		assertEquals(8, role.getBagPen().getItem(itemG002.getUniqueId())
-				.getAmount());
+		assertEquals(8, role.getBagPen().getItem(itemG002.getUniqueId()).getAmount());
 		//
 		result = itemService.useRoleGoldThing(true, role, itemG002, 7);
 		System.out.println(result);
 		assertEquals(ErrorType.NO_ERROR, result);
-		assertEquals(1, role.getBagPen().getItem(itemG002.getUniqueId())
-				.getAmount());
+		assertEquals(1, role.getBagPen().getItem(itemG002.getUniqueId()).getAmount());
 
 		// 使用道具,憧憬金幣之力
 		for (int i = 0; i < 2; i++) {
@@ -1982,14 +1888,12 @@ public class ItemServiceImplTest extends ItemTestSupporter {
 		//
 		System.out.println(result);
 		assertEquals(ErrorType.NO_ERROR, result);
-		assertEquals(8, role.getBagPen().getItem(itemG003.getUniqueId())
-				.getAmount());
+		assertEquals(8, role.getBagPen().getItem(itemG003.getUniqueId()).getAmount());
 		//
 		result = itemService.useRoleGoldThing(true, role, itemG003, 7);
 		System.out.println(result);
 		assertEquals(ErrorType.NO_ERROR, result);
-		assertEquals(1, role.getBagPen().getItem(itemG003.getUniqueId())
-				.getAmount());
+		assertEquals(1, role.getBagPen().getItem(itemG003.getUniqueId()).getAmount());
 	}
 
 	@Test
@@ -2017,14 +1921,12 @@ public class ItemServiceImplTest extends ItemTestSupporter {
 		//
 		System.out.println(result);
 		assertEquals(ErrorType.NO_ERROR, result);
-		assertEquals(8, role.getBagPen().getItem(itemG001.getUniqueId())
-				.getAmount());
+		assertEquals(8, role.getBagPen().getItem(itemG001.getUniqueId()).getAmount());
 		//
 		result = itemService.useRoleFameThing(true, role, itemG001, 7);
 		System.out.println(result);
 		assertEquals(ErrorType.NO_ERROR, result);
-		assertEquals(1, role.getBagPen().getItem(itemG001.getUniqueId())
-				.getAmount());
+		assertEquals(1, role.getBagPen().getItem(itemG001.getUniqueId()).getAmount());
 
 		// 使用道具,想願聲望之力
 		for (int i = 0; i < 2; i++) {
@@ -2033,14 +1935,12 @@ public class ItemServiceImplTest extends ItemTestSupporter {
 		//
 		System.out.println(result);
 		assertEquals(ErrorType.NO_ERROR, result);
-		assertEquals(8, role.getBagPen().getItem(itemG002.getUniqueId())
-				.getAmount());
+		assertEquals(8, role.getBagPen().getItem(itemG002.getUniqueId()).getAmount());
 		//
 		result = itemService.useRoleFameThing(true, role, itemG002, 7);
 		System.out.println(result);
 		assertEquals(ErrorType.NO_ERROR, result);
-		assertEquals(1, role.getBagPen().getItem(itemG002.getUniqueId())
-				.getAmount());
+		assertEquals(1, role.getBagPen().getItem(itemG002.getUniqueId()).getAmount());
 
 		// 使用道具,憧憬聲望之力
 		for (int i = 0; i < 2; i++) {
@@ -2049,14 +1949,12 @@ public class ItemServiceImplTest extends ItemTestSupporter {
 		//
 		System.out.println(result);
 		assertEquals(ErrorType.NO_ERROR, result);
-		assertEquals(8, role.getBagPen().getItem(itemG003.getUniqueId())
-				.getAmount());
+		assertEquals(8, role.getBagPen().getItem(itemG003.getUniqueId()).getAmount());
 		//
 		result = itemService.useRoleFameThing(true, role, itemG003, 7);
 		System.out.println(result);
 		assertEquals(ErrorType.NO_ERROR, result);
-		assertEquals(1, role.getBagPen().getItem(itemG003.getUniqueId())
-				.getAmount());
+		assertEquals(1, role.getBagPen().getItem(itemG003.getUniqueId()).getAmount());
 	}
 
 	@Test
@@ -2067,7 +1965,7 @@ public class ItemServiceImplTest extends ItemTestSupporter {
 		//
 		boolean result = false;
 		//
-		int count = 1; 
+		int count = 1;
 		long beg = System.currentTimeMillis();
 		//
 		for (int i = 0; i < count; i++) {
@@ -2096,8 +1994,7 @@ public class ItemServiceImplTest extends ItemTestSupporter {
 		result = itemService.putEquipment(true, role, armor);
 		System.out.println(result);
 		System.out.println(equipmentGroup);
-		assertEquals(10,
-				equipmentGroup.getFinal(AttributeType.PHYSICAL_DEFENCE));
+		assertEquals(10, equipmentGroup.getFinal(AttributeType.PHYSICAL_DEFENCE));
 	}
 
 	@Test
@@ -2114,7 +2011,7 @@ public class ItemServiceImplTest extends ItemTestSupporter {
 		//
 		boolean result = false;
 		//
-		int count = 1; 
+		int count = 1;
 		long beg = System.currentTimeMillis();
 		//
 		for (int i = 0; i < count; i++) {

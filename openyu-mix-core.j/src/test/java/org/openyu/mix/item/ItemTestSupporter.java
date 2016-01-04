@@ -3,21 +3,24 @@ package org.openyu.mix.item;
 import static org.junit.Assert.assertNotNull;
 
 import org.junit.BeforeClass;
+import org.junit.Rule;
 import org.junit.Test;
-import org.springframework.aop.aspectj.AspectJExpressionPointcut;
-import org.springframework.aop.support.DefaultBeanFactoryPointcutAdvisor;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+import com.carrotsearch.junitbenchmarks.BenchmarkOptions;
+import com.carrotsearch.junitbenchmarks.BenchmarkRule;
+
 import org.openyu.mix.app.AppTestSupporter;
-import org.openyu.mix.item.aop.ItemChangeEnhanceInterceptor;
-import org.openyu.mix.item.aop.ItemDecreaseItemInterceptor;
-import org.openyu.mix.item.aop.ItemIncreaseItemInterceptor;
-import org.openyu.mix.item.aop.ItemUseEnhanceInterceptor;
+import org.openyu.mix.item.aop.ItemAspect;
 import org.openyu.mix.item.dao.ItemLogDao;
 import org.openyu.mix.item.service.ItemLogService;
 import org.openyu.mix.item.service.ItemService;
 import org.openyu.mix.item.socklet.ItemSocklet;
 
 public class ItemTestSupporter extends AppTestSupporter {
+
+	@Rule
+	public BenchmarkRule benchmarkRule = new BenchmarkRule();
 
 	/**
 	 * 道具服務
@@ -27,6 +30,8 @@ public class ItemTestSupporter extends AppTestSupporter {
 	protected static ItemLogDao itemLogDao;
 	//
 	protected static ItemLogService itemLogService;
+
+	protected static ItemAspect itemAspect;
 
 	protected static ItemSocklet itemSocklet;
 
@@ -52,6 +57,7 @@ public class ItemTestSupporter extends AppTestSupporter {
 		itemService = (ItemService) applicationContext.getBean("itemService");
 		itemLogDao = (ItemLogDao) applicationContext.getBean("itemLogDao");
 		itemLogService = (ItemLogService) applicationContext.getBean("itemLogService");
+		itemAspect = (ItemAspect) applicationContext.getBean("itemAspect");
 		itemSocklet = (ItemSocklet) applicationContext.getBean("itemSocklet");
 	}
 
@@ -60,136 +66,35 @@ public class ItemTestSupporter extends AppTestSupporter {
 	public static class BeanTest extends ItemTestSupporter {
 
 		@Test
+		@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 		public void itemService() {
 			System.out.println(itemService);
 			assertNotNull(itemService);
 		}
 
 		@Test
-		public void itemIncreaseItemAdvice() {
-			ItemIncreaseItemInterceptor bean = (ItemIncreaseItemInterceptor) applicationContext
-					.getBean("itemIncreaseItemAdvice");
-			System.out.println(bean);
-			assertNotNull(bean);
-		}
-
-		@Test
-		public void itemIncreaseItemPointcut() {
-			AspectJExpressionPointcut bean = (AspectJExpressionPointcut) applicationContext
-					.getBean("itemIncreaseItemPointcut");
-			System.out.println(bean);
-			assertNotNull(bean);
-		}
-
-		@Test
-		public void itemIncreaseItemAdvisor() {
-			DefaultBeanFactoryPointcutAdvisor bean = (DefaultBeanFactoryPointcutAdvisor) applicationContext
-					.getBean("itemIncreaseItemAdvisor");
-			System.out.println(bean);
-			assertNotNull(bean);
-		}
-
-		@Test
-		public void itemDecreaseItemAdvice() {
-			ItemDecreaseItemInterceptor bean = (ItemDecreaseItemInterceptor) applicationContext
-					.getBean("itemDecreaseItemAdvice");
-			System.out.println(bean);
-			assertNotNull(bean);
-		}
-
-		@Test
-		public void itemDecreaseItemPointcut() {
-			AspectJExpressionPointcut bean = (AspectJExpressionPointcut) applicationContext
-					.getBean("itemDecreaseItemPointcut");
-			System.out.println(bean);
-			assertNotNull(bean);
-		}
-
-		@Test
-		public void itemDecreaseItemAdvisor() {
-			DefaultBeanFactoryPointcutAdvisor bean = (DefaultBeanFactoryPointcutAdvisor) applicationContext
-					.getBean("itemDecreaseItemAdvisor");
-			System.out.println(bean);
-			assertNotNull(bean);
-		}
-
-		@Test
-		public void itemUseEnhanceAdvice() {
-			ItemUseEnhanceInterceptor bean = (ItemUseEnhanceInterceptor) applicationContext
-					.getBean("itemUseEnhanceAdvice");
-			System.out.println(bean);
-			assertNotNull(bean);
-		}
-
-		@Test
-		public void itemUseEnhancePointcut() {
-			AspectJExpressionPointcut bean = (AspectJExpressionPointcut) applicationContext
-					.getBean("itemUseEnhancePointcut");
-			System.out.println(bean);
-			assertNotNull(bean);
-		}
-
-		@Test
-		public void itemUseEnhanceAdvisor() {
-			DefaultBeanFactoryPointcutAdvisor bean = (DefaultBeanFactoryPointcutAdvisor) applicationContext
-					.getBean("itemUseEnhanceAdvisor");
-			System.out.println(bean);
-			assertNotNull(bean);
-		}
-
-		@Test
-		public void itemChangeEnhanceAdvice() {
-			ItemChangeEnhanceInterceptor bean = (ItemChangeEnhanceInterceptor) applicationContext
-					.getBean("itemChangeEnhanceAdvice");
-			System.out.println(bean);
-			assertNotNull(bean);
-		}
-
-		@Test
-		public void itemChangeEnhancePointcut() {
-			AspectJExpressionPointcut bean = (AspectJExpressionPointcut) applicationContext
-					.getBean("itemChangeEnhancePointcut");
-			System.out.println(bean);
-			assertNotNull(bean);
-		}
-
-		@Test
-		public void itemChangeEnhanceAdvisor() {
-			DefaultBeanFactoryPointcutAdvisor bean = (DefaultBeanFactoryPointcutAdvisor) applicationContext
-					.getBean("itemChangeEnhanceAdvisor");
-			System.out.println(bean);
-			assertNotNull(bean);
-		}
-
-		@Test
+		@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 		public void itemLogDao() {
 			System.out.println(itemLogDao);
 			assertNotNull(itemLogDao);
 		}
 
 		@Test
+		@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 		public void itemLogService() {
 			System.out.println(itemLogService);
 			assertNotNull(itemLogService);
 		}
 
 		@Test
-		public void itemLogServiceTxPointcut() {
-			AspectJExpressionPointcut bean = (AspectJExpressionPointcut) applicationContext
-					.getBean("itemLogServiceTxPointcut");
-			System.out.println(bean);
-			assertNotNull(bean);
+		@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
+		public void itemAspect() {
+			System.out.println(itemAspect);
+			assertNotNull(itemAspect);
 		}
 
 		@Test
-		public void itemLogServiceTxAdvisor() {
-			DefaultBeanFactoryPointcutAdvisor bean = (DefaultBeanFactoryPointcutAdvisor) applicationContext
-					.getBean("itemLogServiceTxAdvisor");
-			System.out.println(bean);
-			assertNotNull(bean);
-		}
-
-		@Test
+		@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 		public void itemSocklet() {
 			System.out.println(itemSocklet);
 			assertNotNull(itemSocklet);

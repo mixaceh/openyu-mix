@@ -52,7 +52,7 @@ public class RoleDaoImplTest extends RoleTestSupporter {
 
 		// 包包欄 2012/10/01
 		final String THING_ID = "T_POTION_HP_G001";
-		result.setBagPen(BagPenImplTest.mockBagPenBySameThing(THING_ID));
+		result.setBagPen(BagPenImplTest.mockBagPenWithSameThing(THING_ID));
 
 		return result;
 	}

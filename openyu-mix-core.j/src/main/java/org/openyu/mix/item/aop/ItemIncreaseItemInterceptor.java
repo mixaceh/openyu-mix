@@ -21,6 +21,7 @@ import org.openyu.commons.lang.ClassHelper;
 /**
  * 道具增加攔截器
  */
+@Deprecated
 public class ItemIncreaseItemInterceptor extends AppAroundAdviceSupporter {
 
 	private static final long serialVersionUID = -9002923759003474302L;
@@ -43,25 +44,25 @@ public class ItemIncreaseItemInterceptor extends AppAroundAdviceSupporter {
 			new Class[] { boolean.class, Role.class, Item.class });
 
 	/**
-	 * 道具增加,by itemId
+	 * 道具增加, with itemId
 	 * 
 	 * ItemService
 	 * 
-	 * List<IncreaseItemResult> increaseItem(boolean sendable, Role role, String
+	 * List<IncreaseItemResult> increaseItemWithItemId(boolean sendable, Role role, String
 	 * itemId, int amount)
 	 */
-	private static final Method increaseItemByItemId = ClassHelper.getDeclaredMethod(ItemService.class, "increaseItem",
+	private static final Method increaseItemWithItemId = ClassHelper.getDeclaredMethod(ItemService.class, "increaseItemWithItemId",
 			new Class[] { boolean.class, Role.class, String.class, int.class });
 
 	/**
-	 * 增加多個道具,by items
+	 * 增加多個道具
 	 * 
 	 * ItemService
 	 * 
-	 * List<IncreaseItemResult> increaseItem(boolean sendable, Role role,
+	 * List<IncreaseItemResult> increaseItems(boolean sendable, Role role,
 	 * Map<String, Integer> items)
 	 */
-	private static final Method increaseItemByItems = ClassHelper.getDeclaredMethod(ItemService.class, "increaseItem",
+	private static final Method increaseItemItems = ClassHelper.getDeclaredMethod(ItemService.class, "increaseItems",
 			new Class[] { boolean.class, Role.class, Map.class });
 
 	public ItemIncreaseItemInterceptor() {
@@ -97,7 +98,7 @@ public class ItemIncreaseItemInterceptor extends AppAroundAdviceSupporter {
 				if (ret.size() > 0) {
 					itemLogService.recordIncreaseItem(role, ActionType.BAG, ret);
 				}
-			} else if (method.equals(increaseItemByItemId)) {
+			} else if (method.equals(increaseItemWithItemId)) {
 				// 傳回值
 				@SuppressWarnings("unchecked")
 				List<IncreaseItemResult> ret = (List<IncreaseItemResult>) result;
@@ -110,7 +111,7 @@ public class ItemIncreaseItemInterceptor extends AppAroundAdviceSupporter {
 				if (ret.size() > 0) {
 					itemLogService.recordIncreaseItem(role, ActionType.BAG, ret);
 				}
-			} else if (method.equals(increaseItemByItems)) {
+			} else if (method.equals(increaseItemItems)) {
 				// 傳回值
 				@SuppressWarnings("unchecked")
 				List<IncreaseItemResult> ret = (List<IncreaseItemResult>) result;

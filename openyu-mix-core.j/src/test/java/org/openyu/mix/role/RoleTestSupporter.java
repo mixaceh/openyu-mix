@@ -349,7 +349,7 @@ public class RoleTestSupporter extends AppTestSupporter {
 		// 帳號
 		result.setAccountId(ACCOUNT_ID);
 		result.setBagPen(BagPenImplTest
-				.mockBagPenBySameThing("T_POTION_HP_G001"));
+				.mockBagPenWithSameThing("T_POTION_HP_G001"));
 		return result;
 	}
 

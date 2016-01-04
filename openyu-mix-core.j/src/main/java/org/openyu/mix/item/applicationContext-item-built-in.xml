@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:jaxws="http://cxf.apache.org/jaxws"
+	xsi:schemaLocation="
+             http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+             http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+             http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+             http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd">
+
+	<!-- service -->
+	<!-- 道具服務 -->
+	<bean id="itemService" class="org.openyu.mix.item.service.impl.ItemServiceImpl"
+		parent="appServiceSupporter" />
+
+	<!-- advisor -->
+	<!-- 道具增加 -->
+	<bean id="itemIncreaseItemAdvice"
+		class="org.openyu.mix.item.aop.ItemIncreaseItemInterceptor"
+		parent="appMethodInterceptorSupporter"/>
+	<aop:config>
+		<aop:pointcut id="itemIncreaseItemPointcut"
+			expression="execution(* org.openyu.mix.item.service.impl.ItemServiceImpl.increaseItem*(..))" />
+		<aop:advisor id="itemIncreaseItemAdvisor" advice-ref="itemIncreaseItemAdvice"
+			pointcut-ref="itemIncreaseItemPointcut" />
+	</aop:config>
+
+	<!-- 道具減少 -->
+	<bean id="itemDecreaseItemAdvice"
+		class="org.openyu.mix.item.aop.ItemDecreaseItemInterceptor"
+		parent="appMethodInterceptorSupporter"/>
+	<aop:config>
+		<aop:pointcut id="itemDecreaseItemPointcut"
+			expression="execution(* org.openyu.mix.item.service.impl.ItemServiceImpl.decreaseItem*(..))" />
+		<aop:advisor id="itemDecreaseItemAdvisor" advice-ref="itemDecreaseItemAdvice"
+			pointcut-ref="itemDecreaseItemPointcut" />
+	</aop:config>
+
+	<!-- 道具使用強化 -->
+	<bean id="itemUseEnhanceAdvice"
+		class="org.openyu.mix.item.aop.ItemUseEnhanceInterceptor"
+		parent="appMethodInterceptorSupporter" />
+	<aop:config>
+		<aop:pointcut id="itemUseEnhancePointcut"
+			expression="execution(* org.openyu.mix.item.service.impl.ItemServiceImpl.useEnhance*(..))" />
+		<aop:advisor id="itemUseEnhanceAdvisor" advice-ref="itemUseEnhanceAdvice"
+			pointcut-ref="itemUseEnhancePointcut" />
+	</aop:config>
+
+	<!-- 道具增減強化 -->
+	<bean id="itemChangeEnhanceAdvice"
+		class="org.openyu.mix.item.aop.ItemChangeEnhanceInterceptor"
+		parent="appMethodInterceptorSupporter" />
+	<aop:config>
+		<aop:pointcut id="itemChangeEnhancePointcut"
+			expression="execution(* org.openyu.mix.item.service.impl.ItemServiceImpl.changeEnhance*(..))" />
+		<aop:advisor id="itemChangeEnhanceAdvisor" advice-ref="itemChangeEnhanceAdvice"
+			pointcut-ref="itemChangeEnhancePointcut" />
+	</aop:config>
+
+	<!-- dao -->
+	<bean id="itemLogDao" class="org.openyu.mix.item.dao.impl.ItemLogDaoImpl"
+		parent="appLogDaoSupporter" />
+
+	<!-- service -->
+	<!-- 道具日誌服務 -->
+	<bean id="itemLogService" class="org.openyu.mix.item.service.impl.ItemLogServiceImpl"
+		parent="appLogServiceSupporter" />
+
+	<!-- socklet -->
+	<bean id="itemSocklet" class="org.openyu.mix.item.socklet.ItemSocklet"
+		parent="slaveSockletServiceSupporter" >
+		<property name="id" value="ITEM" />
+	</bean>
+
+</beans>

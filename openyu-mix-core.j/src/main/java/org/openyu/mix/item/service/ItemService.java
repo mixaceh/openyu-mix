@@ -459,14 +459,14 @@ public interface ItemService extends AppService {
 	void fillTab(Message message, Tab tab);
 
 	/**
-	 * 檢查增加道具,by itemId
+	 * 檢查增加道具, with itemId
 	 * 
 	 * @param role
 	 * @param item
 	 * @param amount
 	 * @return
 	 */
-	BagPen.ErrorType checkIncreaseItem(Role role, String itemId, int amount);
+	BagPen.ErrorType checkIncreaseItemWithItemId(Role role, String itemId, int amount);
 
 	/**
 	 * 檢查增加道具
@@ -484,7 +484,7 @@ public interface ItemService extends AppService {
 	 * @param items
 	 * @return
 	 */
-	BagPen.ErrorType checkIncreaseItem(Role role, Map<String, Integer> items);
+	BagPen.ErrorType checkIncreaseItems(Role role, Map<String, Integer> items);
 
 	/**
 	 * 增加道具結果
@@ -545,7 +545,7 @@ public interface ItemService extends AppService {
 	List<IncreaseItemResult> increaseItem(boolean sendable, Role role, Item item);
 
 	/**
-	 * 增加道具,by itemId
+	 * 增加道具, with itemId
 	 * 
 	 * @param sendable
 	 * @param role
@@ -553,18 +553,18 @@ public interface ItemService extends AppService {
 	 * @param amount
 	 * @return
 	 */
-	List<IncreaseItemResult> increaseItem(boolean sendable, Role role,
+	List<IncreaseItemResult> increaseItemWithItemId(boolean sendable, Role role,
 			String itemId, int amount);
 
 	/**
-	 * 增加多個道具,by itemId
+	 * 增加多個道具
 	 * 
 	 * @param sendable
 	 * @param role
 	 * @param items
 	 * @return
 	 */
-	List<IncreaseItemResult> increaseItem(boolean sendable, Role role,
+	List<IncreaseItemResult> increaseItems(boolean sendable, Role role,
 			Map<String, Integer> items);
 
 	/**
@@ -614,7 +614,7 @@ public interface ItemService extends AppService {
 	 * @param amount
 	 * @return
 	 */
-	BagPen.ErrorType checkDecreaseItemByUniqueId(Role role, String uniqueId,
+	BagPen.ErrorType checkDecreaseItemWithUniqueId(Role role, String uniqueId,
 			int amount);
 
 	/**
@@ -681,7 +681,7 @@ public interface ItemService extends AppService {
 	 * @param amount
 	 * @return
 	 */
-	DecreaseItemResult decreaseItemByUniqueId(boolean sendable, Role role,
+	DecreaseItemResult decreaseItemWithUniqueId(boolean sendable, Role role,
 			String uniqueId, int amount);
 
 	/**

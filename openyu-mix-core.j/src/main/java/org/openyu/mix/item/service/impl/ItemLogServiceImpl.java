@@ -22,6 +22,7 @@ import org.openyu.mix.item.service.ItemService.ActionType;
 import org.openyu.mix.item.vo.EnhanceLevelBean;
 import org.openyu.mix.item.vo.Item;
 import org.openyu.mix.role.vo.Role;
+import org.openyu.commons.dao.anno.LogTx;
 import org.openyu.commons.dao.inquiry.Inquiry;
 import org.openyu.commons.util.AssertHelper;
 
@@ -118,6 +119,7 @@ public class ItemLogServiceImpl extends AppLogServiceSupporter implements ItemLo
 	 * @param actionType
 	 * @param increaseItemResults
 	 */
+	@LogTx
 	public void recordIncreaseItem(Role role, ActionType actionType, List<IncreaseItemResult> increaseItemResults) {
 		ItemIncreaseLog log = new ItemIncreaseLogImpl();
 		recordRole(role, log);
@@ -144,6 +146,7 @@ public class ItemLogServiceImpl extends AppLogServiceSupporter implements ItemLo
 	 * @param actionType
 	 * @param decreaseItemResults
 	 */
+	@LogTx
 	public void recordDecreaseItem(Role role, ActionType actionType, List<DecreaseItemResult> decreaseItemResults) {
 		ItemDecreaseLog log = new ItemDecreaseLogImpl();
 		recordRole(role, log);
@@ -166,6 +169,7 @@ public class ItemLogServiceImpl extends AppLogServiceSupporter implements ItemLo
 	 * @param actionType
 	 * @param decreaseItemResult
 	 */
+	@LogTx
 	public void recordDecreaseItem(Role role, ActionType actionType, DecreaseItemResult decreaseItemResult) {
 		ItemDecreaseLog log = new ItemDecreaseLogImpl();
 		recordRole(role, log);
@@ -195,6 +199,7 @@ public class ItemLogServiceImpl extends AppLogServiceSupporter implements ItemLo
 	 *            消耗的道具
 	 * @param actionType
 	 */
+	@LogTx
 	public void recordChangeEnhance(Role role, ActionType actionType, Item beforeItem, Item afterItem, Item spendItem) {
 		ItemEnhanceLog log = new ItemEnhanceLogImpl();
 		recordRole(role, log);

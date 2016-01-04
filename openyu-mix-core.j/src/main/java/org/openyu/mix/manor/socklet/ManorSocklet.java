@@ -493,14 +493,14 @@ public class ManorSocklet extends AppSockletServiceSupporter {
 		// 若沒有道具,塞1個道具到包包
 		else {
 			int amount = 1;// 數量
-			BagPen.ErrorType bagError = itemService.checkIncreaseItem(role,
+			BagPen.ErrorType bagError = itemService.checkIncreaseItemWithItemId(role,
 					itemId, amount);
 			if (bagError != BagPen.ErrorType.NO_ERROR) {
 				return result;
 			}
 			//
 			List<IncreaseItemResult> increaseResults = itemService
-					.increaseItem(false, role, itemId, amount);
+					.increaseItemWithItemId(false, role, itemId, amount);
 			if (increaseResults.size() > 0) {
 				IncreaseItemResult increaseResult = increaseResults.get(0);
 				int tabIndex = increaseResult.getTabIndex();

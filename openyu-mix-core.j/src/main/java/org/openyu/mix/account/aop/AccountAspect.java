@@ -29,12 +29,14 @@ public class AccountAspect extends AppAspectSupporter {
 	}
 
 	/**
+	 * 增加帳戶的儲值幣
+	 * 
 	 * AccountService
 	 * 
 	 * int increaseCoin(boolean sendable, String accountId, Role role, int coin,
 	 * boolean accuable, CoinReason coinReason);
 	 */
-	@AfterReturning(pointcut = "execution(public * org.openyu.mix.account.service.AccountService.increaseCoin*(..))", returning = "result")
+	@AfterReturning(pointcut = "execution(public * org.openyu.mix.account.service.AccountService.increaseCoin(..))", returning = "result")
 	public void increaseCoin(JoinPoint joinPoint, Object result) throws Throwable {
 		try {
 			String method = joinPoint.getSignature().getName();
@@ -57,12 +59,14 @@ public class AccountAspect extends AppAspectSupporter {
 	}
 
 	/**
+	 * 減少帳戶的儲值幣
+	 * 
 	 * AccountService
 	 * 
 	 * int decreaseCoin(boolean sendable, String accountId, Role role, int coin,
 	 * CoinReason coinReason);
 	 */
-	@AfterReturning(pointcut = "execution(public * org.openyu.mix.account.service.AccountService.decreaseCoin*(..))", returning = "result")
+	@AfterReturning(pointcut = "execution(public * org.openyu.mix.account.service.AccountService.decreaseCoin(..))", returning = "result")
 	public void decreaseCoin(JoinPoint joinPoint, Object result) throws Throwable {
 		try {
 			String method = joinPoint.getSignature().getName();
@@ -84,12 +88,14 @@ public class AccountAspect extends AppAspectSupporter {
 	}
 
 	/**
+	 * 增減帳戶的儲值幣
+	 * 
 	 * AccountService
 	 * 
 	 * int changeCoin(boolean sendable, String accountId, Role role, int coin,
 	 * boolean accuable, CoinAction coinAction, CoinReason coinReason);
 	 */
-	@AfterReturning(pointcut = "execution(public * org.openyu.mix.account.service.AccountService.changeCoin*(..))", returning = "result")
+	@AfterReturning(pointcut = "execution(public * org.openyu.mix.account.service.AccountService.changeCoin(..))", returning = "result")
 	public void changeCoin(JoinPoint joinPoint, Object result) throws Throwable {
 		try {
 			String method = joinPoint.getSignature().getName();
@@ -113,12 +119,14 @@ public class AccountAspect extends AppAspectSupporter {
 	}
 
 	/**
+	 * 重置帳戶儲值幣
+	 * 
 	 * AccountService
 	 * 
 	 * boolean resetCoin(boolean sendable, String accountId, Role role, boolean
 	 * accuable, CoinReason coinReason);
 	 */
-	@AfterReturning(pointcut = "execution(public * org.openyu.mix.account.service.AccountService.resetCoin*(..))", returning = "result")
+	@AfterReturning(pointcut = "execution(public * org.openyu.mix.account.service.AccountService.resetCoin(..))", returning = "result")
 	public void resetCoin(JoinPoint joinPoint, Object result) throws Throwable {
 		try {
 			String method = joinPoint.getSignature().getName();

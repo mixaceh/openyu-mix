@@ -225,7 +225,7 @@ public class CoreServiceImplTest extends CoreTestSupporter {
 		itemService.increaseItem(true, role, land);
 
 		// 3.加莊園加速石到包包
-		itemService.increaseItem(true, role, "T_MANOR_SPEED_G001", 1);
+		itemService.increaseItemWithItemId(true, role, "T_MANOR_SPEED_G001", 1);
 
 		// 莊園
 		ManorPen manorPen = role.getManorPen();

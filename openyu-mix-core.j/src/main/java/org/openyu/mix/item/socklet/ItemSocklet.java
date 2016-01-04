@@ -40,7 +40,7 @@ public class ItemSocklet extends AppSockletServiceSupporter {
 			//
 			Role role = checkRole(roleId);
 			itemService
-					.decreaseItemByUniqueId(true, role, itemUniqueId, amount);
+					.decreaseItemWithUniqueId(true, role, itemUniqueId, amount);
 			break;
 		}
 		case ITEM_USE_ITEM_REQUEST: {
@@ -92,7 +92,7 @@ public class ItemSocklet extends AppSockletServiceSupporter {
 	 */
 	protected void DEBUG_changeItem(Role role, String itemId, int amount) {
 		if (amount > 0) {
-			itemService.increaseItem(true, role, itemId, amount);
+			itemService.increaseItemWithItemId(true, role, itemId, amount);
 		} else if (amount < 0) {
 			itemService.decreaseItem(true, role, itemId, Math.abs(amount));
 		}

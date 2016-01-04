@@ -84,8 +84,8 @@ public class BagPenImplTest extends BaseTestSupporter {
 	 * 
 	 * @return
 	 */
-	public static BagPen mockBagPenBySameThing() {
-		return mockBagPenBySameThing(Thing.UNIQUE_ID_PREFIX + "00");
+	public static BagPen mockBagPenWithSameThing() {
+		return mockBagPenWithSameThing(Thing.UNIQUE_ID_PREFIX + "00");
 	}
 
 	/**
@@ -94,8 +94,8 @@ public class BagPenImplTest extends BaseTestSupporter {
 	 * @param id
 	 * @return
 	 */
-	public static BagPen mockBagPenBySameThing(String id) {
-		return mockBagPenBySameThing(null, id);
+	public static BagPen mockBagPenWithSameThing(String id) {
+		return mockBagPenWithSameThing(null, id);
 	}
 
 	/**
@@ -105,7 +105,7 @@ public class BagPenImplTest extends BaseTestSupporter {
 	 * @param id
 	 * @return
 	 */
-	public static BagPen mockBagPenBySameThing(Role role, String id) {
+	public static BagPen mockBagPenWithSameThing(Role role, String id) {
 		BagPen result = new BagPenImpl(role);
 		TabType[] tabTypes = BagPen.TabType.values();
 		for (TabType tabType : tabTypes) {
@@ -134,8 +134,8 @@ public class BagPenImplTest extends BaseTestSupporter {
 	 * 
 	 * @return
 	 */
-	public static BagPen mockBagPenByOneTab() {
-		return mockBagPenByOneTab(null);
+	public static BagPen mockBagPenWithOneTab() {
+		return mockBagPenWithOneTab(null);
 	}
 
 	/**
@@ -144,7 +144,7 @@ public class BagPenImplTest extends BaseTestSupporter {
 	 * @param role
 	 * @return
 	 */
-	public static BagPen mockBagPenByOneTab(Role role) {
+	public static BagPen mockBagPenWithOneTab(Role role) {
 		BagPen result = new BagPenImpl(role);
 
 		int i = 0;
@@ -439,7 +439,7 @@ public class BagPenImplTest extends BaseTestSupporter {
 	// 1000000 times: 17 mills.
 	// 1000000 times: 18 mills.
 	// verified
-	public void increaseAmountByUniqueId() {
+	public void increaseAmountWithUniqueId() {
 		final String UNIQUE_ID = "U_00";
 		//
 		BagPen bagPen = mockBagPen();
@@ -527,7 +527,7 @@ public class BagPenImplTest extends BaseTestSupporter {
 	// 1000000 times: 17 mills.
 	// 1000000 times: 18 mills.
 	// verified
-	public void removeItemByUniqueId() {
+	public void removeItemWithUniqueId() {
 		final String UNIQUE_ID = "U_00";
 		//
 		BagPen bagPen = mockBagPen();
@@ -620,7 +620,7 @@ public class BagPenImplTest extends BaseTestSupporter {
 	// 1000000 times: 17 mills.
 	// 1000000 times: 18 mills.
 	// verified
-	public void decreaseAmountByUniqueId() {
+	public void decreaseAmountWithUniqueId() {
 		final String UNIQUE_ID = "U_00";
 
 		BagPen bagPen = mockBagPen();
@@ -778,7 +778,7 @@ public class BagPenImplTest extends BaseTestSupporter {
 	// 1000000 times: 44 mills.
 	// 1000000 times: 47 mills.
 	// verified
-	public void getItemByUniqueId() {
+	public void getItemWithUniqueId() {
 		final String UNIQUE_ID = "U_00";
 
 		BagPen bagPen = mockBagPen();
@@ -826,7 +826,7 @@ public class BagPenImplTest extends BaseTestSupporter {
 	// 1000000 times: 37 mills.
 	// 1000000 times: 32 mills.
 	// verified
-	public void getItemsByItemType() {
+	public void getItemsWithItemType() {
 		BagPen bagPen = mockBagPen();
 		//
 		List<Item> result = null;
@@ -1058,7 +1058,7 @@ public class BagPenImplTest extends BaseTestSupporter {
 	public void getIndexs() {
 		final String ID = "T_00";
 
-		BagPen bagPen = mockBagPenBySameThing();// 160個相同物品
+		BagPen bagPen = mockBagPenWithSameThing();// 160個相同物品
 		//
 		List<int[]> result = null;
 		//
@@ -1082,7 +1082,7 @@ public class BagPenImplTest extends BaseTestSupporter {
 	public void getAmount() {
 		final String ID = "T_00";
 
-		BagPen bagPen = mockBagPenBySameThing();// 160個相同物品
+		BagPen bagPen = mockBagPenWithSameThing();// 160個相同物品
 		//
 		int result = 0;
 		//
@@ -1104,7 +1104,7 @@ public class BagPenImplTest extends BaseTestSupporter {
 	// 1000000 times: 528 mills.
 	// verified
 	public void getEmptySize() {
-		BagPen bagPen = mockBagPenBySameThing();// 160個相同物品
+		BagPen bagPen = mockBagPenWithSameThing();// 160個相同物品
 		bagPen.removeItem(0, 0);// 移除index=0,0
 		//
 		int result = 0;
@@ -1132,7 +1132,7 @@ public class BagPenImplTest extends BaseTestSupporter {
 	// 1000000 times: 528 mills.
 	// verified
 	public void getEmptyIndex() {
-		BagPen bagPen = mockBagPenBySameThing();// 160個相同物品
+		BagPen bagPen = mockBagPenWithSameThing();// 160個相同物品
 		bagPen.removeItem(0, 20);// 移除index=0,20
 		//
 		int[] result = null;
@@ -1164,7 +1164,7 @@ public class BagPenImplTest extends BaseTestSupporter {
 	public void getPutIndex() {
 		final String ID = "T_00";
 		//
-		BagPen bagPen = mockBagPenBySameThing();// 160個相同物品
+		BagPen bagPen = mockBagPenWithSameThing();// 160個相同物品
 		//
 		int[] result = null;
 		//

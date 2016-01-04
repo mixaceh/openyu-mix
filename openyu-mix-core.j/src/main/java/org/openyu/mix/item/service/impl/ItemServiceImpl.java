@@ -699,7 +699,7 @@ public class ItemServiceImpl extends AppServiceSupporter implements ItemService 
 	 * @param amount
 	 * @return
 	 */
-	public BagPen.ErrorType checkIncreaseItem(Role role, String itemId, int amount) {
+	public BagPen.ErrorType checkIncreaseItemWithItemId(Role role, String itemId, int amount) {
 		Item item = createItem(itemId, amount);
 		return checkIncreaseItem(role, item);
 	}
@@ -805,7 +805,7 @@ public class ItemServiceImpl extends AppServiceSupporter implements ItemService 
 	 * @param items
 	 * @return
 	 */
-	public BagPen.ErrorType checkIncreaseItem(Role role, Map<String, Integer> items) {
+	public BagPen.ErrorType checkIncreaseItems(Role role, Map<String, Integer> items) {
 		BagPen.ErrorType errorType = BagPen.ErrorType.NO_ERROR;
 		// TODO 未實作
 		return errorType;
@@ -1056,25 +1056,25 @@ public class ItemServiceImpl extends AppServiceSupporter implements ItemService 
 	 * @param amount
 	 * @return
 	 */
-	public List<IncreaseItemResult> increaseItem(boolean sendable, Role role, String itemId, int amount) {
+	public List<IncreaseItemResult> increaseItemWithItemId(boolean sendable, Role role, String itemId, int amount) {
 		Item item = createItem(itemId, amount);
 		return increaseItem(sendable, role, item);
 	}
 
 	/**
-	 * 增加多個道具,by itemId
+	 * 增加多個道具
 	 * 
 	 * @param sendable
 	 * @param role
 	 * @param items
 	 * @return
 	 */
-	public List<IncreaseItemResult> increaseItem(boolean sendable, Role role, Map<String, Integer> items) {
+	public List<IncreaseItemResult> increaseItems(boolean sendable, Role role, Map<String, Integer> items) {
 		List<IncreaseItemResult> result = new LinkedList<IncreaseItemResult>();
 		//
 		for (Map.Entry<String, Integer> entry : items.entrySet()) {
 			// 增加1個道具的結果
-			List<IncreaseItemResult> buffResult = increaseItem(false, role, entry.getKey(), entry.getValue());
+			List<IncreaseItemResult> buffResult = increaseItemWithItemId(false, role, entry.getKey(), entry.getValue());
 			result.addAll(buffResult);
 		}
 
@@ -1189,7 +1189,7 @@ public class ItemServiceImpl extends AppServiceSupporter implements ItemService 
 	 * @param amount
 	 * @return
 	 */
-	public BagPen.ErrorType checkDecreaseItemByUniqueId(Role role, String uniqueId, int amount) {
+	public BagPen.ErrorType checkDecreaseItemWithUniqueId(Role role, String uniqueId, int amount) {
 		BagPen.ErrorType errorType = BagPen.ErrorType.NO_ERROR;
 		// 檢查條件
 		if (role == null) {
@@ -1312,7 +1312,7 @@ public class ItemServiceImpl extends AppServiceSupporter implements ItemService 
 			//
 			// 大於一格的數量時
 			if (amount > origAmount) {
-				DecreaseItemResult buffResult = decreaseItemByUniqueId(sendable, role, origItem.getUniqueId(),
+				DecreaseItemResult buffResult = decreaseItemWithUniqueId(sendable, role, origItem.getUniqueId(),
 						origAmount);
 				if (buffResult != null) {
 					// result.getItems().put(origItem.getUniqueId(),
@@ -1324,7 +1324,7 @@ public class ItemServiceImpl extends AppServiceSupporter implements ItemService 
 			}
 			// 一格就能扣玩的數量
 			else {
-				DecreaseItemResult buffResult = decreaseItemByUniqueId(sendable, role, origItem.getUniqueId(), amount);
+				DecreaseItemResult buffResult = decreaseItemWithUniqueId(sendable, role, origItem.getUniqueId(), amount);
 				if (buffResult != null) {
 					// result.getItems().put(origItem.getUniqueId(), amount);
 					result.add(buffResult);
@@ -1362,7 +1362,7 @@ public class ItemServiceImpl extends AppServiceSupporter implements ItemService 
 	 * @param amount
 	 * @return
 	 */
-	public DecreaseItemResult decreaseItemByUniqueId(boolean sendable, Role role, String uniqueId, int amount) {
+	public DecreaseItemResult decreaseItemWithUniqueId(boolean sendable, Role role, String uniqueId, int amount) {
 		DecreaseItemResult result = null;
 		//
 		BagPen bagPen = role.getBagPen();// 包包欄
@@ -2256,7 +2256,7 @@ public class ItemServiceImpl extends AppServiceSupporter implements ItemService 
 		}
 
 		// 檢查減少道具
-		BagPen.ErrorType bagError = checkDecreaseItemByUniqueId(role, item.getUniqueId(), amount);
+		BagPen.ErrorType bagError = checkDecreaseItemWithUniqueId(role, item.getUniqueId(), amount);
 		if (bagError != BagPen.ErrorType.NO_ERROR) {
 			errorType = ErrorType.CAN_NOT_DECREASE_ITEM;
 			return errorType;
@@ -2323,11 +2323,11 @@ public class ItemServiceImpl extends AppServiceSupporter implements ItemService 
 			// 強化結果
 			if (enhanceResult != null) {
 				// 移除消耗的強化道具
-				decreaseItemByUniqueId(sendable, role, thing.getUniqueId(), 1);
+				decreaseItemWithUniqueId(sendable, role, thing.getUniqueId(), 1);
 
 				// 防具爆掉了,移除武器
 				if (enhanceResult.isDisappear()) {
-					decreaseItemByUniqueId(sendable, role, armor.getUniqueId(), 1);
+					decreaseItemWithUniqueId(sendable, role, armor.getUniqueId(), 1);
 				}
 
 				// 發訊息
@@ -2397,11 +2397,11 @@ public class ItemServiceImpl extends AppServiceSupporter implements ItemService 
 			// 強化結果
 			if (enhanceResult != null) {
 				// 移除消耗的強化道具
-				decreaseItemByUniqueId(sendable, role, thing.getUniqueId(), 1);
+				decreaseItemWithUniqueId(sendable, role, thing.getUniqueId(), 1);
 
 				// 武器爆掉了,移除武器
 				if (enhanceResult.isDisappear()) {
-					decreaseItemByUniqueId(sendable, role, weapon.getUniqueId(), 1);
+					decreaseItemWithUniqueId(sendable, role, weapon.getUniqueId(), 1);
 				}
 
 				// 發訊息
@@ -2465,11 +2465,11 @@ public class ItemServiceImpl extends AppServiceSupporter implements ItemService 
 			// 強化結果
 			if (enhanceResult != null) {
 				// 移除消耗的強化道具
-				decreaseItemByUniqueId(sendable, role, thing.getUniqueId(), 1);
+				decreaseItemWithUniqueId(sendable, role, thing.getUniqueId(), 1);
 
 				// 武器爆掉了,移除武器
 				if (enhanceResult.isDisappear()) {
-					decreaseItemByUniqueId(sendable, role, land.getUniqueId(), 1);
+					decreaseItemWithUniqueId(sendable, role, land.getUniqueId(), 1);
 				}
 
 				// 發訊息
@@ -2515,7 +2515,7 @@ public class ItemServiceImpl extends AppServiceSupporter implements ItemService 
 				sendChangeExp(role, exp);
 			}
 			// 移除消耗的道具
-			decreaseItemByUniqueId(sendable, role, thing.getUniqueId(), amount);
+			decreaseItemWithUniqueId(sendable, role, thing.getUniqueId(), amount);
 		}
 		return result;
 	}
@@ -2570,7 +2570,7 @@ public class ItemServiceImpl extends AppServiceSupporter implements ItemService 
 				sendChangeSp(role, sp);
 			}
 			// 移除消耗的道具
-			decreaseItemByUniqueId(sendable, role, thing.getUniqueId(), amount);
+			decreaseItemWithUniqueId(sendable, role, thing.getUniqueId(), amount);
 		}
 		return result;
 	}
@@ -2627,7 +2627,7 @@ public class ItemServiceImpl extends AppServiceSupporter implements ItemService 
 				sendChangeGold(role, gold, GoldType.ITEM_ROLE_GOLD_THING);
 			}
 			// 移除消耗的道具
-			decreaseItemByUniqueId(sendable, role, thing.getUniqueId(), amount);
+			decreaseItemWithUniqueId(sendable, role, thing.getUniqueId(), amount);
 		}
 		return result;
 	}
@@ -2686,7 +2686,7 @@ public class ItemServiceImpl extends AppServiceSupporter implements ItemService 
 				sendChangeFame(role, fame);
 			}
 			// 移除消耗的道具
-			decreaseItemByUniqueId(sendable, role, thing.getUniqueId(), amount);
+			decreaseItemWithUniqueId(sendable, role, thing.getUniqueId(), amount);
 		}
 		return result;
 	}

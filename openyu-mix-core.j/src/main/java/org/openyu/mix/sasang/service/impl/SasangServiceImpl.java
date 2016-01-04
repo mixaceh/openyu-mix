@@ -1128,7 +1128,7 @@ public class SasangServiceImpl extends AppServiceSupporter implements SasangServ
 			SasangPen sasangPen = role.getSasangPen();
 
 			// 再判斷放入包包是否成功
-			List<IncreaseItemResult> increaseResults = itemService.increaseItem(true, role, itemId, amount);
+			List<IncreaseItemResult> increaseResults = itemService.increaseItemWithItemId(true, role, itemId, amount);
 			if (increaseResults.size() >= 0) {
 				sasangPen.removeAward(itemId);
 				// 結果
@@ -1251,7 +1251,7 @@ public class SasangServiceImpl extends AppServiceSupporter implements SasangServ
 					break;
 				}
 				// 再判斷放入包包是否成功
-				List<IncreaseItemResult> increaseResults = itemService.increaseItem(true, role, itemId, amount);
+				List<IncreaseItemResult> increaseResults = itemService.increaseItemWithItemId(true, role, itemId, amount);
 				if (increaseResults.size() >= 0) {
 					// 結果
 					if (result == null) {

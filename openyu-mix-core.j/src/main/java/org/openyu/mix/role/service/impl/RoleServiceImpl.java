@@ -1945,7 +1945,7 @@ public class RoleServiceImpl extends AppServiceSupporter implements RoleService 
 					totalTimes -= itemTimes;
 					itemTimes = 0;
 					//
-					itemService.increaseItem(sendable, role, itemId, itemAmount);
+					itemService.increaseItemWithItemId(sendable, role, itemId, itemAmount);
 				}
 				errorType = ErrorType.COIN_NOT_ENOUGH;
 				result = new SpendResultImpl(errorType);

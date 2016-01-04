@@ -248,6 +248,10 @@ public class AccountServiceImplTest extends AccountTestSupporter {
 	}
 
 	@Test
+	@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
+	// round: 1.67 [+- 0.00], round.block: 0.00 [+- 0.00], round.gc: 0.00 [+-
+	// 0.00], GC.calls: 0, GC.time: 0.00, time.total: 1.67, time.warmup: 0.00,
+	// time.bench: 1.67
 	public void increaseCoin() {
 		Role role = mockRole();// accountId=TEST_ACCOUNT,roleId=TEST_ROLE
 		//
@@ -288,6 +292,10 @@ public class AccountServiceImplTest extends AccountTestSupporter {
 	}
 
 	@Test
+	@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
+	// round: 1.46 [+- 0.00], round.block: 0.00 [+- 0.00], round.gc: 0.00 [+-
+	// 0.00], GC.calls: 0, GC.time: 0.00, time.total: 1.46, time.warmup: 0.00,
+	// time.bench: 1.46
 	public void decreaseCoin() {
 		Role role = mockRole();// accountId=TEST_ACCOUNT,roleId=TEST_ROLE
 		//
@@ -306,6 +314,10 @@ public class AccountServiceImplTest extends AccountTestSupporter {
 	}
 
 	@Test
+	@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
+	// round: 1.56 [+- 0.00], round.block: 0.00 [+- 0.00], round.gc: 0.00 [+-
+	// 0.00], GC.calls: 0, GC.time: 0.00, time.total: 1.56, time.warmup: 0.00,
+	// time.bench: 1.56
 	public void changeCoin() {
 		Role role = mockRole();// accountId=TEST_ACCOUNT,roleId=TEST_ROLE
 		//
@@ -337,6 +349,7 @@ public class AccountServiceImplTest extends AccountTestSupporter {
 	}
 
 	@Test
+	@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 	public void restCoin() {
 		Role role = mockRole();// accountId=TEST_ACCOUNT,roleId=TEST_ROLE
 		//
