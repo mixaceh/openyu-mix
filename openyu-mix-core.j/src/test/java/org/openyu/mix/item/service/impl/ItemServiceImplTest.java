@@ -1246,6 +1246,10 @@ public class ItemServiceImplTest extends ItemTestSupporter {
 	}
 
 	@Test
+	@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
+	// round: 0.84 [+- 0.00], round.block: 0.00 [+- 0.00], round.gc: 0.00 [+-
+	// 0.00], GC.calls: 0, GC.time: 0.00, time.total: 0.84, time.warmup: 0.00,
+	// time.bench: 0.84
 	public void changeEnhance() {
 		int result = 0;
 		//
@@ -1291,6 +1295,10 @@ public class ItemServiceImplTest extends ItemTestSupporter {
 	}
 
 	@Test
+	@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
+	// round: 0.89 [+- 0.00], round.block: 0.00 [+- 0.00], round.gc: 0.00 [+-
+	// 0.00], GC.calls: 0, GC.time: 0.00, time.total: 0.89, time.warmup: 0.02,
+	// time.bench: 0.88
 	public void changeEnhanceWithLand() {
 		int result = 0;
 		//
@@ -1299,16 +1307,7 @@ public class ItemServiceImplTest extends ItemTestSupporter {
 		Land land = itemService.createLand("L_TROPICS_G001");
 		System.out.println(land.getEnhanceLevel() + ", " + land.getAttributeGroup());
 		//
-		int count = 1;
-		long beg = System.currentTimeMillis();
-		//
-		for (int i = 0; i < count; i++) {
-			result = itemService.changeEnhance(true, role, land, -1);
-		}
-		//
-		long end = System.currentTimeMillis();
-		System.out.println(count + " times: " + (end - beg) + " mills. ");
-
+		result = itemService.changeEnhance(true, role, land, -1);
 		// +0
 		System.out.println(result);
 		System.out.println(land.getEnhanceLevel() + ", " + land.getAttributeGroup());
@@ -1506,6 +1505,10 @@ public class ItemServiceImplTest extends ItemTestSupporter {
 	}
 
 	@Test
+	@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
+	// round: 0.95 [+- 0.00], round.block: 0.00 [+- 0.00], round.gc: 0.00 [+-
+	// 0.00], GC.calls: 0, GC.time: 0.00, time.total: 0.96, time.warmup: 0.00,
+	// time.bench: 0.96
 	public void useEnhanceArmorThing() {
 		ErrorType result = ErrorType.NO_ERROR;
 		//
@@ -1572,6 +1575,10 @@ public class ItemServiceImplTest extends ItemTestSupporter {
 	}
 
 	@Test
+	@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
+	// round: 0.91 [+- 0.00], round.block: 0.00 [+- 0.00], round.gc: 0.00 [+-
+	// 0.00], GC.calls: 0, GC.time: 0.00, time.total: 0.92, time.warmup: 0.00,
+	// time.bench: 0.92
 	public void useEnhanceWeaponThing() {
 		ErrorType result = ErrorType.NO_ERROR;
 		//
@@ -1643,6 +1650,7 @@ public class ItemServiceImplTest extends ItemTestSupporter {
 	}
 
 	@Test
+	@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 	public void useEnhanceLandThing() {
 		ErrorType result = ErrorType.NO_ERROR;
 		//

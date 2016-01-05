@@ -19,6 +19,7 @@ import org.openyu.commons.lang.ClassHelper;
 /**
  * 消耗強化道具,強化道具攔截器
  */
+@Deprecated
 public class ItemUseEnhanceInterceptor extends AppAroundAdviceSupporter {
 
 	private static final long serialVersionUID = -5869597744635175480L;
@@ -61,9 +62,6 @@ public class ItemUseEnhanceInterceptor extends AppAroundAdviceSupporter {
 	 */
 	private static final Method useEnhanceLandThing = ClassHelper.getDeclaredMethod(ItemService.class,
 			"useEnhanceLandThing", new Class[] { boolean.class, String.class, String.class, Item.class });
-
-	private static final Method getItem = ClassHelper.getDeclaredMethod(ItemService.class, "getItem",
-			new Class[] { Role.class, String.class });
 
 	public ItemUseEnhanceInterceptor() {
 	}

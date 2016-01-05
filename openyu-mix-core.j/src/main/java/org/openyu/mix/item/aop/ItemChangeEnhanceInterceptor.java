@@ -14,6 +14,7 @@ import org.openyu.mix.role.vo.Role;
 /**
  * 增減強化等級攔截器
  */
+@Deprecated
 public class ItemChangeEnhanceInterceptor extends AppAroundAdviceSupporter {
 
 	private static final long serialVersionUID = -8227167285281213446L;
@@ -28,6 +29,8 @@ public class ItemChangeEnhanceInterceptor extends AppAroundAdviceSupporter {
 	}
 
 	/**
+	 * 改變強化
+	 * 
 	 * ItemService
 	 * 
 	 * int changeEnhance(boolean sendable, Role role, Item item, int
