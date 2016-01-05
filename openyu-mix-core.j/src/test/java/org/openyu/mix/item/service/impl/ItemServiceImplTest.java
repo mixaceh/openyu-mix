@@ -783,7 +783,7 @@ public class ItemServiceImplTest extends ItemTestSupporter {
 
 	@Test
 	// 1000000 times: 5382 mills.
-	public void checkDecreaseItemByItemId() {
+	public void checkDecreaseItemWithItemId() {
 		final String THING_ID = "T_POTION_HP_G001";
 		BagPen.ErrorType result = BagPen.ErrorType.NO_ERROR;
 		//
@@ -822,7 +822,7 @@ public class ItemServiceImplTest extends ItemTestSupporter {
 
 	@Test
 	// 1000000 times: 5382 mills.
-	public void checkDecreaseItemByUniqueId() {
+	public void checkDecreaseItemWithUniqueId() {
 		final String THING_ID = "T_POTION_HP_G001";
 		BagPen.ErrorType result = BagPen.ErrorType.NO_ERROR;
 		//
@@ -861,7 +861,10 @@ public class ItemServiceImplTest extends ItemTestSupporter {
 	}
 
 	@Test
-	// 1000000 times: 17 mills.
+	@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
+	// round: 1.04 [+- 0.00], round.block: 0.00 [+- 0.00], round.gc: 0.00 [+-
+	// 0.00], GC.calls: 0, GC.time: 0.00, time.total: 1.04, time.warmup: 0.02,
+	// time.bench: 1.04
 	public void decreaseItem() {
 		final String THING_ID = "T_POTION_HP_G001";
 		List<DecreaseItemResult> result = null;
@@ -874,16 +877,7 @@ public class ItemServiceImplTest extends ItemTestSupporter {
 		//
 		Item item = itemService.createItem(THING_ID, 1);
 
-		int count = 1;
-		long beg = System.currentTimeMillis();
-
-		for (int i = 0; i < count; i++) {
-			result = itemService.decreaseItem(true, role, item);
-		}
-		//
-		long end = System.currentTimeMillis();
-		System.out.println(count + " times: " + (end - beg) + " mills. ");
-
+		result = itemService.decreaseItem(true, role, item);
 		System.out.println(result);
 		// 沒有錯誤
 		assertNotNull(result);
@@ -901,12 +895,15 @@ public class ItemServiceImplTest extends ItemTestSupporter {
 		// 沒有錯誤
 		assertNotNull(result);
 		//
-		// ThreadHelper.sleep(3 * 1000);
+		ThreadHelper.sleep(3 * 1000);
 	}
 
 	@Test
-	// 1000000 times: 17 mills.
-	public void decreaseItemByItemId() {
+	@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
+	// round: 0.88 [+- 0.00], round.block: 0.00 [+- 0.00], round.gc: 0.00 [+-
+	// 0.00], GC.calls: 0, GC.time: 0.00, time.total: 0.88, time.warmup: 0.00,
+	// time.bench: 0.88
+	public void decreaseItemWithItemId() {
 		final String THING_ID = "T_POTION_HP_G001";
 		List<DecreaseItemResult> result = null;
 		//
@@ -916,33 +913,27 @@ public class ItemServiceImplTest extends ItemTestSupporter {
 		bagPen.removeItem(0, 0);// 移除1個道具
 		role.setBagPen(bagPen);
 		//
-		int count = 1;
-		long beg = System.currentTimeMillis();
-
-		for (int i = 0; i < count; i++) {
-			result = itemService.decreaseItem(true, role, THING_ID, 1);
-		}
-		//
-		long end = System.currentTimeMillis();
-		System.out.println(count + " times: " + (end - beg) + " mills. ");
-
+		result = itemService.decreaseItemWithItemId(true, role, THING_ID, 1);
 		System.out.println(result);
 		// 沒有錯誤
 		assertNotNull(result);
 		assertEquals(1, result.size());
 		//
-		result = itemService.decreaseItem(true, role, THING_ID, 10);
+		result = itemService.decreaseItemWithItemId(true, role, THING_ID, 10);
 		System.out.println(result);
 		// 沒有錯誤
 		assertNotNull(result);
 		assertEquals(2, result.size());
 		//
-		// ThreadHelper.sleep(3 * 1000);
+		ThreadHelper.sleep(3 * 1000);
 	}
 
 	@Test
-	// 1000000 times: 17 mills.
-	public void decreaseItemByUniqueId() {
+	@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
+	// round: 0.71 [+- 0.00], round.block: 0.00 [+- 0.00], round.gc: 0.00 [+-
+	// 0.00], GC.calls: 0, GC.time: 0.00, time.total: 0.71, time.warmup: 0.00,
+	// time.bench: 0.71
+	public void decreaseItemWithUniqueId() {
 		final String THING_ID = "T_POTION_HP_G001";
 		DecreaseItemResult result = null;
 		//
@@ -953,21 +944,12 @@ public class ItemServiceImplTest extends ItemTestSupporter {
 		role.setBagPen(bagPen);
 		Item item = bagPen.getItem(0, 1);
 		//
-		int count = 1;
-		long beg = System.currentTimeMillis();
-
-		for (int i = 0; i < count; i++) {
-			result = itemService.decreaseItemWithUniqueId(true, role, item.getUniqueId(), 1);
-		}
-		//
-		long end = System.currentTimeMillis();
-		System.out.println(count + " times: " + (end - beg) + " mills. ");
-
+		result = itemService.decreaseItemWithUniqueId(true, role, item.getUniqueId(), 1);
 		System.out.println(result);
 		// 沒有錯誤
 		assertNotNull(result);
 		//
-		// ThreadHelper.sleep(3 * 1000);
+		ThreadHelper.sleep(3 * 1000);
 	}
 
 	@Test
@@ -1030,7 +1012,7 @@ public class ItemServiceImplTest extends ItemTestSupporter {
 	/**
 	 * 裝備祝福強化
 	 */
-	public void enhanceEquipmentByBless() {
+	public void enhanceEquipmentWithBless() {
 		EnhanceResult result = null;
 		//
 		Role role = mockRole();
@@ -1061,7 +1043,7 @@ public class ItemServiceImplTest extends ItemTestSupporter {
 	/**
 	 * 裝備幻想強化
 	 */
-	public void enhanceEquipmentByFantasy() {
+	public void enhanceEquipmentWithFantasy() {
 		EnhanceResult result = null;
 		//
 		Role role = mockRole();
@@ -1092,7 +1074,7 @@ public class ItemServiceImplTest extends ItemTestSupporter {
 	/**
 	 * 防具幻想強化
 	 */
-	public void enhanceArmorByFantasy() {
+	public void enhanceArmorWithFantasy() {
 		EnhanceResult result = null;
 		//
 		Role role = mockRole();
@@ -1309,7 +1291,7 @@ public class ItemServiceImplTest extends ItemTestSupporter {
 	}
 
 	@Test
-	public void changeEnhanceByLand() {
+	public void changeEnhanceWithLand() {
 		int result = 0;
 		//
 		Role role = mockRole();
@@ -1366,7 +1348,7 @@ public class ItemServiceImplTest extends ItemTestSupporter {
 	/**
 	 * 土地祝福強化
 	 */
-	public void enhanceLandByBless() {
+	public void enhanceLandWithBless() {
 		EnhanceResult result = null;
 		//
 		Role role = mockRole();
@@ -1397,7 +1379,7 @@ public class ItemServiceImplTest extends ItemTestSupporter {
 	/**
 	 * 土地幻想強化
 	 */
-	public void enhanceLandByFantasy() {
+	public void enhanceLandWithFantasy() {
 		EnhanceResult result = null;
 		//
 		Role role = mockRole();

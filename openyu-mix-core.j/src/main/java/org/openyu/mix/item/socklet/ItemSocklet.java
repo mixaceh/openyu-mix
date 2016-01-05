@@ -94,14 +94,14 @@ public class ItemSocklet extends AppSockletServiceSupporter {
 		if (amount > 0) {
 			itemService.increaseItemWithItemId(true, role, itemId, amount);
 		} else if (amount < 0) {
-			itemService.decreaseItem(true, role, itemId, Math.abs(amount));
+			itemService.decreaseItemWithItemId(true, role, itemId, Math.abs(amount));
 		}
 		// amount=0,移除此道具
 		else {
 			BagPen bagPen = role.getBagPen();
 			int origAmount = bagPen.getAmount(itemId);
 			if (origAmount > 0) {
-				itemService.decreaseItem(true, role, itemId, origAmount);
+				itemService.decreaseItemWithItemId(true, role, itemId, origAmount);
 			}
 		}
 	}

@@ -661,7 +661,7 @@ public interface ItemService extends AppService {
 	List<DecreaseItemResult> decreaseItem(boolean sendable, Role role, Item item);
 
 	/**
-	 * 減少道具,by itemId
+	 * 減少道具, with itemId
 	 * 
 	 * @param sendable
 	 * @param role
@@ -669,11 +669,11 @@ public interface ItemService extends AppService {
 	 * @param amount
 	 * @return
 	 */
-	List<DecreaseItemResult> decreaseItem(boolean sendable, Role role,
+	List<DecreaseItemResult> decreaseItemWithItemId(boolean sendable, Role role,
 			String itemId, int amount);
 
 	/**
-	 * 減少道具,by uniqueId
+	 * 減少道具, with uniqueId
 	 * 
 	 * @param sendable
 	 * @param role

@@ -10,6 +10,7 @@ import org.openyu.mix.app.aop.supporter.AppAspectSupporter;
 import org.openyu.mix.item.service.ItemLogService;
 import org.openyu.mix.item.service.ItemService.ActionType;
 import org.openyu.mix.item.service.ItemService.IncreaseItemResult;
+import org.openyu.mix.item.service.ItemService.DecreaseItemResult;
 import org.openyu.mix.item.vo.Item;
 import org.openyu.mix.role.vo.Role;
 import org.slf4j.Logger;
@@ -118,6 +119,93 @@ public class ItemAspect extends AppAspectSupporter {
 			}
 		} catch (Throwable e) {
 			LOGGER.error(new StringBuilder("Exception encountered during increaseItems()").toString(), e);
+		}
+	}
+
+	/**
+	 * 道具減少
+	 * 
+	 * ItemService
+	 * 
+	 * List<DecreaseItemResult> decreaseItem(boolean sendable, Role role, Item
+	 * item)
+	 */
+	@AfterReturning(pointcut = "execution(public * org.openyu.mix.item.service.ItemService.decreaseItem(..))", returning = "result")
+	public void decreaseItem(JoinPoint joinPoint, Object result) throws Throwable {
+		try {
+			String method = joinPoint.getSignature().getName();
+			// 參數
+			Object[] args = joinPoint.getArgs();
+			boolean sendable = (Boolean) args[0];
+			Role role = (Role) args[1];
+			Item item = (Item) args[2];
+			//
+			@SuppressWarnings("unchecked")
+			List<DecreaseItemResult> returnValue = (List<DecreaseItemResult>) result;
+			//
+			if (returnValue.size() > 0) {
+				itemLogService.recordDecreaseItem(role, ActionType.BAG, returnValue);
+			}
+		} catch (Throwable e) {
+			LOGGER.error(new StringBuilder("Exception encountered during decreaseItem()").toString(), e);
+		}
+	}
+
+	/**
+	 * 道具減少, with itemId
+	 * 
+	 * ItemService
+	 * 
+	 * List<DecreaseItemResult> decreaseItemWithItemId(boolean sendable, Role
+	 * role, String itemId, int amount)
+	 */
+	@AfterReturning(pointcut = "execution(public * org.openyu.mix.item.service.ItemService.decreaseItemWithItemId(..))", returning = "result")
+	public void decreaseItemWithItemId(JoinPoint joinPoint, Object result) throws Throwable {
+		try {
+			String method = joinPoint.getSignature().getName();
+			// 參數
+			Object[] args = joinPoint.getArgs();
+			boolean sendable = (Boolean) args[0];
+			Role role = (Role) args[1];
+			String itemId = (String) args[2];
+			int amount = (Integer) args[3];
+			//
+			List<DecreaseItemResult> returnValue = (List<DecreaseItemResult>) result;
+			//
+			if (returnValue.size() > 0) {
+				itemLogService.recordDecreaseItem(role, ActionType.BAG, returnValue);
+			}
+		} catch (Throwable e) {
+			LOGGER.error(new StringBuilder("Exception encountered during decreaseItemWithItemId()").toString(), e);
+		}
+	}
+
+	/**
+	 * 道具減少, with uniqueId
+	 * 
+	 * ItemService
+	 * 
+	 * DecreaseItemResult decreaseItemWithUniqueId(boolean sendable, Role role,
+	 * String uniqueId, int amount)
+	 */
+	@AfterReturning(pointcut = "execution(public * org.openyu.mix.item.service.ItemService.decreaseItemWithUniqueId(..))", returning = "result")
+	public void decreaseItemWithUniqueId(JoinPoint joinPoint, Object result) throws Throwable {
+		try {
+			String method = joinPoint.getSignature().getName();
+			// 參數
+			Object[] args = joinPoint.getArgs();
+			boolean sendable = (Boolean) args[0];
+			Role role = (Role) args[1];
+			String uniqueId = (String) args[2];
+			int amount = (Integer) args[3];
+			//
+			DecreaseItemResult returnValue = (DecreaseItemResult) result;
+			//
+			if (returnValue != null) {
+				itemLogService.recordDecreaseItem(role, ActionType.BAG, returnValue);
+			}
+		} catch (Throwable e) {
+			LOGGER.error(new StringBuilder("Exception encountered during decreaseItemWithUniqueId()").toString(), e);
 		}
 	}
 }

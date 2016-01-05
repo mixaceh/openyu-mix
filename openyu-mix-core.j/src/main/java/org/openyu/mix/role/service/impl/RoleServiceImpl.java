@@ -1775,7 +1775,7 @@ public class RoleServiceImpl extends AppServiceSupporter implements RoleService 
 		BagPen.ErrorType bagError = itemService.checkDecreaseItem(role, itemId, everyAmount);
 		// 扣道具
 		if (bagError == BagPen.ErrorType.NO_ERROR) {
-			decreaseResults = itemService.decreaseItem(sendable, role, itemId, everyAmount);
+			decreaseResults = itemService.decreaseItemWithItemId(sendable, role, itemId, everyAmount);
 			// 失敗
 			if (decreaseResults.size() == 0) {
 				errorType = ErrorType.CAN_NOT_DECREASE_ITEM;
@@ -1916,7 +1916,7 @@ public class RoleServiceImpl extends AppServiceSupporter implements RoleService 
 
 		// 扣道具
 		if (itemAmount > 0) {
-			decreaseResults = itemService.decreaseItem(sendable, role, itemId, itemAmount);
+			decreaseResults = itemService.decreaseItemWithItemId(sendable, role, itemId, itemAmount);
 			// 失敗
 			if (decreaseResults.size() == 0) {
 				errorType = ErrorType.CAN_NOT_DECREASE_ITEM;

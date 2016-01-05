@@ -1324,7 +1324,8 @@ public class ItemServiceImpl extends AppServiceSupporter implements ItemService 
 			}
 			// 一格就能扣玩的數量
 			else {
-				DecreaseItemResult buffResult = decreaseItemWithUniqueId(sendable, role, origItem.getUniqueId(), amount);
+				DecreaseItemResult buffResult = decreaseItemWithUniqueId(sendable, role, origItem.getUniqueId(),
+						amount);
 				if (buffResult != null) {
 					// result.getItems().put(origItem.getUniqueId(), amount);
 					result.add(buffResult);
@@ -1348,7 +1349,7 @@ public class ItemServiceImpl extends AppServiceSupporter implements ItemService 
 	 * @param amount
 	 * @return
 	 */
-	public List<DecreaseItemResult> decreaseItem(boolean sendable, Role role, String itemId, int amount) {
+	public List<DecreaseItemResult> decreaseItemWithItemId(boolean sendable, Role role, String itemId, int amount) {
 		Item item = createItem(itemId, amount);
 		return decreaseItem(sendable, role, item);
 	}
@@ -2141,7 +2142,7 @@ public class ItemServiceImpl extends AppServiceSupporter implements ItemService 
 		ErrorType errorType = ErrorType.NO_ERROR;
 		// 檢查條件
 		errorType = checkUseItem(role, itemUniqueId, amount);
-		if (ErrorType.NO_ERROR.equals(errorType)) {
+		if (ErrorType.NO_ERROR == errorType) {
 			// 從包包拿消耗道具
 			Item item = getItem(role, itemUniqueId);
 			// 2.使用道具
@@ -2753,7 +2754,7 @@ public class ItemServiceImpl extends AppServiceSupporter implements ItemService 
 		EquipmentPen equipmentPen = role.getEquipmentPen();
 		// 穿裝備
 		EquipmentPen.ErrorType errorType = equipmentPen.addEquipment(equipment);
-		if (!EquipmentPen.ErrorType.NO_ERROR.equals(errorType)) {
+		if (EquipmentPen.ErrorType.NO_ERROR != errorType) {
 			return result;
 		}
 		// 增加equipmentGroup屬性
@@ -2882,7 +2883,7 @@ public class ItemServiceImpl extends AppServiceSupporter implements ItemService 
 		EquipmentPen equipmentPen = role.getEquipmentPen();
 		// 脫裝備
 		EquipmentPen.ErrorType errorType = equipmentPen.removeEquipment(equipment);
-		if (!EquipmentPen.ErrorType.NO_ERROR.equals(errorType)) {
+		if (EquipmentPen.ErrorType.NO_ERROR != errorType) {
 			return result;
 		}
 		// 減少equipmentGroup屬性
