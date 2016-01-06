@@ -22,6 +22,7 @@ import org.openyu.mix.sasang.service.SasangService.PlayType;
 import org.openyu.mix.sasang.service.SasangService.PutType;
 import org.openyu.mix.sasang.vo.Outcome;
 import org.openyu.mix.role.vo.Role;
+import org.openyu.commons.dao.anno.LogTx;
 import org.openyu.commons.dao.inquiry.Inquiry;
 import org.openyu.commons.util.AssertHelper;
 
@@ -109,6 +110,7 @@ public class SasangLogServiceImpl extends AppLogServiceSupporter implements Sasa
 	 * @param spendItems
 	 * @param spendCoin
 	 */
+	@LogTx
 	public void recordPlay(Role role, PlayType playType, long playTime, Outcome outcome, int totalTimes, long spendGold,
 			List<Item> spendItems, int spendCoin) {
 		SasangPlayLog log = new SasangPlayLogImpl();
@@ -136,6 +138,7 @@ public class SasangLogServiceImpl extends AppLogServiceSupporter implements Sasa
 	 * @param putType
 	 * @param awards
 	 */
+	@LogTx
 	public void recordPut(Role role, PutType putType, Map<String, Integer> awards) {
 		SasangPutLog log = new SasangPutLogImpl();
 		recordRole(role, log);
@@ -157,6 +160,7 @@ public class SasangLogServiceImpl extends AppLogServiceSupporter implements Sasa
 	 * @param playTime
 	 * @param outcomes
 	 */
+	@LogTx
 	public void recordFamous(Role role, PlayType playType, long playTime, List<Outcome> outcomes) {
 		// clone
 		List<Outcome> cloneOutcomes = clone(outcomes);
@@ -177,6 +181,5 @@ public class SasangLogServiceImpl extends AppLogServiceSupporter implements Sasa
 			//
 			offerInsert(log);
 		}
-
 	}
 }

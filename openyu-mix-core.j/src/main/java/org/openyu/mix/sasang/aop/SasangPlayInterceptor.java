@@ -1,6 +1,5 @@
 package org.openyu.mix.sasang.aop;
 
-
 import org.aopalliance.intercept.MethodInvocation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,12 +13,12 @@ import org.openyu.mix.sasang.service.SasangLogService;
 /**
  * 四象玩的攔截器
  */
+@Deprecated
 public class SasangPlayInterceptor extends AppAroundAdviceSupporter {
 
 	private static final long serialVersionUID = -8510371894911249679L;
 
-	private static transient final Logger LOGGER = LoggerFactory
-			.getLogger(SasangPlayInterceptor.class);
+	private static transient final Logger LOGGER = LoggerFactory.getLogger(SasangPlayInterceptor.class);
 
 	@Autowired
 	@Qualifier("sasangLogService")
@@ -58,14 +57,11 @@ public class SasangPlayInterceptor extends AppAroundAdviceSupporter {
 			//
 			if (ret != null) {
 				// 記錄玩的
-				sasangLogService.recordPlay(role, ret.getPlayType(),
-						ret.getPlayTime(), ret.getOutcome(),
-						ret.getTotalTimes(), ret.getSpendGold(),
-						ret.getSpendItems(), ret.getSpendCoin());
+				sasangLogService.recordPlay(role, ret.getPlayType(), ret.getPlayTime(), ret.getOutcome(),
+						ret.getTotalTimes(), ret.getSpendGold(), ret.getSpendItems(), ret.getSpendCoin());
 
 				// 記錄開出的結果,有成名的
-				sasangLogService.recordFamous(role, ret.getPlayType(),
-						ret.getPlayTime(), ret.getOutcomes());
+				sasangLogService.recordFamous(role, ret.getPlayType(), ret.getPlayTime(), ret.getOutcomes());
 			}
 		} catch (Throwable e) {
 			LOGGER.error(new StringBuilder("Exception encountered during doInvoke()").toString(), e);

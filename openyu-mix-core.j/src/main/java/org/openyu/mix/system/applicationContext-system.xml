@@ -15,7 +15,7 @@
 		parent="appServiceSupporter">
 	</bean>
 
-	<!-- relationlet -->
+	<!-- socklet -->
 	<bean id="systemSocklet" class="org.openyu.mix.system.socklet.SystemSocklet"
 		parent="systemSockletServiceSupporter">
 		<property name="id" value="SYSTEM" />
