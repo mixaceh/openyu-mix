@@ -10,16 +10,14 @@ import java.util.Locale;
 import java.util.Map;
 
 import org.junit.BeforeClass;
+import org.junit.Rule;
 import org.junit.Test;
-import org.springframework.aop.aspectj.AspectJExpressionPointcut;
-import org.springframework.aop.support.DefaultBeanFactoryPointcutAdvisor;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-import org.openyu.mix.role.aop.RoleChangeFameInterceptor;
-import org.openyu.mix.role.aop.RoleChangeGoldInterceptor;
-import org.openyu.mix.role.aop.RoleChangeLevelInterceptor;
-import org.openyu.mix.role.aop.RoleDecreaseGoldInterceptor;
-import org.openyu.mix.role.aop.RoleIncreaseGoldInterceptor;
-import org.openyu.mix.role.aop.RoleResetGoldInterceptor;
+
+import com.carrotsearch.junitbenchmarks.BenchmarkOptions;
+import com.carrotsearch.junitbenchmarks.BenchmarkRule;
+
+import org.openyu.mix.role.aop.RoleAspect;
 import org.openyu.mix.role.dao.RoleDao;
 import org.openyu.mix.role.dao.RoleLogDao;
 import org.openyu.mix.role.service.RoleLogService;
@@ -38,6 +36,9 @@ import org.openyu.mix.flutter.vo.impl.AttributeImpl;
 
 public class RoleTestSupporter extends AppTestSupporter {
 
+	@Rule
+	public BenchmarkRule benchmarkRule = new BenchmarkRule();
+	
 	protected static RoleDao roleDao;
 
 	/**
@@ -48,7 +49,7 @@ public class RoleTestSupporter extends AppTestSupporter {
 	/**
 	 * 儲存角色服務
 	 * 
-	 * 20140930
+	 * 2014/09/30
 	 */
 	protected static StoreRoleService storeRoleService;
 
@@ -56,6 +57,8 @@ public class RoleTestSupporter extends AppTestSupporter {
 	protected static RoleLogDao roleLogDao;
 
 	protected static RoleLogService roleLogService;
+	
+	protected static RoleAspect roleAspect;
 
 	protected static RoleSocklet roleSocklet;
 
@@ -90,6 +93,7 @@ public class RoleTestSupporter extends AppTestSupporter {
 		roleLogService = (RoleLogService) applicationContext
 				.getBean("roleLogService");
 		roleSocklet = (RoleSocklet) applicationContext.getBean("roleSocklet");
+		roleAspect = (RoleAspect) applicationContext.getBean("roleAspect");
 		//
 		roleChangeAdapter = (RoleChangeAdapter) applicationContext
 				.getBean("roleChangeAdapter");
@@ -98,218 +102,56 @@ public class RoleTestSupporter extends AppTestSupporter {
 	public static class BeanTest extends RoleTestSupporter {
 
 		@Test
+		@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 		public void roleDao() {
 			System.out.println(roleDao);
 			assertNotNull(roleDao);
 		}
 
 		@Test
+		@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 		public void roleService() {
 			System.out.println(roleService);
 			assertNotNull(roleService);
 		}
 
 		@Test
+		@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 		public void storeRoleService() {
 			System.out.println(storeRoleService);
 			assertNotNull(storeRoleService);
 		}
 
 		@Test
-		public void roleServiceTxPointcut() {
-			AspectJExpressionPointcut bean = (AspectJExpressionPointcut) applicationContext
-					.getBean("roleServiceTxPointcut");
-			System.out.println(bean);
-			assertNotNull(bean);
-		}
-
-		@Test
-		public void roleServiceTxAdvisor() {
-			DefaultBeanFactoryPointcutAdvisor bean = (DefaultBeanFactoryPointcutAdvisor) applicationContext
-					.getBean("roleServiceTxAdvisor");
-			System.out.println(bean);
-			assertNotNull(bean);
-		}
-
-		@Test
-		public void roleChangeLevelAdvice() {
-			RoleChangeLevelInterceptor bean = (RoleChangeLevelInterceptor) applicationContext
-					.getBean("roleChangeLevelAdvice");
-			System.out.println(bean);
-			assertNotNull(bean);
-		}
-
-		@Test
-		public void roleChangeLevelPointcut() {
-			AspectJExpressionPointcut bean = (AspectJExpressionPointcut) applicationContext
-					.getBean("roleChangeLevelPointcut");
-			System.out.println(bean);
-			assertNotNull(bean);
-		}
-
-		@Test
-		public void roleChangeLevelAdvisor() {
-			DefaultBeanFactoryPointcutAdvisor bean = (DefaultBeanFactoryPointcutAdvisor) applicationContext
-					.getBean("roleChangeLevelAdvisor");
-			System.out.println(bean);
-			assertNotNull(bean);
-		}
-
-		@Test
-		public void roleIncreaseGoldAdvice() {
-			RoleIncreaseGoldInterceptor bean = (RoleIncreaseGoldInterceptor) applicationContext
-					.getBean("roleIncreaseGoldAdvice");
-			System.out.println(bean);
-			assertNotNull(bean);
-		}
-
-		@Test
-		public void roleIncreaseGoldPointcut() {
-			AspectJExpressionPointcut bean = (AspectJExpressionPointcut) applicationContext
-					.getBean("roleIncreaseGoldPointcut");
-			System.out.println(bean);
-			assertNotNull(bean);
-		}
-
-		@Test
-		public void roleIncreaseGoldAdvisor() {
-			DefaultBeanFactoryPointcutAdvisor bean = (DefaultBeanFactoryPointcutAdvisor) applicationContext
-					.getBean("roleIncreaseGoldAdvisor");
-			System.out.println(bean);
-			assertNotNull(bean);
-		}
-
-		@Test
-		public void roleDecreaseGoldAdvice() {
-			RoleDecreaseGoldInterceptor bean = (RoleDecreaseGoldInterceptor) applicationContext
-					.getBean("roleDecreaseGoldAdvice");
-			System.out.println(bean);
-			assertNotNull(bean);
-		}
-
-		@Test
-		public void roleDecreaseGoldPointcut() {
-			AspectJExpressionPointcut bean = (AspectJExpressionPointcut) applicationContext
-					.getBean("roleDecreaseGoldPointcut");
-			System.out.println(bean);
-			assertNotNull(bean);
-		}
-
-		@Test
-		public void roleDecreaseGoldAdvisor() {
-			DefaultBeanFactoryPointcutAdvisor bean = (DefaultBeanFactoryPointcutAdvisor) applicationContext
-					.getBean("roleDecreaseGoldAdvisor");
-			System.out.println(bean);
-			assertNotNull(bean);
-		}
-
-		@Test
-		public void roleChangeGoldAdvice() {
-			RoleChangeGoldInterceptor bean = (RoleChangeGoldInterceptor) applicationContext
-					.getBean("roleChangeGoldAdvice");
-			System.out.println(bean);
-			assertNotNull(bean);
-		}
-
-		@Test
-		public void roleChangeGoldPointcut() {
-			AspectJExpressionPointcut bean = (AspectJExpressionPointcut) applicationContext
-					.getBean("roleChangeGoldPointcut");
-			System.out.println(bean);
-			assertNotNull(bean);
-		}
-
-		@Test
-		public void roleChangeGoldAdvisor() {
-			DefaultBeanFactoryPointcutAdvisor bean = (DefaultBeanFactoryPointcutAdvisor) applicationContext
-					.getBean("roleChangeGoldAdvisor");
-			System.out.println(bean);
-			assertNotNull(bean);
-		}
-
-		@Test
-		public void roleResetGoldAdvice() {
-			RoleResetGoldInterceptor bean = (RoleResetGoldInterceptor) applicationContext
-					.getBean("roleResetGoldAdvice");
-			System.out.println(bean);
-			assertNotNull(bean);
-		}
-
-		@Test
-		public void roleResetGoldPointcut() {
-			AspectJExpressionPointcut bean = (AspectJExpressionPointcut) applicationContext
-					.getBean("roleResetGoldPointcut");
-			System.out.println(bean);
-			assertNotNull(bean);
-		}
-
-		@Test
-		public void roleResetGoldAdvisor() {
-			DefaultBeanFactoryPointcutAdvisor bean = (DefaultBeanFactoryPointcutAdvisor) applicationContext
-					.getBean("roleResetGoldAdvisor");
-			System.out.println(bean);
-			assertNotNull(bean);
-		}
-
-		@Test
-		public void roleChangeFameAdvice() {
-			RoleChangeFameInterceptor bean = (RoleChangeFameInterceptor) applicationContext
-					.getBean("roleChangeFameAdvice");
-			System.out.println(bean);
-			assertNotNull(bean);
-		}
-
-		@Test
-		public void roleChangeFamePointcut() {
-			AspectJExpressionPointcut bean = (AspectJExpressionPointcut) applicationContext
-					.getBean("roleChangeFamePointcut");
-			System.out.println(bean);
-			assertNotNull(bean);
-		}
-
-		@Test
-		public void roleChangeFameAdvisor() {
-			DefaultBeanFactoryPointcutAdvisor bean = (DefaultBeanFactoryPointcutAdvisor) applicationContext
-					.getBean("roleChangeFameAdvisor");
-			System.out.println(bean);
-			assertNotNull(bean);
-		}
-
-		@Test
+		@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 		public void roleLogDao() {
 			System.out.println(roleLogDao);
 			assertNotNull(roleLogDao);
 		}
 
 		@Test
+		@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 		public void roleLogService() {
 			System.out.println(roleLogService);
 			assertNotNull(roleLogService);
 		}
 
 		@Test
-		public void roleLogServiceTxPointcut() {
-			AspectJExpressionPointcut bean = (AspectJExpressionPointcut) applicationContext
-					.getBean("roleLogServiceTxPointcut");
-			System.out.println(bean);
-			assertNotNull(bean);
-		}
-
-		@Test
-		public void roleLogServiceTxAdvisor() {
-			DefaultBeanFactoryPointcutAdvisor bean = (DefaultBeanFactoryPointcutAdvisor) applicationContext
-					.getBean("roleLogServiceTxAdvisor");
-			System.out.println(bean);
-			assertNotNull(bean);
-		}
-
-		@Test
+		@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 		public void roleSocklet() {
 			System.out.println(roleSocklet);
 			assertNotNull(roleSocklet);
 		}
 
 		@Test
+		@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
+		public void roleAspect() {
+			System.out.println(roleAspect);
+			assertNotNull(roleAspect);
+		}
+
+		@Test
+		@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 		public void roleChangeAdapter() {
 			System.out.println(roleChangeAdapter);
 			assertNotNull(roleChangeAdapter);

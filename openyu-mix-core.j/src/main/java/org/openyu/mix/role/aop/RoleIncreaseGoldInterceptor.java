@@ -1,7 +1,5 @@
 package org.openyu.mix.role.aop;
 
-import java.lang.reflect.Method;
-
 import org.aopalliance.intercept.MethodInvocation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,11 +13,12 @@ import org.openyu.mix.role.vo.Role;
 /**
  * 增加金幣攔截器
  */
+@Deprecated
 public class RoleIncreaseGoldInterceptor extends AppAroundAdviceSupporter {
 
-	private static transient final Logger LOGGER = LoggerFactory
-			.getLogger(RoleIncreaseGoldInterceptor.class);
+	private static final long serialVersionUID = 3594676918101454398L;
 
+	private static transient final Logger LOGGER = LoggerFactory.getLogger(RoleIncreaseGoldInterceptor.class);
 
 	@Autowired
 	@Qualifier("roleLogService")
@@ -66,8 +65,7 @@ public class RoleIncreaseGoldInterceptor extends AppAroundAdviceSupporter {
 			long ret = (Long) result;
 			//
 			if (ret != 0 && goldReason != null) {
-				roleLogService.recordIncreaseGold(role, ret, beforeGold,
-						goldReason);
+				roleLogService.recordIncreaseGold(role, ret, beforeGold, goldReason);
 			}
 		} catch (Throwable e) {
 			LOGGER.error(new StringBuilder("Exception encountered during doInvoke()").toString(), e);

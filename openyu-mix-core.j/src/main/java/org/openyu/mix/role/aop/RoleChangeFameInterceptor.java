@@ -1,6 +1,5 @@
 package org.openyu.mix.role.aop;
 
-import java.lang.reflect.Method;
 
 import org.aopalliance.intercept.MethodInvocation;
 import org.slf4j.Logger;

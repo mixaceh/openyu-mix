@@ -34,6 +34,9 @@ import org.openyu.mix.flutter.vo.RaceType;
 import org.openyu.mix.role.RoleTestSupporter;
 import org.openyu.mix.train.vo.TrainPen;
 import org.openyu.mix.vip.vo.VipType;
+
+import com.carrotsearch.junitbenchmarks.BenchmarkOptions;
+
 import org.openyu.commons.lang.ClassHelper;
 import org.openyu.commons.thread.ThreadHelper;
 
@@ -51,10 +54,8 @@ public class RoleServiceImplTest extends RoleTestSupporter {
 		RolePo dest = ClassHelper.copyProperties(orig);
 
 		// attrubutes
-		System.out.println("dest.getAttributes: "
-				+ dest.getAttributeGroup().getAttributes());
-		assertAttrubutes(orig.getAttributeGroup().getAttributes(), dest
-				.getAttributeGroup().getAttributes());
+		System.out.println("dest.getAttributes: " + dest.getAttributeGroup().getAttributes());
+		assertAttrubutes(orig.getAttributeGroup().getAttributes(), dest.getAttributeGroup().getAttributes());
 
 	}
 
@@ -70,10 +71,8 @@ public class RoleServiceImplTest extends RoleTestSupporter {
 		Role dest = ClassHelper.copyProperties(orig);
 
 		// attrubutes
-		System.out.println("dest.getAttributes: "
-				+ dest.getAttributeGroup().getAttributes());
-		assertAttrubutes(orig.getAttributeGroup().getAttributes(), dest
-				.getAttributeGroup().getAttributes());
+		System.out.println("dest.getAttributes: " + dest.getAttributeGroup().getAttributes());
+		assertAttrubutes(orig.getAttributeGroup().getAttributes(), dest.getAttributeGroup().getAttributes());
 	}
 
 	@Test
@@ -190,9 +189,8 @@ public class RoleServiceImplTest extends RoleTestSupporter {
 		final String ROLE_ID = "TEST_ROLE";
 		final String NAME = "測試角色";
 		//
-		Role role = roleService.createRole(ROLE_ID, NAME, RaceType.RONG,
-				CareerType.WARRIOR_1, GenderType.FEMALE, HairType.SHORT,
-				FaceType.CUTE);
+		Role role = roleService.createRole(ROLE_ID, NAME, RaceType.RONG, CareerType.WARRIOR_1, GenderType.FEMALE,
+				HairType.SHORT, FaceType.CUTE);
 		// 加到mem
 		roleSetService.addRole(role);
 		//
@@ -216,9 +214,8 @@ public class RoleServiceImplTest extends RoleTestSupporter {
 		long beg = System.currentTimeMillis();
 		//
 		for (int i = 0; i < count; i++) {
-			result = roleService.createRole(ROLE_ID, NAME, RaceType.RONG,
-					CareerType.WARRIOR_1, GenderType.FEMALE, HairType.SHORT,
-					FaceType.CUTE);
+			result = roleService.createRole(ROLE_ID, NAME, RaceType.RONG, CareerType.WARRIOR_1, GenderType.FEMALE,
+					HairType.SHORT, FaceType.CUTE);
 			// 加到mem
 			roleSetService.addRole(result);
 		}
@@ -240,9 +237,8 @@ public class RoleServiceImplTest extends RoleTestSupporter {
 		long beg = System.currentTimeMillis();
 		//
 		for (int i = 0; i < count; i++) {
-			result = roleService.createRole(ROLE_ID, NAME, RaceType.RONG,
-					CareerType.WARRIOR_1, GenderType.FEMALE, HairType.SHORT,
-					FaceType.CUTE);
+			result = roleService.createRole(ROLE_ID, NAME, RaceType.RONG, CareerType.WARRIOR_1, GenderType.FEMALE,
+					HairType.SHORT, FaceType.CUTE);
 			// 加到mem
 			roleSetService.addRole(result);
 		}
@@ -270,9 +266,8 @@ public class RoleServiceImplTest extends RoleTestSupporter {
 		long beg = System.currentTimeMillis();
 		//
 		for (int i = 0; i < count; i++) {
-			result = roleService.createRole(ROLE_ID, NAME, RaceType.RONG,
-					CareerType.WARRIOR_1, GenderType.FEMALE, HairType.SHORT,
-					FaceType.CUTE);
+			result = roleService.createRole(ROLE_ID, NAME, RaceType.RONG, CareerType.WARRIOR_1, GenderType.FEMALE,
+					HairType.SHORT, FaceType.CUTE);
 			// 加到mem
 			roleSetService.addRole(result);
 		}
@@ -340,40 +335,34 @@ public class RoleServiceImplTest extends RoleTestSupporter {
 		System.out.println(count + " times: " + (end - beg) + " mills. ");
 
 		System.out.println(result);
-		System.out.println("level: " + role.getLevel() + ", exp: "
-				+ role.getExp());
+		System.out.println("level: " + role.getLevel() + ", exp: " + role.getExp());
 
 		// lv1,9w
 		// max=60, 增加3w exp -> lv2,2w
 		// max=2, 增加3w exp -> lv2,0w
 		result = roleService.changeExp(true, role, 30000L);// lv2,2w
 		System.out.println(result);
-		System.out.println("level: " + role.getLevel() + ", exp: "
-				+ role.getExp());
+		System.out.println("level: " + role.getLevel() + ", exp: " + role.getExp());
 
 		// lv2,2w
 		result = roleService.changeExp(true, role, 50000L);// lv2,7w
 		System.out.println(result);
-		System.out.println("level: " + role.getLevel() + ", exp: "
-				+ role.getExp());
+		System.out.println("level: " + role.getLevel() + ", exp: " + role.getExp());
 
 		// lv2,7w
 		result = roleService.changeExp(true, role, 50000L);// lv2,12w
 		System.out.println(result);
-		System.out.println("level: " + role.getLevel() + ", exp: "
-				+ role.getExp());
+		System.out.println("level: " + role.getLevel() + ", exp: " + role.getExp());
 
 		// lv2,12w
 		result = roleService.changeExp(true, role, 1300000L);// lv4,12w
 		System.out.println(result);
-		System.out.println("level: " + role.getLevel() + ", exp: "
-				+ role.getExp());
+		System.out.println("level: " + role.getLevel() + ", exp: " + role.getExp());
 
 		// lv4,12w,TODO 扣經驗變負數了
 		result = roleService.changeExp(true, role, -130000L);// lv4,-1w
 		System.out.println(result);
-		System.out.println("level: " + role.getLevel() + ", exp: "
-				+ role.getExp());
+		System.out.println("level: " + role.getLevel() + ", exp: " + role.getExp());
 
 	}
 
@@ -423,24 +412,17 @@ public class RoleServiceImplTest extends RoleTestSupporter {
 	}
 
 	@Test
+	@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
+	// round: 0.20 [+- 0.00], round.block: 0.00 [+- 0.00], round.gc: 0.00 [+-
+	// 0.00], GC.calls: 0, GC.time: 0.00, time.total: 0.20, time.warmup: 0.00,
+	// time.bench: 0.20
 	public void changeLevel() {
 		Role role = mockRole();
 		// 加入監聽
 		role.addBeanChangeListener(roleChangeAdapter);
-
 		int result = 0;
-		//
-		int count = 1;
-		long beg = System.currentTimeMillis();
-		//
-		for (int i = 0; i < count; i++) {
-			// 增加59個等級
-			result = roleService.changeLevel(true, role, 59);
-		}
-		//
-		long end = System.currentTimeMillis();
-		System.out.println(count + " times: " + (end - beg) + " mills. ");
-
+		// 增加59個等級
+		result = roleService.changeLevel(true, role, 59);
 		System.out.println(result);
 		printAttribute(role);
 		assertEquals(60, role.getLevel());// 60級
@@ -466,7 +448,7 @@ public class RoleServiceImplTest extends RoleTestSupporter {
 		// 移除監聽
 		role.removeBeanChangeListener(roleChangeAdapter);
 		//
-		// ThreadHelper.sleep(3 * 1000);
+		ThreadHelper.sleep(3 * 1000);
 	}
 
 	@Test
@@ -504,19 +486,13 @@ public class RoleServiceImplTest extends RoleTestSupporter {
 	}
 
 	@Test
+	@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 	public void increaseGold() {
 		Role role = mockRole();// accountId=TEST_ACCOUNT,roleId=TEST_ROLE
 		role.setGold(10L);
 		//
 		long result = 0L;
-		int count = 1;
-		long beg = System.currentTimeMillis();
-		for (int i = 0; i < count; i++) {
-			result = roleService.increaseGold(true, role, 100L,
-					GoldType.SHOP_SELL);
-		}
-		long end = System.currentTimeMillis();
-		System.out.println(count + " times: " + (end - beg) + " mills. ");
+		result = roleService.increaseGold(true, role, 100L, GoldType.SHOP_SELL);
 
 		System.out.println(result);
 		assertEquals(110L, role.getGold());
@@ -525,7 +501,7 @@ public class RoleServiceImplTest extends RoleTestSupporter {
 		System.out.println(result);
 		assertEquals(110L, role.getGold());
 		//
-		// ThreadHelper.sleep(3 * 1000);
+		ThreadHelper.sleep(3 * 1000);
 	}
 
 	@Test
@@ -555,21 +531,14 @@ public class RoleServiceImplTest extends RoleTestSupporter {
 	}
 
 	@Test
+	@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 	public void decreaseGold() {
 		Role role = mockRole();// accountId=TEST_ACCOUNT,roleId=TEST_ROLE
 		role.setGold(100L);
 		//
 		long result = 0L;
-		int count = 1;
-		long beg = System.currentTimeMillis();
-		for (int i = 0; i < count; i++) {
-			// 會發訊息,會有log
-			result = roleService.decreaseGold(true, role, 50L,
-					GoldType.SASANG_PLAY);
-		}
-		long end = System.currentTimeMillis();
-		System.out.println(count + " times: " + (end - beg) + " mills. ");
-
+		// 會發訊息,會有log
+		result = roleService.decreaseGold(true, role, 50L, GoldType.SASANG_PLAY);
 		System.out.println(result);
 		assertEquals(50L, role.getGold());
 		//
@@ -577,43 +546,34 @@ public class RoleServiceImplTest extends RoleTestSupporter {
 		System.out.println(result);
 		assertEquals(50L, role.getGold());
 		//
-		// ThreadHelper.sleep(3 * 1000);
+		ThreadHelper.sleep(3 * 1000);
 	}
 
 	@Test
+	@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
+	// round: 0.46 [+- 0.00], round.block: 0.00 [+- 0.00], round.gc: 0.00 [+-
+	// 0.00], GC.calls: 0, GC.time: 0.00, time.total: 0.46, time.warmup: 0.00,
+	// time.bench: 0.46
 	public void changeGold() {
 		Role role = mockRole();
 		role.setGold(500L);
 		long result = 0L;
 		//
-		int count = 1;
-		long beg = System.currentTimeMillis();
-		//
-		for (int i = 0; i < count; i++) {
-			// 會發訊息
-			result = roleService.changeGold(true, role, 500L,
-					ActionType.INCREASE, GoldType.SHOP_SELL);
-		}
-		//
-		long end = System.currentTimeMillis();
-		System.out.println(count + " times: " + (end - beg) + " mills. ");
-
+		// 會發訊息
+		result = roleService.changeGold(true, role, 500L, ActionType.INCREASE, GoldType.SHOP_SELL);
 		System.out.println(result);
 		assertEquals(1000L, role.getGold());
-
 		//
-		result = roleService.changeGold(true, role, -1 * 100L,
-				ActionType.DECREASE, GoldType.SASANG_PLAY);
+		result = roleService.changeGold(true, role, -1 * 100L, ActionType.DECREASE, GoldType.SASANG_PLAY);
 		System.out.println(result);
 		assertEquals(900L, role.getGold());
 
 		//
-		result = roleService.changeGold(true, role, 0, ActionType.DECREASE,
-				GoldType.SASANG_PLAY);
+		result = roleService.changeGold(true, role, 0, ActionType.DECREASE, GoldType.SASANG_PLAY);
 		System.out.println(result);
 		assertEquals(900L, role.getGold());
 		//
-		// ThreadHelper.sleep(3 * 1000);
+		ThreadHelper.sleep(3 * 1000);
 	}
 
 	@Test
@@ -671,30 +631,23 @@ public class RoleServiceImplTest extends RoleTestSupporter {
 		//
 		for (int i = 0; i < count; i++) {
 			// 會發訊息
-			result = roleService.changeAttribute(true, role,
-					AttributeType.STRENGTH.getValue(), 10, 10, 1000);
+			result = roleService.changeAttribute(true, role, AttributeType.STRENGTH.getValue(), 10, 10, 1000);
 		}
 		//
 		long end = System.currentTimeMillis();
 		System.out.println(count + " times: " + (end - beg) + " mills. ");
 
 		System.out.println(result);
-		assertEquals(118,
-				role.getAttributeGroup().getPoint(AttributeType.STRENGTH));
-		assertEquals(140,
-				role.getAttributeGroup().getFinal(AttributeType.STRENGTH));
+		assertEquals(118, role.getAttributeGroup().getPoint(AttributeType.STRENGTH));
+		assertEquals(140, role.getAttributeGroup().getFinal(AttributeType.STRENGTH));
 	}
 
 	@Test
 	public void sendAttribute() {
 		Role role = mockRole();
 		//
-		roleService.sendAttribute(role,
-				role.getAttributeGroup().getAttribute(AttributeType.STRENGTH));
-		roleService.sendAttribute(
-				role,
-				role.getAttributeGroup().getAttribute(
-						AttributeType.PHYSICAL_ATTACK));
+		roleService.sendAttribute(role, role.getAttributeGroup().getAttribute(AttributeType.STRENGTH));
+		roleService.sendAttribute(role, role.getAttributeGroup().getAttribute(AttributeType.PHYSICAL_ATTACK));
 	}
 
 	@Test
@@ -714,12 +667,10 @@ public class RoleServiceImplTest extends RoleTestSupporter {
 		//
 		VipType fieldValue = VipType._0;
 		//
-		Method method = ClassHelper.getDeclaredMethod(Role.class, setterName,
-				fieldValue.getClass());
+		Method method = ClassHelper.getDeclaredMethod(Role.class, setterName, fieldValue.getClass());
 		System.out.println(method);
 		//
-		ClassHelper.invokeDeclaredMethod(role, setterName,
-				fieldValue.getClass(), VipType._1);
+		ClassHelper.invokeDeclaredMethod(role, setterName, fieldValue.getClass(), VipType._1);
 		System.out.println(role.getVipType());
 		//
 	}

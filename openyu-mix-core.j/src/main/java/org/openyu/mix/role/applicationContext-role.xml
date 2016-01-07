@@ -16,132 +16,34 @@
 		class="org.openyu.mix.role.dao.impl.RoleDaoImpl"
 		parent="appDaoSupporter" />
 	
-	<!-- 角色服務 -->
+	<!-- service -->
 	<bean
 		id="roleService"
 		class="org.openyu.mix.role.service.impl.RoleServiceImpl"
 		parent="appServiceSupporter" />
 
-	<!-- advisor -->
-	<aop:config>
-		<aop:pointcut
-			id="roleServiceTxPointcut"
-			expression="bean(roleService)" />
-		<aop:advisor
-			id="roleServiceTxAdvisor"
-			advice-ref="commonTxAdvice"
-			pointcut-ref="roleServiceTxPointcut" />
-	</aop:config>
-	
-	<!-- 儲存角色服務 -->
 	<bean
 		id="storeRoleService"
 		class="org.openyu.mix.role.service.impl.StoreRoleServiceImpl"
 		parent="appServiceSupporter" />
 
-	<!-- 增減等級 -->
-	<bean
-		id="roleChangeLevelAdvice"
-		class="org.openyu.mix.role.aop.RoleChangeLevelInterceptor"
-		parent="appMethodInterceptorSupporter" />
-	<aop:config>
-		<aop:pointcut
-			id="roleChangeLevelPointcut"
-			expression="execution(* org.openyu.mix.role.service.impl.RoleServiceImpl.changeLevel*(..))" />
-		<aop:advisor
-			id="roleChangeLevelAdvisor"
-			advice-ref="roleChangeLevelAdvice"
-			pointcut-ref="roleChangeLevelPointcut" />
-	</aop:config>
-
-	<!-- 增加金幣 -->
-	<bean
-		id="roleIncreaseGoldAdvice"
-		class="org.openyu.mix.role.aop.RoleIncreaseGoldInterceptor"
-		parent="appMethodInterceptorSupporter" />
-	<aop:config>
-		<aop:pointcut
-			id="roleIncreaseGoldPointcut"
-			expression="execution(* org.openyu.mix.role.service.impl.RoleServiceImpl.increaseGold*(..))" />
-		<aop:advisor
-			id="roleIncreaseGoldAdvisor"
-			advice-ref="roleIncreaseGoldAdvice"
-			pointcut-ref="roleIncreaseGoldPointcut" />
-	</aop:config>
-
-	<!-- 減少金幣 -->
-	<bean
-		id="roleDecreaseGoldAdvice"
-		class="org.openyu.mix.role.aop.RoleDecreaseGoldInterceptor"
-		parent="appMethodInterceptorSupporter" />
-	<aop:config>
-		<aop:pointcut
-			id="roleDecreaseGoldPointcut"
-			expression="execution(* org.openyu.mix.role.service.impl.RoleServiceImpl.decreaseGold*(..))" />
-		<aop:advisor
-			id="roleDecreaseGoldAdvisor"
-			advice-ref="roleDecreaseGoldAdvice"
-			pointcut-ref="roleDecreaseGoldPointcut" />
-	</aop:config>
-
-	<!--增減金幣 -->
-	<bean
-		id="roleChangeGoldAdvice"
-		class="org.openyu.mix.role.aop.RoleChangeGoldInterceptor"
-		parent="appMethodInterceptorSupporter" />
-	<aop:config>
-		<aop:pointcut
-			id="roleChangeGoldPointcut"
-			expression="execution(* org.openyu.mix.role.service.impl.RoleServiceImpl.changeGold*(..))" />
-		<aop:advisor
-			id="roleChangeGoldAdvisor"
-			advice-ref="roleChangeGoldAdvice"
-			pointcut-ref="roleChangeGoldPointcut" />
-	</aop:config>
-
-	<!--重置金幣 -->
-	<bean
-		id="roleResetGoldAdvice"
-		class="org.openyu.mix.role.aop.RoleResetGoldInterceptor"
-		parent="appMethodInterceptorSupporter" />
-	<aop:config>
-		<aop:pointcut
-			id="roleResetGoldPointcut"
-			expression="execution(* org.openyu.mix.role.service.impl.RoleServiceImpl.resetGold*(..))" />
-		<aop:advisor
-			id="roleResetGoldAdvisor"
-			advice-ref="roleResetGoldAdvice"
-			pointcut-ref="roleResetGoldPointcut" />
-	</aop:config>
-
-	<!--增減聲望 -->
-	<bean
-		id="roleChangeFameAdvice"
-		class="org.openyu.mix.role.aop.RoleChangeFameInterceptor"
-		parent="appMethodInterceptorSupporter" />
-	<aop:config>
-		<aop:pointcut
-			id="roleChangeFamePointcut"
-			expression="execution(* org.openyu.mix.role.service.impl.RoleServiceImpl.changeFame*(..))" />
-		<aop:advisor
-			id="roleChangeFameAdvisor"
-			advice-ref="roleChangeFameAdvice"
-			pointcut-ref="roleChangeFamePointcut" />
-	</aop:config>
-
-	<!-- dao -->
+	<!-- log -->
 	<bean
 		id="roleLogDao"
 		class="org.openyu.mix.role.dao.impl.RoleLogDaoImpl"
 		parent="appLogDaoSupporter" />
 
-	<!-- service -->
-	<!-- 角色日誌服務 -->
 	<bean
 		id="roleLogService"
 		class="org.openyu.mix.role.service.impl.RoleLogServiceImpl"
 		parent="appLogServiceSupporter" />
 
+	<!-- aspect -->
+	<bean
+		id="roleAspect"
+		class="org.openyu.mix.role.aop.RoleAspect"
+		parent="appAspectSupporter" />
+		
 	<!-- socklet -->
 	<bean
 		id="roleSocklet"

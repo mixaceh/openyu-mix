@@ -32,7 +32,7 @@ public interface RoleService extends AppService {
 	/**
 	 * 操作類別
 	 */
-	public enum ActionType implements IntEnum {
+	enum ActionType implements IntEnum {
 		/**
 		 * 增加,+
 		 */
@@ -72,8 +72,8 @@ public interface RoleService extends AppService {
 	 * 
 	 * 第4,5位數原因 => 01-99
 	 * 
-	 * */
-	public enum GoldType implements IntEnum {
+	 */
+	enum GoldType implements IntEnum {
 		// ---------------------------------------------------
 		// reservation 100-109=10
 		// ---------------------------------------------------
@@ -241,7 +241,7 @@ public interface RoleService extends AppService {
 	/**
 	 * 錯誤類別
 	 */
-	public enum ErrorType implements IntEnum {
+	enum ErrorType implements IntEnum {
 		/**
 		 * 未知
 		 */
@@ -321,8 +321,7 @@ public interface RoleService extends AppService {
 		}
 
 		public String toString() {
-			ToStringBuilder builder = new ToStringBuilder(this,
-					ToStringStyle.SIMPLE_STYLE);
+			ToStringBuilder builder = new ToStringBuilder(this, ToStringStyle.SIMPLE_STYLE);
 			builder.append("(" + value + ") " + super.toString());
 			return builder.toString();
 		}
@@ -386,9 +385,8 @@ public interface RoleService extends AppService {
 	 *            臉型
 	 * @return
 	 */
-	Role createRole(String roleId, String name, RaceType raceType,
-			CareerType careerType, GenderType genderType, HairType hairType,
-			FaceType faceType);
+	Role createRole(String roleId, String name, RaceType raceType, CareerType careerType, GenderType genderType,
+			HairType hairType, FaceType faceType);
 
 	/**
 	 * 重新計算所有屬性,等級,行業會改變屬性
@@ -445,8 +443,7 @@ public interface RoleService extends AppService {
 	 * @param value
 	 * @return
 	 */
-	Message sendSyncRoleField(String syncRoleId, String fieldName,
-			Serializable value);
+	Message sendSyncRoleField(String syncRoleId, String fieldName, Serializable value);
 
 	/**
 	 * 同步, 同步角色的欄位
@@ -578,8 +575,7 @@ public interface RoleService extends AppService {
 	 *            log用,金幣增加的原因
 	 * @return
 	 */
-	long increaseGold(boolean sendable, Role role, long gold,
-			GoldType goldReason);
+	long increaseGold(boolean sendable, Role role, long gold, GoldType goldReason);
 
 	/**
 	 * 檢查減少金幣
@@ -604,8 +600,7 @@ public interface RoleService extends AppService {
 	 *            log用,金幣減少的原因
 	 * @return
 	 */
-	long decreaseGold(boolean sendable, Role role, long gold,
-			GoldType goldReason);
+	long decreaseGold(boolean sendable, Role role, long gold, GoldType goldReason);
 
 	/**
 	 * 增減金幣
@@ -622,8 +617,7 @@ public interface RoleService extends AppService {
 	 *            log用,金幣增減的原因
 	 * @return
 	 */
-	long changeGold(boolean sendable, Role role, long gold,
-			ActionType goldAction, GoldType goldReason);
+	long changeGold(boolean sendable, Role role, long gold, ActionType goldAction, GoldType goldReason);
 
 	/**
 	 * 重置金幣,gold=0
@@ -690,8 +684,7 @@ public interface RoleService extends AppService {
 	 *            增減增加的比率值
 	 * @return
 	 */
-	Attribute changeAttribute(boolean sendable, Role role, int attributeValue,
-			int point, int addPoint, int addRate);
+	Attribute changeAttribute(boolean sendable, Role role, int attributeValue, int point, int addPoint, int addRate);
 
 	/**
 	 * 發送單一屬性回應
@@ -765,7 +758,7 @@ public interface RoleService extends AppService {
 	 */
 	Message sendVip(Role role, VipType vipType, int diffVip);
 
-	public interface SpendResult extends AppResult {
+	interface SpendResult extends AppResult {
 
 		/**
 		 * 錯誤類別
@@ -850,8 +843,8 @@ public interface RoleService extends AppService {
 	 *            vip限制
 	 * @return
 	 */
-	SpendResult spendByItemCoin(boolean sendable, Role role, String itemId,
-			int everyAmount, int everyCoin, CoinType coinType, VipType vipLimit);
+	SpendResult spendByItemCoin(boolean sendable, Role role, String itemId, int everyAmount, int everyCoin,
+			CoinType coinType, VipType vipLimit);
 
 	/**
 	 * 消耗道具或儲值幣
@@ -873,7 +866,6 @@ public interface RoleService extends AppService {
 	 *            vip限制
 	 * @return
 	 */
-	SpendResult spendByItemCoin(boolean sendable, Role role, int spendTimes,
-			String itemId, int everyAmount, int everyCoin, CoinType coinType,
-			VipType vipLimit);
+	SpendResult spendByItemCoin(boolean sendable, Role role, int spendTimes, String itemId, int everyAmount,
+			int everyCoin, CoinType coinType, VipType vipLimit);
 }

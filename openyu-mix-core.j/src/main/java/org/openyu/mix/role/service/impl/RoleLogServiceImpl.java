@@ -18,6 +18,7 @@ import org.openyu.mix.role.service.RoleLogService;
 import org.openyu.mix.role.service.RoleService.ActionType;
 import org.openyu.mix.role.service.RoleService.GoldType;
 import org.openyu.mix.role.vo.Role;
+import org.openyu.commons.dao.anno.LogTx;
 import org.openyu.commons.dao.inquiry.Inquiry;
 import org.openyu.commons.util.AssertHelper;
 
@@ -46,7 +47,7 @@ public class RoleLogServiceImpl extends AppLogServiceSupporter implements RoleLo
 	 * @throws Exception
 	 */
 	protected final void checkConfig() throws Exception {
-		AssertHelper.notNull(this.commonDao, "The CoreLogDao is required");
+		AssertHelper.notNull(this.commonDao, "The RoleLogDao is required");
 	}
 	// --------------------------------------------------
 	// db
@@ -107,6 +108,7 @@ public class RoleLogServiceImpl extends AppLogServiceSupporter implements RoleLo
 	 * @param level
 	 * @param beforeLevel
 	 */
+	@LogTx
 	public void recordChangeLevel(Role role, int level, int beforeLevel) {
 		RoleLevelLog log = new RoleLevelLogImpl();
 		recordRole(role, log);
@@ -125,6 +127,7 @@ public class RoleLogServiceImpl extends AppLogServiceSupporter implements RoleLo
 	 * @param gold
 	 * @param beforeGold
 	 */
+	@LogTx
 	public void recordIncreaseGold(Role role, long gold, long beforeGold, GoldType goldReason) {
 		recordChangeGold(role, gold, beforeGold, ActionType.INCREASE, goldReason);
 
@@ -137,6 +140,7 @@ public class RoleLogServiceImpl extends AppLogServiceSupporter implements RoleLo
 	 * @param gold
 	 * @param beforeGold
 	 */
+	@LogTx
 	public void recordDecreaseGold(Role role, long gold, long beforeGold, GoldType goldReason) {
 		recordChangeGold(role, -1 * gold, beforeGold, ActionType.DECREASE, goldReason);
 	}
@@ -149,6 +153,7 @@ public class RoleLogServiceImpl extends AppLogServiceSupporter implements RoleLo
 	 * @param beforeGold
 	 * @param goldAction
 	 */
+	@LogTx
 	public void recordChangeGold(Role role, long gold, long beforeGold, ActionType goldAction, GoldType goldReason) {
 		RoleGoldLog log = new RoleGoldLogImpl();
 		recordRole(role, log);
@@ -188,6 +193,7 @@ public class RoleLogServiceImpl extends AppLogServiceSupporter implements RoleLo
 	 * @param fame
 	 * @param beforeFame
 	 */
+	@LogTx
 	public void recordChangeFame(Role role, int fame, int beforeFame) {
 		RoleFameLog log = new RoleFameLogImpl();
 		recordRole(role, log);
@@ -198,5 +204,4 @@ public class RoleLogServiceImpl extends AppLogServiceSupporter implements RoleLo
 		//
 		offerInsert(log);
 	}
-
 }

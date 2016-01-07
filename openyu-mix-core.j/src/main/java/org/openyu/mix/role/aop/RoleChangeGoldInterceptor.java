@@ -1,6 +1,5 @@
 package org.openyu.mix.role.aop;
 
-import java.lang.reflect.Method;
 
 import org.aopalliance.intercept.MethodInvocation;
 import org.slf4j.Logger;
@@ -16,7 +15,10 @@ import org.openyu.mix.role.vo.Role;
 /**
  * 增加金幣攔截器
  */
+@Deprecated
 public class RoleChangeGoldInterceptor extends AppAroundAdviceSupporter {
+
+	private static final long serialVersionUID = -3698660193518015888L;
 
 	private static transient final Logger LOGGER = LoggerFactory
 			.getLogger(RoleChangeGoldInterceptor.class);
