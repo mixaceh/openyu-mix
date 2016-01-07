@@ -190,16 +190,16 @@ public class RoleAspect extends AppAspectSupporter {
 		//
 		return result;
 	}
-	
+
 	/**
-	 * 增減等級
+	 * 增減聲望
 	 * 
 	 * RoleService
 	 * 
-	 * int changeLevel(boolean sendable, Role role, int level);
+	 * int changeFame(boolean sendable, Role role, int fame);
 	 */
-	@Around("execution(public * org.openyu.mix.role.service.RoleService.changeLevel(..))")
-	public Object changeLevel(ProceedingJoinPoint joinPoint) throws Throwable {
+	@Around("execution(public * org.openyu.mix.role.service.RoleService.changeFame(..))")
+	public Object changeFame(ProceedingJoinPoint joinPoint) throws Throwable {
 		Object result = null;
 		//
 		try {
@@ -208,12 +208,12 @@ public class RoleAspect extends AppAspectSupporter {
 			Object[] args = joinPoint.getArgs();
 			boolean sendable = (Boolean) args[0];
 			Role role = (Role) args[1];
-			int level = (Integer) args[2];
+			int fame = (Integer) args[2];
 
 			// 改變前等級
-			int beforeLevel = 0;
+			int beforeFame = 0;
 			if (role != null) {
-				beforeLevel = role.getLevel();
+				beforeFame = role.getFame();
 			}
 
 			result = joinPoint.proceed();
@@ -221,10 +221,10 @@ public class RoleAspect extends AppAspectSupporter {
 			int returnValue = safeGet((Integer) result);
 			//
 			if (returnValue != 0) {
-				roleLogService.recordChangeLevel(role, returnValue, beforeLevel);
+				roleLogService.recordChangeFame(role, returnValue, beforeFame);
 			}
 		} catch (Throwable e) {
-			LOGGER.error(new StringBuilder("Exception encountered during changeLevel()").toString(), e);
+			LOGGER.error(new StringBuilder("Exception encountered during changeFame()").toString(), e);
 		}
 		//
 		return result;

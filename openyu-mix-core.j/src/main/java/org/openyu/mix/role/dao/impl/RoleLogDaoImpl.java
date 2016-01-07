@@ -18,25 +18,23 @@ import org.slf4j.LoggerFactory;
 
 public class RoleLogDaoImpl extends AppLogDaoSupporter implements RoleLogDao {
 
-	private static transient final Logger LOGGER = LoggerFactory
-			.getLogger(RoleLogDaoImpl.class);
+	private static final long serialVersionUID = -1623793467239947375L;
+
+	private static transient final Logger LOGGER = LoggerFactory.getLogger(RoleLogDaoImpl.class);
 	/**
 	 * 等級改變log
 	 */
-	private static final String ROLE_LEVEL_LOG_PO_NAME = RoleLevelLogImpl.class
-			.getName();
+	private static final String ROLE_LEVEL_LOG_PO_NAME = RoleLevelLogImpl.class.getName();
 
 	/**
 	 * 金幣改變log
 	 */
-	private static final String ROLE_GOLD_LOG_PO_NAME = RoleGoldLogImpl.class
-			.getName();
+	private static final String ROLE_GOLD_LOG_PO_NAME = RoleGoldLogImpl.class.getName();
 
 	/**
 	 * 聲望改變log
 	 */
-	private static final String ROLE_FAME_LOG_PO_NAME = RoleFameLogImpl.class
-			.getName();
+	private static final String ROLE_FAME_LOG_PO_NAME = RoleFameLogImpl.class.getName();
 
 	public RoleLogDaoImpl() {
 	}

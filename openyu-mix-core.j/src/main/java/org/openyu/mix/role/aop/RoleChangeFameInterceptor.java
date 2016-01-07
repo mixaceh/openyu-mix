@@ -13,6 +13,7 @@ import org.openyu.mix.role.vo.Role;
 /**
  * 增減聲望攔截器
  */
+@Deprecated
 public class RoleChangeFameInterceptor extends AppAroundAdviceSupporter {
 
 	private static transient final Logger LOGGER = LoggerFactory.getLogger(RoleChangeFameInterceptor.class);

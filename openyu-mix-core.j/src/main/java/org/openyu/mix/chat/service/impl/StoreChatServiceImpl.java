@@ -141,7 +141,6 @@ public class StoreChatServiceImpl extends AppServiceSupporter implements StoreCh
 	 * 
 	 * @return
 	 */
-	@CommonTx
 	public int storeChats(boolean sendable) {
 		int result = 0;
 		//
@@ -177,7 +176,6 @@ public class StoreChatServiceImpl extends AppServiceSupporter implements StoreCh
 	 * @param chat
 	 * @return
 	 */
-	@CommonTx
 	public boolean storeChat(boolean sendable, Chat chat) {
 		boolean result = false;
 		//

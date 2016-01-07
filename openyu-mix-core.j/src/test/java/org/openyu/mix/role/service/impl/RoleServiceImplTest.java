@@ -532,6 +532,9 @@ public class RoleServiceImplTest extends RoleTestSupporter {
 
 	@Test
 	@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
+	// round: 0.78 [+- 0.00], round.block: 0.00 [+- 0.00], round.gc: 0.00 [+-
+	// 0.00], GC.calls: 0, GC.time: 0.00, time.total: 0.78, time.warmup: 0.00,
+	// time.bench: 0.78
 	public void decreaseGold() {
 		Role role = mockRole();// accountId=TEST_ACCOUNT,roleId=TEST_ROLE
 		role.setGold(100L);
@@ -584,22 +587,16 @@ public class RoleServiceImplTest extends RoleTestSupporter {
 	}
 
 	@Test
+	@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
+	// round: 1.56 [+- 0.00], round.block: 0.00 [+- 0.00], round.gc: 0.00 [+-
+	// 0.00], GC.calls: 0, GC.time: 0.00, time.total: 1.56, time.warmup: 0.02,
+	// time.bench: 1.56
 	public void changeFame() {
 		Role role = mockRole();
 		role.setFame(100);
 		int result = 0;
-		//
-		int count = 1;
-		long beg = System.currentTimeMillis();
-		//
-		for (int i = 0; i < count; i++) {
-			// 會發訊息
-			result = roleService.changeFame(true, role, 50);
-		}
-		//
-		long end = System.currentTimeMillis();
-		System.out.println(count + " times: " + (end - beg) + " mills. ");
-
+		// 會發訊息
+		result = roleService.changeFame(true, role, 50);
 		System.out.println(result);
 		assertEquals(150, role.getFame());
 		//
@@ -611,7 +608,7 @@ public class RoleServiceImplTest extends RoleTestSupporter {
 		System.out.println(result);
 		assertEquals(140, role.getFame());
 		//
-		// ThreadHelper.sleep(3 * 1000);
+		ThreadHelper.sleep(3 * 1000);
 	}
 
 	@Test

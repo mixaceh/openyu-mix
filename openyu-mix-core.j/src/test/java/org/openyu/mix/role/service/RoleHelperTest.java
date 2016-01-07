@@ -1,7 +1,5 @@
 package org.openyu.mix.role.service;
 
-import static org.junit.Assert.*;
-
 import org.junit.Test;
 import org.openyu.mix.core.service.CoreModuleType;
 import org.openyu.mix.flutter.vo.Attribute;
@@ -21,15 +19,13 @@ public class RoleHelperTest extends RoleTestSupporter {
 		Message result = null;
 		//
 		Role role = mockRole();
-		Attribute attribute = role.getAttributeGroup().getAttribute(
-				AttributeType.STRENGTH);
+		Attribute attribute = role.getAttributeGroup().getAttribute(AttributeType.STRENGTH);
 		//
 		int count = 1000000; // 100w
 		long beg = System.currentTimeMillis();
 		//
 		for (int i = 0; i < count; i++) {
-			result = messageService.createMessage(CoreModuleType.ROLE,
-					CoreModuleType.CLIENT, null, role.getId());
+			result = messageService.createMessage(CoreModuleType.ROLE, CoreModuleType.CLIENT, null, role.getId());
 			RoleHelper.fillAttribute(result, attribute);
 		}
 		//
@@ -51,8 +47,7 @@ public class RoleHelperTest extends RoleTestSupporter {
 		long beg = System.currentTimeMillis();
 		//
 		for (int i = 0; i < count; i++) {
-			result = messageService.createMessage(CoreModuleType.ROLE,
-					CoreModuleType.CLIENT, null, role.getId());
+			result = messageService.createMessage(CoreModuleType.ROLE, CoreModuleType.CLIENT, null, role.getId());
 			RoleHelper.fillAttributeGroup(result, attributeGroup);
 		}
 		//

@@ -22,6 +22,7 @@ import org.openyu.mix.role.service.StoreRoleService;
 import org.openyu.mix.role.vo.Role;
 import org.openyu.mix.role.vo.RoleCollector;
 import org.openyu.mix.role.vo.impl.RoleImpl;
+import org.openyu.commons.dao.anno.CommonTx;
 import org.openyu.commons.io.FileHelper;
 import org.openyu.commons.io.IoHelper;
 import org.openyu.commons.nio.NioHelper;
