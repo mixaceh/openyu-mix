@@ -15,6 +15,7 @@ import org.openyu.mix.sasang.service.SasangService.PutType;
 /**
  * 四象單擊獎勵放入包包攔截器
  */
+@Deprecated
 public class SasangPutOneInterceptor extends AppAroundAdviceSupporter {
 
 	private static final long serialVersionUID = 6776586270397964192L;
@@ -57,7 +58,6 @@ public class SasangPutOneInterceptor extends AppAroundAdviceSupporter {
 
 			// 傳回值
 			PutResult ret = (PutResult) result;
-
 			//
 			if (ret != null) {
 				sasangLogService.recordPut(role, PutType.ONE, ret.getAwards());

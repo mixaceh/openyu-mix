@@ -228,8 +228,7 @@ public interface SasangService extends AppService {
 		}
 
 		public String toString() {
-			ToStringBuilder builder = new ToStringBuilder(this,
-					ToStringStyle.SIMPLE_STYLE);
+			ToStringBuilder builder = new ToStringBuilder(this, ToStringStyle.SIMPLE_STYLE);
 			builder.append("(" + value + ") " + super.toString());
 			return builder.toString();
 		}
@@ -455,6 +454,7 @@ public interface SasangService extends AppService {
 	/**
 	 * 單擊獎勵放入包包
 	 * 
+	 * @param sendable
 	 * @param role
 	 * @param itemId
 	 * @param amount
@@ -486,6 +486,7 @@ public interface SasangService extends AppService {
 	/**
 	 * 所有中獎區獎勵放入包包
 	 * 
+	 * @param sendable
 	 * @param role
 	 * @return
 	 */

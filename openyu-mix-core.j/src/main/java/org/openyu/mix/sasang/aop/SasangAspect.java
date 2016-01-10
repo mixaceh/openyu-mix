@@ -5,6 +5,8 @@ import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
 import org.openyu.mix.sasang.service.SasangLogService;
 import org.openyu.mix.sasang.service.SasangService.PlayResult;
+import org.openyu.mix.sasang.service.SasangService.PutResult;
+import org.openyu.mix.sasang.service.SasangService.PutType;
 import org.openyu.mix.app.aop.supporter.AppAspectSupporter;
 import org.openyu.mix.role.vo.Role;
 import org.slf4j.Logger;
@@ -57,6 +59,60 @@ public class SasangAspect extends AppAspectSupporter {
 			}
 		} catch (Throwable e) {
 			LOGGER.error(new StringBuilder("Exception encountered during play()").toString(), e);
+		}
+	}
+
+	/**
+	 * 單擊獎勵放入包包
+	 * 
+	 * SasangService
+	 * 
+	 * PutResult putOne(boolean sendable, Role role, String itemId, int amount)
+	 */
+	@AfterReturning(pointcut = "execution(public * org.openyu.mix.sasang.service.SasangService.putOne(..))", returning = "result")
+	public void putOne(JoinPoint joinPoint, Object result) throws Throwable {
+		try {
+			String method = joinPoint.getSignature().getName();
+			// 參數
+			Object[] args = joinPoint.getArgs();
+			boolean sendable = (Boolean) args[0];
+			Role role = (Role) args[1];
+			String itemId = (String) args[2];
+			int amount = (Integer) args[3];
+			//
+			PutResult returnValue = (PutResult) result;
+			//
+			if (returnValue != null) {
+				sasangLogService.recordPut(role, PutType.ONE, returnValue.getAwards());
+			}
+		} catch (Throwable e) {
+			LOGGER.error(new StringBuilder("Exception encountered during putOne()").toString(), e);
+		}
+	}
+
+	/**
+	 * 所有中獎區獎勵放入包包
+	 * 
+	 * SasangService
+	 * 
+	 * PutResult putAll(boolean sendable, Role role)
+	 */
+	@AfterReturning(pointcut = "execution(public * org.openyu.mix.sasang.service.SasangService.putAll(..))", returning = "result")
+	public void putAll(JoinPoint joinPoint, Object result) throws Throwable {
+		try {
+			String method = joinPoint.getSignature().getName();
+			// 參數
+			Object[] args = joinPoint.getArgs();
+			boolean sendable = (Boolean) args[0];
+			Role role = (Role) args[1];
+			//
+			PutResult returnValue = (PutResult) result;
+			//
+			if (returnValue != null) {
+				sasangLogService.recordPut(role, PutType.ALL, returnValue.getAwards());
+			}
+		} catch (Throwable e) {
+			LOGGER.error(new StringBuilder("Exception encountered during putAll()").toString(), e);
 		}
 	}
 }

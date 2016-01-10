@@ -15,6 +15,7 @@ import org.openyu.mix.sasang.service.SasangService.PutType;
 /**
  * 四象所有中獎區獎勵放入包包攔截器
  */
+@Deprecated
 public class SasangPutAllInterceptor extends AppAroundAdviceSupporter {
 
 	private static final long serialVersionUID = -6607503394143359290L;

@@ -18,6 +18,8 @@ import org.openyu.mix.vip.vo.VipType;
 import org.openyu.commons.thread.ThreadHelper;
 import org.openyu.socklet.message.vo.Message;
 
+import com.carrotsearch.junitbenchmarks.BenchmarkOptions;
+
 public class SasangServiceImplTest extends SasangTestSupporter {
 
 	@Test
@@ -53,8 +55,7 @@ public class SasangServiceImplTest extends SasangTestSupporter {
 		long beg = System.currentTimeMillis();
 		//
 		for (int i = 0; i < count; i++) {
-			result = messageService.createMessage(CoreModuleType.SASANG,
-					CoreModuleType.CLIENT, null, role.getId());
+			result = messageService.createMessage(CoreModuleType.SASANG, CoreModuleType.CLIENT, null, role.getId());
 			sasangService.fillSasangPen(result, sasangPen);
 		}
 		//
@@ -65,9 +66,10 @@ public class SasangServiceImplTest extends SasangTestSupporter {
 	}
 
 	@Test
-	/**
-	 * 玩四象
-	 */
+	@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
+	// round: 1.47 [+- 0.00], round.block: 0.00 [+- 0.00], round.gc: 0.00 [+-
+	// 0.00], GC.calls: 0, GC.time: 0.00, time.total: 1.47, time.warmup: 0.00,
+	// time.bench: 1.47
 	public void play() {
 		Role role = mockRole();
 		BagPen bagPen = role.getBagPen();
@@ -93,7 +95,7 @@ public class SasangServiceImplTest extends SasangTestSupporter {
 		result = sasangService.play(true, role, 3);// 玩10次
 		System.out.println(result);
 		//
-		//ThreadHelper.sleep(3 * 1000L);
+		ThreadHelper.sleep(3 * 1000L);
 	}
 
 	@Test
@@ -111,8 +113,7 @@ public class SasangServiceImplTest extends SasangTestSupporter {
 		Item item = itemService.createItem(sasangCollector.getPlayItem(), 1);
 		bagPen.addItem(0, 0, item);
 		// 玩的結果
-		PlayResult result = sasangService.itemCoinPlay(true, role,
-				PlayType.GALACTIC);// 玩1次
+		PlayResult result = sasangService.itemCoinPlay(true, role, PlayType.GALACTIC);// 玩1次
 		System.out.println(result);
 		assertEquals(1, result.getSpendItems().size());
 
@@ -121,7 +122,7 @@ public class SasangServiceImplTest extends SasangTestSupporter {
 		System.out.println(result);
 		assertTrue(result.getSpendCoin() > 0);
 		//
-		//ThreadHelper.sleep(3 * 1000L);
+		// ThreadHelper.sleep(3 * 1000L);
 	}
 
 	@Test
@@ -139,8 +140,7 @@ public class SasangServiceImplTest extends SasangTestSupporter {
 		Item item = itemService.createItem(sasangCollector.getPlayItem(), 5);
 		bagPen.addItem(0, 0, item);
 		// 玩的結果
-		PlayResult result = sasangService.itemCoinPlay(true, role,
-				PlayType.GOLDEN);// 玩20次
+		PlayResult result = sasangService.itemCoinPlay(true, role, PlayType.GOLDEN);// 玩20次
 		System.out.println(result);
 		assertEquals(1, result.getSpendItems().size());// 但amount=5
 
@@ -149,7 +149,7 @@ public class SasangServiceImplTest extends SasangTestSupporter {
 		System.out.println(result);
 		assertTrue(result.getSpendCoin() > 0);
 		//
-		//ThreadHelper.sleep(3 * 1000L);
+		// ThreadHelper.sleep(3 * 1000L);
 	}
 
 	@Test
@@ -193,7 +193,7 @@ public class SasangServiceImplTest extends SasangTestSupporter {
 		result = sasangService.goldPlay(true, role);// 玩1次
 		System.out.println(result);
 		//
-		//ThreadHelper.sleep(3 * 1000L);
+		// ThreadHelper.sleep(3 * 1000L);
 	}
 
 	@Test
@@ -230,9 +230,10 @@ public class SasangServiceImplTest extends SasangTestSupporter {
 	}
 
 	@Test
-	/**
-	 * 單擊獎勵放入包包
-	 */
+	@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
+	// round: 0.93 [+- 0.00], round.block: 0.00 [+- 0.00], round.gc: 0.00 [+-
+	// 0.00], GC.calls: 0, GC.time: 0.00, time.total: 0.93, time.warmup: 0.00,
+	// time.bench: 0.93
 	public void putOne() {
 		Role role = mockRole();
 		// BagPen bagPen = role.getBagPen();
@@ -243,13 +244,12 @@ public class SasangServiceImplTest extends SasangTestSupporter {
 		SasangPen sasangPen = role.getSasangPen();
 		sasangPen.getAwards().put("T_POTION_HP_G001", 1);
 		//
-		PutResult result = sasangService.putOne(true, role, "T_POTION_HP_G001",
-				1);
+		PutResult result = sasangService.putOne(true, role, "T_POTION_HP_G001", 1);
 		System.out.println(result);
 		assertNotNull(result);
 		assertEquals(1, result.getAwards().size());
 		//
-		//ThreadHelper.sleep(3 * 1000L);
+		ThreadHelper.sleep(3 * 1000L);
 	}
 
 	@Test
@@ -260,8 +260,7 @@ public class SasangServiceImplTest extends SasangTestSupporter {
 		Role role = mockRole();
 		SasangPen sasangPen = role.getSasangPen();
 		//
-		ErrorType errorType = sasangService.checkPutOne(role,
-				"T_POTION_HP_G001", 1);
+		ErrorType errorType = sasangService.checkPutOne(role, "T_POTION_HP_G001", 1);
 		System.out.println(errorType);
 		// 獎勵不存在
 		assertEquals(ErrorType.AWARD_NOT_EXIST, errorType);
@@ -285,9 +284,10 @@ public class SasangServiceImplTest extends SasangTestSupporter {
 	}
 
 	@Test
-	/**
-	 * 所有中獎區獎勵放入包包
-	 */
+	@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
+	// round: 0.62 [+- 0.00], round.block: 0.00 [+- 0.00], round.gc: 0.00 [+-
+	// 0.00], GC.calls: 0, GC.time: 0.00, time.total: 0.64, time.warmup: 0.00,
+	// time.bench: 0.64
 	public void putAll() {
 		Role role = mockRole();
 		BagPen bagPen = role.getBagPen();
@@ -299,8 +299,8 @@ public class SasangServiceImplTest extends SasangTestSupporter {
 		sasangPen.getAwards().put("T_POTION_HP_G001", 1);
 		// 弄個不存在的
 		sasangPen.getAwards().put("T_NOT_EXIST", 10);
-		
-		//有1個放不進去就不放了,以下的不會放入包包
+
+		// 有1個放不進去就不放了,以下的不會放入包包
 		sasangPen.getAwards().put("T_POTION_HP_G002", 5);
 		sasangPen.getAwards().put("T_POTION_HP_G003", 10);
 		//
@@ -308,10 +308,10 @@ public class SasangServiceImplTest extends SasangTestSupporter {
 		System.out.println(result);
 		System.out.println(bagPen);
 		assertNotNull(result);
-		
-		//有1個放不進去就不放了
+
+		// 有1個放不進去就不放了
 		assertEquals(1, result.getAwards().size());
 		//
-		//ThreadHelper.sleep(3 * 1000L);
+		ThreadHelper.sleep(3 * 1000L);
 	}
 }
