@@ -92,53 +92,6 @@ public class TreasureTestSupporter extends AppTestSupporter {
 		}
 
 		@Test
-		public void treasureRefreshAdvice() {
-			TreasureRefreshInterceptor bean = (TreasureRefreshInterceptor) applicationContext
-					.getBean("treasureRefreshAdvice");
-			System.out.println(bean);
-			assertNotNull(bean);
-		}
-
-		@Test
-		public void treasureRefreshPointcut() {
-			AspectJExpressionPointcut bean = (AspectJExpressionPointcut) applicationContext
-					.getBean("treasureRefreshPointcut");
-			System.out.println(bean);
-			assertNotNull(bean);
-		}
-
-		@Test
-		public void treasureRefreshAdvisor() {
-			DefaultBeanFactoryPointcutAdvisor bean = (DefaultBeanFactoryPointcutAdvisor) applicationContext
-					.getBean("treasureRefreshAdvisor");
-			System.out.println(bean);
-			assertNotNull(bean);
-		}
-
-		@Test
-		public void treasureBuyAdvice() {
-			TreasureBuyInterceptor bean = (TreasureBuyInterceptor) applicationContext.getBean("treasureBuyAdvice");
-			System.out.println(bean);
-			assertNotNull(bean);
-		}
-
-		@Test
-		public void treasureBuyPointcut() {
-			AspectJExpressionPointcut bean = (AspectJExpressionPointcut) applicationContext
-					.getBean("treasureBuyPointcut");
-			System.out.println(bean);
-			assertNotNull(bean);
-		}
-
-		@Test
-		public void treasureBuyAdvisor() {
-			DefaultBeanFactoryPointcutAdvisor bean = (DefaultBeanFactoryPointcutAdvisor) applicationContext
-					.getBean("treasureBuyAdvisor");
-			System.out.println(bean);
-			assertNotNull(bean);
-		}
-
-		@Test
 		public void treasureLogDao() {
 			System.out.println(treasureLogDao);
 			assertNotNull(treasureLogDao);

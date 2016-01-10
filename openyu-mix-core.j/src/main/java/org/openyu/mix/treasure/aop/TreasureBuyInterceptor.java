@@ -13,6 +13,7 @@ import org.openyu.mix.treasure.service.TreasureService.BuyResult;
 /**
  * 祕寶購買攔截器
  */
+@Deprecated
 public class TreasureBuyInterceptor extends AppAroundAdviceSupporter {
 
 	private static final long serialVersionUID = 6260420634235652046L;

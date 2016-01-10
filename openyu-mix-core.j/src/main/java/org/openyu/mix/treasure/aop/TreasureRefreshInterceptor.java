@@ -13,6 +13,7 @@ import org.openyu.mix.treasure.service.TreasureService.RefreshResult;
 /**
  * 祕寶刷新攔截器
  */
+@Deprecated
 public class TreasureRefreshInterceptor extends AppAroundAdviceSupporter {
 
 	private static final long serialVersionUID = 5321914280602434336L;

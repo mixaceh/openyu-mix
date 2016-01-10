@@ -18,6 +18,7 @@ import org.openyu.mix.treasure.service.TreasureLogService;
 import org.openyu.mix.treasure.service.TreasureService.BuyType;
 import org.openyu.mix.treasure.vo.Treasure;
 import org.openyu.mix.role.vo.Role;
+import org.openyu.commons.dao.anno.LogTx;
 import org.openyu.commons.dao.inquiry.Inquiry;
 import org.openyu.commons.util.AssertHelper;
 
@@ -89,6 +90,7 @@ public class TreasureLogServiceImpl extends AppLogServiceSupporter implements Tr
 	 * @param spendItems
 	 * @param spendCoin
 	 */
+	@LogTx
 	public void recordRefresh(Role role, long refreshTime, Map<Integer, Treasure> treasures, List<Item> spendItems,
 			int spendCoin) {
 		TreasureRefreshLog log = new TreasureRefreshLogImpl();
@@ -115,6 +117,7 @@ public class TreasureLogServiceImpl extends AppLogServiceSupporter implements Tr
 	 * @param spendGold
 	 * @param spendCoin
 	 */
+	@LogTx
 	public void recordBuy(Role role, BuyType buyType, int index, Treasure treasure, Item item, long spendGold,
 			int spendCoin) {
 		TreasureBuyLog log = new TreasureBuyLogImpl();
