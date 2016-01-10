@@ -13,6 +13,7 @@ import org.openyu.mix.role.vo.Role;
 /**
  * 莊園休耕攔截器
  */
+@Deprecated
 public class ManorDisuseInterceptor extends AppAroundAdviceSupporter {
 
 	private static final long serialVersionUID = -8779897326476699636L;

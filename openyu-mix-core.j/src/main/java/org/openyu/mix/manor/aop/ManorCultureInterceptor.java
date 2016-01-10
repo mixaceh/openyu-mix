@@ -18,6 +18,7 @@ import org.openyu.commons.lang.ClassHelper;
 /**
  * 莊園耕種攔截器
  */
+@Deprecated
 public class ManorCultureInterceptor extends AppAroundAdviceSupporter {
 
 	private static final long serialVersionUID = -8666906155488242300L;

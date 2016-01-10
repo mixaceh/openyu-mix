@@ -19,10 +19,13 @@ import org.openyu.mix.manor.service.ManorService.CultureType;
 import org.openyu.mix.manor.vo.Land;
 import org.openyu.mix.manor.vo.Seed;
 import org.openyu.mix.role.vo.Role;
+import org.openyu.commons.dao.anno.LogTx;
 import org.openyu.commons.dao.inquiry.Inquiry;
 import org.openyu.commons.util.AssertHelper;
 
 public class ManorLogServiceImpl extends AppLogServiceSupporter implements ManorLogService {
+
+	private static final long serialVersionUID = 3870060542156319556L;
 
 	private static transient final Logger LOGGER = LoggerFactory.getLogger(ManorLogServiceImpl.class);
 
@@ -87,6 +90,7 @@ public class ManorLogServiceImpl extends AppLogServiceSupporter implements Manor
 	 * @param land
 	 * @param spendGold
 	 */
+	@LogTx
 	public void recordReclaim(Role role, int farmIndex, Land land, long spendGold) {
 		ManorLandLog log = new ManorLandLogImpl();
 		recordRole(role, log);
@@ -109,6 +113,7 @@ public class ManorLogServiceImpl extends AppLogServiceSupporter implements Manor
 	 * @param land
 	 * @param spendGold
 	 */
+	@LogTx
 	public void recordDisuse(Role role, int farmIndex, Land land, long spendGold) {
 		ManorLandLog log = new ManorLandLogImpl();
 		recordRole(role, log);
@@ -134,6 +139,7 @@ public class ManorLogServiceImpl extends AppLogServiceSupporter implements Manor
 	 * @param spendItems
 	 * @param spendCoin
 	 */
+	@LogTx
 	public void recordCulture(Role role, CultureType cultureType, int farmIndex, int gridIndex, Seed seed,
 			List<Item> spendItems, int spendCoin) {
 		ManorSeedLog log = new ManorSeedLogImpl();
