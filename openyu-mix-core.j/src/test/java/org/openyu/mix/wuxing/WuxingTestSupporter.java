@@ -3,10 +3,14 @@ package org.openyu.mix.wuxing;
 import static org.junit.Assert.assertNotNull;
 
 import org.junit.BeforeClass;
+import org.junit.Rule;
 import org.junit.Test;
 import org.springframework.aop.aspectj.AspectJExpressionPointcut;
 import org.springframework.aop.support.DefaultBeanFactoryPointcutAdvisor;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+import com.carrotsearch.junitbenchmarks.BenchmarkRule;
+
 import org.openyu.mix.account.service.AccountService;
 import org.openyu.mix.app.AppTestSupporter;
 import org.openyu.mix.item.service.ItemService;
@@ -19,7 +23,6 @@ import org.openyu.mix.wuxing.service.WuxingLogService;
 import org.openyu.mix.wuxing.service.WuxingMachine;
 import org.openyu.mix.wuxing.service.WuxingService;
 import org.openyu.mix.wuxing.service.adapter.WuxingChangeAdapter;
-import org.openyu.mix.wuxing.service.impl.WuxingMachineImpl;
 import org.openyu.mix.wuxing.socklet.WuxingSocklet;
 import org.openyu.mix.wuxing.vo.Outcome;
 import org.openyu.mix.wuxing.vo.WuxingCollector;
@@ -27,6 +30,10 @@ import org.openyu.mix.wuxing.vo.WuxingPen;
 import org.openyu.mix.wuxing.vo.impl.WuxingPenImpl;
 
 public class WuxingTestSupporter extends AppTestSupporter {
+	
+	@Rule
+	public BenchmarkRule benchmarkRule = new BenchmarkRule();
+
 	protected static WuxingCollector wuxingCollector = WuxingCollector.getInstance();
 
 	/**

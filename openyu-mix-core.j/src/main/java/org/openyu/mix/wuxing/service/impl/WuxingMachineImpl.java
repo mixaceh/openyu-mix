@@ -24,6 +24,8 @@ public class WuxingMachineImpl extends AppServiceSupporter implements WuxingMach
 
 	private static transient final Logger LOGGER = LoggerFactory.getLogger(WuxingMachineImpl.class);
 
+	private static WuxingMachineImpl instance;
+
 	private transient WuxingCollector wuxingCollector = WuxingCollector.getInstance();
 
 	/**
@@ -32,7 +34,78 @@ public class WuxingMachineImpl extends AppServiceSupporter implements WuxingMach
 	private transient Map<WuxingType, Map<Integer, OutcomeType>> outcomeTypes = new LinkedHashMap<WuxingType, Map<Integer, OutcomeType>>();
 
 	public WuxingMachineImpl() {
-		outcomeTypes = buildOutcomeTypes();
+
+	}
+
+	/**
+	 * 單例啟動
+	 * 
+	 * @return
+	 */
+	public synchronized static WuxingMachine getInstance() {
+		try {
+			if (instance == null) {
+				instance = new WuxingMachineImpl();
+				instance.setGetInstance(true);
+				// 啟動
+				instance.start();
+			}
+		} catch (Exception e) {
+			LOGGER.error(new StringBuilder("Exception encountered during getInstance()").toString(), e);
+			instance = (WuxingMachineImpl) shutdownInstance();
+		}
+		return instance;
+	}
+
+	/**
+	 * 單例關閉
+	 * 
+	 * @return
+	 */
+	public synchronized static WuxingMachine shutdownInstance() {
+		try {
+			if (instance != null) {
+				WuxingMachineImpl oldInstance = instance;
+				//
+				oldInstance.shutdown();
+				instance = null;
+			}
+		} catch (Exception e) {
+			LOGGER.error(new StringBuilder("Exception encountered during shutdownInstance()").toString(), e);
+		}
+		return instance;
+	}
+
+	/**
+	 * 單例重啟
+	 * 
+	 * @return
+	 */
+	public synchronized static WuxingMachine restartInstance() {
+		try {
+			if (instance != null) {
+				instance.restart();
+			}
+		} catch (Exception e) {
+			LOGGER.error(new StringBuilder("Exception encountered during restartInstance()").toString(), e);
+		}
+		return instance;
+	}
+
+	/**
+	 * 內部啟動
+	 */
+	@Override
+	protected void doStart() throws Exception {
+		this.outcomeTypes = buildOutcomeTypes();
+	}
+
+	/**
+	 * 內部關閉
+	 */
+	@Override
+	protected void doShutdown() throws Exception {
+
 	}
 
 	/**

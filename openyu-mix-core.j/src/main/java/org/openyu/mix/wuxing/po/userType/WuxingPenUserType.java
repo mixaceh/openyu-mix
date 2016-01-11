@@ -19,7 +19,7 @@ public class WuxingPenUserType extends BaseUserTypeSupporter {
 
 	private static final long serialVersionUID = -2066924784420555409L;
 
-	private WuxingMachine wuxingMachine = new WuxingMachineImpl();
+	private WuxingMachine wuxingMachine = WuxingMachineImpl.getInstance();
 
 	private StringIntegerUserType stringIntegerUserType = new StringIntegerUserType();
 
