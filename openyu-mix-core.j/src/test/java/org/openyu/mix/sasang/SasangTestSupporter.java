@@ -43,28 +43,25 @@ public class SasangTestSupporter extends AppTestSupporter {
 	protected static ItemService itemService;
 
 	/**
-	 * <aop:aspectj-autoproxy/> SasangMachine sasangMachine
+	 * <aop:aspectj-autoproxy/> SasangMachine
 	 * 
 	 * <aop:aspectj-autoproxy proxy-target-class="true" /> SasangMachineImpl
-	 * sasangMachine
 	 */
 	protected static SasangMachine sasangMachine;
 
 	protected static SasangService sasangService;
+	// log
+	protected static SasangLogDao sasangLogDao;
+
+	protected static SasangLogService sasangLogService;
+
+	protected static SasangAspect sasangAspect;
 
 	//
 	protected static SasangSocklet sasangSocklet;
 
-	// log
-	protected static SasangLogDao sasangLogDao;
-
-	//
-	protected static SasangLogService sasangLogService;
-
 	// 事件監聽器
 	protected static SasangChangeAdapter sasangChangeAdapter;
-
-	protected static SasangAspect sasangAspect;
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
@@ -93,12 +90,12 @@ public class SasangTestSupporter extends AppTestSupporter {
 		//
 		sasangMachine = (SasangMachine) applicationContext.getBean("sasangMachine");
 		sasangService = (SasangService) applicationContext.getBean("sasangService");
-		sasangSocklet = (SasangSocklet) applicationContext.getBean("sasangSocklet");
-		//
 		sasangLogDao = (SasangLogDao) applicationContext.getBean("sasangLogDao");
 		sasangLogService = (SasangLogService) applicationContext.getBean("sasangLogService");
-		sasangChangeAdapter = (SasangChangeAdapter) applicationContext.getBean("sasangChangeAdapter");
 		sasangAspect = (SasangAspect) applicationContext.getBean("sasangAspect");
+		sasangSocklet = (SasangSocklet) applicationContext.getBean("sasangSocklet");
+		//
+		sasangChangeAdapter = (SasangChangeAdapter) applicationContext.getBean("sasangChangeAdapter");
 	}
 
 	public static class BeanTest extends SasangTestSupporter {
@@ -128,6 +125,12 @@ public class SasangTestSupporter extends AppTestSupporter {
 		}
 
 		@Test
+		public void sasangAspect() {
+			System.out.println(sasangAspect);
+			assertNotNull(sasangAspect);
+		}
+
+		@Test
 		public void sasangSocklet() {
 			System.out.println(sasangSocklet);
 			assertNotNull(sasangSocklet);
@@ -139,11 +142,6 @@ public class SasangTestSupporter extends AppTestSupporter {
 			assertNotNull(sasangChangeAdapter);
 		}
 
-		@Test
-		public void sasangAspect() {
-			System.out.println(sasangAspect);
-			assertNotNull(sasangAspect);
-		}
 	}
 
 	/**

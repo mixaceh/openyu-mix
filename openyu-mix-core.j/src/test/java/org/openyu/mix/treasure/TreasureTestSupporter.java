@@ -3,14 +3,19 @@ package org.openyu.mix.treasure;
 import static org.junit.Assert.assertNotNull;
 
 import org.junit.BeforeClass;
+import org.junit.Rule;
 import org.junit.Test;
 import org.springframework.aop.aspectj.AspectJExpressionPointcut;
 import org.springframework.aop.support.DefaultBeanFactoryPointcutAdvisor;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+import com.carrotsearch.junitbenchmarks.BenchmarkRule;
+
 import org.openyu.mix.account.service.AccountService;
 import org.openyu.mix.app.AppTestSupporter;
 import org.openyu.mix.item.service.ItemService;
 import org.openyu.mix.role.vo.Role;
+import org.openyu.mix.treasure.aop.TreasureAspect;
 import org.openyu.mix.treasure.aop.TreasureBuyInterceptor;
 import org.openyu.mix.treasure.aop.TreasureRefreshInterceptor;
 import org.openyu.mix.treasure.dao.TreasureLogDao;
@@ -25,6 +30,9 @@ import org.openyu.mix.treasure.vo.impl.TreasurePenImpl;
 
 public class TreasureTestSupporter extends AppTestSupporter {
 
+	@Rule
+	public BenchmarkRule benchmarkRule = new BenchmarkRule();
+
 	protected static TreasureCollector treasureCollector = TreasureCollector.getInstance();
 
 	/**
@@ -38,13 +46,14 @@ public class TreasureTestSupporter extends AppTestSupporter {
 	protected static ItemService itemService;
 
 	protected static TreasureService treasureService;
-
-	protected static TreasureSocklet treasureSocklet;
-
 	// log
 	protected static TreasureLogDao treasureLogDao;
 
 	protected static TreasureLogService treasureLogService;
+
+	protected static TreasureAspect treasureAspect;
+
+	protected static TreasureSocklet treasureSocklet;
 
 	// 事件監聽器
 	protected static TreasureChangeAdapter treasureChangeAdapter;
@@ -75,10 +84,10 @@ public class TreasureTestSupporter extends AppTestSupporter {
 		itemService = (ItemService) applicationContext.getBean("itemService");
 		//
 		treasureService = (TreasureService) applicationContext.getBean("treasureService");
-		treasureSocklet = (TreasureSocklet) applicationContext.getBean("treasureSocklet");
-		//
 		treasureLogDao = (TreasureLogDao) applicationContext.getBean("treasureLogDao");
 		treasureLogService = (TreasureLogService) applicationContext.getBean("treasureLogService");
+		treasureAspect = (TreasureAspect) applicationContext.getBean("treasureAspect");
+		treasureSocklet = (TreasureSocklet) applicationContext.getBean("treasureSocklet");
 		//
 		treasureChangeAdapter = (TreasureChangeAdapter) applicationContext.getBean("treasureChangeAdapter");
 	}
@@ -101,6 +110,12 @@ public class TreasureTestSupporter extends AppTestSupporter {
 		public void treasureLogService() {
 			System.out.println(treasureLogService);
 			assertNotNull(treasureLogService);
+		}
+
+		@Test
+		public void treasureAspect() {
+			System.out.println(treasureAspect);
+			assertNotNull(treasureAspect);
 		}
 
 		@Test

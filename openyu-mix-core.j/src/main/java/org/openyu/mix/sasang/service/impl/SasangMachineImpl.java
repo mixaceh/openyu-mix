@@ -124,7 +124,7 @@ public class SasangMachineImpl extends AppServiceSupporter implements SasangMach
 		calcSameTwoProbs();
 		calcTotalProbSums();
 		//
-		buildOutcomes();// 建構機率模型
+		this.outcomes = buildOutcomes();// 建構機率模型
 		calcOutcomesProbSum();
 	}
 
@@ -461,88 +461,81 @@ public class SasangMachineImpl extends AppServiceSupporter implements SasangMach
 	 * 
 	 * @return
 	 */
-	protected boolean buildOutcomes() {
-		boolean result = false;
-		//
-		try {
-			outcomes.clear();
-			// 7*7*7=343
-			for (SasangType sasangType : SasangType.values()) {
-				for (SasangType sasangType2 : SasangType.values()) {
-					for (SasangType sasangType3 : SasangType.values()) {
-						Outcome outcome = new OutcomeImpl();
-						//
-						StringBuilder outcomeId = new StringBuilder();
-						outcomeId.append(sasangType.getValue());
-						outcomeId.append(sasangType2.getValue());
-						outcomeId.append(sasangType3.getValue());
-						outcome.setId(outcomeId.toString());
-						//
-						// 3個相同,且非3個空
-						if (sasangType.equals(sasangType2) && sasangType2.equals(sasangType3)
-								&& !sasangType.equals(SasangType.NOTHING) && !sasangType2.equals(SasangType.NOTHING)
-								&& !sasangType3.equals(SasangType.NOTHING)) {
-							double prob = getSameThreeProb(sasangType);
-							// System.out.println("AAA: " + sasangType + " " +
-							// sasangType2 + " " + sasangType3
-							// + " " + prob);
-							// 獎勵
-							Prize prize = sasangCollector.getPrize(sasangType, sasangType2, sasangType3);
-							outcome.setPrize(prize);
-							outcome.setOutcomeType(OutcomeType.SAME_THREE);
-							outcome.setProbability(prob);
-						}
-						// 2個相同,且非2個空
-						else if (sasangType.equals(sasangType2) && !sasangType.equals(SasangType.NOTHING)
-								&& !sasangType2.equals(SasangType.NOTHING)) {
-							double prob = NumberHelper.divide(getSameTwoProb(sasangType), 18);
-							// System.out.println("AAx: " + sasangType + " " +
-							// sasangType2 + " " + sasangType3
-							// + " " + prob);
-							// 獎勵
-							Prize prize = sasangCollector.getPrize(sasangType, sasangType2);
-							outcome.setPrize(prize);
-							outcome.setOutcomeType(OutcomeType.SAME_TWO);
-							outcome.setProbability(prob);
-						} else if (sasangType2.equals(sasangType3) && !sasangType2.equals(SasangType.NOTHING)
-								&& !sasangType3.equals(SasangType.NOTHING)) {
-							double prob = NumberHelper.divide(getSameTwoProb(sasangType2), 18);
-							// System.out.println("xBB: " + sasangType + " " +
-							// sasangType2 + " " + sasangType3
-							// + " " + prob);
-							// 獎勵
-							Prize prize = sasangCollector.getPrize(sasangType2, sasangType3);
-							outcome.setPrize(prize);
-							outcome.setOutcomeType(OutcomeType.SAME_TWO);
-							outcome.setProbability(prob);
-						} else if (sasangType.equals(sasangType3) && !sasangType.equals(SasangType.NOTHING)
-								&& !sasangType3.equals(SasangType.NOTHING)) {
-							double prob = NumberHelper.divide(getSameTwoProb(sasangType), 18);
-							// System.out.println("CxC: " + sasangType + " " +
-							// sasangType2 + " " + sasangType3
-							// + " " + prob);
-							// 獎勵
-							Prize prize = sasangCollector.getPrize(sasangType, sasangType3);
-							outcome.setPrize(prize);
-							outcome.setOutcomeType(OutcomeType.SAME_TWO);
-							outcome.setProbability(prob);
-						}
-						// 安慰獎
-						else {
-							double prob = NumberHelper.divide(probSums[2], 229);
-							// 獎勵
-							Prize prize = sasangCollector.getPrize("0");// 0=安慰獎
-							outcome.setPrize(prize);
-							outcome.setOutcomeType(OutcomeType.STAND_ALONE);
-							outcome.setProbability(prob);
-						}
-						outcomes.put(outcome.getId(), outcome);
+	protected Map<String, Outcome> buildOutcomes() {
+		Map<String, Outcome> result = new LinkedHashMap<String, Outcome>();
+		// 7*7*7=343
+		for (SasangType sasangType : SasangType.values()) {
+			for (SasangType sasangType2 : SasangType.values()) {
+				for (SasangType sasangType3 : SasangType.values()) {
+					Outcome outcome = new OutcomeImpl();
+					//
+					StringBuilder outcomeId = new StringBuilder();
+					outcomeId.append(sasangType.getValue());
+					outcomeId.append(sasangType2.getValue());
+					outcomeId.append(sasangType3.getValue());
+					outcome.setId(outcomeId.toString());
+					//
+					// 3個相同,且非3個空
+					if (sasangType.equals(sasangType2) && sasangType2.equals(sasangType3)
+							&& !sasangType.equals(SasangType.NOTHING) && !sasangType2.equals(SasangType.NOTHING)
+							&& !sasangType3.equals(SasangType.NOTHING)) {
+						double prob = getSameThreeProb(sasangType);
+						// System.out.println("AAA: " + sasangType + " " +
+						// sasangType2 + " " + sasangType3
+						// + " " + prob);
+						// 獎勵
+						Prize prize = sasangCollector.getPrize(sasangType, sasangType2, sasangType3);
+						outcome.setPrize(prize);
+						outcome.setOutcomeType(OutcomeType.SAME_THREE);
+						outcome.setProbability(prob);
 					}
+					// 2個相同,且非2個空
+					else if (sasangType.equals(sasangType2) && !sasangType.equals(SasangType.NOTHING)
+							&& !sasangType2.equals(SasangType.NOTHING)) {
+						double prob = NumberHelper.divide(getSameTwoProb(sasangType), 18);
+						// System.out.println("AAx: " + sasangType + " " +
+						// sasangType2 + " " + sasangType3
+						// + " " + prob);
+						// 獎勵
+						Prize prize = sasangCollector.getPrize(sasangType, sasangType2);
+						outcome.setPrize(prize);
+						outcome.setOutcomeType(OutcomeType.SAME_TWO);
+						outcome.setProbability(prob);
+					} else if (sasangType2.equals(sasangType3) && !sasangType2.equals(SasangType.NOTHING)
+							&& !sasangType3.equals(SasangType.NOTHING)) {
+						double prob = NumberHelper.divide(getSameTwoProb(sasangType2), 18);
+						// System.out.println("xBB: " + sasangType + " " +
+						// sasangType2 + " " + sasangType3
+						// + " " + prob);
+						// 獎勵
+						Prize prize = sasangCollector.getPrize(sasangType2, sasangType3);
+						outcome.setPrize(prize);
+						outcome.setOutcomeType(OutcomeType.SAME_TWO);
+						outcome.setProbability(prob);
+					} else if (sasangType.equals(sasangType3) && !sasangType.equals(SasangType.NOTHING)
+							&& !sasangType3.equals(SasangType.NOTHING)) {
+						double prob = NumberHelper.divide(getSameTwoProb(sasangType), 18);
+						// System.out.println("CxC: " + sasangType + " " +
+						// sasangType2 + " " + sasangType3
+						// + " " + prob);
+						// 獎勵
+						Prize prize = sasangCollector.getPrize(sasangType, sasangType3);
+						outcome.setPrize(prize);
+						outcome.setOutcomeType(OutcomeType.SAME_TWO);
+						outcome.setProbability(prob);
+					}
+					// 安慰獎
+					else {
+						double prob = NumberHelper.divide(probSums[2], 229);
+						// 獎勵
+						Prize prize = sasangCollector.getPrize("0");// 0=安慰獎
+						outcome.setPrize(prize);
+						outcome.setOutcomeType(OutcomeType.STAND_ALONE);
+						outcome.setProbability(prob);
+					}
+					result.put(outcome.getId(), outcome);
 				}
 			}
-			result = true;
-		} catch (Exception ex) {
-			ex.printStackTrace();
 		}
 		return result;
 	}

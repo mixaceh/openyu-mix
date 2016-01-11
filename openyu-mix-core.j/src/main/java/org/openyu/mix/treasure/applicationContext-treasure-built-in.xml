@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:jaxws="http://cxf.apache.org/jaxws"
+	xsi:schemaLocation="
+             http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+             http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+             http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+             http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd">
+
+	<!-- service -->
+	<!-- 祕寶服務 -->
+	<bean id="treasureService"
+		class="org.openyu.mix.treasure.service.impl.TreasureServiceImpl"
+		parent="appServiceSupporter" />
+
+	<!-- advisor -->
+	<!-- 祕寶刷新 -->
+	<bean id="treasureRefreshAdvice"
+		class="org.openyu.mix.treasure.aop.TreasureRefreshInterceptor"
+		parent="appMethodInterceptorSupporter" />
+	<aop:config>
+		<aop:pointcut id="treasureRefreshPointcut"
+			expression="execution(* org.openyu.mix.treasure.service.impl.TreasureServiceImpl.refresh*(..))" />
+		<aop:advisor id="treasureRefreshAdvisor" advice-ref="treasureRefreshAdvice"
+			pointcut-ref="treasureRefreshPointcut" />
+	</aop:config>
+
+	<!-- 祕寶購買 -->
+	<bean id="treasureBuyAdvice"
+		class="org.openyu.mix.treasure.aop.TreasureBuyInterceptor"
+		parent="appMethodInterceptorSupporter"/>
+	<aop:config>
+		<aop:pointcut id="treasureBuyPointcut"
+			expression="execution(* org.openyu.mix.treasure.service.impl.TreasureServiceImpl.buy*(..))" />
+		<aop:advisor id="treasureBuyAdvisor" advice-ref="treasureBuyAdvice"
+			pointcut-ref="treasureBuyPointcut" />
+	</aop:config>
+
+	<!-- dao -->
+	<bean id="treasureLogDao" class="org.openyu.mix.treasure.dao.impl.TreasureLogDaoImpl"
+		parent="appLogDaoSupporter" />
+
+	<!-- service -->
+	<!-- 秘寶日誌服務 -->
+	<bean id="treasureLogService"
+		class="org.openyu.mix.treasure.service.impl.TreasureLogServiceImpl"
+		parent="appLogServiceSupporter"/>
+	
+	<!-- socklet -->
+	<bean id="treasureSocklet" class="org.openyu.mix.treasure.socklet.TreasureSocklet"
+		parent="slaveSockletServiceSupporter">
+		<property name="id" value="TREASURE" />
+	</bean>
+
+	<!-- adapter -->
+	<bean id="treasureChangeAdapter"
+		class="org.openyu.mix.treasure.service.adapter.TreasureChangeAdapter"/>
+
+</beans>

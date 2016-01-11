@@ -25,7 +25,6 @@
 		parent="appServiceSupporter">
 	</bean>
 
-
 	<!-- log -->
 	<bean
 		id="sasangLogDao"

@@ -3,6 +3,7 @@ package org.openyu.mix.sasang.service.impl;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import java.util.List;
+import java.util.Map;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -253,16 +254,10 @@ public class SasangMachineImplTest extends SasangTestSupporter {
 	}
 
 	@Test
+	@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 	public void buildOutcomes() {
-		boolean result = false;
-		int count = 1;
-		long beg = System.currentTimeMillis();
-		for (int i = 0; i < count; i++) {
-			result = sasangMachineImpl.buildOutcomes();
-		}
-		long end = System.currentTimeMillis();
-		System.out.println(count + " times: " + (end - beg) + " mills. ");
-
+		Map<String, Outcome> result = null;
+		result = sasangMachineImpl.buildOutcomes();
 		System.out.println(result);
 		System.out.println(sasangMachineImpl.getOutcomes());
 
