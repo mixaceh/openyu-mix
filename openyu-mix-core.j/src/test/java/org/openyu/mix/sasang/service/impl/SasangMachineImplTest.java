@@ -6,10 +6,13 @@ import java.util.List;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
-
 import org.openyu.mix.sasang.SasangTestSupporter;
 import org.openyu.mix.sasang.vo.Outcome;
 import org.openyu.mix.sasang.vo.Outcome.OutcomeType;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+import com.carrotsearch.junitbenchmarks.BenchmarkOptions;
+
 import org.openyu.mix.sasang.vo.SasangType;
 import org.openyu.commons.lang.NumberHelper;
 import org.openyu.commons.lang.SystemHelper;
@@ -20,8 +23,34 @@ public class SasangMachineImplTest extends SasangTestSupporter {
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
-		SasangTestSupporter.setUpBeforeClass();
-		sasangMachineImpl = (SasangMachineImpl) sasangMachine;
+		applicationContext = new ClassPathXmlApplicationContext(new String[] { //
+				"applicationContext-init-cglib.xml", //
+				"applicationContext-bean.xml", //
+				"applicationContext-i18n.xml", //
+				"applicationContext-acceptor.xml", //
+				"applicationContext-database.xml", //
+				"applicationContext-database-log.xml", //
+				// "applicationContext-scheduler.xml",// 排程
+				"org/openyu/mix/app/applicationContext-app.xml", //
+				// biz
+				"org/openyu/mix/account/applicationContext-account.xml", //
+				"org/openyu/mix/item/applicationContext-item.xml", //
+				"org/openyu/mix/role/applicationContext-role.xml", //
+				"org/openyu/mix/sasang/applicationContext-sasang.xml",//
+		});
+		// ---------------------------------------------------
+		initialize();
+		// ---------------------------------------------------
+		sasangMachineImpl = (SasangMachineImpl) applicationContext.getBean("sasangMachine");
+
+		// 1."applicationContext-init.xml", //
+		// 預設jdk動態代理: com.sun.proxy.$Proxy77
+
+		// 2."applicationContext-init-cglib.xml", //
+		// cglib動態代理:
+		// org.openyu.mix.sasang.service.impl.SasangMachineImpl$$EnhancerBySpringCGLIB$$ce6bf11f
+
+		// System.out.println(sasangMachineImpl.getClass().getName());
 	}
 
 	@Test
@@ -258,17 +287,18 @@ public class SasangMachineImplTest extends SasangTestSupporter {
 	}
 
 	@Test
-	// 1000000 times: 5032 mills.
-	// 1000000 times: 4986 mills.
-	// 1000000 times: 4867 mills.
-	public void start() {
+	@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
+	// round: 0.20 [+- 0.00], round.block: 0.00 [+- 0.00], round.gc: 0.00 [+-
+	// 0.00], GC.calls: 0, GC.time: 0.00, time.total: 0.21, time.warmup: 0.00,
+	// time.bench: 0.20
+	public void play() {
 		Outcome result = null;
 		//
 		int count3same = 0;
 		int count2same = 0;
 		int countStandAlone = 0;
 
-		int count = 1000000;// 100w
+		int count = 100;
 		long beg = System.currentTimeMillis();
 		for (int i = 0; i < count; i++) {
 			result = sasangMachineImpl.play();
@@ -305,23 +335,17 @@ public class SasangMachineImplTest extends SasangTestSupporter {
 	}
 
 	@Test
-	// 1000000 times: 4929 mills.
-	// 1000000 times: 5041 mills.
-	// 1000000 times: 5059 mills.
-	public void playByTimes() {
+	@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
+	// round: 0.15 [+- 0.00], round.block: 0.00 [+- 0.00], round.gc: 0.00 [+-
+	// 0.00], GC.calls: 0, GC.time: 0.00, time.total: 0.15, time.warmup: 0.00,
+	// time.bench: 0.15
+	public void playWithTimes() {
 		List<Outcome> result = null;
 
-		int count = 100000;// 100w
-		long beg = System.currentTimeMillis();
-		for (int i = 0; i < count; i++) {
-			result = sasangMachineImpl.play(10);
-		}
+		result = sasangMachineImpl.play(100);
 		//
-		long end = System.currentTimeMillis();
-		System.out.println(count + " times: " + (end - beg) + " mills. ");
-
 		System.out.println(result.size() + ", " + result);
-		assertEquals(10, result.size());
+		assertEquals(100, result.size());
 		//
 		result = sasangMachineImpl.play(10);
 		System.out.println(result.size() + ", " + result);

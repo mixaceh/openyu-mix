@@ -26,6 +26,8 @@ public class SasangMachineImpl extends AppServiceSupporter implements SasangMach
 
 	private static transient final Logger LOGGER = LoggerFactory.getLogger(SasangMachineImpl.class);
 
+	private static SasangMachineImpl instance;
+
 	private transient SasangCollector sasangCollector = SasangCollector.getInstance();
 
 	// 元素類別權重
@@ -52,7 +54,70 @@ public class SasangMachineImpl extends AppServiceSupporter implements SasangMach
 	private transient double outcomesProbSum;
 
 	public SasangMachineImpl() {
-		// cache
+
+	}
+
+	/**
+	 * 單例啟動
+	 * 
+	 * @return
+	 */
+	public synchronized static SasangMachine getInstance() {
+		try {
+			if (instance == null) {
+				instance = new SasangMachineImpl();
+				instance.setGetInstance(true);
+				// 啟動
+				instance.start();
+			}
+		} catch (Exception e) {
+			LOGGER.error(new StringBuilder("Exception encountered during getInstance()").toString(), e);
+			instance = (SasangMachineImpl) shutdownInstance();
+		}
+		return instance;
+	}
+
+	/**
+	 * 單例關閉
+	 * 
+	 * @return
+	 */
+	public synchronized static SasangMachine shutdownInstance() {
+		try {
+			if (instance != null) {
+				SasangMachineImpl oldInstance = instance;
+				//
+				oldInstance.shutdown();
+				instance = null;
+			}
+		} catch (Exception e) {
+			LOGGER.error(new StringBuilder("Exception encountered during shutdownInstance()").toString(), e);
+		}
+		return instance;
+	}
+
+	/**
+	 * 單例重啟
+	 * 
+	 * @return
+	 */
+	public synchronized static SasangMachine restartInstance() {
+		try {
+			if (instance != null) {
+				instance.restart();
+			}
+		} catch (Exception e) {
+			LOGGER.error(new StringBuilder("Exception encountered during restartInstance()").toString(), e);
+		}
+		return instance;
+	}
+
+	/**
+	 * 內部啟動
+	 */
+	@Override
+	protected void doStart() throws Exception {
+		// 預先建構機率
 		calcSasangTypeWeights();
 		calcRoundWeightSums();
 		calcSameThreeProbs();
@@ -61,6 +126,14 @@ public class SasangMachineImpl extends AppServiceSupporter implements SasangMach
 		//
 		buildOutcomes();// 建構機率模型
 		calcOutcomesProbSum();
+	}
+
+	/**
+	 * 內部關閉
+	 */
+	@Override
+	protected void doShutdown() throws Exception {
+
 	}
 
 	/**
@@ -528,7 +601,7 @@ public class SasangMachineImpl extends AppServiceSupporter implements SasangMach
 	}
 
 	/**
-	 * 啟動,不clone了,直接拿
+	 * 玩四象,不在這clone了,直接拿,改由使用時才clone
 	 */
 	public Outcome play() {
 		Outcome result = null;
@@ -538,10 +611,12 @@ public class SasangMachineImpl extends AppServiceSupporter implements SasangMach
 	}
 
 	/**
-	 * 啟動,不clone了,直接拿
-	 * 
+	 * 玩幾次四象,不在這clone了,直接拿,改由使用時才clone
+	 *
 	 * @param times
 	 * @return
+	 * 
+	 * @see org.openyu.mix.sasang.service.impl.SasangServiceImpl.goldPlay()
 	 */
 	public List<Outcome> play(int times) {
 		List<Outcome> result = new LinkedList<Outcome>();

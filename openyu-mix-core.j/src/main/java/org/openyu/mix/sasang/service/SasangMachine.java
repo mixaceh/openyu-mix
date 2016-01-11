@@ -7,8 +7,7 @@ import org.openyu.commons.service.BaseService;
 /**
  * 四象機器
  */
-public interface SasangMachine extends BaseService
-{
+public interface SasangMachine extends BaseService {
 	/**
 	 * 有幾轉輪
 	 */
@@ -30,14 +29,14 @@ public interface SasangMachine extends BaseService
 	Outcome createOutcome(String outcomeId);
 
 	/**
-	 * 啟動
+	 * 玩四象
 	 * 
 	 * @return
 	 */
 	Outcome play();
 
 	/**
-	 * 啟動
+	 * 玩幾次四象
 	 * 
 	 * @param times
 	 * @return

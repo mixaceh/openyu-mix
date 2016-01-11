@@ -26,7 +26,7 @@ import org.openyu.mix.sasang.vo.impl.SasangPenImpl;
 import org.openyu.mix.role.vo.Role;
 
 public class SasangTestSupporter extends AppTestSupporter {
-	
+
 	@Rule
 	public BenchmarkRule benchmarkRule = new BenchmarkRule();
 
@@ -43,9 +43,10 @@ public class SasangTestSupporter extends AppTestSupporter {
 	protected static ItemService itemService;
 
 	/**
-	 * 取實作class,所以不能用aop
+	 * <aop:aspectj-autoproxy/> SasangMachine sasangMachine
 	 * 
-	 * 改取interface
+	 * <aop:aspectj-autoproxy proxy-target-class="true" /> SasangMachineImpl
+	 * sasangMachine
 	 */
 	protected static SasangMachine sasangMachine;
 

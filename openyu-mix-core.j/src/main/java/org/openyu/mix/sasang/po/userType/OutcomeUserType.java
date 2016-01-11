@@ -16,7 +16,7 @@ public class OutcomeUserType extends BaseUserTypeSupporter {
 
 	private static final long serialVersionUID = -6499823897737328840L;
 
-	private SasangMachine sasangMachine = new SasangMachineImpl();
+	private SasangMachine sasangMachine = SasangMachineImpl.getInstance();
 
 	public OutcomeUserType() {
 		// --------------------------------------------------
