@@ -25,6 +25,8 @@ import org.openyu.commons.thread.ThreadHelper;
 import org.openyu.commons.util.CalendarHelper;
 import org.openyu.socklet.message.vo.Message;
 
+import com.carrotsearch.junitbenchmarks.BenchmarkOptions;
+
 public class TrainServiceImplTest extends TrainTestSupporter {
 
 	@Test
@@ -48,7 +50,7 @@ public class TrainServiceImplTest extends TrainTestSupporter {
 		// 加入
 		trainSetService.addRole(role);
 		trainPen.setJoinTime(System.currentTimeMillis());
-		// 剩10秒結束　
+		// 剩10秒結束
 		trainPen.addDailyMills(trainCollector.getDailyMills() - 10 * 1000L);
 		//
 		// ThreadHelper.sleep(10 * 1000L);
@@ -71,8 +73,7 @@ public class TrainServiceImplTest extends TrainTestSupporter {
 		long beg = System.currentTimeMillis();
 		//
 		for (int i = 0; i < count; i++) {
-			result = messageService.createMessage(CoreModuleType.TRAIN,
-					CoreModuleType.CLIENT, null, role.getId());
+			result = messageService.createMessage(CoreModuleType.TRAIN, CoreModuleType.CLIENT, null, role.getId());
 			trainService.fillTrainPen(result, role.getTrainPen());
 		}
 		//
@@ -179,6 +180,10 @@ public class TrainServiceImplTest extends TrainTestSupporter {
 	 * 鼓舞訓練
 	 */
 	@Test
+	@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
+	// round: 2.65 [+- 0.00], round.block: 0.00 [+- 0.00], round.gc: 0.00 [+-
+	// 0.00], GC.calls: 1, GC.time: 0.05, time.total: 2.65, time.warmup: 0.02,
+	// time.bench: 2.65
 	public void inspire() {
 		Role role = mockRole();
 		role.setVipType(VipType._2);
@@ -203,7 +208,7 @@ public class TrainServiceImplTest extends TrainTestSupporter {
 		System.out.println(result);
 		assertNotNull(result);
 		//
-		// ThreadHelper.sleep(3 * 1000L);
+		ThreadHelper.sleep(3 * 1000L);
 	}
 
 	/**

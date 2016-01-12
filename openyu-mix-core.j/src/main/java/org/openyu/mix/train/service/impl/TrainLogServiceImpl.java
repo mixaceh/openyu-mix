@@ -15,6 +15,7 @@ import org.openyu.mix.train.log.TrainLog;
 import org.openyu.mix.train.log.impl.TrainLogImpl;
 import org.openyu.mix.train.service.TrainLogService;
 import org.openyu.mix.train.service.TrainService.ActionType;
+import org.openyu.commons.dao.anno.LogTx;
 import org.openyu.commons.dao.inquiry.Inquiry;
 import org.openyu.commons.util.AssertHelper;
 
@@ -76,6 +77,7 @@ public class TrainLogServiceImpl extends AppLogServiceSupporter implements Train
 	 * @param spendItems
 	 * @param spendCoin
 	 */
+	@LogTx
 	public void recordInspire(Role role, long inspireTime, List<Item> spendItems, int spendCoin) {
 		TrainLog log = new TrainLogImpl();
 		recordRole(role, log);

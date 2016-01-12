@@ -13,6 +13,7 @@ import org.openyu.mix.train.service.TrainService.InspireResult;
 /**
  * 訓練鼓舞攔截器
  */
+@Deprecated
 public class TrainInspireInterceptor extends AppAroundAdviceSupporter {
 
 	private static final long serialVersionUID = -3463487277608619783L;

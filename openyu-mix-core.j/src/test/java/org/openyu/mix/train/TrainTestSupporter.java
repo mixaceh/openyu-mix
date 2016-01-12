@@ -3,14 +3,17 @@ package org.openyu.mix.train;
 import static org.junit.Assert.assertNotNull;
 
 import org.junit.BeforeClass;
+import org.junit.Rule;
 import org.junit.Test;
-import org.springframework.aop.aspectj.AspectJExpressionPointcut;
-import org.springframework.aop.support.DefaultBeanFactoryPointcutAdvisor;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+import com.carrotsearch.junitbenchmarks.BenchmarkOptions;
+import com.carrotsearch.junitbenchmarks.BenchmarkRule;
+
 import org.openyu.mix.account.service.AccountService;
 import org.openyu.mix.app.AppTestSupporter;
 import org.openyu.mix.item.service.ItemService;
-import org.openyu.mix.train.aop.TrainInspireInterceptor;
+import org.openyu.mix.train.aop.TrainAspect;
 import org.openyu.mix.train.dao.TrainLogDao;
 import org.openyu.mix.train.service.TrainLogService;
 import org.openyu.mix.train.service.TrainService;
@@ -20,6 +23,9 @@ import org.openyu.mix.train.socklet.TrainSocklet;
 import org.openyu.mix.train.vo.TrainCollector;
 
 public class TrainTestSupporter extends AppTestSupporter {
+
+	@Rule
+	public BenchmarkRule benchmarkRule = new BenchmarkRule();
 
 	protected static TrainCollector trainCollector = TrainCollector.getInstance();
 
@@ -36,13 +42,14 @@ public class TrainTestSupporter extends AppTestSupporter {
 	protected static TrainSetService trainSetService;
 
 	protected static TrainService trainService;
-
-	protected static TrainSocklet trainSocklet;
-
 	// log
 	protected static TrainLogDao trainLogDao;
 
 	protected static TrainLogService trainLogService;
+
+	protected static TrainAspect trainAspect;
+
+	protected static TrainSocklet trainSocklet;
 
 	// 事件監聽器
 	protected static TrainChangeAdapter trainChangeAdapter;
@@ -75,10 +82,11 @@ public class TrainTestSupporter extends AppTestSupporter {
 		//
 		trainSetService = (TrainSetService) applicationContext.getBean("trainSetService");
 		trainService = (TrainService) applicationContext.getBean("trainService");
-		trainSocklet = (TrainSocklet) applicationContext.getBean("trainSocklet");
-		//
 		trainLogDao = (TrainLogDao) applicationContext.getBean("trainLogDao");
 		trainLogService = (TrainLogService) applicationContext.getBean("trainLogService");
+		trainAspect = (TrainAspect) applicationContext.getBean("trainAspect");
+		//
+		trainSocklet = (TrainSocklet) applicationContext.getBean("trainSocklet");
 		//
 		trainChangeAdapter = (TrainChangeAdapter) applicationContext.getBean("trainChangeAdapter");
 	}
@@ -86,59 +94,49 @@ public class TrainTestSupporter extends AppTestSupporter {
 	public static class BeanTest extends TrainTestSupporter {
 
 		@Test
+		@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 		public void trainSetService() {
 			System.out.println(trainSetService);
 			assertNotNull(trainSetService);
 		}
 
 		@Test
+		@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 		public void trainService() {
 			System.out.println(trainService);
 			assertNotNull(trainService);
 		}
 
 		@Test
-		public void trainInspireAdvice() {
-			TrainInspireInterceptor bean = (TrainInspireInterceptor) applicationContext.getBean("trainInspireAdvice");
-			System.out.println(bean);
-			assertNotNull(bean);
-		}
-
-		@Test
-		public void trainInspirePointcut() {
-			AspectJExpressionPointcut bean = (AspectJExpressionPointcut) applicationContext
-					.getBean("trainInspirePointcut");
-			System.out.println(bean);
-			assertNotNull(bean);
-		}
-
-		@Test
-		public void trainInspireAdvisor() {
-			DefaultBeanFactoryPointcutAdvisor bean = (DefaultBeanFactoryPointcutAdvisor) applicationContext
-					.getBean("trainInspireAdvisor");
-			System.out.println(bean);
-			assertNotNull(bean);
-		}
-
-		@Test
+		@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 		public void trainLogDao() {
 			System.out.println(trainLogDao);
 			assertNotNull(trainLogDao);
 		}
 
 		@Test
+		@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 		public void trainLogService() {
 			System.out.println(trainLogService);
 			assertNotNull(trainLogService);
 		}
 
 		@Test
+		@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
+		public void trainAspect() {
+			System.out.println(trainAspect);
+			assertNotNull(trainAspect);
+		}
+
+		@Test
+		@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 		public void trainSocklet() {
 			System.out.println(trainSocklet);
 			assertNotNull(trainSocklet);
 		}
 
 		@Test
+		@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 		public void trainChangeAdapter() {
 			System.out.println(trainChangeAdapter);
 			assertNotNull(trainChangeAdapter);
