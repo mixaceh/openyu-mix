@@ -6,6 +6,7 @@ import static org.junit.Assert.assertNull;
 import java.util.List;
 import java.util.Map;
 import org.junit.Test;
+import org.openyu.commons.thread.ThreadHelper;
 import org.openyu.mix.core.service.CoreModuleType;
 import org.openyu.mix.item.vo.EnhanceLevel;
 import org.openyu.mix.item.vo.Item;
@@ -25,8 +26,9 @@ import org.openyu.mix.manor.vo.Seed;
 import org.openyu.mix.role.vo.BagPen;
 import org.openyu.mix.role.vo.Role;
 import org.openyu.mix.vip.vo.VipType;
-import org.openyu.commons.thread.ThreadHelper;
 import org.openyu.socklet.message.vo.Message;
+
+import com.carrotsearch.junitbenchmarks.BenchmarkOptions;
 
 public class ManorServiceImplTest extends ManorTestSupporter {
 
@@ -70,8 +72,7 @@ public class ManorServiceImplTest extends ManorTestSupporter {
 		land.setEnhanceLevel(EnhanceLevel._10);
 		itemService.calcEnhanceAttributes(land);
 
-		System.out.println(land.getEnhanceLevel() + " "
-				+ land.getAttributeGroup());
+		System.out.println(land.getEnhanceLevel() + " " + land.getAttributeGroup());
 
 		//
 		// ThreadHelper.sleep(3 * 1000L);
@@ -98,8 +99,7 @@ public class ManorServiceImplTest extends ManorTestSupporter {
 		long beg = System.currentTimeMillis();
 		//
 		for (int i = 0; i < count; i++) {
-			result = messageService.createMessage(CoreModuleType.MANOR,
-					CoreModuleType.CLIENT, null, role.getId());
+			result = messageService.createMessage(CoreModuleType.MANOR, CoreModuleType.CLIENT, null, role.getId());
 			manorService.fillManorPen(result, manorPen);
 		}
 		//
@@ -114,23 +114,25 @@ public class ManorServiceImplTest extends ManorTestSupporter {
 		manorPen.lock(1);
 		manorPen.lock(2);
 		//
-		result = messageService.createMessage(CoreModuleType.MANOR,
-				CoreModuleType.CLIENT, null, role.getId());
+		result = messageService.createMessage(CoreModuleType.MANOR, CoreModuleType.CLIENT, null, role.getId());
 		manorService.fillManorPen(result, manorPen);
 		System.out.println(result);
 
 		// 移除 TabType._0 的土地
 		manorPen.getFarm(0).setLand(null);
-		result = messageService.createMessage(CoreModuleType.MANOR,
-				CoreModuleType.CLIENT, null, role.getId());
+		result = messageService.createMessage(CoreModuleType.MANOR, CoreModuleType.CLIENT, null, role.getId());
 		manorService.fillManorPen(result, manorPen);
 		System.out.println(result);
 	}
 
-	@Test
 	/**
 	 * 開墾
 	 */
+	@Test
+	@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
+	// round: 1.64 [+- 0.00], round.block: 0.00 [+- 0.00], round.gc: 0.00 [+-
+	// 0.00], GC.calls: 1, GC.time: 0.11, time.total: 1.64, time.warmup: 0.00,
+	// time.bench: 1.64
 	public void reclaim() {
 		Role role = mockRole();
 		role.setLevel(20);// 等級
@@ -142,8 +144,7 @@ public class ManorServiceImplTest extends ManorTestSupporter {
 		bagPen.addItem(0, 0, land);
 
 		// 農場結果
-		ReclaimResult result = manorService.reclaim(true, role, 0,
-				land.getUniqueId());
+		ReclaimResult result = manorService.reclaim(true, role, 0, land.getUniqueId());
 		System.out.println(result);
 		assertNotNull(result);
 
@@ -154,7 +155,7 @@ public class ManorServiceImplTest extends ManorTestSupporter {
 		Farm farm = manorPen.getFarm(0);
 		assertEquals(land, farm.getLand());
 		//
-		// ThreadHelper.sleep(3 * 1000);
+		ThreadHelper.sleep(3 * 1000);
 	}
 
 	@Test
@@ -170,8 +171,7 @@ public class ManorServiceImplTest extends ManorTestSupporter {
 		// 土地
 		Land land = itemService.createLand("L_TROPICS_G001");
 		//
-		ErrorType errorType = manorService.checkReclaim(role, 0,
-				land.getUniqueId());
+		ErrorType errorType = manorService.checkReclaim(role, 0, land.getUniqueId());
 		System.out.println(errorType);
 		// 金幣不足
 		assertEquals(ErrorType.GOLD_NOT_ENOUGH, errorType);
@@ -217,10 +217,14 @@ public class ManorServiceImplTest extends ManorTestSupporter {
 		assertEquals(ErrorType.CAN_NOT_DECREASE_LAND, errorType);
 	}
 
-	@Test
 	/**
 	 * 休耕
 	 */
+	@Test
+	@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
+	// round: 1.47 [+- 0.00], round.block: 0.00 [+- 0.00], round.gc: 0.00 [+-
+	// 0.00], GC.calls: 1, GC.time: 0.10, time.total: 1.47, time.warmup: 0.00,
+	// time.bench: 1.47
 	public void disuse() {
 		Role role = mockRole();
 		role.setLevel(20);// 等級
@@ -231,8 +235,7 @@ public class ManorServiceImplTest extends ManorTestSupporter {
 		Land land = itemService.createLand("L_TROPICS_G001");
 		bagPen.addItem(0, 0, land);
 		// 開墾
-		ReclaimResult result = manorService.reclaim(true, role, 0,
-				land.getUniqueId());
+		ReclaimResult result = manorService.reclaim(true, role, 0, land.getUniqueId());
 		// System.out.println(result);
 		assertNotNull(result);
 
@@ -249,7 +252,7 @@ public class ManorServiceImplTest extends ManorTestSupporter {
 		// 休耕,所以農場應沒土地了
 		assertNull(farm.getLand());
 		//
-		// ThreadHelper.sleep(3 * 1000);
+		ThreadHelper.sleep(3 * 1000);
 	}
 
 	@Test
@@ -297,10 +300,14 @@ public class ManorServiceImplTest extends ManorTestSupporter {
 		assertEquals(ErrorType.CAN_NOT_INCREASE_LAND, errorType);
 	}
 
-	@Test
 	/**
 	 * 種植,澆水,清除
 	 */
+	@Test
+	@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
+	// round: 2.58 [+- 0.00], round.block: 0.00 [+- 0.00], round.gc: 0.00 [+-
+	// 0.00], GC.calls: 1, GC.time: 0.08, time.total: 2.58, time.warmup: 0.00,
+	// time.bench: 2.58
 	public void culture() {
 		Role role = mockRole();
 		role.setLevel(20);// 等級
@@ -318,8 +325,7 @@ public class ManorServiceImplTest extends ManorTestSupporter {
 		mockReclaim(role);
 
 		// 種植
-		CultureResult result = manorService.culture(true, role,
-				CultureType.PLANT.getValue(), 0, 0, seed.getUniqueId());
+		CultureResult result = manorService.culture(true, role, CultureType.PLANT.getValue(), 0, 0, seed.getUniqueId());
 		System.out.println(result);
 		assertNotNull(result);
 
@@ -327,8 +333,7 @@ public class ManorServiceImplTest extends ManorTestSupporter {
 		Item item = itemService.createItem(manorCollector.getWaterItem());
 		bagPen.addItem(0, 1, item);
 		// 澆水
-		result = manorService.culture(true, role, CultureType.WATER.getValue(),
-				0, 0, null);
+		result = manorService.culture(true, role, CultureType.WATER.getValue(), 0, 0, null);
 		System.out.println(result);
 		assertNotNull(result);
 
@@ -336,25 +341,23 @@ public class ManorServiceImplTest extends ManorTestSupporter {
 		seed = mockSeed("S_COTTON_G001");
 		manorPen.addSeed(0, 1, seed);
 		// 沒道具扣儲值幣
-		result = manorService.culture(true, role, CultureType.WATER.getValue(),
-				0, 1, null);
+		result = manorService.culture(true, role, CultureType.WATER.getValue(), 0, 1, null);
 		System.out.println(result);
 		assertNotNull(result);
 
 		// 清除
-		result = manorService.culture(true, role, CultureType.CLEAR.getValue(),
-				0, 0, null);
+		result = manorService.culture(true, role, CultureType.CLEAR.getValue(), 0, 0, null);
 		System.out.println(result);
 		assertNotNull(result);
 		//
-		// ThreadHelper.sleep(3 * 1000);
+		ThreadHelper.sleep(3 * 1000);
 	}
 
 	@Test
 	/**
 	 * 種植,然後裝成熟,再收割
 	 */
-	public void cultureByHarvest() {
+	public void cultureWithHarvest() {
 		Role role = mockRole();
 		role.setLevel(20);// 等級
 		role.setGold(10000 * 10000L);// 1e
@@ -372,8 +375,7 @@ public class ManorServiceImplTest extends ManorTestSupporter {
 		ManorPen manorPen = role.getManorPen();
 
 		// 種植
-		CultureResult result = manorService.culture(true, role,
-				CultureType.PLANT.getValue(), 0, 0, seed.getUniqueId());
+		CultureResult result = manorService.culture(true, role, CultureType.PLANT.getValue(), 0, 0, seed.getUniqueId());
 		System.out.println(result);
 		assertNotNull(result);
 
@@ -383,8 +385,7 @@ public class ManorServiceImplTest extends ManorTestSupporter {
 		farmSeed.setMatureType(MatureType.MATURE);
 
 		// 收割
-		result = manorService.culture(true, role,
-				CultureType.HARVEST.getValue(), 0, 0, null);
+		result = manorService.culture(true, role, CultureType.HARVEST.getValue(), 0, 0, null);
 		System.out.println(result);
 		assertNotNull(result);
 		//
@@ -395,7 +396,7 @@ public class ManorServiceImplTest extends ManorTestSupporter {
 	/**
 	 * 種植,然後加速,直接成熟,直接收割
 	 */
-	public void cultureBySpeed() {
+	public void cultureWithSpeed() {
 		Role role = mockRole();
 		role.setLevel(20);// 等級
 		role.setGold(10000 * 10000L);// 1e
@@ -416,14 +417,12 @@ public class ManorServiceImplTest extends ManorTestSupporter {
 		ManorPen manorPen = role.getManorPen();
 
 		// 種植
-		CultureResult result = manorService.culture(true, role,
-				CultureType.PLANT.getValue(), 0, 0, seed.getUniqueId());
+		CultureResult result = manorService.culture(true, role, CultureType.PLANT.getValue(), 0, 0, seed.getUniqueId());
 		System.out.println(result);
 		assertNotNull(result);
 
 		// 加速
-		result = manorService.culture(true, role, CultureType.SPEED.getValue(),
-				0, 0, null);
+		result = manorService.culture(true, role, CultureType.SPEED.getValue(), 0, 0, null);
 		System.out.println(result);
 		assertNotNull(result);
 		//
@@ -434,7 +433,7 @@ public class ManorServiceImplTest extends ManorTestSupporter {
 	/**
 	 * 種植,搞枯萎,然後復活,把枯萎的復活,直接收割
 	 */
-	public void cultureByRevive() {
+	public void cultureWithRevive() {
 		Role role = mockRole();
 		role.setLevel(20);// 等級
 		role.setGold(10000 * 10000L);// 1e
@@ -452,8 +451,7 @@ public class ManorServiceImplTest extends ManorTestSupporter {
 		ManorPen manorPen = role.getManorPen();
 
 		// 種植
-		CultureResult result = manorService.culture(true, role,
-				CultureType.PLANT.getValue(), 0, 0, seed.getUniqueId());
+		CultureResult result = manorService.culture(true, role, CultureType.PLANT.getValue(), 0, 0, seed.getUniqueId());
 		System.out.println(result);
 		assertNotNull(result);
 
@@ -463,8 +461,7 @@ public class ManorServiceImplTest extends ManorTestSupporter {
 		farmSeed.setMatureType(MatureType.WITHER);
 
 		// 復活
-		result = manorService.culture(true, role,
-				CultureType.REVIVE.getValue(), 0, 0, null);
+		result = manorService.culture(true, role, CultureType.REVIVE.getValue(), 0, 0, null);
 		System.out.println(result);
 		assertNotNull(result);
 		//
@@ -484,8 +481,7 @@ public class ManorServiceImplTest extends ManorTestSupporter {
 		// 強化
 		land.setEnhanceLevel(EnhanceLevel._30);
 		itemService.calcEnhanceAttributes(land);
-		System.out.println(land.getEnhanceLevel() + " "
-				+ land.getAttributeGroup());
+		System.out.println(land.getEnhanceLevel() + " " + land.getAttributeGroup());
 
 		// 種子
 		Seed seed = itemService.createSeed("S_COTTON_G001", 1);
@@ -524,8 +520,7 @@ public class ManorServiceImplTest extends ManorTestSupporter {
 		// 強化
 		land.setEnhanceLevel(EnhanceLevel._7);
 		itemService.calcEnhanceAttributes(land);
-		System.out.println(land.getEnhanceLevel() + " "
-				+ land.getAttributeGroup());
+		System.out.println(land.getEnhanceLevel() + " " + land.getAttributeGroup());
 
 		// 種子
 		Seed seed = itemService.createSeed("S_COTTON_G001", 1);
@@ -565,8 +560,7 @@ public class ManorServiceImplTest extends ManorTestSupporter {
 		// 模擬開墾
 		mockReclaim(role);
 		//
-		CultureResult result = manorService.plant(true, role, 0, 0,
-				seed.getUniqueId());
+		CultureResult result = manorService.plant(true, role, 0, 0, seed.getUniqueId());
 		System.out.println(result);
 		assertNotNull(result);
 	}
@@ -1356,10 +1350,14 @@ public class ManorServiceImplTest extends ManorTestSupporter {
 		// ThreadHelper.sleep(3 * 1000L);
 	}
 
-	@Test
 	/**
 	 * 種植,澆水
 	 */
+	@Test
+	@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
+	// round: 2.35 [+- 0.00], round.block: 0.00 [+- 0.00], round.gc: 0.00 [+-
+	// 0.00], GC.calls: 1, GC.time: 0.06, time.total: 2.35, time.warmup: 0.00,
+	// time.bench: 2.35
 	public void cultureAll() {
 		Role role = mockRole();
 		role.setLevel(20);// 等級
@@ -1377,8 +1375,7 @@ public class ManorServiceImplTest extends ManorTestSupporter {
 		mockReclaim(role);
 
 		// 種植
-		CultureResult result = manorService.culture(true, role, 1, 0, 0,
-				seed.getUniqueId());
+		CultureResult result = manorService.culture(true, role, 1, 0, 0, seed.getUniqueId());
 		System.out.println(result);
 		assertNotNull(result);
 		//
@@ -1394,7 +1391,7 @@ public class ManorServiceImplTest extends ManorTestSupporter {
 		System.out.println(allResult);
 		assertNotNull(result);
 		//
-		// ThreadHelper.sleep(3 * 1000);
+		ThreadHelper.sleep(3 * 1000);
 	}
 
 	@Test

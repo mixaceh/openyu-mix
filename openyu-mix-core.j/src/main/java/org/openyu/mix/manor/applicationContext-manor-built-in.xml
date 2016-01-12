@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:jaxws="http://cxf.apache.org/jaxws"
+	xsi:schemaLocation="
+             http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+             http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+             http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+             http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd">
+
+
+	<!-- service -->
+	<!-- 莊園服務 -->
+	<bean id="manorService" class="org.openyu.mix.manor.service.impl.ManorServiceImpl"
+		parent="appServiceSupporter">
+	</bean>
+
+	<!-- advisor -->
+	<!-- 莊園開墾 -->
+	<bean id="manorReclaimAdvice"
+		class="org.openyu.mix.manor.aop.ManorReclaimInterceptor"
+		parent="appMethodInterceptorSupporter">
+	</bean>
+	<aop:config>
+		<aop:pointcut id="manorReclaimPointcut"
+			expression="execution(* org.openyu.mix.manor.service.impl.ManorServiceImpl.reclaim*(..))" />
+		<aop:advisor id="manorReclaimAdvisor" advice-ref="manorReclaimAdvice"
+			pointcut-ref="manorReclaimPointcut" />
+	</aop:config>
+
+	<!-- 莊園休耕 -->
+	<bean id="manorDisuseAdvice" class="org.openyu.mix.manor.aop.ManorDisuseInterceptor"
+		parent="appMethodInterceptorSupporter">
+	</bean>
+	<aop:config>
+		<aop:pointcut id="manorDisusePointcut"
+			expression="execution(* org.openyu.mix.manor.service.impl.ManorServiceImpl.disuse*(..))" />
+		<aop:advisor id="manorDisuseAdvisor" advice-ref="manorDisuseAdvice"
+			pointcut-ref="manorDisusePointcut" />
+	</aop:config>
+
+	<!-- 莊園耕種 -->
+	<bean id="manorCultureAdvice"
+		class="org.openyu.mix.manor.aop.ManorCultureInterceptor"
+		parent="appMethodInterceptorSupporter">
+	</bean>
+	<aop:config>
+		<aop:pointcut id="manorCulturePointcut"
+			expression="execution(* org.openyu.mix.manor.service.impl.ManorServiceImpl.culture*(..))" />
+		<aop:advisor id="manorCultureAdvisor" advice-ref="manorCultureAdvice"
+			pointcut-ref="manorCulturePointcut" />
+	</aop:config>
+
+	<!-- dao -->
+	<bean id="manorLogDao" class="org.openyu.mix.manor.dao.impl.ManorLogDaoImpl"
+		parent="appLogDaoSupporter" />
+
+	<!-- service -->
+	<!-- 莊園日誌服務 -->
+	<bean id="manorLogService" class="org.openyu.mix.manor.service.impl.ManorLogServiceImpl"
+		parent="appLogServiceSupporter">
+	</bean>
+
+	<!-- socklet -->
+	<bean id="manorSocklet" class="org.openyu.mix.manor.socklet.ManorSocklet"
+		parent="slaveSockletServiceSupporter">
+		<property name="id" value="MANOR" />
+	</bean>
+
+	<!-- adapter -->
+	<bean id="manorChangeAdapter" class="org.openyu.mix.manor.service.adapter.ManorChangeAdapter">
+	</bean>
+</beans>

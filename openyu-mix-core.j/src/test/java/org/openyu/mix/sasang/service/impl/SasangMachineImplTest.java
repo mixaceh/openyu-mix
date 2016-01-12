@@ -207,16 +207,14 @@ public class SasangMachineImplTest extends SasangTestSupporter {
 
 	//
 	@Test
-	// 1000000 times: 45 mills.
-	// 1000000 times: 39 mills.
-	// 1000000 times: 55 mills.
-	public void startByType() {
+	@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
+	public void playWithType() {
 		boolean result = false;
 		int times = 0;
-		int count = 1000000;// 100w
+		int count = 100;
 		long beg = System.currentTimeMillis();
 		for (int i = 0; i < count; i++) {
-			result = sasangMachineImpl.playByType(SasangType.AZURE_DRAGON, 3);// 3個相同青龍
+			result = sasangMachineImpl.playWithType(SasangType.AZURE_DRAGON, 3);// 3個相同青龍
 			if (result) {
 				times += 1;
 			}
@@ -229,7 +227,7 @@ public class SasangMachineImplTest extends SasangTestSupporter {
 		times = 0;
 		beg = System.currentTimeMillis();
 		for (int i = 0; i < count; i++) {
-			result = sasangMachineImpl.playByType(SasangType.AZURE_DRAGON, 2);// 2個相同青龍
+			result = sasangMachineImpl.playWithType(SasangType.AZURE_DRAGON, 2);// 2個相同青龍
 			if (result) {
 				times += 1;
 			}
@@ -242,7 +240,7 @@ public class SasangMachineImplTest extends SasangTestSupporter {
 		times = 0;
 		beg = System.currentTimeMillis();
 		for (int i = 0; i < count; i++) {
-			result = sasangMachineImpl.playByType(SasangType.WHITE_TIGER, 3);// 3個相同白虎
+			result = sasangMachineImpl.playWithType(SasangType.WHITE_TIGER, 3);// 3個相同白虎
 			if (result) {
 				times += 1;
 			}

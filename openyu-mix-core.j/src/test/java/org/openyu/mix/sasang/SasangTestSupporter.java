@@ -7,6 +7,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import com.carrotsearch.junitbenchmarks.BenchmarkOptions;
 import com.carrotsearch.junitbenchmarks.BenchmarkRule;
 
 import org.openyu.mix.account.service.AccountService;
@@ -101,47 +102,53 @@ public class SasangTestSupporter extends AppTestSupporter {
 	public static class BeanTest extends SasangTestSupporter {
 
 		@Test
+		@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 		public void sasangMachine() {
 			System.out.println(sasangMachine);
 			assertNotNull(sasangMachine);
 		}
 
 		@Test
+		@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 		public void sasangService() {
 			System.out.println(sasangService);
 			assertNotNull(sasangService);
 		}
 
 		@Test
+		@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 		public void sasangLogDao() {
 			System.out.println(sasangLogDao);
 			assertNotNull(sasangLogDao);
 		}
 
 		@Test
+		@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 		public void sasangLogService() {
 			System.out.println(sasangLogService);
 			assertNotNull(sasangLogService);
 		}
 
 		@Test
+		@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 		public void sasangAspect() {
 			System.out.println(sasangAspect);
 			assertNotNull(sasangAspect);
 		}
 
 		@Test
+		@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 		public void sasangSocklet() {
 			System.out.println(sasangSocklet);
 			assertNotNull(sasangSocklet);
 		}
 
 		@Test
+		@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 		public void sasangChangeAdapter() {
 			System.out.println(sasangChangeAdapter);
 			assertNotNull(sasangChangeAdapter);
 		}
-
 	}
 
 	/**

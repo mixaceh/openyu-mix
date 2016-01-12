@@ -3,17 +3,18 @@ package org.openyu.mix.manor;
 import static org.junit.Assert.assertNotNull;
 
 import org.junit.BeforeClass;
+import org.junit.Rule;
 import org.junit.Test;
-import org.springframework.aop.aspectj.AspectJExpressionPointcut;
-import org.springframework.aop.support.DefaultBeanFactoryPointcutAdvisor;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+import com.carrotsearch.junitbenchmarks.BenchmarkOptions;
+import com.carrotsearch.junitbenchmarks.BenchmarkRule;
+
 import org.openyu.mix.account.service.AccountService;
 import org.openyu.mix.app.AppTestSupporter;
 import org.openyu.mix.item.service.ItemService;
 import org.openyu.mix.item.vo.EnhanceLevel;
-import org.openyu.mix.manor.aop.ManorCultureInterceptor;
-import org.openyu.mix.manor.aop.ManorDisuseInterceptor;
-import org.openyu.mix.manor.aop.ManorReclaimInterceptor;
+import org.openyu.mix.manor.aop.ManorAspect;
 import org.openyu.mix.manor.dao.ManorLogDao;
 import org.openyu.mix.manor.service.ManorLogService;
 import org.openyu.mix.manor.service.ManorService;
@@ -28,6 +29,10 @@ import org.openyu.mix.manor.vo.impl.ManorPenImpl.FarmImpl;
 import org.openyu.mix.role.vo.Role;
 
 public class ManorTestSupporter extends AppTestSupporter {
+
+	@Rule
+	public BenchmarkRule benchmarkRule = new BenchmarkRule();
+
 	/**
 	 * 帳號服務-1
 	 */
@@ -38,12 +43,13 @@ public class ManorTestSupporter extends AppTestSupporter {
 	 */
 	protected static ItemService itemService;
 
-	protected static ManorCollector manorCollector = ManorCollector
-			.getInstance();
+	protected static ManorCollector manorCollector = ManorCollector.getInstance();
 
 	protected static ManorService manorService;
 
 	protected static ManorSocklet manorSocklet;
+
+	protected static ManorAspect manorAspect;
 
 	// log
 	protected static ManorLogDao manorLogDao;
@@ -55,7 +61,7 @@ public class ManorTestSupporter extends AppTestSupporter {
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
-		applicationContext = new ClassPathXmlApplicationContext(new String[] {
+		applicationContext = new ClassPathXmlApplicationContext(new String[] { //
 				"applicationContext-init.xml", //
 				"applicationContext-bean.xml", //
 				"applicationContext-i18n.xml", //
@@ -63,134 +69,69 @@ public class ManorTestSupporter extends AppTestSupporter {
 				"applicationContext-database.xml", //
 				"applicationContext-database-log.xml", //
 				// "applicationContext-scheduler.xml",// 排程
-				"org/openyu/mix/app/applicationContext-app.xml",//
+				"org/openyu/mix/app/applicationContext-app.xml", //
 				// biz
-				"org/openyu/mix/item/applicationContext-item.xml",//
-				"org/openyu/mix/account/applicationContext-account.xml",//
-				"org/openyu/mix/role/applicationContext-role.xml",//
+				"org/openyu/mix/item/applicationContext-item.xml", //
+				"org/openyu/mix/account/applicationContext-account.xml", //
+				"org/openyu/mix/role/applicationContext-role.xml", //
 				"org/openyu/mix/manor/applicationContext-manor.xml",//
 		});
 		// ---------------------------------------------------
 		initialize();
 		// ---------------------------------------------------
 		// 帳號
-		accountService = (AccountService) applicationContext
-				.getBean("accountService");
+		accountService = (AccountService) applicationContext.getBean("accountService");
 		// 道具
 		itemService = (ItemService) applicationContext.getBean("itemService");
 		//
-		manorService = (ManorService) applicationContext
-				.getBean("manorService");
-		manorSocklet = (ManorSocklet) applicationContext
-				.getBean("manorSocklet");
-		//
+		manorService = (ManorService) applicationContext.getBean("manorService");
 		manorLogDao = (ManorLogDao) applicationContext.getBean("manorLogDao");
-		manorLogService = (ManorLogService) applicationContext
-				.getBean("manorLogService");
+		manorLogService = (ManorLogService) applicationContext.getBean("manorLogService");
+		manorAspect = (ManorAspect) applicationContext.getBean("manorAspect");
+		manorSocklet = (ManorSocklet) applicationContext.getBean("manorSocklet");
 		//
-		manorChangeAdapter = (ManorChangeAdapter) applicationContext
-				.getBean("manorChangeAdapter");
+		manorChangeAdapter = (ManorChangeAdapter) applicationContext.getBean("manorChangeAdapter");
 	}
 
 	public static class BeanTest extends ManorTestSupporter {
 
 		@Test
+		@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 		public void manorService() {
 			System.out.println(manorService);
 			assertNotNull(manorService);
 		}
 
 		@Test
-		public void manorReclaimAdvice() {
-			ManorReclaimInterceptor bean = (ManorReclaimInterceptor) applicationContext
-					.getBean("manorReclaimAdvice");
-			System.out.println(bean);
-			assertNotNull(bean);
-		}
-
-		@Test
-		public void manorReclaimPointcut() {
-			AspectJExpressionPointcut bean = (AspectJExpressionPointcut) applicationContext
-					.getBean("manorReclaimPointcut");
-			System.out.println(bean);
-			assertNotNull(bean);
-		}
-
-		@Test
-		public void manorReclaimAdvisor() {
-			DefaultBeanFactoryPointcutAdvisor bean = (DefaultBeanFactoryPointcutAdvisor) applicationContext
-					.getBean("manorReclaimAdvisor");
-			System.out.println(bean);
-			assertNotNull(bean);
-		}
-
-		@Test
-		public void manorDisuseAdvice() {
-			ManorDisuseInterceptor bean = (ManorDisuseInterceptor) applicationContext
-					.getBean("manorDisuseAdvice");
-			System.out.println(bean);
-			assertNotNull(bean);
-		}
-
-		@Test
-		public void manorDisusePointcut() {
-			AspectJExpressionPointcut bean = (AspectJExpressionPointcut) applicationContext
-					.getBean("manorDisusePointcut");
-			System.out.println(bean);
-			assertNotNull(bean);
-		}
-
-		@Test
-		public void manorDisuseAdvisor() {
-			DefaultBeanFactoryPointcutAdvisor bean = (DefaultBeanFactoryPointcutAdvisor) applicationContext
-					.getBean("manorDisuseAdvisor");
-			System.out.println(bean);
-			assertNotNull(bean);
-		}
-
-		@Test
-		public void manorCultureAdvice() {
-			ManorCultureInterceptor bean = (ManorCultureInterceptor) applicationContext
-					.getBean("manorCultureAdvice");
-			System.out.println(bean);
-			assertNotNull(bean);
-		}
-
-		@Test
-		public void manorCulturePointcut() {
-			AspectJExpressionPointcut bean = (AspectJExpressionPointcut) applicationContext
-					.getBean("manorCulturePointcut");
-			System.out.println(bean);
-			assertNotNull(bean);
-		}
-
-		@Test
-		public void manorCultureAdvisor() {
-			DefaultBeanFactoryPointcutAdvisor bean = (DefaultBeanFactoryPointcutAdvisor) applicationContext
-					.getBean("manorCultureAdvisor");
-			System.out.println(bean);
-			assertNotNull(bean);
-		}
-
-		@Test
+		@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 		public void manorLogDao() {
 			System.out.println(manorLogDao);
 			assertNotNull(manorLogDao);
 		}
 
 		@Test
+		@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 		public void manorLogService() {
 			System.out.println(manorLogService);
 			assertNotNull(manorLogService);
 		}
 
 		@Test
+		@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
+		public void manorAspect() {
+			System.out.println(manorAspect);
+			assertNotNull(manorAspect);
+		}
+
+		@Test
+		@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 		public void manorSocklet() {
 			System.out.println(manorSocklet);
 			assertNotNull(manorSocklet);
 		}
 
 		@Test
+		@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 		public void manorChangeAdapter() {
 			System.out.println(manorChangeAdapter);
 			assertNotNull(manorChangeAdapter);

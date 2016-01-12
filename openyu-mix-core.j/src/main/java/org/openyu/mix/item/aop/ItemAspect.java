@@ -204,13 +204,8 @@ public class ItemAspect extends AppAspectSupporter {
 			Object[] args = joinPoint.getArgs();
 			boolean sendable = (Boolean) args[0];
 			Role role = (Role) args[1];
-			String targetId = (String) args[2];
-			Item item = (Item) args[3];// 消耗的道具
-			// 原道具
-			Item origItem = itemService.getItem(role, targetId);
-			// 強化前的道具
-			Item beforeItem = origItem.clone(origItem);
-
+			String uniqueId = (String) args[2];
+			int amount = (Integer) args[3];
 			//
 			DecreaseItemResult returnValue = (DecreaseItemResult) result;
 			//

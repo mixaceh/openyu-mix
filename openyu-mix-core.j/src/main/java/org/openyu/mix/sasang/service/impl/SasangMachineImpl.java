@@ -439,7 +439,7 @@ public class SasangMachineImpl extends AppServiceSupporter implements SasangMach
 	 * @param sameTime
 	 * @return
 	 */
-	protected boolean playByType(SasangType sasangType, int sameTime) {
+	protected boolean playWithType(SasangType sasangType, int sameTime) {
 		boolean result = false;
 		// 三個相同
 		if (!sasangType.equals(SasangType.NOTHING) && sameTime == 3) {
