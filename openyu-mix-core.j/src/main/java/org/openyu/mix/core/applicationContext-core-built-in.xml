@@ -11,10 +11,28 @@
              http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd">
 
 	<!-- service -->
+	<!-- 核心服務 -->
 	<bean
 		id="coreService"
 		class="org.openyu.mix.core.service.impl.CoreServiceImpl"
 		parent="appServiceSupporter" />
+
+	<!-- advisor -->
+	<!-- 角色連線 -->
+	<bean
+		id="coreRoleConnectAdvice"
+		class="org.openyu.mix.core.aop.CoreRoleConnectInterceptor"
+		parent="appMethodInterceptorSupporter" />
+
+	<aop:config>
+		<aop:pointcut
+			id="coreRoleConnectPointcut"
+			expression="execution(public * org.openyu.mix.core.service.impl.CoreServiceImpl.roleConnect*(..))" />
+		<aop:advisor
+			id="coreRoleConnectAdvisor"
+			advice-ref="coreRoleConnectAdvice"
+			pointcut-ref="coreRoleConnectPointcut" />
+	</aop:config>
 
 	<!-- 角色斷線 -->
 	<bean
@@ -33,6 +51,7 @@
 	</aop:config>
 	
 	<!-- listener -->
+	<!-- 核心本文轉接器 -->
 	<bean
 		id="coreContextAdapter"
 		class="org.openyu.mix.core.service.adapter.CoreContextAdapter"
@@ -50,23 +69,19 @@
 		class="org.openyu.mix.core.service.adapter.CoreSessionAdapter"
 		parent="systemSlaveSessionAdapter" />
 
-	<!-- log -->
+	<!-- dao -->
 	<bean
 		id="coreLogDao"
 		class="org.openyu.mix.core.dao.impl.CoreLogDaoImpl"
 		parent="appLogDaoSupporter" />
 
+	<!-- service -->
+	<!-- 核心日誌服務 -->
 	<bean
 		id="coreLogService"
 		class="org.openyu.mix.core.service.impl.CoreLogServiceImpl"
 		parent="appLogServiceSupporter">
 	</bean>
-
-	<!-- aspect -->
-	<bean
-		id="coreAspect"
-		class="org.openyu.mix.core.aop.CoreAspect"
-		parent="appAspectSupporter" />	
 	
 	<!-- socklet -->
 	<bean

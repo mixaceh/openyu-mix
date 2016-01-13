@@ -12,6 +12,7 @@ import org.openyu.mix.role.vo.Role;
 /**
  * 角色連線攔截器
  */
+@Deprecated
 public class CoreRoleConnectInterceptor extends AppAroundAdviceSupporter {
 
 	private static final long serialVersionUID = 8460810589591167479L;

@@ -15,6 +15,7 @@ import org.openyu.mix.role.vo.Role;
  * 
  * 不要用多緒處理 因threadPool滿了, 當很多role斷線時, 會把threadPool撐爆
  */
+@Deprecated
 public class CoreRoleDisconnectInterceptor extends AppAroundAdviceSupporter {
 
 	private static final long serialVersionUID = -8497969453177168222L;
