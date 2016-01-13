@@ -1,6 +1,5 @@
 package org.openyu.mix.wuxing.aop;
 
-import java.lang.reflect.Method;
 
 import org.aopalliance.intercept.MethodInvocation;
 import org.slf4j.Logger;
@@ -16,6 +15,7 @@ import org.openyu.mix.wuxing.service.WuxingService.PutType;
 /**
  * 五行單擊獎勵放入包包攔截器
  */
+@Deprecated
 public class WuxingPutOneInterceptor extends AppAroundAdviceSupporter {
 
 	private static final long serialVersionUID = -8493472739461972215L;

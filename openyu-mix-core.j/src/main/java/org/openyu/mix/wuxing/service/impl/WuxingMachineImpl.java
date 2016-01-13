@@ -253,7 +253,7 @@ public class WuxingMachineImpl extends AppServiceSupporter implements WuxingMach
 	}
 
 	/**
-	 * 啟動,不clone了,直接拿
+	 * 玩五行
 	 */
 	public Outcome play() {
 		Outcome result = null;
@@ -290,7 +290,7 @@ public class WuxingMachineImpl extends AppServiceSupporter implements WuxingMach
 	}
 
 	/**
-	 * 啟動,不clone了,直接拿
+	 * 玩幾次五行
 	 * 
 	 * @param times
 	 * @return

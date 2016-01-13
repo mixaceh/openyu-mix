@@ -19,11 +19,14 @@ import org.openyu.mix.wuxing.vo.WuxingPen;
 import org.openyu.commons.thread.ThreadHelper;
 import org.openyu.socklet.message.vo.Message;
 
+import com.carrotsearch.junitbenchmarks.BenchmarkOptions;
+
 public class WuxingServiceImplTest extends WuxingTestSupporter {
-	@Test
+
 	/**
 	 * 連線
 	 */
+	@Test
 	public void connect() {
 		Role role = mockRole();
 		WuxingPen wuxingPen = mockWuxingPen(role);
@@ -49,12 +52,11 @@ public class WuxingServiceImplTest extends WuxingTestSupporter {
 		WuxingPen wuxingPen = mockWuxingPen(role);
 		role.setWuxingPen(wuxingPen);
 		//
-		int count = 1; 
+		int count = 1;
 		long beg = System.currentTimeMillis();
 		//
 		for (int i = 0; i < count; i++) {
-			result = messageService.createMessage(CoreModuleType.SASANG,
-					CoreModuleType.CLIENT, null, role.getId());
+			result = messageService.createMessage(CoreModuleType.SASANG, CoreModuleType.CLIENT, null, role.getId());
 			wuxingService.fillWuxingPen(result, wuxingPen);
 		}
 		//
@@ -64,10 +66,11 @@ public class WuxingServiceImplTest extends WuxingTestSupporter {
 		System.out.println(result);
 	}
 
-	@Test
 	/**
 	 * 玩五行
 	 */
+	@Test
+	@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 	public void play() {
 		Role role = mockRole();
 		BagPen bagPen = role.getBagPen();
@@ -93,13 +96,14 @@ public class WuxingServiceImplTest extends WuxingTestSupporter {
 		result = wuxingService.play(true, role, 3);// 玩10次
 		System.out.println(result);
 		//
-		// ThreadHelper.sleep(3 * 1000L);
+		ThreadHelper.sleep(3 * 1000L);
 	}
 
-	@Test
 	/**
 	 * 用道具或儲值幣玩
 	 */
+	@Test
+	@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 	public void itemCoinPlay() {
 		Role role = mockRole();
 		BagPen bagPen = role.getBagPen();
@@ -111,8 +115,7 @@ public class WuxingServiceImplTest extends WuxingTestSupporter {
 		Item item = itemService.createItem(wuxingCollector.getPlayItem(), 1);
 		bagPen.addItem(0, 0, item);
 		// 玩的結果
-		PlayResult result = wuxingService.itemCoinPlay(true, role,
-				PlayType.GALACTIC);// 玩1次
+		PlayResult result = wuxingService.itemCoinPlay(true, role, PlayType.GALACTIC);// 玩1次
 		System.out.println(result);
 		assertEquals(1, result.getSpendItems().size());
 
@@ -124,11 +127,12 @@ public class WuxingServiceImplTest extends WuxingTestSupporter {
 		// ThreadHelper.sleep(3 * 1000L);
 	}
 
-	@Test
 	/**
 	 * 用道具或儲值幣玩
 	 */
-	public void itemCoinPlayByGold() {
+	@Test
+	@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
+	public void itemCoinPlayWithGold() {
 		Role role = mockRole();
 		BagPen bagPen = role.getBagPen();
 		role.setLevel(25);// 等級
@@ -139,8 +143,7 @@ public class WuxingServiceImplTest extends WuxingTestSupporter {
 		Item item = itemService.createItem(wuxingCollector.getPlayItem(), 5);
 		bagPen.addItem(0, 0, item);
 		// 玩的結果
-		PlayResult result = wuxingService.itemCoinPlay(true, role,
-				PlayType.GOLDEN);// 玩20次
+		PlayResult result = wuxingService.itemCoinPlay(true, role, PlayType.GOLDEN);// 玩20次
 		System.out.println(result);
 		assertEquals(1, result.getSpendItems().size());// 但amount=5
 
@@ -149,7 +152,7 @@ public class WuxingServiceImplTest extends WuxingTestSupporter {
 		System.out.println(result);
 		assertTrue(result.getSpendCoin() > 0);
 		//
-		// ThreadHelper.sleep(3 * 1000L);
+		ThreadHelper.sleep(3 * 1000L);
 	}
 
 	@Test
@@ -229,10 +232,11 @@ public class WuxingServiceImplTest extends WuxingTestSupporter {
 		assertEquals(ErrorType.NO_ERROR, errorType);
 	}
 
-	@Test
 	/**
 	 * 單擊獎勵放入包包
 	 */
+	@Test
+	@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 	public void putOne() {
 		Role role = mockRole();
 		// BagPen bagPen = role.getBagPen();
@@ -243,25 +247,24 @@ public class WuxingServiceImplTest extends WuxingTestSupporter {
 		WuxingPen wuxingPen = role.getWuxingPen();
 		wuxingPen.getAwards().put("T_POTION_HP_G001", 1);
 		//
-		PutResult result = wuxingService.putOne(true, role, "T_POTION_HP_G001",
-				1);
+		PutResult result = wuxingService.putOne(true, role, "T_POTION_HP_G001", 1);
 		System.out.println(result);
 		assertNotNull(result);
 		assertEquals(1, result.getAwards().size());
 		//
-		// ThreadHelper.sleep(3 * 1000L);
+		ThreadHelper.sleep(3 * 1000L);
 	}
 
-	@Test
 	/**
 	 * 檢查單擊獎勵放入包包
 	 */
+	@Test
+	@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 	public void checkPutOne() {
 		Role role = mockRole();
 		WuxingPen wuxingPen = role.getWuxingPen();
 		//
-		ErrorType errorType = wuxingService.checkPutOne(role,
-				"T_POTION_HP_G001", 1);
+		ErrorType errorType = wuxingService.checkPutOne(role, "T_POTION_HP_G001", 1);
 		System.out.println(errorType);
 		// 獎勵不存在
 		assertEquals(ErrorType.AWARD_NOT_EXIST, errorType);
@@ -281,13 +284,15 @@ public class WuxingServiceImplTest extends WuxingTestSupporter {
 		System.out.println(errorType);
 		// 道具不存在
 		assertEquals(ErrorType.ITEM_NOT_EXIST, errorType);
-
+		//
+		ThreadHelper.sleep(3 * 1000L);
 	}
 
-	@Test
 	/**
 	 * 所有中獎區獎勵放入包包
 	 */
+	@Test
+	@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 	public void putAll() {
 		Role role = mockRole();
 		BagPen bagPen = role.getBagPen();
@@ -299,8 +304,8 @@ public class WuxingServiceImplTest extends WuxingTestSupporter {
 		wuxingPen.getAwards().put("T_POTION_HP_G001", 1);
 		// 弄個不存在的
 		wuxingPen.getAwards().put("T_NOT_EXIST", 10);
-		
-		//有1個放不進去就不放了,以下的不會放入包包
+
+		// 有1個放不進去就不放了,以下的不會放入包包
 		wuxingPen.getAwards().put("T_POTION_HP_G002", 5);
 		wuxingPen.getAwards().put("T_POTION_HP_G003", 10);
 		//
@@ -308,10 +313,10 @@ public class WuxingServiceImplTest extends WuxingTestSupporter {
 		System.out.println(result);
 		System.out.println(bagPen);
 		assertNotNull(result);
-		
-		//有1個放不進去就不放了
+
+		// 有1個放不進去就不放了
 		assertEquals(1, result.getAwards().size());
 		//
-		// ThreadHelper.sleep(3 * 1000L);
+		ThreadHelper.sleep(3 * 1000L);
 	}
 }

@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
-	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:jaxws="http://cxf.apache.org/jaxws"
+<beans
+	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:jaxws="http://cxf.apache.org/jaxws"
 	xsi:schemaLocation="
              http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
              http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
@@ -10,70 +13,49 @@
 
 
 	<!-- service -->
-	<!-- 五行機 -->
-	<bean id="wuxingMachine" class="org.openyu.mix.wuxing.service.impl.WuxingMachineImpl"
+	<bean
+		id="wuxingMachine"
+		class="org.openyu.mix.wuxing.service.impl.WuxingMachineImpl"
 		parent="baseServiceSupporter">
 	</bean>
 
-	<!-- 五行服務 -->
-	<bean id="wuxingService" class="org.openyu.mix.wuxing.service.impl.WuxingServiceImpl"
+	<bean
+		id="wuxingService"
+		class="org.openyu.mix.wuxing.service.impl.WuxingServiceImpl"
 		parent="appServiceSupporter">
 	</bean>
 
-	<!-- advisor -->
-	<!-- 五行玩 -->
-	<bean id="wuxingPlayAdvice" class="org.openyu.mix.wuxing.aop.WuxingPlayInterceptor"
-		parent="appMethodInterceptorSupporter">
-	</bean>
-	<aop:config>
-		<aop:pointcut id="wuxingPlayPointcut"
-			expression="execution(* org.openyu.mix.wuxing.service.impl.WuxingServiceImpl.play*(..))" />
-		<aop:advisor id="wuxingPlayAdvisor" advice-ref="wuxingPlayAdvice"
-			pointcut-ref="wuxingPlayPointcut" />
-	</aop:config>
-
-	<!-- 五行單擊獎勵放入包包 -->
-	<bean id="wuxingPutOneAdvice"
-		class="org.openyu.mix.wuxing.aop.WuxingPutOneInterceptor"
-		parent="appMethodInterceptorSupporter">
-	</bean>
-	<aop:config>
-		<aop:pointcut id="wuxingPutOnePointcut"
-			expression="execution(* org.openyu.mix.wuxing.service.impl.WuxingServiceImpl.putOne*(..))" />
-		<aop:advisor id="wuxingPutOneAdvisor" advice-ref="wuxingPutOneAdvice"
-			pointcut-ref="wuxingPutOnePointcut" />
-	</aop:config>
-
-	<!-- 五行所有中獎區獎勵放入包包 -->
-	<bean id="wuxingPutAllAdvice"
-		class="org.openyu.mix.wuxing.aop.WuxingPutAllInterceptor"
-		parent="appMethodInterceptorSupporter">
-	</bean>
-	<aop:config>
-		<aop:pointcut id="wuxingPutAllPointcut"
-			expression="execution(* org.openyu.mix.wuxing.service.impl.WuxingServiceImpl.putAll*(..))" />
-		<aop:advisor id="wuxingPutAllAdvisor" advice-ref="wuxingPutAllAdvice"
-			pointcut-ref="wuxingPutAllPointcut" />
-	</aop:config>
-
-	<!-- dao -->
-	<bean id="wuxingLogDao" class="org.openyu.mix.wuxing.dao.impl.WuxingLogDaoImpl"
+	<!-- log -->
+	<bean
+		id="wuxingLogDao"
+		class="org.openyu.mix.wuxing.dao.impl.WuxingLogDaoImpl"
 		parent="appLogDaoSupporter" />
 
-	<!-- service -->
-	<!-- 五行日誌服務 -->
-	<bean id="wuxingLogService" class="org.openyu.mix.wuxing.service.impl.WuxingLogServiceImpl"
+	<bean
+		id="wuxingLogService"
+		class="org.openyu.mix.wuxing.service.impl.WuxingLogServiceImpl"
 		parent="appLogServiceSupporter">
 	</bean>
+	
+	<!-- aspect -->
+	<bean
+		id="wuxingAspect"
+		class="org.openyu.mix.wuxing.aop.WuxingAspect"
+		parent="appAspectSupporter" />	
 
 	<!-- socklet -->
-	<bean id="wuxingSocklet" class="org.openyu.mix.wuxing.socklet.WuxingSocklet"
+	<bean
+		id="wuxingSocklet"
+		class="org.openyu.mix.wuxing.socklet.WuxingSocklet"
 		parent="slaveSockletServiceSupporter">
-		<property name="id" value="WUXING" />
+		<property
+			name="id"
+			value="WUXING" />
 	</bean>
 
 	<!-- adapter -->
-	<bean id="wuxingChangeAdapter"
+	<bean
+		id="wuxingChangeAdapter"
 		class="org.openyu.mix.wuxing.service.adapter.WuxingChangeAdapter">
 	</bean>
 

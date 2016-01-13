@@ -594,17 +594,17 @@ public class SasangMachineImpl extends AppServiceSupporter implements SasangMach
 	}
 
 	/**
-	 * 玩四象,不在這clone了,直接拿,改由使用時才clone
+	 * 玩四象
 	 */
 	public Outcome play() {
 		Outcome result = null;
 		result = BeanHelper.probRandomOf(outcomes.values(), outcomesProbSum);
-		// return (result != null ? (Outcome) result.clone() : result);
-		return result;
+		return (result != null ? (Outcome) result.clone() : result);
+		// return result;
 	}
 
 	/**
-	 * 玩幾次四象,不在這clone了,直接拿,改由使用時才clone
+	 * 玩幾次四象
 	 *
 	 * @param times
 	 * @return

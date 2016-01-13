@@ -481,7 +481,8 @@ public class SasangServiceImpl extends AppServiceSupporter implements SasangServ
 	 * @param sendable
 	 * @param role
 	 * @param playTypeValue
-	 *            玩的類別 @see PlayType
+	 *            玩的類別
+	 * @see PlayType
 	 * @return
 	 */
 	public PlayResult play(boolean sendable, Role role, int playTypeValue) {
@@ -558,11 +559,13 @@ public class SasangServiceImpl extends AppServiceSupporter implements SasangServ
 					sasangPen.addDailyTimes(1);// 每日已玩的次數
 
 					// clone玩的結果
-					Outcome cloneOutcome = clone(outcome);
-					sasangPen.setOutcome(cloneOutcome);// 最後的結果
+					//Outcome cloneOutcome = clone(outcome);
+					
+					//#fix sasangMachine.play()內就有clone了 
+					sasangPen.setOutcome(outcome);// 最後的結果
 
 					// 結果,放獎勵
-					prize = cloneOutcome.getPrize();
+					prize = outcome.getPrize();
 					// 獎勵區加入道具,並累計道具數量
 					sasangPen.addAwards(prize.getAwards());
 
@@ -570,7 +573,7 @@ public class SasangServiceImpl extends AppServiceSupporter implements SasangServ
 					notice = addNotice(role, prize);
 
 					// 結果
-					result = new PlayResultImpl(PlayType.BRONZE, now, sasangPen.getDailyTimes(), cloneOutcome, 1,
+					result = new PlayResultImpl(PlayType.BRONZE, now, sasangPen.getDailyTimes(), outcome, 1,
 							spendGold);
 				} else {
 					errorType = ErrorType.GOLD_NOT_ENOUGH;
@@ -1251,7 +1254,8 @@ public class SasangServiceImpl extends AppServiceSupporter implements SasangServ
 					break;
 				}
 				// 再判斷放入包包是否成功
-				List<IncreaseItemResult> increaseResults = itemService.increaseItemWithItemId(true, role, itemId, amount);
+				List<IncreaseItemResult> increaseResults = itemService.increaseItemWithItemId(true, role, itemId,
+						amount);
 				if (increaseResults.size() >= 0) {
 					// 結果
 					if (result == null) {

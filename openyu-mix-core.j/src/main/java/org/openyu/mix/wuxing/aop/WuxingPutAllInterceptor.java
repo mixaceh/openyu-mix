@@ -1,7 +1,5 @@
 package org.openyu.mix.wuxing.aop;
 
-import java.lang.reflect.Method;
-
 import org.aopalliance.intercept.MethodInvocation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,12 +14,12 @@ import org.openyu.mix.wuxing.service.WuxingService.PutType;
 /**
  * 五行所有中獎區獎勵放入包包攔截器
  */
+@Deprecated
 public class WuxingPutAllInterceptor extends AppAroundAdviceSupporter {
 
 	private static final long serialVersionUID = 4741121694715451195L;
 
-	private static transient final Logger LOGGER = LoggerFactory
-			.getLogger(WuxingPutAllInterceptor.class);
+	private static transient final Logger LOGGER = LoggerFactory.getLogger(WuxingPutAllInterceptor.class);
 
 	@Autowired
 	@Qualifier("wuxingLogService")

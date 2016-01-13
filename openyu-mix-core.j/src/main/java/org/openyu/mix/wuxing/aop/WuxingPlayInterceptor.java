@@ -1,6 +1,5 @@
 package org.openyu.mix.wuxing.aop;
 
-import java.lang.reflect.Method;
 
 import org.aopalliance.intercept.MethodInvocation;
 import org.slf4j.Logger;
@@ -15,6 +14,7 @@ import org.openyu.mix.wuxing.service.WuxingLogService;
 /**
  * 五行玩的攔截器
  */
+@Deprecated
 public class WuxingPlayInterceptor extends AppAroundAdviceSupporter {
 
 	private static final long serialVersionUID = 3244885022032659905L;

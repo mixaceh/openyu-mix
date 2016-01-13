@@ -9,12 +9,15 @@ import org.springframework.aop.aspectj.AspectJExpressionPointcut;
 import org.springframework.aop.support.DefaultBeanFactoryPointcutAdvisor;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import com.carrotsearch.junitbenchmarks.BenchmarkOptions;
 import com.carrotsearch.junitbenchmarks.BenchmarkRule;
 
 import org.openyu.mix.account.service.AccountService;
 import org.openyu.mix.app.AppTestSupporter;
 import org.openyu.mix.item.service.ItemService;
 import org.openyu.mix.role.vo.Role;
+import org.openyu.mix.sasang.aop.SasangAspect;
+import org.openyu.mix.wuxing.aop.WuxingAspect;
 import org.openyu.mix.wuxing.aop.WuxingPlayInterceptor;
 import org.openyu.mix.wuxing.aop.WuxingPutAllInterceptor;
 import org.openyu.mix.wuxing.aop.WuxingPutOneInterceptor;
@@ -30,7 +33,7 @@ import org.openyu.mix.wuxing.vo.WuxingPen;
 import org.openyu.mix.wuxing.vo.impl.WuxingPenImpl;
 
 public class WuxingTestSupporter extends AppTestSupporter {
-	
+
 	@Rule
 	public BenchmarkRule benchmarkRule = new BenchmarkRule();
 
@@ -55,13 +58,15 @@ public class WuxingTestSupporter extends AppTestSupporter {
 
 	protected static WuxingService wuxingService;
 
-	protected static WuxingSocklet wuxingSocklet;
-
 	// log
 	protected static WuxingLogDao wuxingLogDao;
 
-	//
 	protected static WuxingLogService wuxingLogService;
+
+	protected static WuxingAspect wuxingAspect;
+
+	//
+	protected static WuxingSocklet wuxingSocklet;
 
 	// 事件監聽器
 	protected static WuxingChangeAdapter wuxingChangeAdapter;
@@ -103,99 +108,42 @@ public class WuxingTestSupporter extends AppTestSupporter {
 	public static class BeanTest extends WuxingTestSupporter {
 
 		@Test
+		@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 		public void wuxingMachine() {
 			System.out.println(wuxingMachine);
 			assertNotNull(wuxingMachine);
 		}
 
 		@Test
+		@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 		public void wuxingService() {
 			System.out.println(wuxingService);
 			assertNotNull(wuxingService);
 		}
 
 		@Test
-		public void wuxingPlayAdvice() {
-			WuxingPlayInterceptor bean = (WuxingPlayInterceptor) applicationContext.getBean("wuxingPlayAdvice");
-			System.out.println(bean);
-			assertNotNull(bean);
-		}
-
-		@Test
-		public void wuxingPlayPointcut() {
-			AspectJExpressionPointcut bean = (AspectJExpressionPointcut) applicationContext
-					.getBean("wuxingPlayPointcut");
-			System.out.println(bean);
-			assertNotNull(bean);
-		}
-
-		@Test
-		public void wuxingPlayAdvisor() {
-			DefaultBeanFactoryPointcutAdvisor bean = (DefaultBeanFactoryPointcutAdvisor) applicationContext
-					.getBean("wuxingPlayAdvisor");
-			System.out.println(bean);
-			assertNotNull(bean);
-		}
-
-		@Test
-		public void wuxingPutOneAdvice() {
-			WuxingPutOneInterceptor bean = (WuxingPutOneInterceptor) applicationContext.getBean("wuxingPutOneAdvice");
-			System.out.println(bean);
-			assertNotNull(bean);
-		}
-
-		@Test
-		public void wuxingPutOnePointcut() {
-			AspectJExpressionPointcut bean = (AspectJExpressionPointcut) applicationContext
-					.getBean("wuxingPutOnePointcut");
-			System.out.println(bean);
-			assertNotNull(bean);
-		}
-
-		@Test
-		public void wuxingPutOneAdvisor() {
-			DefaultBeanFactoryPointcutAdvisor bean = (DefaultBeanFactoryPointcutAdvisor) applicationContext
-					.getBean("wuxingPutOneAdvisor");
-			System.out.println(bean);
-			assertNotNull(bean);
-		}
-
-		@Test
-		public void wuxingPutAllAdvice() {
-			WuxingPutAllInterceptor bean = (WuxingPutAllInterceptor) applicationContext.getBean("wuxingPutAllAdvice");
-			System.out.println(bean);
-			assertNotNull(bean);
-		}
-
-		@Test
-		public void wuxingPutAllPointcut() {
-			AspectJExpressionPointcut bean = (AspectJExpressionPointcut) applicationContext
-					.getBean("wuxingPutAllPointcut");
-			System.out.println(bean);
-			assertNotNull(bean);
-		}
-
-		@Test
-		public void wuxingPutAllAdvisor() {
-			DefaultBeanFactoryPointcutAdvisor bean = (DefaultBeanFactoryPointcutAdvisor) applicationContext
-					.getBean("wuxingPutAllAdvisor");
-			System.out.println(bean);
-			assertNotNull(bean);
-		}
-
-		@Test
+		@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 		public void wuxingLogDao() {
 			System.out.println(wuxingLogDao);
 			assertNotNull(wuxingLogDao);
 		}
 
 		@Test
+		@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 		public void wuxingLogService() {
 			System.out.println(wuxingLogService);
 			assertNotNull(wuxingLogService);
 		}
 
 		@Test
+		@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
+		public void wuxingAspect() {
+			System.out.println(wuxingAspect);
+			assertNotNull(wuxingAspect);
+		}
+
+		@Test
+		@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 		public void wuxingSocklet() {
 			System.out.println(wuxingSocklet);
 			assertNotNull(wuxingSocklet);

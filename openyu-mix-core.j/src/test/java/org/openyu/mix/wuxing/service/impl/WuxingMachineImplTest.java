@@ -1,6 +1,8 @@
 package org.openyu.mix.wuxing.service.impl;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 import java.util.List;
 import java.util.Map;
 
@@ -62,18 +64,11 @@ public class WuxingMachineImplTest extends WuxingTestSupporter {
 	}
 
 	@Test
-	// 1000000 times: 256 mills.
+	@BenchmarkOptions(benchmarkRounds = 100, warmupRounds = 0, concurrency = 100)
 	public void randomWuxingTypes() {
 		List<WuxingType> result = null;
 
-		int count = 1;// 100w
-		long beg = System.currentTimeMillis();
-		for (int i = 0; i < count; i++) {
-			result = wuxingMachineImpl.randomWuxingTypes();
-		}
-		//
-		long end = System.currentTimeMillis();
-		System.out.println(count + " times: " + (end - beg) + " mills. ");
+		result = wuxingMachineImpl.randomWuxingTypes();
 
 		System.out.println(result);
 		assertEquals(5, result.size());
@@ -86,43 +81,27 @@ public class WuxingMachineImplTest extends WuxingTestSupporter {
 	}
 
 	@Test
-	// 1000000 times: 5032 mills.
-	// 1000000 times: 4986 mills.
-	// 1000000 times: 4867 mills.
+	@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 	public void play() {
 		Outcome result = null;
 		//
-		int count = 1;// 100w
-		long beg = System.currentTimeMillis();
-		for (int i = 0; i < count; i++) {
-			result = wuxingMachineImpl.play();
-		}
-		//
-		long end = System.currentTimeMillis();
-		System.out.println(count + " times: " + (end - beg) + " mills. ");
-
+		result = wuxingMachineImpl.play();
 		System.out.println(result);
-		// assertNotNull(result);
+		assertNotNull(result);
 	}
 
 	@Test
-	// 1000000 times: 4929 mills.
-	// 1000000 times: 5041 mills.
-	// 1000000 times: 5059 mills.
-	public void playByTimes() {
+	@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
+	// round: 0.16 [+- 0.00], round.block: 0.00 [+- 0.00], round.gc: 0.00 [+-
+	// 0.00], GC.calls: 0, GC.time: 0.00, time.total: 0.16, time.warmup: 0.00,
+	// time.bench: 0.16
+	public void playWithTimes() {
 		List<Outcome> result = null;
 
-		int count = 100000;// 100w
-		long beg = System.currentTimeMillis();
-		for (int i = 0; i < count; i++) {
-			result = wuxingMachineImpl.play(10);
-		}
-		//
-		long end = System.currentTimeMillis();
-		System.out.println(count + " times: " + (end - beg) + " mills. ");
+		result = wuxingMachineImpl.play(100);
 
 		System.out.println(result.size() + ", " + result);
-		assertEquals(10, result.size());
+		assertEquals(100, result.size());
 		//
 		result = wuxingMachineImpl.play(10);
 		System.out.println(result.size() + ", " + result);
@@ -130,7 +109,7 @@ public class WuxingMachineImplTest extends WuxingTestSupporter {
 	}
 
 	@Test
-	// 1000000 times: 256 mills.
+	@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 	public void calcPrizes() {
 		List<Prize> result = null;
 
