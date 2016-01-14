@@ -16,35 +16,19 @@
 		class="org.openyu.mix.core.service.impl.CoreServiceImpl"
 		parent="appServiceSupporter" />
 
-	<!-- 角色斷線 -->
-	<bean
-		id="coreRoleDisconnectAdvice"
-		class="org.openyu.mix.core.aop.CoreRoleDisconnectInterceptor"
-		parent="appMethodInterceptorSupporter" />
-
-	<aop:config>
-		<aop:pointcut
-			id="coreRoleDisconnectPointcut"
-			expression="execution(public * org.openyu.mix.core.service.impl.CoreServiceImpl.roleDisconnect*(..))" />
-		<aop:advisor
-			id="coreRoleDisconnectAdvisor"
-			advice-ref="coreRoleDisconnectAdvice"
-			pointcut-ref="coreRoleDisconnectPointcut" />
-	</aop:config>
-	
 	<!-- listener -->
 	<bean
 		id="coreContextAdapter"
 		class="org.openyu.mix.core.service.adapter.CoreContextAdapter"
 		parent="systemContextAdapter" />
 	
-	<!-- 核心關連轉接器 -->
+	<!-- server關聯連線 -->
 	<bean
 		id="coreRelationAdapter"
 		class="org.openyu.mix.core.service.adapter.CoreRelationAdapter"
 		parent="systemRelationAdapter" />
 
-	<!-- 核心會話轉接器 -->
+	<!-- client連線-->
 	<bean
 		id="coreSessionAdapter"
 		class="org.openyu.mix.core.service.adapter.CoreSessionAdapter"

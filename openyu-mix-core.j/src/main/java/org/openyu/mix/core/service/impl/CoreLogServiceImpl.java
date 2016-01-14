@@ -14,6 +14,7 @@ import org.openyu.mix.core.service.CoreLogService;
 import org.openyu.mix.core.vo.Core.ConnectAction;
 import org.openyu.mix.role.service.RoleService;
 import org.openyu.mix.role.vo.Role;
+import org.openyu.commons.dao.anno.LogTx;
 import org.openyu.commons.dao.inquiry.Inquiry;
 import org.openyu.commons.util.AssertHelper;
 import org.openyu.commons.util.concurrent.MapCache;
@@ -55,7 +56,7 @@ public class CoreLogServiceImpl extends AppLogServiceSupporter implements CoreLo
 	protected final void checkConfig() throws Exception {
 		AssertHelper.notNull(this.commonDao, "The CoreLogDao is required");
 	}
-	
+
 	// --------------------------------------------------
 	// db
 	// --------------------------------------------------
@@ -86,6 +87,7 @@ public class CoreLogServiceImpl extends AppLogServiceSupporter implements CoreLo
 	// --------------------------------------------------
 	// biz
 	// --------------------------------------------------
+	@LogTx
 	public void recordRoleConnect(Role role) {
 		if (role == null) {
 			return;
@@ -104,6 +106,7 @@ public class CoreLogServiceImpl extends AppLogServiceSupporter implements CoreLo
 		coreConnectLogs.put(role.getId(), log);
 	}
 
+	@LogTx
 	public void recordRoleDisconnect(Role role) {
 		if (role == null) {
 			return;

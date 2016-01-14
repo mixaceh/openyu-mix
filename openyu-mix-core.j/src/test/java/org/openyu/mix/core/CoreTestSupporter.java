@@ -3,15 +3,17 @@ package org.openyu.mix.core;
 import static org.junit.Assert.assertNotNull;
 
 import org.junit.BeforeClass;
+import org.junit.Rule;
 import org.junit.Test;
-import org.springframework.aop.aspectj.AspectJExpressionPointcut;
-import org.springframework.aop.support.DefaultBeanFactoryPointcutAdvisor;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+import com.carrotsearch.junitbenchmarks.BenchmarkOptions;
+import com.carrotsearch.junitbenchmarks.BenchmarkRule;
+
 import org.openyu.mix.account.service.AccountService;
 import org.openyu.mix.app.AppTestSupporter;
 import org.openyu.mix.chat.service.ChatService;
-import org.openyu.mix.core.aop.CoreRoleConnectInterceptor;
-import org.openyu.mix.core.aop.CoreRoleDisconnectInterceptor;
+import org.openyu.mix.core.aop.CoreAspect;
 import org.openyu.mix.core.dao.CoreLogDao;
 import org.openyu.mix.core.service.CoreLogService;
 import org.openyu.mix.core.service.CoreService;
@@ -31,6 +33,10 @@ import org.openyu.mix.wuxing.service.WuxingService;
 import org.openyu.mix.wuxing.socklet.WuxingSocklet;
 
 public class CoreTestSupporter extends AppTestSupporter {
+
+	@Rule
+	public BenchmarkRule benchmarkRule = new BenchmarkRule();
+
 	/**
 	 * 帳號服務-1
 	 */
@@ -55,6 +61,8 @@ public class CoreTestSupporter extends AppTestSupporter {
 	protected static CoreLogDao coreLogDao;
 
 	protected static CoreLogService coreLogService;
+
+	protected static CoreAspect coreAspect;
 
 	protected static CoreSocklet coreSocklet;
 
@@ -139,6 +147,7 @@ public class CoreTestSupporter extends AppTestSupporter {
 		//
 		coreLogDao = (CoreLogDao) applicationContext.getBean("coreLogDao");
 		coreLogService = (CoreLogService) applicationContext.getBean("coreLogService");
+		coreAspect = (CoreAspect) applicationContext.getBean("coreAspect");
 		coreSocklet = (CoreSocklet) applicationContext.getBean("coreSocklet");
 
 		// 聊天
@@ -162,89 +171,54 @@ public class CoreTestSupporter extends AppTestSupporter {
 	// --------------------------------------------------
 
 	public static class BeanTest extends CoreTestSupporter {
+
 		@Test
+		@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 		public void coreService() {
 			System.out.println(coreService);
 			assertNotNull(coreService);
 		}
 
 		@Test
-		public void coreConnectAdvice() {
-			CoreRoleConnectInterceptor bean = (CoreRoleConnectInterceptor) applicationContext
-					.getBean("coreConnectAdvice");
-			System.out.println(bean);
-			assertNotNull(bean);
-		}
-
-		@Test
-		public void coreConnectPointcut() {
-			AspectJExpressionPointcut bean = (AspectJExpressionPointcut) applicationContext
-					.getBean("coreConnectPointcut");
-			System.out.println(bean);
-			assertNotNull(bean);
-		}
-
-		@Test
-		public void coreConnectAdvisor() {
-			DefaultBeanFactoryPointcutAdvisor bean = (DefaultBeanFactoryPointcutAdvisor) applicationContext
-					.getBean("coreConnectAdvisor");
-			System.out.println(bean);
-			assertNotNull(bean);
-		}
-
-		@Test
-		public void coreDisconnectAdvice() {
-			CoreRoleDisconnectInterceptor bean = (CoreRoleDisconnectInterceptor) applicationContext
-					.getBean("coreDisconnectAdvice");
-			System.out.println(bean);
-			assertNotNull(bean);
-		}
-
-		@Test
-		public void coreDisconnectPointcut() {
-			AspectJExpressionPointcut bean = (AspectJExpressionPointcut) applicationContext
-					.getBean("coreDisconnectPointcut");
-			System.out.println(bean);
-			assertNotNull(bean);
-		}
-
-		@Test
-		public void coreDisconnectAdvisor() {
-			DefaultBeanFactoryPointcutAdvisor bean = (DefaultBeanFactoryPointcutAdvisor) applicationContext
-					.getBean("coreDisconnectAdvisor");
-			System.out.println(bean);
-			assertNotNull(bean);
-		}
-
-		@Test
+		@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 		public void coreSessionAdapter() {
 			System.out.println(coreSessionAdapter);
 			assertNotNull(coreSessionAdapter);
 		}
 
 		@Test
+		@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 		public void coreRelationAdapter() {
 			System.out.println(coreRelationAdapter);
 			assertNotNull(coreRelationAdapter);
 		}
 
 		@Test
+		@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 		public void coreLogDao() {
 			System.out.println(coreLogDao);
 			assertNotNull(coreLogDao);
 		}
 
 		@Test
+		@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 		public void coreLogService() {
 			System.out.println(coreLogService);
 			assertNotNull(coreLogService);
 		}
 
 		@Test
+		@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
+		public void coreAspect() {
+			System.out.println(coreAspect);
+			assertNotNull(coreAspect);
+		}
+
+		@Test
+		@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 		public void coreSocklet() {
 			System.out.println(coreSocklet);
 			assertNotNull(coreSocklet);
 		}
 	}
-
 }

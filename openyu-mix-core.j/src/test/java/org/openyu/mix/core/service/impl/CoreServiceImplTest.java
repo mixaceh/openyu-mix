@@ -24,11 +24,15 @@ import org.openyu.mix.role.vo.Role;
 import org.openyu.mix.sasang.vo.SasangPen;
 import org.openyu.mix.train.vo.TrainPen;
 import org.openyu.mix.wuxing.vo.WuxingPen;
+
+import com.carrotsearch.junitbenchmarks.BenchmarkOptions;
+
 import org.openyu.commons.thread.ThreadHelper;
 
 public class CoreServiceImplTest extends CoreTestSupporter {
 
 	@Test
+	@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 	public void connect() {
 		final String ROLE_ID = "TEST_ROLE";
 		coreService.roleConnect(ROLE_ID, null);
@@ -41,11 +45,12 @@ public class CoreServiceImplTest extends CoreTestSupporter {
 	}
 
 	@Test
+	@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 	public void roleConnect() {
 		final String ROLE_ID = "TEST_ROLE";
 		coreService.roleConnect(ROLE_ID, null);
 		//
-		ThreadHelper.sleep(30 * 1000);
+		ThreadHelper.sleep(3 * 1000);
 	}
 
 	@Test
@@ -63,6 +68,7 @@ public class CoreServiceImplTest extends CoreTestSupporter {
 	}
 
 	@Test
+	@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 	public void disconnect() {
 		final String ROLE_ID = "TEST_ROLE";
 		// 連線
