@@ -40,6 +40,12 @@
 		id="debugAspect"
 		class="org.openyu.mix.chat.aop.DebugAspect"
 		parent="appAspectSupporter" />
+		
+	<bean
+		id="chatAspect"
+		class="org.openyu.mix.chat.aop.ChatAspect"
+		parent="appAspectSupporter" />
+		
 
 	<!-- socklet -->
 	<bean

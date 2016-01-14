@@ -5,18 +5,20 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.Proxy;
 import org.hibernate.annotations.Type;
 import org.hibernate.search.annotations.Analyze;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.FieldBridge;
-import org.hibernate.search.annotations.Index;
 import org.hibernate.search.annotations.Store;
 import org.openyu.mix.app.log.supporter.AppLogEntitySupporter;
 import org.openyu.mix.core.log.CoreConnectLog;
@@ -27,16 +29,16 @@ import org.openyu.mix.core.vo.Core.ConnectAction;
 //hibernate
 //--------------------------------------------------
 @Entity
-@Table(name = "mix_core_connect_log")
-@SequenceGenerator(name = "mix_core_connect_log_g", sequenceName = "mix_core_connect_log_s", allocationSize = 1)
+@DynamicInsert
+@DynamicUpdate
+@Table(name = "core_connect_log", indexes = {
+		@Index(name = "idx_core_connect_role_id_log_date", columnList = "role_id,log_date"),
+		@Index(name = "idx_core_connect_role_connect_action_role_id_enter_time", columnList = "connect_action,role_id,enter_time") })
+@SequenceGenerator(name = "sg_core_connect_log", sequenceName = "seq_core_connect_log", allocationSize = 1)
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = "org.openyu.mix.core.log.impl.CoreConnectLogImpl")
 @Proxy(lazy = false)
-@org.hibernate.annotations.Table(appliesTo = "mix_core_connect_log", indexes = {
-		@org.hibernate.annotations.Index(name = "idx_mix_core_connect_log_1", columnNames = { "role_id", "log_date" }),
-		@org.hibernate.annotations.Index(name = "idx_mix_core_connect_log_2", columnNames = { "connect_action",
-				"role_id", "enter_time" }) })
 // --------------------------------------------------
-// hibernate search
+// search
 // --------------------------------------------------
 // @Indexed
 public class CoreConnectLogImpl extends AppLogEntitySupporter implements CoreConnectLog {
@@ -68,7 +70,7 @@ public class CoreConnectLogImpl extends AppLogEntitySupporter implements CoreCon
 
 	@Id
 	@Column(name = "seq")
-	@GeneratedValue(strategy = GenerationType.AUTO, generator = "mix_core_connect_log_g")
+	@GeneratedValue(strategy = GenerationType.AUTO, generator = "sg_core_connect_log")
 	public Long getSeq() {
 		return seq;
 	}
@@ -79,7 +81,7 @@ public class CoreConnectLogImpl extends AppLogEntitySupporter implements CoreCon
 
 	@Column(name = "connect_action", length = 13)
 	@Type(type = "org.openyu.mix.core.po.userType.ConnectActionUserType")
-	@Field(store = Store.YES, index = Index.YES, analyze = Analyze.NO)
+	@Field(store = Store.YES, index = org.hibernate.search.annotations.Index.YES, analyze = Analyze.NO)
 	@FieldBridge(impl = ConnectActionBridge.class)
 	public ConnectAction getConnectAction() {
 		return connectAction;
@@ -90,7 +92,7 @@ public class CoreConnectLogImpl extends AppLogEntitySupporter implements CoreCon
 	}
 
 	@Column(name = "client_ip", length = 16)
-	@Field(store = Store.YES, index = Index.YES, analyze = Analyze.NO)
+	@Field(store = Store.YES, index = org.hibernate.search.annotations.Index.YES, analyze = Analyze.NO)
 	public String getClientIp() {
 		return clientIp;
 	}
@@ -100,7 +102,7 @@ public class CoreConnectLogImpl extends AppLogEntitySupporter implements CoreCon
 	}
 
 	@Column(name = "client_port")
-	@Field(store = Store.YES, index = Index.YES, analyze = Analyze.NO)
+	@Field(store = Store.YES, index = org.hibernate.search.annotations.Index.YES, analyze = Analyze.NO)
 	public Integer getClientPort() {
 		return clientPort;
 	}
@@ -110,7 +112,7 @@ public class CoreConnectLogImpl extends AppLogEntitySupporter implements CoreCon
 	}
 
 	@Column(name = "enter_time")
-	@Field(store = Store.YES, index = Index.YES, analyze = Analyze.NO)
+	@Field(store = Store.YES, index = org.hibernate.search.annotations.Index.YES, analyze = Analyze.NO)
 	public Long getEnterTime() {
 		return enterTime;
 	}
@@ -120,7 +122,7 @@ public class CoreConnectLogImpl extends AppLogEntitySupporter implements CoreCon
 	}
 
 	@Column(name = "leave_time")
-	@Field(store = Store.YES, index = Index.YES, analyze = Analyze.NO)
+	@Field(store = Store.YES, index = org.hibernate.search.annotations.Index.YES, analyze = Analyze.NO)
 	public Long getLeaveTime() {
 		return leaveTime;
 	}
@@ -130,7 +132,7 @@ public class CoreConnectLogImpl extends AppLogEntitySupporter implements CoreCon
 	}
 
 	@Column(name = "online_mills")
-	@Field(store = Store.YES, index = Index.YES, analyze = Analyze.NO)
+	@Field(store = Store.YES, index = org.hibernate.search.annotations.Index.YES, analyze = Analyze.NO)
 	public Long getOnlineMills() {
 		return onlineMills;
 	}

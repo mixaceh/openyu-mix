@@ -39,7 +39,7 @@ import org.openyu.commons.entity.supporter.SeqIdAuditEntitySupporter;
 @Entity
 @DynamicInsert
 @DynamicUpdate
-@Table(name = "chat", indexes = { @Index(name = "idx_chat_id", columnList = "id") })
+@Table(name = "chat")
 @SequenceGenerator(name = "sg_chat", sequenceName = "seq_chat", allocationSize = 1)
 // when use ehcache, config in ehcache.xml
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = "org.openyu.mix.chat.po.impl.ChatPoImpl")

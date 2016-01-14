@@ -10,6 +10,9 @@ import org.openyu.mix.core.CoreTestSupporter;
 import org.openyu.mix.core.log.CoreConnectLog;
 import org.openyu.mix.core.log.impl.CoreConnectLogImpl;
 import org.openyu.mix.core.vo.Core.ConnectAction;
+
+import com.carrotsearch.junitbenchmarks.BenchmarkOptions;
+
 import org.openyu.commons.util.DateHelper;
 
 public class CoreLogDaoImplTest extends CoreTestSupporter {
@@ -40,8 +43,7 @@ public class CoreLogDaoImplTest extends CoreTestSupporter {
 			result.setConnectAction(randomType(ConnectAction.class));
 			result.setClientIp(randomIp("192.168.1"));
 			result.setEnterTime(randomDateLong());
-			result.setLeaveTime(result.getEnterTime()
-					+ randomLong(60 * 60 * 1 * 1000));
+			result.setLeaveTime(result.getEnterTime() + randomLong(60 * 60 * 1 * 1000));
 			return result;
 		}
 
@@ -51,8 +53,7 @@ public class CoreLogDaoImplTest extends CoreTestSupporter {
 		 * @param expected
 		 * @param actual
 		 */
-		public static void assertCoreConnectionLog(CoreConnectLog expected,
-				CoreConnectLog actual) {
+		public static void assertCoreConnectionLog(CoreConnectLog expected, CoreConnectLog actual) {
 			if (expected == null) {
 				assertNull(actual);
 			} else {
@@ -90,8 +91,7 @@ public class CoreLogDaoImplTest extends CoreTestSupporter {
 				assertNotNull(pk);
 
 				// retrieve
-				CoreConnectLog foundEntity = coreLogDao.find(
-						CoreConnectLogImpl.class, coreConnectionLog.getSeq());
+				CoreConnectLog foundEntity = coreLogDao.find(CoreConnectLogImpl.class, coreConnectionLog.getSeq());
 				printFind(i, foundEntity);
 				assertCoreConnectionLog(coreConnectionLog, foundEntity);
 
@@ -102,8 +102,7 @@ public class CoreLogDaoImplTest extends CoreTestSupporter {
 				assertTrue(updated > 0);
 
 				// delete
-				CoreConnectLog deletedEntity = coreLogDao.delete(
-						CoreConnectLogImpl.class, coreConnectionLog.getSeq());
+				CoreConnectLog deletedEntity = coreLogDao.delete(CoreConnectLogImpl.class, coreConnectionLog.getSeq());
 				printDelete(i, deletedEntity);
 				assertNotNull(deletedEntity);
 			}
@@ -112,27 +111,19 @@ public class CoreLogDaoImplTest extends CoreTestSupporter {
 		}
 
 		@Test
-		// verified: ok
+		@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 		public void insert() {
-			int count = 10;
-			long beg = System.currentTimeMillis();
-			for (int i = 0; i < count; i++) {
-				// 隨機
-				CoreConnectLog coreConnectionLog = randomCoreConnectionLog();
-				//
-				Serializable pk = coreLogDao.insert(coreConnectionLog);
-				printInsert(i, pk);
-				assertNotNull(pk);
+			// 隨機
+			CoreConnectLog coreConnectionLog = randomCoreConnectionLog();
+			//
+			Serializable pk = coreLogDao.insert(coreConnectionLog);
+			printInsert(pk);
+			assertNotNull(pk);
 
-				CoreConnectLog foundEntity = coreLogDao.find(
-						CoreConnectLogImpl.class, coreConnectionLog.getSeq());
-				assertCoreConnectionLog(coreConnectionLog,
-						foundEntity);
+			CoreConnectLog foundEntity = coreLogDao.find(CoreConnectLogImpl.class, coreConnectionLog.getSeq());
+			assertCoreConnectionLog(coreConnectionLog, foundEntity);
 
-				System.out.println(coreConnectionLog);
-			}
-			long end = System.currentTimeMillis();
-			System.out.println(count + " times: " + (end - beg) + " mills. ");
+			System.out.println(coreConnectionLog);
 		}
 
 		@Test
