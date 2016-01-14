@@ -112,6 +112,9 @@ public class CoreLogDaoImplTest extends CoreTestSupporter {
 
 		@Test
 		@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
+		// round: 0.65 [+- 0.00], round.block: 0.00 [+- 0.00], round.gc: 0.00
+		// [+- 0.00], GC.calls: 0, GC.time: 0.00, time.total: 0.65, time.warmup:
+		// 0.00, time.bench: 0.65
 		public void insert() {
 			// 隨機
 			CoreConnectLog coreConnectionLog = randomCoreConnectionLog();
