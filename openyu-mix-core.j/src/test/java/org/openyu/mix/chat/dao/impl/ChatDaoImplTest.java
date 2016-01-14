@@ -9,6 +9,8 @@ import org.openyu.mix.chat.ChatTestSupporter;
 import org.openyu.mix.chat.po.ChatPo;
 import org.openyu.mix.chat.po.impl.ChatPoImpl;
 
+import com.carrotsearch.junitbenchmarks.BenchmarkOptions;
+
 public class ChatDaoImplTest extends ChatTestSupporter {
 
 	/**
@@ -52,7 +54,7 @@ public class ChatDaoImplTest extends ChatTestSupporter {
 	// 10 times: 6825 mills.
 	// 10 times: 6693 mills.
 	//
-	// verified: ok
+	@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 	public void crud() {
 		int count = 10;
 		long beg = System.currentTimeMillis();
@@ -66,8 +68,7 @@ public class ChatDaoImplTest extends ChatTestSupporter {
 			assertNotNull(pk);
 
 			// retrieve
-			ChatPo foundEntity = chatDao
-					.find(ChatPoImpl.class, chatPo.getSeq());
+			ChatPo foundEntity = chatDao.find(ChatPoImpl.class, chatPo.getSeq());
 			printFind(i, foundEntity);
 			assertChatPo(chatPo, foundEntity);
 
@@ -78,8 +79,7 @@ public class ChatDaoImplTest extends ChatTestSupporter {
 			assertTrue(updated > 0);
 
 			// delete
-			ChatPo deletedEntity = chatDao.delete(ChatPoImpl.class,
-					chatPo.getSeq());
+			ChatPo deletedEntity = chatDao.delete(ChatPoImpl.class, chatPo.getSeq());
 			printDelete(i, deletedEntity);
 			assertNotNull(deletedEntity);
 		}
@@ -88,25 +88,19 @@ public class ChatDaoImplTest extends ChatTestSupporter {
 	}
 
 	@Test
-	// verified: ok
+	@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 	public void insert() {
-		int count = 1;
-		long beg = System.currentTimeMillis();
-		for (int i = 0; i < count; i++) {
-			// 隨機
-			ChatPo chatPo = randomChatPo();
-			//
-			Serializable pk = chatDao.insert(chatPo);
-			printInsert(i, pk);
-			assertNotNull(pk);
+		// 隨機
+		ChatPo chatPo = randomChatPo();
+		//
+		Serializable pk = chatDao.insert(chatPo);
+		printInsert(pk);
+		assertNotNull(pk);
 
-			ChatPo foundEntity = chatDao.find(ChatPoImpl.class, chatPo.getSeq());
-			assertChatPo(chatPo, foundEntity);
+		ChatPo foundEntity = chatDao.find(ChatPoImpl.class, chatPo.getSeq());
+		assertChatPo(chatPo, foundEntity);
 
-			System.out.println(chatPo);
-		}
-		long end = System.currentTimeMillis();
-		System.out.println(count + " times: " + (end - beg) + " mills. ");
+		System.out.println(chatPo);
 	}
 
 	@Test

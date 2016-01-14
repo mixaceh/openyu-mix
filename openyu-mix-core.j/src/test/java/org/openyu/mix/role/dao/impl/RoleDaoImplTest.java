@@ -14,6 +14,8 @@ import org.openyu.mix.role.service.impl.RoleServiceImplTest;
 import org.openyu.mix.role.vo.impl.BagPenImplTest;
 import org.openyu.mix.train.vo.TrainPen;
 
+import com.carrotsearch.junitbenchmarks.BenchmarkOptions;
+
 public class RoleDaoImplTest extends RoleTestSupporter {
 
 	/**
@@ -42,8 +44,7 @@ public class RoleDaoImplTest extends RoleTestSupporter {
 		result.setGold(randomLong());
 		result.setLevel(randomInt());
 		// 屬性
-		result.getAttributeGroup().setAttributes(
-				RoleServiceImplTest.randomAttributes());
+		result.getAttributeGroup().setAttributes(RoleServiceImplTest.randomAttributes());
 		//
 		result.setLeaveTime(randomLong());
 		result.setAcceptorId("slave1");
@@ -79,17 +80,15 @@ public class RoleDaoImplTest extends RoleTestSupporter {
 			assertEquals(expected.getExp(), actual.getExp());
 			assertEquals(expected.getGold(), actual.getGold());
 			assertEquals(expected.getLevel(), actual.getLevel());
-			RoleServiceImplTest.assertAttrubutes(expected.getAttributeGroup()
-					.getAttributes(), actual.getAttributeGroup()
-					.getAttributes());
+			RoleServiceImplTest.assertAttrubutes(expected.getAttributeGroup().getAttributes(),
+					actual.getAttributeGroup().getAttributes());
 			//
 			assertEquals(expected.getLeaveTime(), actual.getLeaveTime());
 			// 帳號
 			assertEquals(expected.getAccountId(), actual.getAccountId());
 
 			// 包包欄 2012/10/01
-			RoleServiceImplTest.assertBagPen(expected.getBagPen(),
-					actual.getBagPen());
+			RoleServiceImplTest.assertBagPen(expected.getBagPen(), actual.getBagPen());
 
 		}
 	}
@@ -101,7 +100,7 @@ public class RoleDaoImplTest extends RoleTestSupporter {
 	// 10 times: 6825 mills.
 	// 10 times: 6693 mills.
 	//
-	// verified: ok
+	@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 	public void crud() {
 		int count = 10;
 		long beg = System.currentTimeMillis();
@@ -115,8 +114,7 @@ public class RoleDaoImplTest extends RoleTestSupporter {
 			assertNotNull(pk);
 
 			// retrieve
-			RolePo foundEntity = roleDao
-					.find(RolePoImpl.class, rolePo.getSeq());
+			RolePo foundEntity = roleDao.find(RolePoImpl.class, rolePo.getSeq());
 			printFind(i, foundEntity);
 			assertRolePo(rolePo, foundEntity);
 
@@ -127,8 +125,7 @@ public class RoleDaoImplTest extends RoleTestSupporter {
 			assertTrue(updated > 0);
 
 			// delete
-			RolePo deletedEntity = roleDao.delete(RolePoImpl.class,
-					rolePo.getSeq());
+			RolePo deletedEntity = roleDao.delete(RolePoImpl.class, rolePo.getSeq());
 			printDelete(i, deletedEntity);
 			assertNotNull(deletedEntity);
 		}
@@ -137,25 +134,19 @@ public class RoleDaoImplTest extends RoleTestSupporter {
 	}
 
 	@Test
-	// verified: ok
+	@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 	public void insert() {
-		int count = 1;
-		long beg = System.currentTimeMillis();
-		for (int i = 0; i < count; i++) {
-			// 隨機
-			RolePo rolePo = randomRolePo();
-			//
-			Serializable pk = roleDao.insert(rolePo);
-			printInsert(i, pk);
-			assertNotNull(pk);
+		// 隨機
+		RolePo rolePo = randomRolePo();
+		//
+		Serializable pk = roleDao.insert(rolePo);
+		printInsert(pk);
+		assertNotNull(pk);
 
-			RolePo foundEntity = roleDao.find(RolePoImpl.class, rolePo.getSeq());
-			assertRolePo(rolePo, foundEntity);
+		RolePo foundEntity = roleDao.find(RolePoImpl.class, rolePo.getSeq());
+		assertRolePo(rolePo, foundEntity);
 
-			System.out.println(rolePo);
-		}
-		long end = System.currentTimeMillis();
-		System.out.println(count + " times: " + (end - beg) + " mills. ");
+		System.out.println(rolePo);
 	}
 
 	@Test

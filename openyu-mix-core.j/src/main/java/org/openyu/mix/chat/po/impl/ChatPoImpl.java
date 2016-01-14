@@ -8,18 +8,20 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.Proxy;
 import org.hibernate.annotations.Type;
 import org.hibernate.search.annotations.Analyze;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.FieldBridge;
-import org.hibernate.search.annotations.Index;
 import org.hibernate.search.annotations.Store;
 import org.openyu.mix.chat.po.ChatPo;
 import org.openyu.mix.chat.po.bridge.ChannelsBridge;
@@ -35,19 +37,18 @@ import org.openyu.commons.entity.supporter.SeqIdAuditEntitySupporter;
 //hibernate
 //--------------------------------------------------
 @Entity
-@org.hibernate.annotations.Entity(dynamicInsert = true, dynamicUpdate = true)
-@Table(name = "mix_chat")
-@SequenceGenerator(name = "mix_chat_g", sequenceName = "mix_chat_s", allocationSize = 1)
-//when use ehcache, config in ehcache.xml
+@DynamicInsert
+@DynamicUpdate
+@Table(name = "chat", indexes = { @Index(name = "idx_chat_id", columnList = "id") })
+@SequenceGenerator(name = "sg_chat", sequenceName = "seq_chat", allocationSize = 1)
+// when use ehcache, config in ehcache.xml
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = "org.openyu.mix.chat.po.impl.ChatPoImpl")
 @Proxy(lazy = false)
-@org.hibernate.annotations.Table(appliesTo = "mix_chat", indexes = { @org.hibernate.annotations.Index(name = "idx_mix_chat_1", columnNames = { "id" }) })
-//--------------------------------------------------
-//search
-//--------------------------------------------------
-//@Indexed
-public class ChatPoImpl extends SeqIdAuditEntitySupporter implements ChatPo
-{
+// --------------------------------------------------
+// search
+// --------------------------------------------------
+// @Indexed
+public class ChatPoImpl extends SeqIdAuditEntitySupporter implements ChatPo {
 
 	private static final long serialVersionUID = 9075386264904702013L;
 
@@ -103,158 +104,135 @@ public class ChatPoImpl extends SeqIdAuditEntitySupporter implements ChatPo
 	 */
 	private FriendGroup recommandGroup = new FriendGroupImpl(MaxType.RECOMMAND);
 
-	public ChatPoImpl()
-	{}
+	public ChatPoImpl() {
+	}
 
 	@Id
 	@Column(name = "seq")
-	@GeneratedValue(strategy = GenerationType.AUTO, generator = "mix_chat_g")
-	public Long getSeq()
-	{
+	@GeneratedValue(strategy = GenerationType.AUTO, generator = "sg_chat")
+	public Long getSeq() {
 		return seq;
 	}
 
-	public void setSeq(Long seq)
-	{
+	public void setSeq(Long seq) {
 		this.seq = seq;
 	}
 
 	@Column(name = "open_friend")
-	@Field(store = Store.YES, index = Index.YES, analyze = Analyze.NO)
-	public Boolean isOpenFriend()
-	{
+	@Field(store = Store.YES, index = org.hibernate.search.annotations.Index.YES, analyze = Analyze.NO)
+	public Boolean isOpenFriend() {
 		return openFriend;
 	}
 
-	public void setOpenFriend(Boolean openFriend)
-	{
+	public void setOpenFriend(Boolean openFriend) {
 		this.openFriend = openFriend;
 	}
 
 	@Column(name = "open_contact")
-	@Field(store = Store.YES, index = Index.YES, analyze = Analyze.NO)
-	public Boolean isOpenContact()
-	{
+	@Field(store = Store.YES, index = org.hibernate.search.annotations.Index.YES, analyze = Analyze.NO)
+	public Boolean isOpenContact() {
 		return openContact;
 	}
 
-	public void setOpenContact(Boolean openContact)
-	{
+	public void setOpenContact(Boolean openContact) {
 		this.openContact = openContact;
 	}
 
 	@Column(name = "open_recommand")
-	@Field(store = Store.YES, index = Index.YES, analyze = Analyze.NO)
-	public Boolean isOpenRecommand()
-	{
+	@Field(store = Store.YES, index = org.hibernate.search.annotations.Index.YES, analyze = Analyze.NO)
+	public Boolean isOpenRecommand() {
 		return openRecommand;
 	}
 
-	public void setOpenRecommand(Boolean openRecommand)
-	{
+	public void setOpenRecommand(Boolean openRecommand) {
 		this.openRecommand = openRecommand;
 	}
 
 	@Column(name = "channels", length = 255)
 	@Type(type = "org.openyu.mix.chat.po.userType.ChannelsUserType")
-	@Field(store = Store.YES, index = Index.YES, analyze = Analyze.NO)
+	@Field(store = Store.YES, index = org.hibernate.search.annotations.Index.YES, analyze = Analyze.NO)
 	@FieldBridge(impl = ChannelsBridge.class)
-	public Map<ChannelType, Channel> getChannels()
-	{
+	public Map<ChannelType, Channel> getChannels() {
 		return channels;
 	}
 
-	public void setChannels(Map<ChannelType, Channel> channels)
-	{
+	public void setChannels(Map<ChannelType, Channel> channels) {
 		this.channels = channels;
 	}
 
 	@Column(name = "friend_group", length = 1024)
 	@Type(type = "org.openyu.mix.chat.po.userType.FriendGroupUserType")
-	@Field(store = Store.YES, index = Index.YES, analyze = Analyze.NO)
+	@Field(store = Store.YES, index = org.hibernate.search.annotations.Index.YES, analyze = Analyze.NO)
 	@FieldBridge(impl = FriendGroupBridge.class)
-	public FriendGroup getFriendGroup()
-	{
+	public FriendGroup getFriendGroup() {
 		return friendGroup;
 	}
 
-	public void setFriendGroup(FriendGroup friendGroup)
-	{
+	public void setFriendGroup(FriendGroup friendGroup) {
 		this.friendGroup = friendGroup;
 	}
 
 	@Column(name = "other_group", length = 1024)
 	@Type(type = "org.openyu.mix.chat.po.userType.FriendGroupUserType")
-	@Field(store = Store.YES, index = Index.YES, analyze = Analyze.NO)
+	@Field(store = Store.YES, index = org.hibernate.search.annotations.Index.YES, analyze = Analyze.NO)
 	@FieldBridge(impl = FriendGroupBridge.class)
-	public FriendGroup getOtherGroup()
-	{
+	public FriendGroup getOtherGroup() {
 		return otherGroup;
 	}
 
-	public void setOtherGroup(FriendGroup otherGroup)
-	{
+	public void setOtherGroup(FriendGroup otherGroup) {
 		this.otherGroup = otherGroup;
 	}
 
 	@Column(name = "block_group", length = 1024)
 	@Type(type = "org.openyu.mix.chat.po.userType.FriendGroupUserType")
-	@Field(store = Store.YES, index = Index.YES, analyze = Analyze.NO)
+	@Field(store = Store.YES, index = org.hibernate.search.annotations.Index.YES, analyze = Analyze.NO)
 	@FieldBridge(impl = FriendGroupBridge.class)
-	public FriendGroup getBlockGroup()
-	{
+	public FriendGroup getBlockGroup() {
 		return blockGroup;
 	}
 
-	public void setBlockGroup(FriendGroup blockGroup)
-	{
+	public void setBlockGroup(FriendGroup blockGroup) {
 		this.blockGroup = blockGroup;
 	}
 
 	@Column(name = "pending_group", length = 1024)
 	@Type(type = "org.openyu.mix.chat.po.userType.FriendGroupUserType")
-	@Field(store = Store.YES, index = Index.YES, analyze = Analyze.NO)
+	@Field(store = Store.YES, index = org.hibernate.search.annotations.Index.YES, analyze = Analyze.NO)
 	@FieldBridge(impl = FriendGroupBridge.class)
-	public FriendGroup getPendingGroup()
-	{
+	public FriendGroup getPendingGroup() {
 		return pendingGroup;
 	}
 
-	public void setPendingGroup(FriendGroup pendingGroup)
-	{
+	public void setPendingGroup(FriendGroup pendingGroup) {
 		this.pendingGroup = pendingGroup;
 	}
 
 	@Column(name = "contact_group", length = 1024)
 	@Type(type = "org.openyu.mix.chat.po.userType.FriendGroupUserType")
-	@Field(store = Store.YES, index = Index.YES, analyze = Analyze.NO)
+	@Field(store = Store.YES, index = org.hibernate.search.annotations.Index.YES, analyze = Analyze.NO)
 	@FieldBridge(impl = FriendGroupBridge.class)
-	public FriendGroup getContactGroup()
-	{
+	public FriendGroup getContactGroup() {
 		return contactGroup;
 	}
 
-	public void setContactGroup(FriendGroup contactGroup)
-	{
+	public void setContactGroup(FriendGroup contactGroup) {
 		this.contactGroup = contactGroup;
 	}
 
 	@Column(name = "recommand_group", length = 1024)
 	@Type(type = "org.openyu.mix.chat.po.userType.FriendGroupUserType")
-	@Field(store = Store.YES, index = Index.YES, analyze = Analyze.NO)
+	@Field(store = Store.YES, index = org.hibernate.search.annotations.Index.YES, analyze = Analyze.NO)
 	@FieldBridge(impl = FriendGroupBridge.class)
-	public FriendGroup getRecommandGroup()
-	{
+	public FriendGroup getRecommandGroup() {
 		return recommandGroup;
 	}
 
-	public void setRecommandGroup(FriendGroup recommandGroup)
-	{
+	public void setRecommandGroup(FriendGroup recommandGroup) {
 		this.recommandGroup = recommandGroup;
 	}
 
-	public String toString()
-	{
+	public String toString() {
 		ToStringBuilder builder = new ToStringBuilder(this);
 		builder.appendSuper(super.toString());
 		builder.append("channels", channels);
@@ -268,8 +246,7 @@ public class ChatPoImpl extends SeqIdAuditEntitySupporter implements ChatPo
 		return builder.toString();
 	}
 
-	public Object clone()
-	{
+	public Object clone() {
 		ChatPoImpl copy = null;
 		copy = (ChatPoImpl) super.clone();
 		copy.channels = clone(channels);

@@ -3,8 +3,12 @@ package org.openyu.mix.chat;
 import static org.junit.Assert.assertNotNull;
 
 import org.junit.BeforeClass;
+import org.junit.Rule;
 import org.junit.Test;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+import com.carrotsearch.junitbenchmarks.BenchmarkRule;
+
 import org.openyu.mix.account.service.AccountService;
 import org.openyu.mix.app.AppTestSupporter;
 import org.openyu.mix.chat.dao.ChatDao;
@@ -21,6 +25,9 @@ import org.openyu.mix.item.service.ItemService;
 import org.openyu.mix.role.vo.Role;
 
 public class ChatTestSupporter extends AppTestSupporter {
+
+	@Rule
+	public BenchmarkRule benchmarkRule = new BenchmarkRule();
 
 	/**
 	 * 帳號服務-1
@@ -52,37 +59,33 @@ public class ChatTestSupporter extends AppTestSupporter {
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
-		applicationContext = new ClassPathXmlApplicationContext(new String[] {
-				"applicationContext-init.xml", //
+		applicationContext = new ClassPathXmlApplicationContext(new String[] { "applicationContext-init.xml", //
 				"applicationContext-bean.xml", //
 				"applicationContext-i18n.xml", //
 				"applicationContext-acceptor.xml", //
-				"applicationContext-database.xml",//
-				"applicationContext-database-log.xml",//
+				"applicationContext-database.xml", //
+				"applicationContext-database-log.xml", //
 				// "applicationContext-scheduler.xml",// 排程
-				"org/openyu/mix/app/applicationContext-app.xml",//
+				"org/openyu/mix/app/applicationContext-app.xml", //
 				// biz
-				"org/openyu/mix/account/applicationContext-account.xml",//
-				"org/openyu/mix/item/applicationContext-item.xml",//
-				"org/openyu/mix/role/applicationContext-role.xml",//
+				"org/openyu/mix/account/applicationContext-account.xml", //
+				"org/openyu/mix/item/applicationContext-item.xml", //
+				"org/openyu/mix/role/applicationContext-role.xml", //
 				"org/openyu/mix/chat/applicationContext-chat.xml"//
 		});
 		// ---------------------------------------------------
 		initialize();
 		// ---------------------------------------------------
 		// 帳號
-		accountService = (AccountService) applicationContext
-				.getBean("accountService");
+		accountService = (AccountService) applicationContext.getBean("accountService");
 		// 道具
 		itemService = (ItemService) applicationContext.getBean("itemService");
 		//
-		debugService = (DebugService) applicationContext
-				.getBean("debugService");
+		debugService = (DebugService) applicationContext.getBean("debugService");
 		//
 		chatDao = (ChatDao) applicationContext.getBean("chatDao");
 		chatService = (ChatService) applicationContext.getBean("chatService");
-		storeChatService = (StoreChatService) applicationContext
-				.getBean("storeChatService");
+		storeChatService = (StoreChatService) applicationContext.getBean("storeChatService");
 		chatSocklet = (ChatSocklet) applicationContext.getBean("chatSocklet");
 	}
 

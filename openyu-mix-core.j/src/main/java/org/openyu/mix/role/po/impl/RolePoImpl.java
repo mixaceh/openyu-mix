@@ -5,18 +5,20 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.Proxy;
 import org.hibernate.annotations.Type;
 import org.hibernate.search.annotations.Analyze;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.FieldBridge;
-import org.hibernate.search.annotations.Index;
 import org.hibernate.search.annotations.Store;
 import org.openyu.mix.flutter.po.supporter.FlutterPoSupporter;
 import org.openyu.mix.manor.po.bridge.ManorPenBridge;
@@ -43,14 +45,13 @@ import org.openyu.mix.wuxing.vo.impl.WuxingPenImpl;
 //hibernate
 //--------------------------------------------------
 @Entity
-@org.hibernate.annotations.Entity(dynamicInsert = true, dynamicUpdate = true)
-@Table(name = "mix_role")
-@SequenceGenerator(name = "mix_role_g", sequenceName = "mix_role_s", allocationSize = 1)
+@DynamicInsert
+@DynamicUpdate
+@Table(name = "role", indexes = { @Index(name = "idx_role_valid_id", columnList = "valid,id") })
+@SequenceGenerator(name = "sg_role", sequenceName = "seq_role", allocationSize = 1)
 // when use ehcache, config in ehcache.xml
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = "org.openyu.mix.role.po.impl.RolePoImpl")
 @Proxy(lazy = false)
-@org.hibernate.annotations.Table(appliesTo = "mix_role", indexes = {
-		@org.hibernate.annotations.Index(name = "idx_mix_role_1", columnNames = { "valid", "id" }) })
 // --------------------------------------------------
 // search
 // --------------------------------------------------
@@ -127,7 +128,7 @@ public class RolePoImpl extends FlutterPoSupporter implements RolePo {
 
 	@Id
 	@Column(name = "seq")
-	@GeneratedValue(strategy = GenerationType.AUTO, generator = "mix_role_g")
+	@GeneratedValue(strategy = GenerationType.AUTO, generator = "sg_role")
 	public Long getSeq() {
 		return seq;
 	}
@@ -137,7 +138,7 @@ public class RolePoImpl extends FlutterPoSupporter implements RolePo {
 	}
 
 	@Column(name = "valid")
-	@Field(store = Store.YES, index = Index.YES, analyze = Analyze.NO)
+	@Field(store = Store.YES, index = org.hibernate.search.annotations.Index.YES, analyze = Analyze.NO)
 	public Boolean getValid() {
 		return valid;
 	}
@@ -161,7 +162,7 @@ public class RolePoImpl extends FlutterPoSupporter implements RolePo {
 	// this.account = account;
 	// }
 	@Column(name = "account_id", length = 255)
-	@Field(store = Store.YES, index = Index.YES, analyze = Analyze.NO)
+	@Field(store = Store.YES, index = org.hibernate.search.annotations.Index.YES, analyze = Analyze.NO)
 	public String getAccountId() {
 		return accountId;
 	}
@@ -171,7 +172,7 @@ public class RolePoImpl extends FlutterPoSupporter implements RolePo {
 	}
 
 	@Column(name = "enter_time")
-	@Field(store = Store.YES, index = Index.YES, analyze = Analyze.NO)
+	@Field(store = Store.YES, index = org.hibernate.search.annotations.Index.YES, analyze = Analyze.NO)
 	public Long getEnterTime() {
 		return enterTime;
 	}
@@ -181,7 +182,7 @@ public class RolePoImpl extends FlutterPoSupporter implements RolePo {
 	}
 
 	@Column(name = "leave_time")
-	@Field(store = Store.YES, index = Index.YES, analyze = Analyze.NO)
+	@Field(store = Store.YES, index = org.hibernate.search.annotations.Index.YES, analyze = Analyze.NO)
 	public Long getLeaveTime() {
 		return leaveTime;
 	}
@@ -191,7 +192,7 @@ public class RolePoImpl extends FlutterPoSupporter implements RolePo {
 	}
 
 	@Column(name = "acceptor_id", length = 30)
-	@Field(store = Store.YES, index = Index.YES, analyze = Analyze.NO)
+	@Field(store = Store.YES, index = org.hibernate.search.annotations.Index.YES, analyze = Analyze.NO)
 	public String getAcceptorId() {
 		return acceptorId;
 	}
@@ -202,7 +203,7 @@ public class RolePoImpl extends FlutterPoSupporter implements RolePo {
 
 	@Column(name = "bag_info", length = 8192)
 	@Type(type = "org.openyu.mix.role.po.userType.BagPenUserType")
-	@Field(store = Store.YES, index = Index.YES, analyze = Analyze.NO)
+	@Field(store = Store.YES, index = org.hibernate.search.annotations.Index.YES, analyze = Analyze.NO)
 	@FieldBridge(impl = BagPenBridge.class)
 	public BagPen getBagPen() {
 		return bagPen;
@@ -214,7 +215,7 @@ public class RolePoImpl extends FlutterPoSupporter implements RolePo {
 
 	@Column(name = "sasang_info", length = 1024)
 	@Type(type = "org.openyu.mix.sasang.po.userType.SasangPenUserType")
-	@Field(store = Store.YES, index = Index.YES, analyze = Analyze.NO)
+	@Field(store = Store.YES, index = org.hibernate.search.annotations.Index.YES, analyze = Analyze.NO)
 	@FieldBridge(impl = SasangPenBridge.class)
 	public SasangPen getSasangPen() {
 		return sasangPen;
@@ -226,7 +227,7 @@ public class RolePoImpl extends FlutterPoSupporter implements RolePo {
 
 	@Column(name = "manor_info", length = 2048)
 	@Type(type = "org.openyu.mix.manor.po.userType.ManorPenUserType")
-	@Field(store = Store.YES, index = Index.YES, analyze = Analyze.NO)
+	@Field(store = Store.YES, index = org.hibernate.search.annotations.Index.YES, analyze = Analyze.NO)
 	@FieldBridge(impl = ManorPenBridge.class)
 	public ManorPen getManorPen() {
 		return manorPen;
@@ -238,7 +239,7 @@ public class RolePoImpl extends FlutterPoSupporter implements RolePo {
 
 	@Column(name = "treasure_info", length = 1024)
 	@Type(type = "org.openyu.mix.treasure.po.userType.TreasurePenUserType")
-	@Field(store = Store.YES, index = Index.YES, analyze = Analyze.NO)
+	@Field(store = Store.YES, index = org.hibernate.search.annotations.Index.YES, analyze = Analyze.NO)
 	@FieldBridge(impl = TreasurePenBridge.class)
 	public TreasurePen getTreasurePen() {
 		return treasurePen;
@@ -250,7 +251,7 @@ public class RolePoImpl extends FlutterPoSupporter implements RolePo {
 
 	@Column(name = "train_info", length = 512)
 	@Type(type = "org.openyu.mix.train.po.userType.TrainPenUserType")
-	@Field(store = Store.YES, index = Index.YES, analyze = Analyze.NO)
+	@Field(store = Store.YES, index = org.hibernate.search.annotations.Index.YES, analyze = Analyze.NO)
 	@FieldBridge(impl = TrainPenBridge.class)
 	public TrainPen getTrainPen() {
 		return trainPen;
@@ -262,7 +263,7 @@ public class RolePoImpl extends FlutterPoSupporter implements RolePo {
 
 	@Column(name = "wuxing_info", length = 1024)
 	@Type(type = "org.openyu.mix.wuxing.po.userType.WuxingPenUserType")
-	@Field(store = Store.YES, index = Index.YES, analyze = Analyze.NO)
+	@Field(store = Store.YES, index = org.hibernate.search.annotations.Index.YES, analyze = Analyze.NO)
 	@FieldBridge(impl = WuxingPenBridge.class)
 	public WuxingPen getWuxingPen() {
 		return wuxingPen;
