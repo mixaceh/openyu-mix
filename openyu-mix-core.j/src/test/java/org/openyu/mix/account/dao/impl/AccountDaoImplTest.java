@@ -11,6 +11,8 @@ import org.openyu.mix.account.AccountTestSupporter;
 import org.openyu.mix.account.po.AccountPo;
 import org.openyu.mix.account.po.impl.AccountPoImpl;
 
+import com.carrotsearch.junitbenchmarks.BenchmarkOptions;
+
 public class AccountDaoImplTest extends AccountTestSupporter {
 
 	/**
@@ -61,7 +63,7 @@ public class AccountDaoImplTest extends AccountTestSupporter {
 	// 10 times: 6825 mills.
 	// 10 times: 6693 mills.
 	//
-	// verified: ok
+	@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 	public void crud() {
 		int count = 10;
 		long beg = System.currentTimeMillis();
@@ -94,25 +96,19 @@ public class AccountDaoImplTest extends AccountTestSupporter {
 	}
 
 	@Test
-	// verified: ok
+	@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 	public void insert() {
-		int count = 1;
-		long beg = System.currentTimeMillis();
-		for (int i = 0; i < count; i++) {
-			// 隨機
-			AccountPo accountPo = randomAccountPo();
-			//
-			Serializable pk = accountDao.insert(accountPo);
-			printInsert(i, pk);
-			assertNotNull(pk);
+		// 隨機
+		AccountPo accountPo = randomAccountPo();
+		//
+		Serializable pk = accountDao.insert(accountPo);
+		printInsert(pk);
+		assertNotNull(pk);
 
-			AccountPo foundEntity = accountDao.find(AccountPoImpl.class, accountPo.getSeq());
-			assertAccountPo(accountPo, foundEntity);
+		AccountPo foundEntity = accountDao.find(AccountPoImpl.class, accountPo.getSeq());
+		assertAccountPo(accountPo, foundEntity);
 
-			System.out.println(accountPo);
-		}
-		long end = System.currentTimeMillis();
-		System.out.println(count + " times: " + (end - beg) + " mills. ");
+		System.out.println(accountPo);
 	}
 
 	@Test

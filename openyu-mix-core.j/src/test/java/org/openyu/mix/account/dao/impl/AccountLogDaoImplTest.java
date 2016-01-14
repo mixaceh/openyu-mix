@@ -11,6 +11,9 @@ import org.openyu.mix.account.log.AccountCoinLog;
 import org.openyu.mix.account.log.impl.AccountCoinLogImpl;
 import org.openyu.mix.account.service.AccountService.ActionType;
 import org.openyu.mix.account.service.AccountService.CoinType;
+
+import com.carrotsearch.junitbenchmarks.BenchmarkOptions;
+
 import org.openyu.commons.util.DateHelper;
 
 public class AccountLogDaoImplTest extends AccountTestSupporter {
@@ -49,8 +52,7 @@ public class AccountLogDaoImplTest extends AccountTestSupporter {
 		 * @param expected
 		 * @param actual
 		 */
-		public static void assertAccountCoinLog(AccountCoinLog expected,
-				AccountCoinLog actual) {
+		public static void assertAccountCoinLog(AccountCoinLog expected, AccountCoinLog actual) {
 			if (expected == null) {
 				assertNull(actual);
 			} else {
@@ -72,7 +74,7 @@ public class AccountLogDaoImplTest extends AccountTestSupporter {
 		// 10 times: 6825 mills.
 		// 10 times: 6693 mills.
 		//
-		// verified: ok
+		@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 		public void crud() {
 			int count = 10;
 			long beg = System.currentTimeMillis();
@@ -85,8 +87,7 @@ public class AccountLogDaoImplTest extends AccountTestSupporter {
 				assertNotNull(pk);
 
 				// retrieve
-				AccountCoinLog foundEntity = accountLogDao.find(
-						AccountCoinLogImpl.class, accountCoinLog.getSeq());
+				AccountCoinLog foundEntity = accountLogDao.find(AccountCoinLogImpl.class, accountCoinLog.getSeq());
 				printFind(i, foundEntity);
 				assertAccountCoinLog(accountCoinLog, foundEntity);
 
@@ -97,8 +98,7 @@ public class AccountLogDaoImplTest extends AccountTestSupporter {
 				assertTrue(updated > 0);
 
 				// delete
-				AccountCoinLog deletedEntity = accountLogDao.delete(
-						AccountCoinLogImpl.class, accountCoinLog.getSeq());
+				AccountCoinLog deletedEntity = accountLogDao.delete(AccountCoinLogImpl.class, accountCoinLog.getSeq());
 				printDelete(i, deletedEntity);
 				assertNotNull(deletedEntity);
 			}
@@ -107,26 +107,18 @@ public class AccountLogDaoImplTest extends AccountTestSupporter {
 		}
 
 		@Test
-		// verified: ok
+		@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 		public void insert() {
-			int count = 1;
-			long beg = System.currentTimeMillis();
-			for (int i = 0; i < count; i++) {
-				// 隨機
-				AccountCoinLog accountCoinLog = randomAccountCoinLog();
-				//
-				Serializable pk = accountLogDao.insert(accountCoinLog);
-				printInsert(i, pk);
-				assertNotNull(pk);
+			// 隨機
+			AccountCoinLog accountCoinLog = randomAccountCoinLog();
+			//
+			Serializable pk = accountLogDao.insert(accountCoinLog);
+			printInsert(pk);
+			assertNotNull(pk);
 
-				AccountCoinLog foundEntity = accountLogDao.find(
-						AccountCoinLogImpl.class, accountCoinLog.getSeq());
-				assertAccountCoinLog(accountCoinLog, foundEntity);
-
-				System.out.println(accountCoinLog);
-			}
-			long end = System.currentTimeMillis();
-			System.out.println(count + " times: " + (end - beg) + " mills. ");
+			AccountCoinLog foundEntity = accountLogDao.find(AccountCoinLogImpl.class, accountCoinLog.getSeq());
+			assertAccountCoinLog(accountCoinLog, foundEntity);
+			System.out.println(accountCoinLog);
 		}
 
 		@Test
@@ -151,8 +143,7 @@ public class AccountLogDaoImplTest extends AccountTestSupporter {
 				accountCoinLog3.setAccountId(accountCoinLog.getAccountId());
 				accountLogDao.insert(accountCoinLog3);
 				//
-				result = accountLogDao.findAccountCoinLog(accountCoinLog
-						.getAccountId());
+				result = accountLogDao.findAccountCoinLog(accountCoinLog.getAccountId());
 				//
 				for (AccountCoinLog entity : result) {
 					accountLogDao.delete(entity);
@@ -177,8 +168,7 @@ public class AccountLogDaoImplTest extends AccountTestSupporter {
 				accountLogDao.insert(accountCoinLog);
 				accountLogDao.insert(accountCoinLog);
 				//
-				result = accountLogDao.deleteAccountCoinLog(accountCoinLog
-						.getAccountId());
+				result = accountLogDao.deleteAccountCoinLog(accountCoinLog.getAccountId());
 			}
 			long end = System.currentTimeMillis();
 			System.out.println(count + " times: " + (end - beg) + " mills. ");
