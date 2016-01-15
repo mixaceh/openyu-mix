@@ -20,6 +20,9 @@ import org.openyu.mix.item.vo.ThingCollector;
 import org.openyu.mix.item.vo.Weapon;
 import org.openyu.mix.item.vo.WeaponCollector;
 import org.openyu.mix.item.vo.thing.EnhanceThing;
+
+import com.carrotsearch.junitbenchmarks.BenchmarkOptions;
+
 import org.openyu.commons.util.DateHelper;
 
 public class ItemLogDaoImplTest extends ItemTestSupporter {
@@ -47,8 +50,7 @@ public class ItemLogDaoImplTest extends ItemTestSupporter {
 			result.setAcceptorId(randomSlave());
 			result.setServerIp(randomIp("10.0.0"));
 			//
-			Item item = ThingCollector.getInstance().createThing(
-					"T_POTION_HP_G001");
+			Item item = ThingCollector.getInstance().createThing("T_POTION_HP_G001");
 			item.setAmount(randomInt(100));
 			result.getItems().add(item);
 			result.setActionType(randomType(ActionType.class));
@@ -61,8 +63,7 @@ public class ItemLogDaoImplTest extends ItemTestSupporter {
 		 * @param expected
 		 * @param actual
 		 */
-		public static void assertItemIncreaseLog(ItemIncreaseLog expected,
-				ItemIncreaseLog actual) {
+		public static void assertItemIncreaseLog(ItemIncreaseLog expected, ItemIncreaseLog actual) {
 			if (expected == null) {
 				assertNull(actual);
 			} else {
@@ -83,7 +84,7 @@ public class ItemLogDaoImplTest extends ItemTestSupporter {
 		// 10 times: 6825 mills.
 		// 10 times: 6693 mills.
 		//
-		// verified: ok
+		@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 		public void crud() {
 			int count = 10;
 			long beg = System.currentTimeMillis();
@@ -96,8 +97,7 @@ public class ItemLogDaoImplTest extends ItemTestSupporter {
 				assertNotNull(pk);
 
 				// retrieve
-				ItemIncreaseLog foundEntity = itemLogDao.find(
-						ItemIncreaseLogImpl.class, log.getSeq());
+				ItemIncreaseLog foundEntity = itemLogDao.find(ItemIncreaseLogImpl.class, log.getSeq());
 				printFind(i, foundEntity);
 				assertItemIncreaseLog(log, foundEntity);
 
@@ -108,8 +108,7 @@ public class ItemLogDaoImplTest extends ItemTestSupporter {
 				assertTrue(updated > 0);
 
 				// delete
-				ItemIncreaseLog deletedEntity = itemLogDao.delete(
-						ItemIncreaseLogImpl.class, log.getSeq());
+				ItemIncreaseLog deletedEntity = itemLogDao.delete(ItemIncreaseLogImpl.class, log.getSeq());
 				printDelete(i, deletedEntity);
 				assertNotNull(deletedEntity);
 			}
@@ -118,26 +117,19 @@ public class ItemLogDaoImplTest extends ItemTestSupporter {
 		}
 
 		@Test
-		// verified: ok
+		@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 		public void insert() {
-			int count = 1;
-			long beg = System.currentTimeMillis();
-			for (int i = 0; i < count; i++) {
-				// 隨機
-				ItemIncreaseLog log = randomItemIncreaseLog();
-				//
-				Serializable pk = itemLogDao.insert(log);
-				printInsert(i, pk);
-				assertNotNull(pk);
+			// 隨機
+			ItemIncreaseLog log = randomItemIncreaseLog();
+			//
+			Serializable pk = itemLogDao.insert(log);
+			printInsert(pk);
+			assertNotNull(pk);
 
-				ItemIncreaseLog foundEntity = itemLogDao.find(
-						ItemIncreaseLogImpl.class, log.getSeq());
-				assertItemIncreaseLog(log, foundEntity);
+			ItemIncreaseLog foundEntity = itemLogDao.find(ItemIncreaseLogImpl.class, log.getSeq());
+			assertItemIncreaseLog(log, foundEntity);
 
-				System.out.println(log);
-			}
-			long end = System.currentTimeMillis();
-			System.out.println(count + " times: " + (end - beg) + " mills. ");
+			System.out.println(log);
 		}
 
 		@Test
@@ -204,8 +196,7 @@ public class ItemLogDaoImplTest extends ItemTestSupporter {
 			result.setAcceptorId(randomSlave());
 			result.setServerIp(randomIp("10.0.0"));
 			//
-			Item item = ThingCollector.getInstance().createThing(
-					"T_POTION_HP_G001");
+			Item item = ThingCollector.getInstance().createThing("T_POTION_HP_G001");
 			item.setAmount(randomInt(100));
 			result.getItems().add(item);
 			result.setActionType(randomType(ActionType.class));
@@ -218,8 +209,7 @@ public class ItemLogDaoImplTest extends ItemTestSupporter {
 		 * @param expected
 		 * @param actual
 		 */
-		public static void assertItemDecreaseLog(ItemDecreaseLog expected,
-				ItemDecreaseLog actual) {
+		public static void assertItemDecreaseLog(ItemDecreaseLog expected, ItemDecreaseLog actual) {
 			if (expected == null) {
 				assertNull(actual);
 			} else {
@@ -240,7 +230,7 @@ public class ItemLogDaoImplTest extends ItemTestSupporter {
 		// 10 times: 6825 mills.
 		// 10 times: 6693 mills.
 		//
-		// verified: ok
+		@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 		public void crud() {
 			int result = 0;
 			int count = 10;
@@ -254,8 +244,7 @@ public class ItemLogDaoImplTest extends ItemTestSupporter {
 				assertNotNull(pk);
 
 				// retrieve
-				ItemDecreaseLog foundEntity = itemLogDao.find(
-						ItemDecreaseLogImpl.class, log.getSeq());
+				ItemDecreaseLog foundEntity = itemLogDao.find(ItemDecreaseLogImpl.class, log.getSeq());
 				printFind(i, foundEntity);
 				assertItemDecreaseLog(log, foundEntity);
 
@@ -266,8 +255,7 @@ public class ItemLogDaoImplTest extends ItemTestSupporter {
 				assertTrue(result > 0);
 
 				// delete
-				ItemDecreaseLog deletedEntity = itemLogDao.delete(
-						ItemDecreaseLogImpl.class, log.getSeq());
+				ItemDecreaseLog deletedEntity = itemLogDao.delete(ItemDecreaseLogImpl.class, log.getSeq());
 				printDelete(i, deletedEntity);
 				assertNotNull(deletedEntity);
 			}
@@ -276,26 +264,19 @@ public class ItemLogDaoImplTest extends ItemTestSupporter {
 		}
 
 		@Test
-		// verified: ok
+		@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 		public void insert() {
-			int count = 1;
-			long beg = System.currentTimeMillis();
-			for (int i = 0; i < count; i++) {
-				// 隨機
-				ItemDecreaseLog log = randomItemDecreaseLog();
-				//
-				Serializable pk = itemLogDao.insert(log);
-				printInsert(i, pk);
-				assertNotNull(pk);
+			// 隨機
+			ItemDecreaseLog log = randomItemDecreaseLog();
+			//
+			Serializable pk = itemLogDao.insert(log);
+			printInsert(pk);
+			assertNotNull(pk);
 
-				ItemDecreaseLog foundEntity = itemLogDao.find(
-						ItemDecreaseLogImpl.class, log.getSeq());
-				assertItemDecreaseLog(log, foundEntity);
+			ItemDecreaseLog foundEntity = itemLogDao.find(ItemDecreaseLogImpl.class, log.getSeq());
+			assertItemDecreaseLog(log, foundEntity);
 
-				System.out.println(log);
-			}
-			long end = System.currentTimeMillis();
-			System.out.println(count + " times: " + (end - beg) + " mills. ");
+			System.out.println(log);
 		}
 
 		@Test
@@ -362,8 +343,7 @@ public class ItemLogDaoImplTest extends ItemTestSupporter {
 			result.setAcceptorId(randomSlave());
 			result.setServerIp(randomIp("10.0.0"));
 			// 被強化後的道具
-			Weapon item = WeaponCollector.getInstance().createWeapon(
-					"W_MARS_SWORD_E001");
+			Weapon item = WeaponCollector.getInstance().createWeapon("W_MARS_SWORD_E001");
 			item.setAmount(1);
 			item.setEnhanceLevel(EnhanceLevel._0);
 			result.setItem(item);
@@ -373,8 +353,8 @@ public class ItemLogDaoImplTest extends ItemTestSupporter {
 			result.setEnhance(1);
 			result.setAfterEnhance(result.getBeforeEnhance() + 1);
 			// 消耗的道具
-			EnhanceThing enhanceThing = (EnhanceThing) ThingCollector
-					.getInstance().createThing("T_ENHANCE_WEAPON_E_G001");
+			EnhanceThing enhanceThing = (EnhanceThing) ThingCollector.getInstance()
+					.createThing("T_ENHANCE_WEAPON_E_G001");
 			enhanceThing.setAmount(1);
 			result.setSpendItem(enhanceThing);
 			return result;
@@ -386,8 +366,7 @@ public class ItemLogDaoImplTest extends ItemTestSupporter {
 		 * @param expected
 		 * @param actual
 		 */
-		public static void assertItemEnhanceLog(ItemEnhanceLog expected,
-				ItemEnhanceLog actual) {
+		public static void assertItemEnhanceLog(ItemEnhanceLog expected, ItemEnhanceLog actual) {
 			if (expected == null) {
 				assertNull(actual);
 			} else {
@@ -398,11 +377,9 @@ public class ItemLogDaoImplTest extends ItemTestSupporter {
 				assertEquals(expected.getAcceptorId(), actual.getAcceptorId());
 				assertEquals(expected.getActionType(), actual.getActionType());
 				//
-				assertEquals(expected.getBeforeEnhance(),
-						actual.getBeforeEnhance());
+				assertEquals(expected.getBeforeEnhance(), actual.getBeforeEnhance());
 				assertEquals(expected.getEnhance(), actual.getEnhance());
-				assertEquals(expected.getAfterEnhance(),
-						actual.getAfterEnhance());
+				assertEquals(expected.getAfterEnhance(), actual.getAfterEnhance());
 				assertEquals(expected.getItem(), actual.getItem());
 				assertEquals(expected.getSpendItem(), actual.getSpendItem());
 			}
@@ -415,7 +392,7 @@ public class ItemLogDaoImplTest extends ItemTestSupporter {
 		// 10 times: 6825 mills.
 		// 10 times: 6693 mills.
 		//
-		// verified: ok
+		@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 		public void crud() {
 			int result = 0;
 			int count = 10;
@@ -429,8 +406,7 @@ public class ItemLogDaoImplTest extends ItemTestSupporter {
 				assertNotNull(pk);
 
 				// retrieve
-				ItemEnhanceLog foundEntity = itemLogDao.find(
-						ItemEnhanceLogImpl.class, log.getSeq());
+				ItemEnhanceLog foundEntity = itemLogDao.find(ItemEnhanceLogImpl.class, log.getSeq());
 				printFind(i, foundEntity);
 				assertItemEnhanceLog(log, foundEntity);
 
@@ -441,8 +417,7 @@ public class ItemLogDaoImplTest extends ItemTestSupporter {
 				assertTrue(result > 0);
 
 				// delete
-				ItemEnhanceLog deletedEntity = itemLogDao.delete(
-						ItemEnhanceLogImpl.class, log.getSeq());
+				ItemEnhanceLog deletedEntity = itemLogDao.delete(ItemEnhanceLogImpl.class, log.getSeq());
 				printDelete(i, deletedEntity);
 				assertNotNull(deletedEntity);
 			}
@@ -451,26 +426,19 @@ public class ItemLogDaoImplTest extends ItemTestSupporter {
 		}
 
 		@Test
-		// verified: ok
+		@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 		public void insert() {
-			int count = 1;
-			long beg = System.currentTimeMillis();
-			for (int i = 0; i < count; i++) {
-				// 隨機
-				ItemEnhanceLog log = randomItemEnhanceLog();
-				//
-				Serializable pk = itemLogDao.insert(log);
-				printInsert(i, pk);
-				assertNotNull(pk);
+			// 隨機
+			ItemEnhanceLog log = randomItemEnhanceLog();
+			//
+			Serializable pk = itemLogDao.insert(log);
+			printInsert(pk);
+			assertNotNull(pk);
 
-				ItemEnhanceLog foundEntity = itemLogDao.find(
-						ItemEnhanceLogImpl.class, log.getSeq());
-				assertItemEnhanceLog(log, foundEntity);
+			ItemEnhanceLog foundEntity = itemLogDao.find(ItemEnhanceLogImpl.class, log.getSeq());
+			assertItemEnhanceLog(log, foundEntity);
 
-				System.out.println(log);
-			}
-			long end = System.currentTimeMillis();
-			System.out.println(count + " times: " + (end - beg) + " mills. ");
+			System.out.println(log);
 		}
 
 		@Test
