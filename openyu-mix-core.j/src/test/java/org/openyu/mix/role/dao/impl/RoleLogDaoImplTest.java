@@ -14,6 +14,9 @@ import org.openyu.mix.role.log.impl.RoleFameLogImpl;
 import org.openyu.mix.role.log.impl.RoleGoldLogImpl;
 import org.openyu.mix.role.log.impl.RoleLevelLogImpl;
 import org.openyu.mix.role.service.RoleService.ActionType;
+
+import com.carrotsearch.junitbenchmarks.BenchmarkOptions;
+
 import org.openyu.commons.util.DateHelper;
 
 public class RoleLogDaoImplTest extends RoleTestSupporter {
@@ -53,8 +56,7 @@ public class RoleLogDaoImplTest extends RoleTestSupporter {
 		 * @param expected
 		 * @param actual
 		 */
-		public static void assertRoleLevelLog(RoleLevelLog expected,
-				RoleLevelLog actual) {
+		public static void assertRoleLevelLog(RoleLevelLog expected, RoleLevelLog actual) {
 			if (expected == null) {
 				assertNull(actual);
 			} else {
@@ -75,7 +77,7 @@ public class RoleLogDaoImplTest extends RoleTestSupporter {
 		// 10 times: 6825 mills.
 		// 10 times: 6693 mills.
 		//
-		// verified: ok
+		@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 		public void crud() {
 			int count = 10;
 			long beg = System.currentTimeMillis();
@@ -88,8 +90,7 @@ public class RoleLogDaoImplTest extends RoleTestSupporter {
 				assertNotNull(pk);
 
 				// retrieve
-				RoleLevelLog foundEntity = roleLogDao.find(
-						RoleLevelLogImpl.class, roleLevelLog.getSeq());
+				RoleLevelLog foundEntity = roleLogDao.find(RoleLevelLogImpl.class, roleLevelLog.getSeq());
 				printFind(i, foundEntity);
 				assertRoleLevelLog(roleLevelLog, foundEntity);
 
@@ -100,8 +101,7 @@ public class RoleLogDaoImplTest extends RoleTestSupporter {
 				assertTrue(updated > 0);
 
 				// delete
-				RoleLevelLog deletedEntity = roleLogDao.delete(
-						RoleLevelLogImpl.class, roleLevelLog.getSeq());
+				RoleLevelLog deletedEntity = roleLogDao.delete(RoleLevelLogImpl.class, roleLevelLog.getSeq());
 				printDelete(i, deletedEntity);
 				assertNotNull(deletedEntity);
 			}
@@ -110,26 +110,19 @@ public class RoleLogDaoImplTest extends RoleTestSupporter {
 		}
 
 		@Test
-		// verified: ok
+		@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 		public void insert() {
-			int count = 1;
-			long beg = System.currentTimeMillis();
-			for (int i = 0; i < count; i++) {
-				// 隨機
-				RoleLevelLog roleLevelLog = randomRoleLevelLog();
-				//
-				Serializable pk = roleLogDao.insert(roleLevelLog);
-				printInsert(i, pk);
-				assertNotNull(pk);
+			// 隨機
+			RoleLevelLog roleLevelLog = randomRoleLevelLog();
+			//
+			Serializable pk = roleLogDao.insert(roleLevelLog);
+			printInsert(pk);
+			assertNotNull(pk);
 
-				RoleLevelLog foundEntity = roleLogDao.find(
-						RoleLevelLogImpl.class, roleLevelLog.getSeq());
-				assertRoleLevelLog(roleLevelLog, foundEntity);
+			RoleLevelLog foundEntity = roleLogDao.find(RoleLevelLogImpl.class, roleLevelLog.getSeq());
+			assertRoleLevelLog(roleLevelLog, foundEntity);
 
-				System.out.println(roleLevelLog);
-			}
-			long end = System.currentTimeMillis();
-			System.out.println(count + " times: " + (end - beg) + " mills. ");
+			System.out.println(roleLevelLog);
 		}
 
 		@Test
@@ -209,8 +202,7 @@ public class RoleLogDaoImplTest extends RoleTestSupporter {
 		 * @param expected
 		 * @param actual
 		 */
-		public static void assertRoleGoldLog(RoleGoldLog expected,
-				RoleGoldLog actual) {
+		public static void assertRoleGoldLog(RoleGoldLog expected, RoleGoldLog actual) {
 			if (expected == null) {
 				assertNull(actual);
 			} else {
@@ -232,7 +224,7 @@ public class RoleLogDaoImplTest extends RoleTestSupporter {
 		// 10 times: 6825 mills.
 		// 10 times: 6693 mills.
 		//
-		// verified: ok
+		@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 		public void crud() {
 			int count = 10;
 			long beg = System.currentTimeMillis();
@@ -245,8 +237,7 @@ public class RoleLogDaoImplTest extends RoleTestSupporter {
 				assertNotNull(pk);
 
 				// retrieve
-				RoleGoldLog foundEntity = roleLogDao.find(
-						RoleGoldLogImpl.class, roleGoldLog.getSeq());
+				RoleGoldLog foundEntity = roleLogDao.find(RoleGoldLogImpl.class, roleGoldLog.getSeq());
 				printFind(i, foundEntity);
 				assertRoleGoldLog(roleGoldLog, foundEntity);
 
@@ -257,8 +248,7 @@ public class RoleLogDaoImplTest extends RoleTestSupporter {
 				assertTrue(updated > 0);
 
 				// delete
-				RoleGoldLog deletedEntity = roleLogDao.delete(
-						RoleGoldLogImpl.class, roleGoldLog.getSeq());
+				RoleGoldLog deletedEntity = roleLogDao.delete(RoleGoldLogImpl.class, roleGoldLog.getSeq());
 				printDelete(i, deletedEntity);
 				assertNotNull(deletedEntity);
 			}
@@ -267,26 +257,19 @@ public class RoleLogDaoImplTest extends RoleTestSupporter {
 		}
 
 		@Test
-		// verified: ok
+		@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 		public void insert() {
-			int count = 1;
-			long beg = System.currentTimeMillis();
-			for (int i = 0; i < count; i++) {
-				// 隨機
-				RoleGoldLog roleGoldLog = randomRoleGoldLog();
-				//
-				Serializable pk = roleLogDao.insert(roleGoldLog);
-				printInsert(i, pk);
-				assertNotNull(pk);
+			// 隨機
+			RoleGoldLog roleGoldLog = randomRoleGoldLog();
+			//
+			Serializable pk = roleLogDao.insert(roleGoldLog);
+			printInsert(pk);
+			assertNotNull(pk);
 
-				RoleGoldLog foundEntity = roleLogDao.find(
-						RoleGoldLogImpl.class, roleGoldLog.getSeq());
-				assertRoleGoldLog(roleGoldLog, foundEntity);
+			RoleGoldLog foundEntity = roleLogDao.find(RoleGoldLogImpl.class, roleGoldLog.getSeq());
+			assertRoleGoldLog(roleGoldLog, foundEntity);
 
-				System.out.println(roleGoldLog);
-			}
-			long end = System.currentTimeMillis();
-			System.out.println(count + " times: " + (end - beg) + " mills. ");
+			System.out.println(roleGoldLog);
 		}
 
 		@Test
@@ -365,8 +348,7 @@ public class RoleLogDaoImplTest extends RoleTestSupporter {
 		 * @param expected
 		 * @param actual
 		 */
-		public static void assertRoleFameLog(RoleFameLog expected,
-				RoleFameLog actual) {
+		public static void assertRoleFameLog(RoleFameLog expected, RoleFameLog actual) {
 			if (expected == null) {
 				assertNull(actual);
 			} else {
@@ -387,7 +369,7 @@ public class RoleLogDaoImplTest extends RoleTestSupporter {
 		// 10 times: 6825 mills.
 		// 10 times: 6693 mills.
 		//
-		// verified: ok
+		@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 		public void crud() {
 			int count = 10;
 			long beg = System.currentTimeMillis();
@@ -400,8 +382,7 @@ public class RoleLogDaoImplTest extends RoleTestSupporter {
 				assertNotNull(pk);
 
 				// retrieve
-				RoleFameLog foundEntity = roleLogDao.find(
-						RoleFameLogImpl.class, roleFameLog.getSeq());
+				RoleFameLog foundEntity = roleLogDao.find(RoleFameLogImpl.class, roleFameLog.getSeq());
 				printFind(i, foundEntity);
 				assertRoleFameLog(roleFameLog, foundEntity);
 
@@ -412,8 +393,7 @@ public class RoleLogDaoImplTest extends RoleTestSupporter {
 				assertTrue(updated > 0);
 
 				// delete
-				RoleFameLog deletedEntity = roleLogDao.delete(
-						RoleFameLogImpl.class, roleFameLog.getSeq());
+				RoleFameLog deletedEntity = roleLogDao.delete(RoleFameLogImpl.class, roleFameLog.getSeq());
 				printDelete(i, deletedEntity);
 				assertNotNull(deletedEntity);
 			}
@@ -422,26 +402,19 @@ public class RoleLogDaoImplTest extends RoleTestSupporter {
 		}
 
 		@Test
-		// verified: ok
+		@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 		public void insert() {
-			int count = 1;
-			long beg = System.currentTimeMillis();
-			for (int i = 0; i < count; i++) {
-				// 隨機
-				RoleFameLog roleFameLog = randomRoleFameLog();
-				//
-				Serializable pk = roleLogDao.insert(roleFameLog);
-				printInsert(i, pk);
-				assertNotNull(pk);
+			// 隨機
+			RoleFameLog roleFameLog = randomRoleFameLog();
+			//
+			Serializable pk = roleLogDao.insert(roleFameLog);
+			printInsert(pk);
+			assertNotNull(pk);
 
-				RoleFameLog foundEntity = roleLogDao.find(
-						RoleFameLogImpl.class, roleFameLog.getSeq());
-				assertRoleFameLog(roleFameLog, foundEntity);
+			RoleFameLog foundEntity = roleLogDao.find(RoleFameLogImpl.class, roleFameLog.getSeq());
+			assertRoleFameLog(roleFameLog, foundEntity);
 
-				System.out.println(roleFameLog);
-			}
-			long end = System.currentTimeMillis();
-			System.out.println(count + " times: " + (end - beg) + " mills. ");
+			System.out.println(roleFameLog);
 		}
 
 		@Test

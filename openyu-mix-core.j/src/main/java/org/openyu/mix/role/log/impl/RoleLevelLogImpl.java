@@ -5,16 +5,18 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.Proxy;
 import org.hibernate.search.annotations.Analyze;
 import org.hibernate.search.annotations.Field;
-import org.hibernate.search.annotations.Index;
 import org.hibernate.search.annotations.Store;
 import org.openyu.mix.app.log.supporter.AppLogEntitySupporter;
 import org.openyu.mix.role.log.RoleLevelLog;
@@ -23,20 +25,19 @@ import org.openyu.mix.role.log.RoleLevelLog;
 //hibernate
 //--------------------------------------------------
 @Entity
-@org.hibernate.annotations.Entity(dynamicInsert = true, dynamicUpdate = true)
-@Table(name = "mix_role_level_log")
-@SequenceGenerator(name = "mix_role_level_log_g", sequenceName = "mix_role_level_log_s", allocationSize = 1)
+@DynamicInsert
+@DynamicUpdate
+@Table(name = "role_level_log", indexes = {
+		@Index(name = "role_level_log_role_id_log_date", columnList = "role_id,log_date") })
+@SequenceGenerator(name = "sg_role_level_log", sequenceName = "seq_role_level_log", allocationSize = 1)
 // when use ehcache, config in ehcache.xml
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = "org.openyu.mix.role.log.impl.RoleLevelLogImpl")
 @Proxy(lazy = false)
-@org.hibernate.annotations.Table(appliesTo = "mix_role_level_log", indexes = { @org.hibernate.annotations.Index(name = "idx_mix_role_level_log_1", columnNames = {
-		"role_id", "log_date" }) })
 // --------------------------------------------------
 // search
 // --------------------------------------------------
 // @Indexed
-public class RoleLevelLogImpl extends AppLogEntitySupporter implements
-		RoleLevelLog {
+public class RoleLevelLogImpl extends AppLogEntitySupporter implements RoleLevelLog {
 	private static final long serialVersionUID = 1189720120506822270L;
 
 	private Long seq;
@@ -52,7 +53,7 @@ public class RoleLevelLogImpl extends AppLogEntitySupporter implements
 
 	@Id
 	@Column(name = "seq")
-	@GeneratedValue(strategy = GenerationType.AUTO, generator = "mix_role_level_log_g")
+	@GeneratedValue(strategy = GenerationType.AUTO, generator = "sg_role_level_log")
 	public Long getSeq() {
 		return seq;
 	}
@@ -62,7 +63,7 @@ public class RoleLevelLogImpl extends AppLogEntitySupporter implements
 	}
 
 	@Column(name = "level")
-	@Field(store = Store.YES, index = Index.YES)
+	@Field(store = Store.YES, index = org.hibernate.search.annotations.Index.YES)
 	public Integer getLevel() {
 		return level;
 	}
@@ -72,7 +73,7 @@ public class RoleLevelLogImpl extends AppLogEntitySupporter implements
 	}
 
 	@Column(name = "before_level")
-	@Field(store = Store.YES, index = Index.YES, analyze = Analyze.NO)
+	@Field(store = Store.YES, index = org.hibernate.search.annotations.Index.YES, analyze = Analyze.NO)
 	public Integer getBeforeLevel() {
 		return beforeLevel;
 	}
@@ -82,7 +83,7 @@ public class RoleLevelLogImpl extends AppLogEntitySupporter implements
 	}
 
 	@Column(name = "after_level")
-	@Field(store = Store.YES, index = Index.YES, analyze = Analyze.NO)
+	@Field(store = Store.YES, index = org.hibernate.search.annotations.Index.YES, analyze = Analyze.NO)
 	public Integer getAfterLevel() {
 		return afterLevel;
 	}

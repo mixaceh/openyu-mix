@@ -17,6 +17,9 @@ import org.openyu.mix.manor.vo.Land;
 import org.openyu.mix.manor.vo.Seed;
 import org.openyu.mix.manor.vo.impl.LandImpl;
 import org.openyu.mix.manor.vo.impl.SeedImpl;
+
+import com.carrotsearch.junitbenchmarks.BenchmarkOptions;
+
 import org.openyu.commons.util.DateHelper;
 
 public class ManorLogDaoImplTest extends ManorTestSupporter {
@@ -59,8 +62,7 @@ public class ManorLogDaoImplTest extends ManorTestSupporter {
 		 * @param expected
 		 * @param actual
 		 */
-		public static void assertManorLandLog(ManorLandLog expected,
-				ManorLandLog actual) {
+		public static void assertManorLandLog(ManorLandLog expected, ManorLandLog actual) {
 			if (expected == null) {
 				assertNull(actual);
 			} else {
@@ -82,8 +84,7 @@ public class ManorLogDaoImplTest extends ManorTestSupporter {
 		// 10 times: 7237 mills.
 		// 10 times: 6825 mills.
 		// 10 times: 6693 mills.
-		//
-		// verified: ok
+		@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 		public void crud() {
 			int count = 10;
 			long beg = System.currentTimeMillis();
@@ -96,8 +97,7 @@ public class ManorLogDaoImplTest extends ManorTestSupporter {
 				assertNotNull(pk);
 
 				// retrieve
-				ManorLandLog foundEntity = manorLogDao.find(
-						ManorLandLogImpl.class, manorLandLog.getSeq());
+				ManorLandLog foundEntity = manorLogDao.find(ManorLandLogImpl.class, manorLandLog.getSeq());
 				printFind(i, foundEntity);
 				assertManorLandLog(manorLandLog, foundEntity);
 
@@ -108,8 +108,7 @@ public class ManorLogDaoImplTest extends ManorTestSupporter {
 				assertTrue(updated > 0);
 
 				// delete
-				ManorLandLog deletedEntity = manorLogDao.delete(
-						ManorLandLogImpl.class, manorLandLog.getSeq());
+				ManorLandLog deletedEntity = manorLogDao.delete(ManorLandLogImpl.class, manorLandLog.getSeq());
 				printDelete(i, deletedEntity);
 				assertNotNull(deletedEntity);
 			}
@@ -118,26 +117,19 @@ public class ManorLogDaoImplTest extends ManorTestSupporter {
 		}
 
 		@Test
-		// verified: ok
+		@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 		public void insert() {
-			int count = 1;
-			long beg = System.currentTimeMillis();
-			for (int i = 0; i < count; i++) {
-				// 隨機
-				ManorLandLog manorLandLog = randomManorLandLog();
-				//
-				Serializable pk = manorLogDao.insert(manorLandLog);
-				printInsert(i, pk);
-				assertNotNull(pk);
+			// 隨機
+			ManorLandLog manorLandLog = randomManorLandLog();
+			//
+			Serializable pk = manorLogDao.insert(manorLandLog);
+			printInsert(pk);
+			assertNotNull(pk);
 
-				ManorLandLog foundEntity = manorLogDao.find(
-						ManorLandLogImpl.class, manorLandLog.getSeq());
-				assertManorLandLog(manorLandLog, foundEntity);
+			ManorLandLog foundEntity = manorLogDao.find(ManorLandLogImpl.class, manorLandLog.getSeq());
+			assertManorLandLog(manorLandLog, foundEntity);
 
-				System.out.println(manorLandLog);
-			}
-			long end = System.currentTimeMillis();
-			System.out.println(count + " times: " + (end - beg) + " mills. ");
+			System.out.println(manorLandLog);
 		}
 
 		@Test
@@ -219,8 +211,7 @@ public class ManorLogDaoImplTest extends ManorTestSupporter {
 		 * @param expected
 		 * @param actual
 		 */
-		public static void assertManorSeedLog(ManorSeedLog expected,
-				ManorSeedLog actual) {
+		public static void assertManorSeedLog(ManorSeedLog expected, ManorSeedLog actual) {
 			if (expected == null) {
 				assertNull(actual);
 			} else {
@@ -244,7 +235,7 @@ public class ManorLogDaoImplTest extends ManorTestSupporter {
 		// 10 times: 6825 mills.
 		// 10 times: 6693 mills.
 		//
-		// verified: ok
+		@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 		public void crud() {
 			int count = 10;
 			long beg = System.currentTimeMillis();
@@ -257,8 +248,7 @@ public class ManorLogDaoImplTest extends ManorTestSupporter {
 				assertNotNull(pk);
 
 				// retrieve
-				ManorSeedLog foundEntity = manorLogDao.find(
-						ManorSeedLogImpl.class, manorSeedLog.getSeq());
+				ManorSeedLog foundEntity = manorLogDao.find(ManorSeedLogImpl.class, manorSeedLog.getSeq());
 				printFind(i, foundEntity);
 				assertManorSeedLog(manorSeedLog, foundEntity);
 
@@ -269,8 +259,7 @@ public class ManorLogDaoImplTest extends ManorTestSupporter {
 				assertTrue(updated > 0);
 
 				// delete
-				ManorSeedLog deletedEntity = manorLogDao.delete(
-						ManorSeedLogImpl.class, manorSeedLog.getSeq());
+				ManorSeedLog deletedEntity = manorLogDao.delete(ManorSeedLogImpl.class, manorSeedLog.getSeq());
 				printDelete(i, deletedEntity);
 				assertNotNull(deletedEntity);
 			}
@@ -279,26 +268,19 @@ public class ManorLogDaoImplTest extends ManorTestSupporter {
 		}
 
 		@Test
-		// verified: ok
+		@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 		public void insert() {
-			int count = 1;
-			long beg = System.currentTimeMillis();
-			for (int i = 0; i < count; i++) {
-				// 隨機
-				ManorSeedLog manorSeedLog = randomManorSeedLog();
-				//
-				Serializable pk = manorLogDao.insert(manorSeedLog);
-				printInsert(i, pk);
-				assertNotNull(pk);
+			// 隨機
+			ManorSeedLog manorSeedLog = randomManorSeedLog();
+			//
+			Serializable pk = manorLogDao.insert(manorSeedLog);
+			printInsert(pk);
+			assertNotNull(pk);
 
-				ManorSeedLog foundEntity = manorLogDao.find(
-						ManorSeedLogImpl.class, manorSeedLog.getSeq());
-				assertManorSeedLog(manorSeedLog, foundEntity);
+			ManorSeedLog foundEntity = manorLogDao.find(ManorSeedLogImpl.class, manorSeedLog.getSeq());
+			assertManorSeedLog(manorSeedLog, foundEntity);
 
-				System.out.println(manorSeedLog);
-			}
-			long end = System.currentTimeMillis();
-			System.out.println(count + " times: " + (end - beg) + " mills. ");
+			System.out.println(manorSeedLog);
 		}
 
 		@Test

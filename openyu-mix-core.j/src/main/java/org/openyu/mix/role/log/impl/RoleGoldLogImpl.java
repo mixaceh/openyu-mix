@@ -5,18 +5,20 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.Proxy;
 import org.hibernate.annotations.Type;
 import org.hibernate.search.annotations.Analyze;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.FieldBridge;
-import org.hibernate.search.annotations.Index;
 import org.hibernate.search.annotations.Store;
 import org.openyu.mix.app.log.supporter.AppLogEntitySupporter;
 import org.openyu.mix.role.log.RoleGoldLog;
@@ -29,20 +31,19 @@ import org.openyu.mix.role.service.RoleService.GoldType;
 //hibernate
 //--------------------------------------------------
 @Entity
-@org.hibernate.annotations.Entity(dynamicInsert = true, dynamicUpdate = true)
-@Table(name = "mix_role_gold_log")
-@SequenceGenerator(name = "mix_role_gold_log_g", sequenceName = "mix_role_gold_log_s", allocationSize = 1)
+@DynamicInsert
+@DynamicUpdate
+@Table(name = "role_gold_log", indexes = {
+		@Index(name = "role_gold_log_role_id_log_date_action_type", columnList = "role_id,log_date,action_type") })
+@SequenceGenerator(name = "sg_role_gold_log", sequenceName = "seq_role_gold_log", allocationSize = 1)
 // when use ehcache, config in ehcache.xml
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = "org.openyu.mix.role.log.impl.RoleGoldLogImpl")
 @Proxy(lazy = false)
-@org.hibernate.annotations.Table(appliesTo = "mix_role_gold_log", indexes = { @org.hibernate.annotations.Index(name = "idx_mix_role_gold_log_1", columnNames = {
-		"role_id", "log_date", "action_type" }) })
 // --------------------------------------------------
 // search
 // --------------------------------------------------
 // @Indexed
-public class RoleGoldLogImpl extends AppLogEntitySupporter implements
-		RoleGoldLog {
+public class RoleGoldLogImpl extends AppLogEntitySupporter implements RoleGoldLog {
 	private static final long serialVersionUID = -29012245968332149L;
 
 	private Long seq;
@@ -62,7 +63,7 @@ public class RoleGoldLogImpl extends AppLogEntitySupporter implements
 
 	@Id
 	@Column(name = "seq")
-	@GeneratedValue(strategy = GenerationType.AUTO, generator = "mix_role_gold_log_g")
+	@GeneratedValue(strategy = GenerationType.AUTO, generator = "sg_role_gold_log")
 	public Long getSeq() {
 		return seq;
 	}
@@ -73,7 +74,7 @@ public class RoleGoldLogImpl extends AppLogEntitySupporter implements
 
 	@Column(name = "action_type", length = 13)
 	@Type(type = "org.openyu.mix.role.po.userType.ActionTypeUserType")
-	@Field(store = Store.YES, index = Index.YES, analyze = Analyze.NO)
+	@Field(store = Store.YES, index = org.hibernate.search.annotations.Index.YES, analyze = Analyze.NO)
 	@FieldBridge(impl = ActionTypeBridge.class)
 	public ActionType getActionType() {
 		return actionType;
@@ -85,7 +86,7 @@ public class RoleGoldLogImpl extends AppLogEntitySupporter implements
 
 	@Column(name = "gold_type", length = 13)
 	@Type(type = "org.openyu.mix.role.po.userType.GoldTypeUserType")
-	@Field(store = Store.YES, index = Index.YES, analyze = Analyze.NO)
+	@Field(store = Store.YES, index = org.hibernate.search.annotations.Index.YES, analyze = Analyze.NO)
 	@FieldBridge(impl = GoldTypeBridge.class)
 	public GoldType getGoldType() {
 		return goldType;
@@ -96,7 +97,7 @@ public class RoleGoldLogImpl extends AppLogEntitySupporter implements
 	}
 
 	@Column(name = "gold")
-	@Field(store = Store.YES, index = Index.YES, analyze = Analyze.NO)
+	@Field(store = Store.YES, index = org.hibernate.search.annotations.Index.YES, analyze = Analyze.NO)
 	public Long getGold() {
 		return gold;
 	}
@@ -106,7 +107,7 @@ public class RoleGoldLogImpl extends AppLogEntitySupporter implements
 	}
 
 	@Column(name = "before_gold")
-	@Field(store = Store.YES, index = Index.YES, analyze = Analyze.NO)
+	@Field(store = Store.YES, index = org.hibernate.search.annotations.Index.YES, analyze = Analyze.NO)
 	public Long getBeforeGold() {
 		return beforeGold;
 	}
@@ -116,7 +117,7 @@ public class RoleGoldLogImpl extends AppLogEntitySupporter implements
 	}
 
 	@Column(name = "after_gold")
-	@Field(store = Store.YES, index = Index.YES, analyze = Analyze.NO)
+	@Field(store = Store.YES, index = org.hibernate.search.annotations.Index.YES, analyze = Analyze.NO)
 	public Long getAfterGold() {
 		return afterGold;
 	}
