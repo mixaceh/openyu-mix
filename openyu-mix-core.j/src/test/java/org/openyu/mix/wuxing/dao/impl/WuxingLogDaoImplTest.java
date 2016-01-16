@@ -404,6 +404,9 @@ public class WuxingLogDaoImplTest extends WuxingTestSupporter {
 
 		@Test
 		@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
+		// round: 1.16 [+- 0.00], round.block: 0.00 [+- 0.00], round.gc: 0.05
+		// [+- 0.00], GC.calls: 0, GC.time: 0.00, time.total: 1.22, time.warmup:
+		// 0.06, time.bench: 1.16
 		public void insert() {
 			// 隨機
 			WuxingFamousLog manorLandLog = randomWuxingFamousLog();
