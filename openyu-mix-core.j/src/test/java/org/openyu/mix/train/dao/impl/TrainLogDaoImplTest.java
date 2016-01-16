@@ -10,6 +10,9 @@ import org.openyu.mix.train.TrainTestSupporter;
 import org.openyu.mix.train.log.TrainLog;
 import org.openyu.mix.train.log.impl.TrainLogImpl;
 import org.openyu.mix.train.service.TrainService.ActionType;
+
+import com.carrotsearch.junitbenchmarks.BenchmarkOptions;
+
 import org.openyu.commons.util.DateHelper;
 
 public class TrainLogDaoImplTest extends TrainTestSupporter {
@@ -71,7 +74,7 @@ public class TrainLogDaoImplTest extends TrainTestSupporter {
 		// 10 times: 6825 mills.
 		// 10 times: 6693 mills.
 		//
-		// verified: ok
+		@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 		public void crud() {
 			int count = 10;
 			long beg = System.currentTimeMillis();
@@ -84,8 +87,7 @@ public class TrainLogDaoImplTest extends TrainTestSupporter {
 				assertNotNull(pk);
 
 				// retrieve
-				TrainLog foundEntity = trainLogDao.find(TrainLogImpl.class,
-						manorLandLog.getSeq());
+				TrainLog foundEntity = trainLogDao.find(TrainLogImpl.class, manorLandLog.getSeq());
 				printFind(i, foundEntity);
 				assertTrainLog(manorLandLog, foundEntity);
 
@@ -96,8 +98,7 @@ public class TrainLogDaoImplTest extends TrainTestSupporter {
 				assertTrue(updated > 0);
 
 				// delete
-				TrainLog deletedEntity = trainLogDao.delete(TrainLogImpl.class,
-						manorLandLog.getSeq());
+				TrainLog deletedEntity = trainLogDao.delete(TrainLogImpl.class, manorLandLog.getSeq());
 				printDelete(i, deletedEntity);
 				assertNotNull(deletedEntity);
 			}
@@ -106,26 +107,22 @@ public class TrainLogDaoImplTest extends TrainTestSupporter {
 		}
 
 		@Test
-		// verified: ok
+		@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
+		// round: 0.63 [+- 0.00], round.block: 0.00 [+- 0.00], round.gc: 0.00
+		// [+- 0.00], GC.calls: 1, GC.time: 0.06, time.total: 0.64, time.warmup:
+		// 0.01, time.bench: 0.63
 		public void insert() {
-			int count = 1;
-			long beg = System.currentTimeMillis();
-			for (int i = 0; i < count; i++) {
-				// 隨機
-				TrainLog manorLandLog = randomTrainLog();
-				//
-				Serializable pk = trainLogDao.insert(manorLandLog);
-				printInsert(i, pk);
-				assertNotNull(pk);
+			// 隨機
+			TrainLog manorLandLog = randomTrainLog();
+			//
+			Serializable pk = trainLogDao.insert(manorLandLog);
+			printInsert(pk);
+			assertNotNull(pk);
 
-				TrainLog foundEntity = trainLogDao.find(TrainLogImpl.class,
-						manorLandLog.getSeq());
-				assertTrainLog(manorLandLog, foundEntity);
+			TrainLog foundEntity = trainLogDao.find(TrainLogImpl.class, manorLandLog.getSeq());
+			assertTrainLog(manorLandLog, foundEntity);
 
-				System.out.println(manorLandLog);
-			}
-			long end = System.currentTimeMillis();
-			System.out.println(count + " times: " + (end - beg) + " mills. ");
+			System.out.println(manorLandLog);
 		}
 
 		@Test

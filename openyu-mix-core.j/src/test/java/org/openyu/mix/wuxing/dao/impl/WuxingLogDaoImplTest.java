@@ -15,6 +15,9 @@ import org.openyu.mix.wuxing.log.impl.WuxingPlayLogImpl;
 import org.openyu.mix.wuxing.log.impl.WuxingPutLogImpl;
 import org.openyu.mix.wuxing.service.WuxingService.PlayType;
 import org.openyu.mix.wuxing.service.WuxingService.PutType;
+
+import com.carrotsearch.junitbenchmarks.BenchmarkOptions;
+
 import org.openyu.commons.util.DateHelper;
 
 public class WuxingLogDaoImplTest extends WuxingTestSupporter {
@@ -56,8 +59,7 @@ public class WuxingLogDaoImplTest extends WuxingTestSupporter {
 		 * @param expected
 		 * @param actual
 		 */
-		public static void assertWuxingPlayLog(WuxingPlayLog expected,
-				WuxingPlayLog actual) {
+		public static void assertWuxingPlayLog(WuxingPlayLog expected, WuxingPlayLog actual) {
 			if (expected == null) {
 				assertNull(actual);
 			} else {
@@ -83,7 +85,7 @@ public class WuxingLogDaoImplTest extends WuxingTestSupporter {
 		// 10 times: 6825 mills.
 		// 10 times: 6693 mills.
 		//
-		// verified: ok
+		@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 		public void crud() {
 			int count = 10;
 			long beg = System.currentTimeMillis();
@@ -96,8 +98,7 @@ public class WuxingLogDaoImplTest extends WuxingTestSupporter {
 				assertNotNull(pk);
 
 				// retrieve
-				WuxingPlayLog foundEntity = wuxingLogDao.find(
-						WuxingPlayLogImpl.class, manorLandLog.getSeq());
+				WuxingPlayLog foundEntity = wuxingLogDao.find(WuxingPlayLogImpl.class, manorLandLog.getSeq());
 				printFind(i, foundEntity);
 				assertWuxingPlayLog(manorLandLog, foundEntity);
 
@@ -108,8 +109,7 @@ public class WuxingLogDaoImplTest extends WuxingTestSupporter {
 				assertTrue(updated > 0);
 
 				// delete
-				WuxingPlayLog deletedEntity = wuxingLogDao.delete(
-						WuxingPlayLogImpl.class, manorLandLog.getSeq());
+				WuxingPlayLog deletedEntity = wuxingLogDao.delete(WuxingPlayLogImpl.class, manorLandLog.getSeq());
 				printDelete(i, deletedEntity);
 				assertNotNull(deletedEntity);
 			}
@@ -118,26 +118,19 @@ public class WuxingLogDaoImplTest extends WuxingTestSupporter {
 		}
 
 		@Test
-		// verified: ok
+		@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 		public void insert() {
-			int count = 1;
-			long beg = System.currentTimeMillis();
-			for (int i = 0; i < count; i++) {
-				// 隨機
-				WuxingPlayLog manorLandLog = randomWuxingPlayLog();
-				//
-				Serializable pk = wuxingLogDao.insert(manorLandLog);
-				printInsert(i, pk);
-				assertNotNull(pk);
+			// 隨機
+			WuxingPlayLog manorLandLog = randomWuxingPlayLog();
+			//
+			Serializable pk = wuxingLogDao.insert(manorLandLog);
+			printInsert(pk);
+			assertNotNull(pk);
 
-				WuxingPlayLog foundEntity = wuxingLogDao.find(
-						WuxingPlayLogImpl.class, manorLandLog.getSeq());
-				assertWuxingPlayLog(manorLandLog, foundEntity);
+			WuxingPlayLog foundEntity = wuxingLogDao.find(WuxingPlayLogImpl.class, manorLandLog.getSeq());
+			assertWuxingPlayLog(manorLandLog, foundEntity);
 
-				System.out.println(manorLandLog);
-			}
-			long end = System.currentTimeMillis();
-			System.out.println(count + " times: " + (end - beg) + " mills. ");
+			System.out.println(manorLandLog);
 		}
 
 		@Test
@@ -213,8 +206,7 @@ public class WuxingLogDaoImplTest extends WuxingTestSupporter {
 		 * @param expected
 		 * @param actual
 		 */
-		public static void assertWuxingPutLog(WuxingPutLog expected,
-				WuxingPutLog actual) {
+		public static void assertWuxingPutLog(WuxingPutLog expected, WuxingPutLog actual) {
 			if (expected == null) {
 				assertNull(actual);
 			} else {
@@ -235,7 +227,7 @@ public class WuxingLogDaoImplTest extends WuxingTestSupporter {
 		// 10 times: 6825 mills.
 		// 10 times: 6693 mills.
 		//
-		// verified: ok
+		@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 		public void crud() {
 			int count = 10;
 			long beg = System.currentTimeMillis();
@@ -248,8 +240,7 @@ public class WuxingLogDaoImplTest extends WuxingTestSupporter {
 				assertNotNull(pk);
 
 				// retrieve
-				WuxingPutLog foundEntity = wuxingLogDao.find(
-						WuxingPutLogImpl.class, manorSeedLog.getSeq());
+				WuxingPutLog foundEntity = wuxingLogDao.find(WuxingPutLogImpl.class, manorSeedLog.getSeq());
 				printFind(i, foundEntity);
 				assertWuxingPutLog(manorSeedLog, foundEntity);
 
@@ -260,8 +251,7 @@ public class WuxingLogDaoImplTest extends WuxingTestSupporter {
 				assertTrue(updated > 0);
 
 				// delete
-				WuxingPutLog deletedEntity = wuxingLogDao.delete(
-						WuxingPutLogImpl.class, manorSeedLog.getSeq());
+				WuxingPutLog deletedEntity = wuxingLogDao.delete(WuxingPutLogImpl.class, manorSeedLog.getSeq());
 				printDelete(i, deletedEntity);
 				assertNotNull(deletedEntity);
 			}
@@ -270,26 +260,19 @@ public class WuxingLogDaoImplTest extends WuxingTestSupporter {
 		}
 
 		@Test
-		// verified: ok
+		@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 		public void insert() {
-			int count = 1;
-			long beg = System.currentTimeMillis();
-			for (int i = 0; i < count; i++) {
-				// 隨機
-				WuxingPutLog manorSeedLog = randomWuxingPutLog();
-				//
-				Serializable pk = wuxingLogDao.insert(manorSeedLog);
-				printInsert(i, pk);
-				assertNotNull(pk);
+			// 隨機
+			WuxingPutLog manorSeedLog = randomWuxingPutLog();
+			//
+			Serializable pk = wuxingLogDao.insert(manorSeedLog);
+			printInsert(pk);
+			assertNotNull(pk);
 
-				WuxingPutLog foundEntity = wuxingLogDao.find(
-						WuxingPutLogImpl.class, manorSeedLog.getSeq());
-				assertWuxingPutLog(manorSeedLog, foundEntity);
+			WuxingPutLog foundEntity = wuxingLogDao.find(WuxingPutLogImpl.class, manorSeedLog.getSeq());
+			assertWuxingPutLog(manorSeedLog, foundEntity);
 
-				System.out.println(manorSeedLog);
-			}
-			long end = System.currentTimeMillis();
-			System.out.println(count + " times: " + (end - beg) + " mills. ");
+			System.out.println(manorSeedLog);
 		}
 
 		@Test
@@ -365,8 +348,7 @@ public class WuxingLogDaoImplTest extends WuxingTestSupporter {
 		 * @param expected
 		 * @param actual
 		 */
-		public static void assertWuxingFamousLog(WuxingFamousLog expected,
-				WuxingFamousLog actual) {
+		public static void assertWuxingFamousLog(WuxingFamousLog expected, WuxingFamousLog actual) {
 			if (expected == null) {
 				assertNull(actual);
 			} else {
@@ -388,7 +370,7 @@ public class WuxingLogDaoImplTest extends WuxingTestSupporter {
 		// 10 times: 6825 mills.
 		// 10 times: 6693 mills.
 		//
-		// verified: ok
+		@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 		public void crud() {
 			int count = 10;
 			long beg = System.currentTimeMillis();
@@ -401,8 +383,7 @@ public class WuxingLogDaoImplTest extends WuxingTestSupporter {
 				assertNotNull(pk);
 
 				// retrieve
-				WuxingFamousLog foundEntity = wuxingLogDao.find(
-						WuxingFamousLogImpl.class, manorLandLog.getSeq());
+				WuxingFamousLog foundEntity = wuxingLogDao.find(WuxingFamousLogImpl.class, manorLandLog.getSeq());
 				printFind(i, foundEntity);
 				assertWuxingFamousLog(manorLandLog, foundEntity);
 
@@ -413,8 +394,7 @@ public class WuxingLogDaoImplTest extends WuxingTestSupporter {
 				assertTrue(updated > 0);
 
 				// delete
-				WuxingFamousLog deletedEntity = wuxingLogDao.delete(
-						WuxingFamousLogImpl.class, manorLandLog.getSeq());
+				WuxingFamousLog deletedEntity = wuxingLogDao.delete(WuxingFamousLogImpl.class, manorLandLog.getSeq());
 				printDelete(i, deletedEntity);
 				assertNotNull(deletedEntity);
 			}
@@ -423,26 +403,19 @@ public class WuxingLogDaoImplTest extends WuxingTestSupporter {
 		}
 
 		@Test
-		// verified: ok
+		@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 		public void insert() {
-			int count = 1;
-			long beg = System.currentTimeMillis();
-			for (int i = 0; i < count; i++) {
-				// 隨機
-				WuxingFamousLog manorLandLog = randomWuxingFamousLog();
-				//
-				Serializable pk = wuxingLogDao.insert(manorLandLog);
-				printInsert(i, pk);
-				assertNotNull(pk);
+			// 隨機
+			WuxingFamousLog manorLandLog = randomWuxingFamousLog();
+			//
+			Serializable pk = wuxingLogDao.insert(manorLandLog);
+			printInsert(pk);
+			assertNotNull(pk);
 
-				WuxingFamousLog foundEntity = wuxingLogDao.find(
-						WuxingFamousLogImpl.class, manorLandLog.getSeq());
-				assertWuxingFamousLog(manorLandLog, foundEntity);
+			WuxingFamousLog foundEntity = wuxingLogDao.find(WuxingFamousLogImpl.class, manorLandLog.getSeq());
+			assertWuxingFamousLog(manorLandLog, foundEntity);
 
-				System.out.println(manorLandLog);
-			}
-			long end = System.currentTimeMillis();
-			System.out.println(count + " times: " + (end - beg) + " mills. ");
+			System.out.println(manorLandLog);
 		}
 
 		@Test

@@ -5,18 +5,20 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.Proxy;
 import org.hibernate.annotations.Type;
 import org.hibernate.search.annotations.Analyze;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.FieldBridge;
-import org.hibernate.search.annotations.Index;
 import org.hibernate.search.annotations.Store;
 import org.openyu.mix.app.log.supporter.AppLogEntitySupporter;
 import org.openyu.mix.item.po.bridge.ItemBridge;
@@ -31,20 +33,19 @@ import org.openyu.mix.treasure.vo.Treasure;
 //hibernate
 //--------------------------------------------------
 @Entity
-@org.hibernate.annotations.Entity(dynamicInsert = true, dynamicUpdate = true)
-@Table(name = "mix_treasure_buy_log")
-@SequenceGenerator(name = "mix_treasure_buy_log_g", sequenceName = "mix_treasure_buy_log_s", allocationSize = 1)
-//when use ehcache, config in ehcache.xml
+@DynamicInsert
+@DynamicUpdate
+@Table(name = "treasure_buy_log", indexes = {
+		@Index(name = "treasure_buy_log_role_id_log_date_buy_type", columnList = "role_id,log_date,buy_type") })
+@SequenceGenerator(name = "sg_treasure_buy_log", sequenceName = "seq_treasure_buy_log", allocationSize = 1)
+// when use ehcache, config in ehcache.xml
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = "org.openyu.mix.treasure.log.impl.TreasureBuyLogImpl")
 @Proxy(lazy = false)
-@org.hibernate.annotations.Table(appliesTo = "mix_treasure_buy_log", indexes = { @org.hibernate.annotations.Index(name = "idx_mix_treasure_buy_log_1", columnNames = {
-		"role_id", "log_date", "buy_type" }) })
-//--------------------------------------------------
-//search
-//--------------------------------------------------
-//@Indexed
-public class TreasureBuyLogImpl extends AppLogEntitySupporter implements TreasureBuyLog
-{
+// --------------------------------------------------
+// search
+// --------------------------------------------------
+// @Indexed
+public class TreasureBuyLogImpl extends AppLogEntitySupporter implements TreasureBuyLog {
 
 	private static final long serialVersionUID = -4862371320004172091L;
 
@@ -95,138 +96,117 @@ public class TreasureBuyLogImpl extends AppLogEntitySupporter implements Treasur
 	 */
 	private Integer spendCoin;
 
-	public TreasureBuyLogImpl()
-	{}
+	public TreasureBuyLogImpl() {
+	}
 
 	@Id
 	@Column(name = "seq")
-	@GeneratedValue(strategy = GenerationType.AUTO, generator = "mix_treasure_buy_log_g")
-	public Long getSeq()
-	{
+	@GeneratedValue(strategy = GenerationType.AUTO, generator = "sg_treasure_buy_log")
+	public Long getSeq() {
 		return seq;
 	}
 
-	public void setSeq(Long seq)
-	{
+	public void setSeq(Long seq) {
 		this.seq = seq;
 	}
 
 	@Column(name = "buy_type", length = 13)
 	@Type(type = "org.openyu.mix.treasure.po.userType.BuyTypeUserType")
-	@Field(store = Store.YES, index = Index.YES, analyze = Analyze.NO)
+	@Field(store = Store.YES, index = org.hibernate.search.annotations.Index.YES, analyze = Analyze.NO)
 	@FieldBridge(impl = BuyTypeBridge.class)
-	public BuyType getBuyType()
-	{
+	public BuyType getBuyType() {
 		return buyType;
 	}
 
-	public void setBuyType(BuyType buyType)
-	{
+	public void setBuyType(BuyType buyType) {
 		this.buyType = buyType;
 	}
 
 	@Column(name = "grid_index")
-	@Field(store = Store.YES, index = Index.YES, analyze = Analyze.NO)
-	public Integer getGridIndex()
-	{
+	@Field(store = Store.YES, index = org.hibernate.search.annotations.Index.YES, analyze = Analyze.NO)
+	public Integer getGridIndex() {
 		return gridIndex;
 	}
 
-	public void setGridIndex(Integer gridIndex)
-	{
+	public void setGridIndex(Integer gridIndex) {
 		this.gridIndex = gridIndex;
 	}
 
 	@Column(name = "treasure", length = 1024)
 	@Type(type = "org.openyu.mix.treasure.po.userType.TreasureUserType")
-	@Field(store = Store.YES, index = Index.YES, analyze = Analyze.NO)
+	@Field(store = Store.YES, index = org.hibernate.search.annotations.Index.YES, analyze = Analyze.NO)
 	@FieldBridge(impl = TreasureBridge.class)
-	public Treasure getTreasure()
-	{
+	public Treasure getTreasure() {
 		return treasure;
 	}
 
-	public void setTreasure(Treasure treasure)
-	{
+	public void setTreasure(Treasure treasure) {
 		this.treasure = treasure;
 	}
 
 	@Column(name = "item", length = 1024)
 	@Type(type = "org.openyu.mix.item.po.userType.ItemUserType")
-	@Field(store = Store.YES, index = Index.YES, analyze = Analyze.NO)
+	@Field(store = Store.YES, index = org.hibernate.search.annotations.Index.YES, analyze = Analyze.NO)
 	@FieldBridge(impl = ItemBridge.class)
-	public Item getItem()
-	{
+	public Item getItem() {
 		return item;
 	}
 
-	public void setItem(Item item)
-	{
+	public void setItem(Item item) {
 		this.item = item;
 	}
 
 	@Column(name = "amount")
-	@Field(store = Store.YES, index = Index.YES, analyze = Analyze.NO)
-	public Integer getAmount()
-	{
+	@Field(store = Store.YES, index = org.hibernate.search.annotations.Index.YES, analyze = Analyze.NO)
+	public Integer getAmount() {
 		return amount;
 	}
 
-	public void setAmount(Integer amount)
-	{
+	public void setAmount(Integer amount) {
 		this.amount = amount;
 	}
 
 	@Column(name = "price")
-	@Field(store = Store.YES, index = Index.YES, analyze = Analyze.NO)
-	public Long getPrice()
-	{
+	@Field(store = Store.YES, index = org.hibernate.search.annotations.Index.YES, analyze = Analyze.NO)
+	public Long getPrice() {
 		return price;
 	}
 
-	public void setPrice(Long price)
-	{
+	public void setPrice(Long price) {
 		this.price = price;
 	}
 
 	@Column(name = "coin")
-	@Field(store = Store.YES, index = Index.YES, analyze = Analyze.NO)
-	public Integer getCoin()
-	{
+	@Field(store = Store.YES, index = org.hibernate.search.annotations.Index.YES, analyze = Analyze.NO)
+	public Integer getCoin() {
 		return coin;
 	}
 
-	public void setCoin(Integer coin)
-	{
+	public void setCoin(Integer coin) {
 		this.coin = coin;
 	}
 
 	@Column(name = "spend_gold")
-	@Field(store = Store.YES, index = Index.YES, analyze = Analyze.NO)
-	public Long getSpendGold()
-	{
+	@Field(store = Store.YES, index = org.hibernate.search.annotations.Index.YES, analyze = Analyze.NO)
+	public Long getSpendGold() {
 		return spendGold;
 	}
 
-	public void setSpendGold(Long spendGold)
-	{
+	public void setSpendGold(Long spendGold) {
 		this.spendGold = spendGold;
 	}
 
 	@Column(name = "spend_coin")
-	@Field(store = Store.YES, index = Index.YES, analyze = Analyze.NO)
-	public Integer getSpendCoin()
-	{
+	@Field(store = Store.YES, index = org.hibernate.search.annotations.Index.YES, analyze = Analyze.NO)
+	public Integer getSpendCoin() {
 		return spendCoin;
 	}
 
-	public void setSpendCoin(Integer spendCoin)
-	{
+	public void setSpendCoin(Integer spendCoin) {
 		this.spendCoin = spendCoin;
 	}
 
-	public String toString()
-	{
+	public String toString() {
 		ToStringBuilder builder = new ToStringBuilder(this);
 		builder.appendSuper(super.toString());
 		builder.append("buyType", buyType);
@@ -241,8 +221,7 @@ public class TreasureBuyLogImpl extends AppLogEntitySupporter implements Treasur
 		return builder.toString();
 	}
 
-	public Object clone()
-	{
+	public Object clone() {
 		TreasureBuyLogImpl copy = null;
 		copy = (TreasureBuyLogImpl) super.clone();
 		copy.treasure = clone(treasure);

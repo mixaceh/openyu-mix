@@ -15,6 +15,9 @@ import org.openyu.mix.treasure.log.impl.TreasureBuyLogImpl;
 import org.openyu.mix.treasure.log.impl.TreasureRefreshLogImpl;
 import org.openyu.mix.treasure.service.TreasureService.BuyType;
 import org.openyu.mix.treasure.vo.Treasure;
+
+import com.carrotsearch.junitbenchmarks.BenchmarkOptions;
+
 import org.openyu.commons.util.DateHelper;
 
 public class TreasureLogDaoImplTest extends TreasureTestSupporter {
@@ -42,16 +45,13 @@ public class TreasureLogDaoImplTest extends TreasureTestSupporter {
 			result.setServerIp(randomIp("10.0.0"));
 			//
 			result.setRefreshTime(System.currentTimeMillis());
-			Treasure treasure = treasureCollector.createTreasure(
-					"ROLE_EXP_001", "T_ROLE_EXP_G001");
+			Treasure treasure = treasureCollector.createTreasure("ROLE_EXP_001", "T_ROLE_EXP_G001");
 			result.getTreasures().put(0, treasure);
 			//
-			treasure = treasureCollector.createTreasure("ROLE_EXP_001",
-					"T_ROLE_EXP_G002");
+			treasure = treasureCollector.createTreasure("ROLE_EXP_001", "T_ROLE_EXP_G002");
 			result.getTreasures().put(1, treasure);
 			//
-			treasure = treasureCollector.createTreasure("ROLE_EXP_001",
-					"T_ROLE_EXP_G003");
+			treasure = treasureCollector.createTreasure("ROLE_EXP_001", "T_ROLE_EXP_G003");
 			result.getTreasures().put(2, treasure);
 			return result;
 		}
@@ -62,8 +62,7 @@ public class TreasureLogDaoImplTest extends TreasureTestSupporter {
 		 * @param expected
 		 * @param actual
 		 */
-		public static void assertTreasureRefreshLog(
-				TreasureRefreshLog expected, TreasureRefreshLog actual) {
+		public static void assertTreasureRefreshLog(TreasureRefreshLog expected, TreasureRefreshLog actual) {
 			if (expected == null) {
 				assertNull(actual);
 			} else {
@@ -85,7 +84,7 @@ public class TreasureLogDaoImplTest extends TreasureTestSupporter {
 		// 10 times: 6825 mills.
 		// 10 times: 6693 mills.
 		//
-		// verified: ok
+		@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 		public void crud() {
 			int count = 10;
 			long beg = System.currentTimeMillis();
@@ -98,8 +97,8 @@ public class TreasureLogDaoImplTest extends TreasureTestSupporter {
 				assertNotNull(pk);
 
 				// retrieve
-				TreasureRefreshLog foundEntity = treasureLogDao.find(
-						TreasureRefreshLogImpl.class, manorLandLog.getSeq());
+				TreasureRefreshLog foundEntity = treasureLogDao.find(TreasureRefreshLogImpl.class,
+						manorLandLog.getSeq());
 				printFind(i, foundEntity);
 				assertTreasureRefreshLog(manorLandLog, foundEntity);
 
@@ -110,8 +109,8 @@ public class TreasureLogDaoImplTest extends TreasureTestSupporter {
 				assertTrue(updated > 0);
 
 				// delete
-				TreasureRefreshLog deletedEntity = treasureLogDao.delete(
-						TreasureRefreshLogImpl.class, manorLandLog.getSeq());
+				TreasureRefreshLog deletedEntity = treasureLogDao.delete(TreasureRefreshLogImpl.class,
+						manorLandLog.getSeq());
 				printDelete(i, deletedEntity);
 				assertNotNull(deletedEntity);
 			}
@@ -120,7 +119,10 @@ public class TreasureLogDaoImplTest extends TreasureTestSupporter {
 		}
 
 		@Test
-		// verified: ok
+		@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
+		// round: 0.83 [+- 0.00], round.block: 0.00 [+- 0.00], round.gc: 0.00
+		// [+- 0.00], GC.calls: 1, GC.time: 0.05, time.total: 0.83, time.warmup:
+		// 0.00, time.bench: 0.83
 		public void insert() {
 			int count = 1;
 			long beg = System.currentTimeMillis();
@@ -132,8 +134,8 @@ public class TreasureLogDaoImplTest extends TreasureTestSupporter {
 				printInsert(i, pk);
 				assertNotNull(pk);
 
-				TreasureRefreshLog foundEntity = treasureLogDao.find(
-						TreasureRefreshLogImpl.class, manorLandLog.getSeq());
+				TreasureRefreshLog foundEntity = treasureLogDao.find(TreasureRefreshLogImpl.class,
+						manorLandLog.getSeq());
 				assertTreasureRefreshLog(manorLandLog, foundEntity);
 
 				System.out.println(manorLandLog);
@@ -207,11 +209,9 @@ public class TreasureLogDaoImplTest extends TreasureTestSupporter {
 			result.setBuyType(randomType(BuyType.class));
 			result.setGridIndex(randomInt(10));
 			//
-			Treasure treasure = treasureCollector.createTreasure(
-					"ROLE_EXP_001", "T_ROLE_EXP_G001");
+			Treasure treasure = treasureCollector.createTreasure("ROLE_EXP_001", "T_ROLE_EXP_G001");
 			result.setTreasure(treasure);
-			Item item = ThingCollector.getInstance().createThing(
-					"T_ROLE_EXP_G001");
+			Item item = ThingCollector.getInstance().createThing("T_ROLE_EXP_G001");
 			result.setItem(item);
 			//
 			result.setAmount(randomInt(10));
@@ -229,8 +229,7 @@ public class TreasureLogDaoImplTest extends TreasureTestSupporter {
 		 * @param expected
 		 * @param actual
 		 */
-		public static void assertTreasureBuyLog(TreasureBuyLog expected,
-				TreasureBuyLog actual) {
+		public static void assertTreasureBuyLog(TreasureBuyLog expected, TreasureBuyLog actual) {
 			if (expected == null) {
 				assertNull(actual);
 			} else {
@@ -261,7 +260,7 @@ public class TreasureLogDaoImplTest extends TreasureTestSupporter {
 		// 10 times: 6825 mills.
 		// 10 times: 6693 mills.
 		//
-		// verified: ok
+		@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 		public void crud() {
 			int count = 10;
 			long beg = System.currentTimeMillis();
@@ -274,8 +273,7 @@ public class TreasureLogDaoImplTest extends TreasureTestSupporter {
 				assertNotNull(pk);
 
 				// retrieve
-				TreasureBuyLog foundEntity = treasureLogDao.find(
-						TreasureBuyLogImpl.class, manorSeedLog.getSeq());
+				TreasureBuyLog foundEntity = treasureLogDao.find(TreasureBuyLogImpl.class, manorSeedLog.getSeq());
 				printFind(i, foundEntity);
 				assertTreasureBuyLog(manorSeedLog, foundEntity);
 
@@ -286,8 +284,7 @@ public class TreasureLogDaoImplTest extends TreasureTestSupporter {
 				assertTrue(updated > 0);
 
 				// delete
-				TreasureBuyLog deletedEntity = treasureLogDao.delete(
-						TreasureBuyLogImpl.class, manorSeedLog.getSeq());
+				TreasureBuyLog deletedEntity = treasureLogDao.delete(TreasureBuyLogImpl.class, manorSeedLog.getSeq());
 				printDelete(i, deletedEntity);
 				assertNotNull(deletedEntity);
 			}
@@ -296,26 +293,22 @@ public class TreasureLogDaoImplTest extends TreasureTestSupporter {
 		}
 
 		@Test
-		// verified: ok
+		@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
+		// round: 0.91 [+- 0.00], round.block: 0.00 [+- 0.00], round.gc: 0.00
+		// [+- 0.00], GC.calls: 1, GC.time: 0.07, time.total: 0.94, time.warmup:
+		// 0.02, time.bench: 0.92
 		public void insert() {
-			int count = 1;
-			long beg = System.currentTimeMillis();
-			for (int i = 0; i < count; i++) {
-				// 隨機
-				TreasureBuyLog manorSeedLog = randomTreasureBuyLog();
-				//
-				Serializable pk = treasureLogDao.insert(manorSeedLog);
-				printInsert(i, pk);
-				assertNotNull(pk);
+			// 隨機
+			TreasureBuyLog manorSeedLog = randomTreasureBuyLog();
+			//
+			Serializable pk = treasureLogDao.insert(manorSeedLog);
+			printInsert(pk);
+			assertNotNull(pk);
 
-				TreasureBuyLog foundEntity = treasureLogDao.find(
-						TreasureBuyLogImpl.class, manorSeedLog.getSeq());
-				assertTreasureBuyLog(manorSeedLog, foundEntity);
+			TreasureBuyLog foundEntity = treasureLogDao.find(TreasureBuyLogImpl.class, manorSeedLog.getSeq());
+			assertTreasureBuyLog(manorSeedLog, foundEntity);
 
-				System.out.println(manorSeedLog);
-			}
-			long end = System.currentTimeMillis();
-			System.out.println(count + " times: " + (end - beg) + " mills. ");
+			System.out.println(manorSeedLog);
 		}
 
 		@Test

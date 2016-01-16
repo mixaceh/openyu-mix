@@ -8,18 +8,20 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.Proxy;
 import org.hibernate.annotations.Type;
 import org.hibernate.search.annotations.Analyze;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.FieldBridge;
-import org.hibernate.search.annotations.Index;
 import org.hibernate.search.annotations.Store;
 import org.openyu.mix.app.log.supporter.AppLogEntitySupporter;
 import org.openyu.mix.sasang.log.SasangPutLog;
@@ -31,14 +33,14 @@ import org.openyu.commons.entity.bridge.StringIntegerBridge;
 //hibernate
 //--------------------------------------------------
 @Entity
-@org.hibernate.annotations.Entity(dynamicInsert = true, dynamicUpdate = true)
-@Table(name = "mix_sasang_put_log")
-@SequenceGenerator(name = "mix_sasang_put_log_g", sequenceName = "mix_sasang_put_log_s", allocationSize = 1)
+@DynamicInsert
+@DynamicUpdate
+@Table(name = "sasang_put_log", indexes = {
+		@Index(name = "sasang_put_log_role_id_log_date_put_type", columnList = "role_id,log_date,put_type") })
+@SequenceGenerator(name = "sg_sasang_put_log", sequenceName = "seq_sasang_put_log", allocationSize = 1)
 //when use ehcache, config in ehcache.xml
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = "org.openyu.mix.sasang.log.impl.SasangPutLogImpl")
 @Proxy(lazy = false)
-@org.hibernate.annotations.Table(appliesTo = "mix_sasang_put_log", indexes = { @org.hibernate.annotations.Index(name = "idx_mix_sasang_put_log_1", columnNames = {
-		"role_id", "log_date", "put_type" }) })
 //--------------------------------------------------
 //search
 //--------------------------------------------------
@@ -59,7 +61,7 @@ public class SasangPutLogImpl extends AppLogEntitySupporter implements SasangPut
 
 	@Id
 	@Column(name = "seq")
-	@GeneratedValue(strategy = GenerationType.AUTO, generator = "mix_sasang_put_log_g")
+	@GeneratedValue(strategy = GenerationType.AUTO, generator = "sg_sasang_put_log")
 	public Long getSeq()
 	{
 		return seq;
@@ -72,7 +74,7 @@ public class SasangPutLogImpl extends AppLogEntitySupporter implements SasangPut
 
 	@Column(name = "put_type", length = 13)
 	@Type(type = "org.openyu.mix.sasang.po.userType.PutTypeUserType")
-	@Field(store = Store.YES, index = Index.YES, analyze = Analyze.NO)
+	@Field(store = Store.YES, index = org.hibernate.search.annotations.Index.YES, analyze = Analyze.NO)
 	@FieldBridge(impl = PutTypeBridge.class)
 	public PutType getPutType()
 	{
@@ -86,7 +88,7 @@ public class SasangPutLogImpl extends AppLogEntitySupporter implements SasangPut
 
 	@Column(name = "awards", length = 1024)
 	@Type(type = "org.openyu.commons.entity.userType.StringIntegerUserType")
-	@Field(store = Store.YES, index = Index.YES, analyze = Analyze.NO)
+	@Field(store = Store.YES, index = org.hibernate.search.annotations.Index.YES, analyze = Analyze.NO)
 	@FieldBridge(impl = StringIntegerBridge.class)
 	public Map<String, Integer> getAwards()
 	{

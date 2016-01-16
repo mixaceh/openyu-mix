@@ -15,6 +15,9 @@ import org.openyu.mix.sasang.log.impl.SasangPlayLogImpl;
 import org.openyu.mix.sasang.log.impl.SasangPutLogImpl;
 import org.openyu.mix.sasang.service.SasangService.PlayType;
 import org.openyu.mix.sasang.service.SasangService.PutType;
+
+import com.carrotsearch.junitbenchmarks.BenchmarkOptions;
+
 import org.openyu.commons.util.DateHelper;
 
 public class SasangLogDaoImplTest extends SasangTestSupporter {
@@ -56,8 +59,7 @@ public class SasangLogDaoImplTest extends SasangTestSupporter {
 		 * @param expected
 		 * @param actual
 		 */
-		public static void assertSasangPlayLog(SasangPlayLog expected,
-				SasangPlayLog actual) {
+		public static void assertSasangPlayLog(SasangPlayLog expected, SasangPlayLog actual) {
 			if (expected == null) {
 				assertNull(actual);
 			} else {
@@ -83,7 +85,7 @@ public class SasangLogDaoImplTest extends SasangTestSupporter {
 		// 10 times: 6825 mills.
 		// 10 times: 6693 mills.
 		//
-		// verified: ok
+		@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 		public void crud() {
 			int count = 10;
 			long beg = System.currentTimeMillis();
@@ -96,8 +98,7 @@ public class SasangLogDaoImplTest extends SasangTestSupporter {
 				assertNotNull(pk);
 
 				// retrieve
-				SasangPlayLog foundEntity = sasangLogDao.find(
-						SasangPlayLogImpl.class, manorLandLog.getSeq());
+				SasangPlayLog foundEntity = sasangLogDao.find(SasangPlayLogImpl.class, manorLandLog.getSeq());
 				printFind(i, foundEntity);
 				assertSasangPlayLog(manorLandLog, foundEntity);
 
@@ -108,8 +109,7 @@ public class SasangLogDaoImplTest extends SasangTestSupporter {
 				assertTrue(updated > 0);
 
 				// delete
-				SasangPlayLog deletedEntity = sasangLogDao.delete(
-						SasangPlayLogImpl.class, manorLandLog.getSeq());
+				SasangPlayLog deletedEntity = sasangLogDao.delete(SasangPlayLogImpl.class, manorLandLog.getSeq());
 				printDelete(i, deletedEntity);
 				assertNotNull(deletedEntity);
 			}
@@ -118,26 +118,22 @@ public class SasangLogDaoImplTest extends SasangTestSupporter {
 		}
 
 		@Test
-		// verified: ok
+		@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
+		// round: 1.03 [+- 0.00], round.block: 0.00 [+- 0.00], round.gc: 0.00
+		// [+- 0.00], GC.calls: 1, GC.time: 0.07, time.total: 1.04, time.warmup:
+		// 0.00, time.bench: 1.04
 		public void insert() {
-			int count = 1;
-			long beg = System.currentTimeMillis();
-			for (int i = 0; i < count; i++) {
-				// 隨機
-				SasangPlayLog manorLandLog = randomSasangPlayLog();
-				//
-				Serializable pk = sasangLogDao.insert(manorLandLog);
-				printInsert(i, pk);
-				assertNotNull(pk);
+			// 隨機
+			SasangPlayLog manorLandLog = randomSasangPlayLog();
+			//
+			Serializable pk = sasangLogDao.insert(manorLandLog);
+			printInsert(pk);
+			assertNotNull(pk);
 
-				SasangPlayLog foundEntity = sasangLogDao.find(
-						SasangPlayLogImpl.class, manorLandLog.getSeq());
-				assertSasangPlayLog(manorLandLog, foundEntity);
+			SasangPlayLog foundEntity = sasangLogDao.find(SasangPlayLogImpl.class, manorLandLog.getSeq());
+			assertSasangPlayLog(manorLandLog, foundEntity);
 
-				System.out.println(manorLandLog);
-			}
-			long end = System.currentTimeMillis();
-			System.out.println(count + " times: " + (end - beg) + " mills. ");
+			System.out.println(manorLandLog);
 		}
 
 		@Test
@@ -213,8 +209,7 @@ public class SasangLogDaoImplTest extends SasangTestSupporter {
 		 * @param expected
 		 * @param actual
 		 */
-		public static void assertSasangPutLog(SasangPutLog expected,
-				SasangPutLog actual) {
+		public static void assertSasangPutLog(SasangPutLog expected, SasangPutLog actual) {
 			if (expected == null) {
 				assertNull(actual);
 			} else {
@@ -235,7 +230,7 @@ public class SasangLogDaoImplTest extends SasangTestSupporter {
 		// 10 times: 6825 mills.
 		// 10 times: 6693 mills.
 		//
-		// verified: ok
+		@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 		public void crud() {
 			int count = 10;
 			long beg = System.currentTimeMillis();
@@ -248,8 +243,7 @@ public class SasangLogDaoImplTest extends SasangTestSupporter {
 				assertNotNull(pk);
 
 				// retrieve
-				SasangPutLog foundEntity = sasangLogDao.find(
-						SasangPutLogImpl.class, manorSeedLog.getSeq());
+				SasangPutLog foundEntity = sasangLogDao.find(SasangPutLogImpl.class, manorSeedLog.getSeq());
 				printFind(i, foundEntity);
 				assertSasangPutLog(manorSeedLog, foundEntity);
 
@@ -260,8 +254,7 @@ public class SasangLogDaoImplTest extends SasangTestSupporter {
 				assertTrue(updated > 0);
 
 				// delete
-				SasangPutLog deletedEntity = sasangLogDao.delete(
-						SasangPutLogImpl.class, manorSeedLog.getSeq());
+				SasangPutLog deletedEntity = sasangLogDao.delete(SasangPutLogImpl.class, manorSeedLog.getSeq());
 				printDelete(i, deletedEntity);
 				assertNotNull(deletedEntity);
 			}
@@ -270,26 +263,22 @@ public class SasangLogDaoImplTest extends SasangTestSupporter {
 		}
 
 		@Test
-		// verified: ok
+		@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
+		// round: 0.60 [+- 0.00], round.block: 0.00 [+- 0.00], round.gc: 0.00
+		// [+- 0.00], GC.calls: 0, GC.time: 0.00, time.total: 0.61, time.warmup:
+		// 0.00, time.bench: 0.61
 		public void insert() {
-			int count = 1;
-			long beg = System.currentTimeMillis();
-			for (int i = 0; i < count; i++) {
-				// 隨機
-				SasangPutLog manorSeedLog = randomSasangPutLog();
-				//
-				Serializable pk = sasangLogDao.insert(manorSeedLog);
-				printInsert(i, pk);
-				assertNotNull(pk);
+			// 隨機
+			SasangPutLog manorSeedLog = randomSasangPutLog();
+			//
+			Serializable pk = sasangLogDao.insert(manorSeedLog);
+			printInsert(pk);
+			assertNotNull(pk);
 
-				SasangPutLog foundEntity = sasangLogDao.find(
-						SasangPutLogImpl.class, manorSeedLog.getSeq());
-				assertSasangPutLog(manorSeedLog, foundEntity);
+			SasangPutLog foundEntity = sasangLogDao.find(SasangPutLogImpl.class, manorSeedLog.getSeq());
+			assertSasangPutLog(manorSeedLog, foundEntity);
 
-				System.out.println(manorSeedLog);
-			}
-			long end = System.currentTimeMillis();
-			System.out.println(count + " times: " + (end - beg) + " mills. ");
+			System.out.println(manorSeedLog);
 		}
 
 		@Test
@@ -365,8 +354,7 @@ public class SasangLogDaoImplTest extends SasangTestSupporter {
 		 * @param expected
 		 * @param actual
 		 */
-		public static void assertSasangFamousLog(SasangFamousLog expected,
-				SasangFamousLog actual) {
+		public static void assertSasangFamousLog(SasangFamousLog expected, SasangFamousLog actual) {
 			if (expected == null) {
 				assertNull(actual);
 			} else {
@@ -388,7 +376,7 @@ public class SasangLogDaoImplTest extends SasangTestSupporter {
 		// 10 times: 6825 mills.
 		// 10 times: 6693 mills.
 		//
-		// verified: ok
+		@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 		public void crud() {
 			int count = 10;
 			long beg = System.currentTimeMillis();
@@ -401,8 +389,7 @@ public class SasangLogDaoImplTest extends SasangTestSupporter {
 				assertNotNull(pk);
 
 				// retrieve
-				SasangFamousLog foundEntity = sasangLogDao.find(
-						SasangFamousLogImpl.class, manorLandLog.getSeq());
+				SasangFamousLog foundEntity = sasangLogDao.find(SasangFamousLogImpl.class, manorLandLog.getSeq());
 				printFind(i, foundEntity);
 				assertSasangFamousLog(manorLandLog, foundEntity);
 
@@ -413,8 +400,7 @@ public class SasangLogDaoImplTest extends SasangTestSupporter {
 				assertTrue(updated > 0);
 
 				// delete
-				SasangFamousLog deletedEntity = sasangLogDao.delete(
-						SasangFamousLogImpl.class, manorLandLog.getSeq());
+				SasangFamousLog deletedEntity = sasangLogDao.delete(SasangFamousLogImpl.class, manorLandLog.getSeq());
 				printDelete(i, deletedEntity);
 				assertNotNull(deletedEntity);
 			}
@@ -423,26 +409,22 @@ public class SasangLogDaoImplTest extends SasangTestSupporter {
 		}
 
 		@Test
-		// verified: ok
+		@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
+		// round: 0.63 [+- 0.00], round.block: 0.00 [+- 0.00], round.gc: 0.00
+		// [+- 0.00], GC.calls: 0, GC.time: 0.00, time.total: 0.63, time.warmup:
+		// 0.00, time.bench: 0.62
 		public void insert() {
-			int count = 1;
-			long beg = System.currentTimeMillis();
-			for (int i = 0; i < count; i++) {
-				// 隨機
-				SasangFamousLog manorLandLog = randomSasangFamousLog();
-				//
-				Serializable pk = sasangLogDao.insert(manorLandLog);
-				printInsert(i, pk);
-				assertNotNull(pk);
+			// 隨機
+			SasangFamousLog manorLandLog = randomSasangFamousLog();
+			//
+			Serializable pk = sasangLogDao.insert(manorLandLog);
+			printInsert(pk);
+			assertNotNull(pk);
 
-				SasangFamousLog foundEntity = sasangLogDao.find(
-						SasangFamousLogImpl.class, manorLandLog.getSeq());
-				assertSasangFamousLog(manorLandLog, foundEntity);
+			SasangFamousLog foundEntity = sasangLogDao.find(SasangFamousLogImpl.class, manorLandLog.getSeq());
+			assertSasangFamousLog(manorLandLog, foundEntity);
 
-				System.out.println(manorLandLog);
-			}
-			long end = System.currentTimeMillis();
-			System.out.println(count + " times: " + (end - beg) + " mills. ");
+			System.out.println(manorLandLog);
 		}
 
 		@Test
