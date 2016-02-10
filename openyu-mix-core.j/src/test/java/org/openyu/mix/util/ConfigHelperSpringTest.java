@@ -36,7 +36,7 @@ public class ConfigHelperSpringTest extends BaseTestSupporter {
 	@BenchmarkOptions(benchmarkRounds = 3, warmupRounds = 2, concurrency = 1)
 	public void getter() {
 		// src\test\config\data\conf\config.xml
-		System.out.println(ConfigHelper.getConfigFile());
+		System.out.println(ConfigHelper.getConfigurationFile());
 		//
 		System.out.println(ConfigHelper.getJsonDir());
 		System.out.println(ConfigHelper.getKeyDir());
