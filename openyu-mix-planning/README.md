@@ -1,4 +1,4 @@
-# OpenYu Mysterious I X Core Planning
+# OpenYu Mysterious I X Planning
 
 mix.p/excel 資料編輯器
 
