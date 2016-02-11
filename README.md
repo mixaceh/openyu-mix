@@ -1,1 +1,1 @@
-# OpenYu Mysterious I X Java
+# OpenYu Mysterious I X
