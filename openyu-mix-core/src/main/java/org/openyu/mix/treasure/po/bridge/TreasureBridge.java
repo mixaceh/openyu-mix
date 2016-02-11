@@ -1,7 +1,7 @@
 package org.openyu.mix.treasure.po.bridge;
 
-import org.openyu.mix.treasure.po.userType.TreasureUserType;
 import org.openyu.commons.hibernate.search.bridge.supporter.BaseStringBridgeSupporter;
+import org.openyu.mix.treasure.po.useraype.TreasureUserType;
 
 //--------------------------------------------------
 //reslove: Hibernate search

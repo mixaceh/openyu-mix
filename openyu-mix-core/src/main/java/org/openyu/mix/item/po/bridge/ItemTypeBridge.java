@@ -1,7 +1,7 @@
 package org.openyu.mix.item.po.bridge;
 
-import org.openyu.mix.item.po.userType.ItemTypeUserType;
 import org.openyu.commons.hibernate.search.bridge.supporter.BaseStringBridgeSupporter;
+import org.openyu.mix.item.po.useraype.ItemTypeUserType;
 
 //--------------------------------------------------
 //reslove: Hibernate search

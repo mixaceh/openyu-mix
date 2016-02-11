@@ -1,7 +1,7 @@
 package org.openyu.mix.role.po.bridge;
 
-import org.openyu.mix.role.po.userType.GoldTypeUserType;
 import org.openyu.commons.hibernate.search.bridge.supporter.BaseStringBridgeSupporter;
+import org.openyu.mix.role.po.useraype.GoldTypeUserType;
 
 //--------------------------------------------------
 //reslove: Hibernate search

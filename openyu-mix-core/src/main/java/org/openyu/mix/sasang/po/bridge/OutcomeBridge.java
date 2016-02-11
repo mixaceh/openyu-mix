@@ -1,7 +1,7 @@
 package org.openyu.mix.sasang.po.bridge;
 
-import org.openyu.mix.sasang.po.userType.OutcomeUserType;
 import org.openyu.commons.hibernate.search.bridge.supporter.BaseStringBridgeSupporter;
+import org.openyu.mix.sasang.po.useraype.OutcomeUserType;
 
 //--------------------------------------------------
 //reslove: Hibernate search
