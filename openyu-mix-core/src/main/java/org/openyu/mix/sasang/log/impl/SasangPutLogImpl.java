@@ -73,7 +73,7 @@ public class SasangPutLogImpl extends AppLogEntitySupporter implements SasangPut
 	}
 
 	@Column(name = "put_type", length = 13)
-	@Type(type = "org.openyu.mix.sasang.po.userType.PutTypeUserType")
+	@Type(type = "org.openyu.mix.sasang.po.usertype.PutTypeUserType")
 	@Field(store = Store.YES, index = org.hibernate.search.annotations.Index.YES, analyze = Analyze.NO)
 	@FieldBridge(impl = PutTypeBridge.class)
 	public PutType getPutType()
@@ -87,7 +87,7 @@ public class SasangPutLogImpl extends AppLogEntitySupporter implements SasangPut
 	}
 
 	@Column(name = "awards", length = 1024)
-	@Type(type = "org.openyu.commons.entity.userType.StringIntegerUserType")
+	@Type(type = "org.openyu.commons.entity.usertype.StringIntegerUserType")
 	@Field(store = Store.YES, index = org.hibernate.search.annotations.Index.YES, analyze = Analyze.NO)
 	@FieldBridge(impl = StringIntegerBridge.class)
 	public Map<String, Integer> getAwards()

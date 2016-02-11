@@ -454,7 +454,7 @@ public class ItemServiceImpl extends AppServiceSupporter implements ItemService 
 	 */
 	public void fillItem(Message message, Item item) {
 		/**
-		 * @see org.openyu.mix.item.po.userType.ItemUserType
+		 * @see org.openyu.mix.item.po.usertype.ItemUserType
 		 */
 		message.addString(item.getId());// id
 		message.addString(item.getUniqueId());// 唯一碼

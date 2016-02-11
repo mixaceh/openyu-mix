@@ -1,7 +1,7 @@
 package org.openyu.mix.chat.po.bridge;
 
 import org.openyu.commons.hibernate.search.bridge.supporter.BaseStringBridgeSupporter;
-import org.openyu.mix.chat.po.useraype.ChannelsUserType;
+import org.openyu.mix.chat.po.usertype.ChannelsUserType;
 
 //--------------------------------------------------
 //reslove: Hibernate search

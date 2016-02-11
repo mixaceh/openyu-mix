@@ -70,36 +70,6 @@ public abstract class FlutterPoSupporter extends SeqIdAuditNamesEntitySupporter 
 	public FlutterPoSupporter() {
 	}
 
-	// @Column(name = "race_type", length = 13)
-	// @Type(type = "org.openyu.mix.flutter.po.userType.RaceTypeUserType")
-	// @Field(store = Store.YES, index =
-	// org.hibernate.search.annotations.Index.YES, analyze = Analyze.NO)
-	// @FieldBridge(impl = RaceTypeBridge.class)
-	// public RaceType getRaceType()
-	// {
-	// return raceType;
-	// }
-	//
-	// public void setRaceType(RaceType raceType)
-	// {
-	// this.raceType = raceType;
-	// }
-	//
-	// @Column(name = "career_type", length = 13)
-	// @Type(type = "org.openyu.mix.flutter.po.userType.CareerTypeUserType")
-	// @Field(store = Store.YES, index =
-	// org.hibernate.search.annotations.Index.YES, analyze = Analyze.NO)
-	// @FieldBridge(impl = CareerTypeBridge.class)
-	// public CareerType getCareerType()
-	// {
-	// return careerType;
-	// }
-	//
-	// public void setCareerType(CareerType careerType)
-	// {
-	// this.careerType = careerType;
-	// }
-
 	@Column(name = "industry_id", length = 30)
 	@Field(store = Store.YES, index = org.hibernate.search.annotations.Index.YES, analyze = Analyze.NO)
 	public String getIndustryId() {
@@ -161,7 +131,7 @@ public abstract class FlutterPoSupporter extends SeqIdAuditNamesEntitySupporter 
 	}
 
 	@Column(name = "attribute_group", length = 1024)
-	@Type(type = "org.openyu.mix.flutter.po.userType.AttributeGroupUserType")
+	@Type(type = "org.openyu.mix.flutter.po.usertype.AttributeGroupUserType")
 	@Field(store = Store.YES, index = org.hibernate.search.annotations.Index.YES, analyze = Analyze.NO)
 	@FieldBridge(impl = AttributeGroupBridge.class)
 	public AttributeGroup getAttributeGroup() {

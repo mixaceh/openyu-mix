@@ -73,7 +73,7 @@ public class RoleGoldLogImpl extends AppLogEntitySupporter implements RoleGoldLo
 	}
 
 	@Column(name = "action_type", length = 13)
-	@Type(type = "org.openyu.mix.role.po.userType.ActionTypeUserType")
+	@Type(type = "org.openyu.mix.role.po.usertype.ActionTypeUserType")
 	@Field(store = Store.YES, index = org.hibernate.search.annotations.Index.YES, analyze = Analyze.NO)
 	@FieldBridge(impl = ActionTypeBridge.class)
 	public ActionType getActionType() {
@@ -85,7 +85,7 @@ public class RoleGoldLogImpl extends AppLogEntitySupporter implements RoleGoldLo
 	}
 
 	@Column(name = "gold_type", length = 13)
-	@Type(type = "org.openyu.mix.role.po.userType.GoldTypeUserType")
+	@Type(type = "org.openyu.mix.role.po.usertype.GoldTypeUserType")
 	@Field(store = Store.YES, index = org.hibernate.search.annotations.Index.YES, analyze = Analyze.NO)
 	@FieldBridge(impl = GoldTypeBridge.class)
 	public GoldType getGoldType() {

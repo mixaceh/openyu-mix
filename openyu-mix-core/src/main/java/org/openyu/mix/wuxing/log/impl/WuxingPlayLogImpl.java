@@ -82,7 +82,7 @@ public class WuxingPlayLogImpl extends AppLogEntitySupporter implements WuxingPl
 	}
 
 	@Column(name = "play_type", length = 13)
-	@Type(type = "org.openyu.mix.wuxing.po.userType.PlayTypeUserType")
+	@Type(type = "org.openyu.mix.wuxing.po.usertype.PlayTypeUserType")
 	@Field(store = Store.YES, index = org.hibernate.search.annotations.Index.YES, analyze = Analyze.NO)
 	@FieldBridge(impl = PlayTypeBridge.class)
 	public PlayType getPlayType() {
@@ -104,7 +104,7 @@ public class WuxingPlayLogImpl extends AppLogEntitySupporter implements WuxingPl
 	}
 
 	@Column(name = "outcome", length = 255)
-	@Type(type = "org.openyu.mix.wuxing.po.userType.OutcomeUserType")
+	@Type(type = "org.openyu.mix.wuxing.po.usertype.OutcomeUserType")
 	@Field(store = Store.YES, index = org.hibernate.search.annotations.Index.YES, analyze = Analyze.NO)
 	@FieldBridge(impl = OutcomeBridge.class)
 	public Outcome getOutcome() {
@@ -136,7 +136,7 @@ public class WuxingPlayLogImpl extends AppLogEntitySupporter implements WuxingPl
 	}
 
 	@Column(name = "spend_items", length = 1024)
-	@Type(type = "org.openyu.mix.item.po.userType.ItemListUserType")
+	@Type(type = "org.openyu.mix.item.po.usertype.ItemListUserType")
 	@Field(store = Store.YES, index = org.hibernate.search.annotations.Index.YES, analyze = Analyze.NO)
 	@FieldBridge(impl = ItemListBridge.class)
 	public List<Item> getSpendItems() {

@@ -202,7 +202,7 @@ public class RolePoImpl extends FlutterPoSupporter implements RolePo {
 	}
 
 	@Column(name = "bag_info", length = 8192)
-	@Type(type = "org.openyu.mix.role.po.userType.BagPenUserType")
+	@Type(type = "org.openyu.mix.role.po.usertype.BagPenUserType")
 	@Field(store = Store.YES, index = org.hibernate.search.annotations.Index.YES, analyze = Analyze.NO)
 	@FieldBridge(impl = BagPenBridge.class)
 	public BagPen getBagPen() {
@@ -214,7 +214,7 @@ public class RolePoImpl extends FlutterPoSupporter implements RolePo {
 	}
 
 	@Column(name = "sasang_info", length = 1024)
-	@Type(type = "org.openyu.mix.sasang.po.userType.SasangPenUserType")
+	@Type(type = "org.openyu.mix.sasang.po.usertype.SasangPenUserType")
 	@Field(store = Store.YES, index = org.hibernate.search.annotations.Index.YES, analyze = Analyze.NO)
 	@FieldBridge(impl = SasangPenBridge.class)
 	public SasangPen getSasangPen() {
@@ -226,7 +226,7 @@ public class RolePoImpl extends FlutterPoSupporter implements RolePo {
 	}
 
 	@Column(name = "manor_info", length = 2048)
-	@Type(type = "org.openyu.mix.manor.po.userType.ManorPenUserType")
+	@Type(type = "org.openyu.mix.manor.po.usertype.ManorPenUserType")
 	@Field(store = Store.YES, index = org.hibernate.search.annotations.Index.YES, analyze = Analyze.NO)
 	@FieldBridge(impl = ManorPenBridge.class)
 	public ManorPen getManorPen() {
@@ -238,7 +238,7 @@ public class RolePoImpl extends FlutterPoSupporter implements RolePo {
 	}
 
 	@Column(name = "treasure_info", length = 1024)
-	@Type(type = "org.openyu.mix.treasure.po.userType.TreasurePenUserType")
+	@Type(type = "org.openyu.mix.treasure.po.usertype.TreasurePenUserType")
 	@Field(store = Store.YES, index = org.hibernate.search.annotations.Index.YES, analyze = Analyze.NO)
 	@FieldBridge(impl = TreasurePenBridge.class)
 	public TreasurePen getTreasurePen() {
@@ -250,7 +250,7 @@ public class RolePoImpl extends FlutterPoSupporter implements RolePo {
 	}
 
 	@Column(name = "train_info", length = 512)
-	@Type(type = "org.openyu.mix.train.po.userType.TrainPenUserType")
+	@Type(type = "org.openyu.mix.train.po.usertype.TrainPenUserType")
 	@Field(store = Store.YES, index = org.hibernate.search.annotations.Index.YES, analyze = Analyze.NO)
 	@FieldBridge(impl = TrainPenBridge.class)
 	public TrainPen getTrainPen() {
@@ -262,7 +262,7 @@ public class RolePoImpl extends FlutterPoSupporter implements RolePo {
 	}
 
 	@Column(name = "wuxing_info", length = 1024)
-	@Type(type = "org.openyu.mix.wuxing.po.userType.WuxingPenUserType")
+	@Type(type = "org.openyu.mix.wuxing.po.usertype.WuxingPenUserType")
 	@Field(store = Store.YES, index = org.hibernate.search.annotations.Index.YES, analyze = Analyze.NO)
 	@FieldBridge(impl = WuxingPenBridge.class)
 	public WuxingPen getWuxingPen() {

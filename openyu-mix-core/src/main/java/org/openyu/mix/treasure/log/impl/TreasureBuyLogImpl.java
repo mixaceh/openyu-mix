@@ -111,7 +111,7 @@ public class TreasureBuyLogImpl extends AppLogEntitySupporter implements Treasur
 	}
 
 	@Column(name = "buy_type", length = 13)
-	@Type(type = "org.openyu.mix.treasure.po.userType.BuyTypeUserType")
+	@Type(type = "org.openyu.mix.treasure.po.usertype.BuyTypeUserType")
 	@Field(store = Store.YES, index = org.hibernate.search.annotations.Index.YES, analyze = Analyze.NO)
 	@FieldBridge(impl = BuyTypeBridge.class)
 	public BuyType getBuyType() {
@@ -133,7 +133,7 @@ public class TreasureBuyLogImpl extends AppLogEntitySupporter implements Treasur
 	}
 
 	@Column(name = "treasure", length = 1024)
-	@Type(type = "org.openyu.mix.treasure.po.userType.TreasureUserType")
+	@Type(type = "org.openyu.mix.treasure.po.usertype.TreasureUserType")
 	@Field(store = Store.YES, index = org.hibernate.search.annotations.Index.YES, analyze = Analyze.NO)
 	@FieldBridge(impl = TreasureBridge.class)
 	public Treasure getTreasure() {
@@ -145,7 +145,7 @@ public class TreasureBuyLogImpl extends AppLogEntitySupporter implements Treasur
 	}
 
 	@Column(name = "item", length = 1024)
-	@Type(type = "org.openyu.mix.item.po.userType.ItemUserType")
+	@Type(type = "org.openyu.mix.item.po.usertype.ItemUserType")
 	@Field(store = Store.YES, index = org.hibernate.search.annotations.Index.YES, analyze = Analyze.NO)
 	@FieldBridge(impl = ItemBridge.class)
 	public Item getItem() {

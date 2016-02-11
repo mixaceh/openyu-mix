@@ -92,7 +92,7 @@ public class ManorSeedLogImpl extends AppLogEntitySupporter implements ManorSeed
 	}
 
 	@Column(name = "culture_type", length = 13)
-	@Type(type = "org.openyu.mix.manor.po.userType.CultureTypeUserType")
+	@Type(type = "org.openyu.mix.manor.po.usertype.CultureTypeUserType")
 	@Field(store = Store.YES, index = org.hibernate.search.annotations.Index.YES, analyze = Analyze.NO)
 	@FieldBridge(impl = CultureTypeBridge.class)
 	public CultureType getCultureType() {
@@ -124,7 +124,7 @@ public class ManorSeedLogImpl extends AppLogEntitySupporter implements ManorSeed
 	}
 
 	@Column(name = "seed", length = 1024)
-	@Type(type = "org.openyu.mix.item.po.userType.ItemUserType")
+	@Type(type = "org.openyu.mix.item.po.usertype.ItemUserType")
 	@Field(store = Store.YES, index = org.hibernate.search.annotations.Index.YES, analyze = Analyze.NO)
 	@FieldBridge(impl = ItemBridge.class)
 	public Seed getSeed() {
@@ -136,7 +136,7 @@ public class ManorSeedLogImpl extends AppLogEntitySupporter implements ManorSeed
 	}
 
 	@Column(name = "spend_items", length = 1024)
-	@Type(type = "org.openyu.mix.item.po.userType.ItemListUserType")
+	@Type(type = "org.openyu.mix.item.po.usertype.ItemListUserType")
 	@Field(store = Store.YES, index = org.hibernate.search.annotations.Index.YES, analyze = Analyze.NO)
 	@FieldBridge(impl = ItemListBridge.class)
 	public List<Item> getSpendItems() {

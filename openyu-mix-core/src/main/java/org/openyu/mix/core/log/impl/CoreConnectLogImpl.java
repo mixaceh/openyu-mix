@@ -80,7 +80,7 @@ public class CoreConnectLogImpl extends AppLogEntitySupporter implements CoreCon
 	}
 
 	@Column(name = "connect_action", length = 13)
-	@Type(type = "org.openyu.mix.core.po.userType.ConnectActionUserType")
+	@Type(type = "org.openyu.mix.core.po.usertype.ConnectActionUserType")
 	@Field(store = Store.YES, index = org.hibernate.search.annotations.Index.YES, analyze = Analyze.NO)
 	@FieldBridge(impl = ConnectActionBridge.class)
 	public ConnectAction getConnectAction() {

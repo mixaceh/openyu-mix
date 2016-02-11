@@ -40,7 +40,7 @@ public abstract class ItemLogSupporter extends AppLogEntitySupporter implements
 	}
 
 	@Column(name = "action_type", length = 13)
-	@Type(type = "org.openyu.mix.item.po.userType.ActionTypeUserType")
+	@Type(type = "org.openyu.mix.item.po.usertype.ActionTypeUserType")
 	@Field(store = Store.YES, index = Index.YES, analyze = Analyze.NO)
 	@FieldBridge(impl = ActionTypeBridge.class)
 	public ActionType getActionType() {
@@ -52,7 +52,7 @@ public abstract class ItemLogSupporter extends AppLogEntitySupporter implements
 	}
 
 	@Column(name = "items", length = 1024)
-	@Type(type = "org.openyu.mix.item.po.userType.ItemListUserType")
+	@Type(type = "org.openyu.mix.item.po.usertype.ItemListUserType")
 	@Field(store = Store.YES, index = Index.YES, analyze = Analyze.NO)
 	@FieldBridge(impl = ItemListBridge.class)
 	public List<Item> getItems() {

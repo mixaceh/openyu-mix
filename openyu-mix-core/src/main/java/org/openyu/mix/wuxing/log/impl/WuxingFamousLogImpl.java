@@ -73,7 +73,7 @@ public class WuxingFamousLogImpl extends AppLogEntitySupporter implements Wuxing
 	}
 
 	@Column(name = "play_type", length = 13)
-	@Type(type = "org.openyu.mix.wuxing.po.userType.PlayTypeUserType")
+	@Type(type = "org.openyu.mix.wuxing.po.usertype.PlayTypeUserType")
 	@Field(store = Store.YES, index = org.hibernate.search.annotations.Index.YES, analyze = Analyze.NO)
 	@FieldBridge(impl = PlayTypeBridge.class)
 	public PlayType getPlayType()
@@ -99,7 +99,7 @@ public class WuxingFamousLogImpl extends AppLogEntitySupporter implements Wuxing
 	}
 
 	@Column(name = "outcome", length = 255)
-	@Type(type = "org.openyu.mix.wuxing.po.userType.OutcomeUserType")
+	@Type(type = "org.openyu.mix.wuxing.po.usertype.OutcomeUserType")
 	@Field(store = Store.YES, index = org.hibernate.search.annotations.Index.YES, analyze = Analyze.NO)
 	@FieldBridge(impl = OutcomeBridge.class)
 	public Outcome getOutcome()

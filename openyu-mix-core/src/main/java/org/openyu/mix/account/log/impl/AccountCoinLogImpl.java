@@ -79,7 +79,7 @@ public class AccountCoinLogImpl extends AppLogEntitySupporter implements Account
 	}
 
 	@Column(name = "action_type", length = 13)
-	@Type(type = "org.openyu.mix.account.po.userType.ActionTypeUserType")
+	@Type(type = "org.openyu.mix.account.po.usertype.ActionTypeUserType")
 	@Field(store = Store.YES, index = org.hibernate.search.annotations.Index.YES, analyze = Analyze.NO)
 	@FieldBridge(impl = ActionTypeBridge.class)
 	public ActionType getActionType() {
@@ -91,7 +91,7 @@ public class AccountCoinLogImpl extends AppLogEntitySupporter implements Account
 	}
 
 	@Column(name = "coin_type", length = 13)
-	@Type(type = "org.openyu.mix.account.po.userType.CoinTypeUserType")
+	@Type(type = "org.openyu.mix.account.po.usertype.CoinTypeUserType")
 	@Field(store = Store.YES, index = org.hibernate.search.annotations.Index.YES, analyze = Analyze.NO)
 	@FieldBridge(impl = CoinTypeBridge.class)
 	public CoinType getCoinType() {

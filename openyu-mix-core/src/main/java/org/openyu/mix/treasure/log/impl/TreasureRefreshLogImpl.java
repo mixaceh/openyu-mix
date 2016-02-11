@@ -99,7 +99,7 @@ public class TreasureRefreshLogImpl extends AppLogEntitySupporter implements Tre
 	}
 
 	@Column(name = "treasures", length = 1024)
-	@Type(type = "org.openyu.mix.treasure.po.userType.IntegerTreasureUserType")
+	@Type(type = "org.openyu.mix.treasure.po.usertype.IntegerTreasureUserType")
 	@Field(store = Store.YES, index = org.hibernate.search.annotations.Index.YES, analyze = Analyze.NO)
 	@FieldBridge(impl = IntegerTreasureBridge.class)
 	public Map<Integer, Treasure> getTreasures() {
@@ -111,7 +111,7 @@ public class TreasureRefreshLogImpl extends AppLogEntitySupporter implements Tre
 	}
 
 	@Column(name = "spend_items", length = 1024)
-	@Type(type = "org.openyu.mix.item.po.userType.ItemListUserType")
+	@Type(type = "org.openyu.mix.item.po.usertype.ItemListUserType")
 	@Field(store = Store.YES, index = org.hibernate.search.annotations.Index.YES, analyze = Analyze.NO)
 	@FieldBridge(impl = ItemListBridge.class)
 	public List<Item> getSpendItems() {

@@ -149,7 +149,7 @@ public class ChatPoImpl extends SeqIdAuditEntitySupporter implements ChatPo {
 	}
 
 	@Column(name = "channels", length = 255)
-	@Type(type = "org.openyu.mix.chat.po.userType.ChannelsUserType")
+	@Type(type = "org.openyu.mix.chat.po.usertype.ChannelsUserType")
 	@Field(store = Store.YES, index = org.hibernate.search.annotations.Index.YES, analyze = Analyze.NO)
 	@FieldBridge(impl = ChannelsBridge.class)
 	public Map<ChannelType, Channel> getChannels() {
@@ -161,7 +161,7 @@ public class ChatPoImpl extends SeqIdAuditEntitySupporter implements ChatPo {
 	}
 
 	@Column(name = "friend_group", length = 1024)
-	@Type(type = "org.openyu.mix.chat.po.userType.FriendGroupUserType")
+	@Type(type = "org.openyu.mix.chat.po.usertype.FriendGroupUserType")
 	@Field(store = Store.YES, index = org.hibernate.search.annotations.Index.YES, analyze = Analyze.NO)
 	@FieldBridge(impl = FriendGroupBridge.class)
 	public FriendGroup getFriendGroup() {
@@ -173,7 +173,7 @@ public class ChatPoImpl extends SeqIdAuditEntitySupporter implements ChatPo {
 	}
 
 	@Column(name = "other_group", length = 1024)
-	@Type(type = "org.openyu.mix.chat.po.userType.FriendGroupUserType")
+	@Type(type = "org.openyu.mix.chat.po.usertype.FriendGroupUserType")
 	@Field(store = Store.YES, index = org.hibernate.search.annotations.Index.YES, analyze = Analyze.NO)
 	@FieldBridge(impl = FriendGroupBridge.class)
 	public FriendGroup getOtherGroup() {
@@ -185,7 +185,7 @@ public class ChatPoImpl extends SeqIdAuditEntitySupporter implements ChatPo {
 	}
 
 	@Column(name = "block_group", length = 1024)
-	@Type(type = "org.openyu.mix.chat.po.userType.FriendGroupUserType")
+	@Type(type = "org.openyu.mix.chat.po.usertype.FriendGroupUserType")
 	@Field(store = Store.YES, index = org.hibernate.search.annotations.Index.YES, analyze = Analyze.NO)
 	@FieldBridge(impl = FriendGroupBridge.class)
 	public FriendGroup getBlockGroup() {
@@ -197,7 +197,7 @@ public class ChatPoImpl extends SeqIdAuditEntitySupporter implements ChatPo {
 	}
 
 	@Column(name = "pending_group", length = 1024)
-	@Type(type = "org.openyu.mix.chat.po.userType.FriendGroupUserType")
+	@Type(type = "org.openyu.mix.chat.po.usertype.FriendGroupUserType")
 	@Field(store = Store.YES, index = org.hibernate.search.annotations.Index.YES, analyze = Analyze.NO)
 	@FieldBridge(impl = FriendGroupBridge.class)
 	public FriendGroup getPendingGroup() {
@@ -209,7 +209,7 @@ public class ChatPoImpl extends SeqIdAuditEntitySupporter implements ChatPo {
 	}
 
 	@Column(name = "contact_group", length = 1024)
-	@Type(type = "org.openyu.mix.chat.po.userType.FriendGroupUserType")
+	@Type(type = "org.openyu.mix.chat.po.usertype.FriendGroupUserType")
 	@Field(store = Store.YES, index = org.hibernate.search.annotations.Index.YES, analyze = Analyze.NO)
 	@FieldBridge(impl = FriendGroupBridge.class)
 	public FriendGroup getContactGroup() {
@@ -221,7 +221,7 @@ public class ChatPoImpl extends SeqIdAuditEntitySupporter implements ChatPo {
 	}
 
 	@Column(name = "recommand_group", length = 1024)
-	@Type(type = "org.openyu.mix.chat.po.userType.FriendGroupUserType")
+	@Type(type = "org.openyu.mix.chat.po.usertype.FriendGroupUserType")
 	@Field(store = Store.YES, index = org.hibernate.search.annotations.Index.YES, analyze = Analyze.NO)
 	@FieldBridge(impl = FriendGroupBridge.class)
 	public FriendGroup getRecommandGroup() {

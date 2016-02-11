@@ -85,7 +85,7 @@ public class ItemEnhanceLogImpl extends AppLogEntitySupporter implements ItemEnh
 	}
 
 	@Column(name = "action_type", length = 13)
-	@Type(type = "org.openyu.mix.item.po.userType.ActionTypeUserType")
+	@Type(type = "org.openyu.mix.item.po.usertype.ActionTypeUserType")
 	@Field(store = Store.YES, index = org.hibernate.search.annotations.Index.YES, analyze = Analyze.NO)
 	@FieldBridge(impl = ActionTypeBridge.class)
 	public ActionType getActionType() {
@@ -127,7 +127,7 @@ public class ItemEnhanceLogImpl extends AppLogEntitySupporter implements ItemEnh
 	}
 
 	@Column(name = "item", length = 1024)
-	@Type(type = "org.openyu.mix.item.po.userType.ItemUserType")
+	@Type(type = "org.openyu.mix.item.po.usertype.ItemUserType")
 	@Field(store = Store.YES, index = org.hibernate.search.annotations.Index.YES, analyze = Analyze.NO)
 	@FieldBridge(impl = ItemBridge.class)
 	public Item getItem() {
@@ -139,7 +139,7 @@ public class ItemEnhanceLogImpl extends AppLogEntitySupporter implements ItemEnh
 	}
 
 	@Column(name = "spend_item", length = 1024)
-	@Type(type = "org.openyu.mix.item.po.userType.ItemUserType")
+	@Type(type = "org.openyu.mix.item.po.usertype.ItemUserType")
 	@Field(store = Store.YES, index = org.hibernate.search.annotations.Index.YES, analyze = Analyze.NO)
 	@FieldBridge(impl = ItemBridge.class)
 	public Item getSpendItem() {

@@ -1,7 +1,7 @@
 package org.openyu.mix.flutter.po.bridge;
 
 import org.openyu.commons.hibernate.search.bridge.supporter.BaseStringBridgeSupporter;
-import org.openyu.mix.flutter.po.useraype.CareerTypeUserType;
+import org.openyu.mix.flutter.po.usertype.CareerTypeUserType;
 
 //--------------------------------------------------
 //reslove: Hibernate search

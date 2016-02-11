@@ -353,7 +353,7 @@ public class TreasureServiceImpl extends AppServiceSupporter implements Treasure
 	public boolean fillTreasure(Message message, Treasure treasure) {
 		boolean result = false;
 		/**
-		 * @see org.openyu.mix.treasure.po.userType.TreasureUserType
+		 * @see org.openyu.mix.treasure.po.usertype.TreasureUserType
 		 */
 		message.addString(treasure.getId());// 祕寶id
 		message.addString(treasure.getStockId());// 祕寶庫id

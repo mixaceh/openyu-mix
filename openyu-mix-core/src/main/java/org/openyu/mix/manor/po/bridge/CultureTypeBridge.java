@@ -1,7 +1,7 @@
 package org.openyu.mix.manor.po.bridge;
 
 import org.openyu.commons.hibernate.search.bridge.supporter.BaseStringBridgeSupporter;
-import org.openyu.mix.manor.po.useraype.CultureTypeUserType;
+import org.openyu.mix.manor.po.usertype.CultureTypeUserType;
 
 //--------------------------------------------------
 //reslove: Hibernate search

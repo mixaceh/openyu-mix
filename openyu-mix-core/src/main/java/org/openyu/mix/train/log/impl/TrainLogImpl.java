@@ -87,7 +87,7 @@ public class TrainLogImpl extends AppLogEntitySupporter implements TrainLog {
 	}
 
 	@Column(name = "action_type", length = 13)
-	@Type(type = "org.openyu.mix.train.po.userType.ActionTypeUserType")
+	@Type(type = "org.openyu.mix.train.po.usertype.ActionTypeUserType")
 	@Field(store = Store.YES, index = org.hibernate.search.annotations.Index.YES, analyze = Analyze.NO)
 	@FieldBridge(impl = ActionTypeBridge.class)
 	public ActionType getActionType() {
@@ -109,7 +109,7 @@ public class TrainLogImpl extends AppLogEntitySupporter implements TrainLog {
 	}
 
 	@Column(name = "spend_items", length = 1024)
-	@Type(type = "org.openyu.mix.item.po.userType.ItemListUserType")
+	@Type(type = "org.openyu.mix.item.po.usertype.ItemListUserType")
 	@Field(store = Store.YES, index = org.hibernate.search.annotations.Index.YES, analyze = Analyze.NO)
 	@FieldBridge(impl = ItemListBridge.class)
 	public List<Item> getSpendItems() {
