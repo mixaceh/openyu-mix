@@ -1,8 +1,8 @@
-package org.openyu.mix.bootstrap.server;
+package org.openyu.mix.bootstrap.server.bak;
 
 import org.junit.Test;
 
-import org.openyu.socklet.bootstrap.server.StandaloneBootstrapBak;
+import org.openyu.socklet.bootstrap.server.bak.StandaloneBootstrapBak;
 
 public class StandaloneBootstrapTest {
 
