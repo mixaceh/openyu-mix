@@ -10,7 +10,7 @@ import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
-import org.openyu.mix.app.vo.supporter.AppPenSupporter;
+import org.openyu.mix.app.vo.supporter.AppInfoSupporter;
 import org.openyu.mix.role.vo.Role;
 import org.openyu.mix.treasure.vo.Treasure;
 import org.openyu.mix.treasure.vo.TreasurePen;
@@ -21,7 +21,7 @@ import org.openyu.mix.treasure.vo.adapter.IntegerTreasureXmlAdapter;
 //--------------------------------------------------
 @XmlRootElement(name = "treasurePen")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class TreasurePenImpl extends AppPenSupporter implements TreasurePen
+public class TreasurePenImpl extends AppInfoSupporter implements TreasurePen
 {
 
 	private static final long serialVersionUID = 5073307472276879735L;

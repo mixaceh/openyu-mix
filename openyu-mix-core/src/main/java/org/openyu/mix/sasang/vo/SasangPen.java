@@ -3,14 +3,14 @@ package org.openyu.mix.sasang.vo;
 import java.util.Map;
 
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-import org.openyu.mix.app.vo.AppPen;
+import org.openyu.mix.app.vo.AppInfo;
 import com.sun.xml.bind.AnyTypeAdapter;
 
 /**
  * 四象欄位
  */
 @XmlJavaTypeAdapter(AnyTypeAdapter.class)
-public interface SasangPen extends AppPen
+public interface SasangPen extends AppInfo
 {
 	String KEY = SasangPen.class.getName();
 

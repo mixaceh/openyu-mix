@@ -7,7 +7,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import org.apache.commons.lang.builder.ToStringBuilder;
-import org.openyu.mix.app.vo.supporter.AppPenSupporter;
+import org.openyu.mix.app.vo.supporter.AppInfoSupporter;
 import org.openyu.mix.role.vo.Role;
 import org.openyu.mix.qixing.vo.Outcome;
 import org.openyu.mix.qixing.vo.QixingPen;
@@ -15,7 +15,7 @@ import org.openyu.commons.lang.NumberHelper;
 
 @XmlRootElement(name = "qixingPen")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class QixingPenImpl extends AppPenSupporter implements QixingPen
+public class QixingPenImpl extends AppInfoSupporter implements QixingPen
 {
 	private static final long serialVersionUID = 3394460367607072868L;
 

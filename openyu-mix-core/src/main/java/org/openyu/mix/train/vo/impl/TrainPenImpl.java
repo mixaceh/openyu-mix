@@ -7,7 +7,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 
-import org.openyu.mix.app.vo.supporter.AppPenSupporter;
+import org.openyu.mix.app.vo.supporter.AppInfoSupporter;
 import org.openyu.mix.role.vo.Role;
 import org.openyu.mix.train.vo.TrainPen;
 import org.openyu.commons.lang.NumberHelper;
@@ -17,7 +17,7 @@ import org.openyu.commons.lang.NumberHelper;
 //--------------------------------------------------
 @XmlRootElement(name = "trainPen")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class TrainPenImpl extends AppPenSupporter implements TrainPen
+public class TrainPenImpl extends AppInfoSupporter implements TrainPen
 {
 
 	private static final long serialVersionUID = 5073307472276879735L;

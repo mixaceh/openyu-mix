@@ -6,12 +6,12 @@ import org.openyu.commons.bean.BaseBean;
 import com.sun.xml.bind.AnyTypeAdapter;
 
 /**
- * 欄位
+ * 欄位資訊
  */
 @XmlJavaTypeAdapter(AnyTypeAdapter.class)
-public interface AppPen extends BaseBean
+public interface AppInfo extends BaseBean
 {
-	String KEY = AppPen.class.getName();
+	String KEY = AppInfo.class.getName();
 
 	/**
 	 * 是否已連線

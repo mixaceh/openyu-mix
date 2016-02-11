@@ -8,7 +8,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 
-import org.openyu.mix.app.vo.AppPen;
+import org.openyu.mix.app.vo.AppInfo;
 import org.openyu.commons.bean.BaseBean;
 import org.openyu.commons.enumz.IntEnum;
 import com.sun.xml.bind.AnyTypeAdapter;
@@ -17,7 +17,7 @@ import com.sun.xml.bind.AnyTypeAdapter;
  * 莊園欄位
  */
 @XmlJavaTypeAdapter(AnyTypeAdapter.class)
-public interface ManorPen extends AppPen
+public interface ManorPen extends AppInfo
 {
 	String KEY = ManorPen.class.getName();
 

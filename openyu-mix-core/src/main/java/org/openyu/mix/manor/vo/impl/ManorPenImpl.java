@@ -16,7 +16,7 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
-import org.openyu.mix.app.vo.supporter.AppPenSupporter;
+import org.openyu.mix.app.vo.supporter.AppInfoSupporter;
 import org.openyu.mix.manor.vo.Land;
 import org.openyu.mix.manor.vo.ManorPen;
 import org.openyu.mix.manor.vo.Seed;
@@ -31,7 +31,7 @@ import org.openyu.commons.bean.supporter.BaseBeanSupporter;
 //--------------------------------------------------
 @XmlRootElement(name = "manorPen")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class ManorPenImpl extends AppPenSupporter implements ManorPen
+public class ManorPenImpl extends AppInfoSupporter implements ManorPen
 {
 
 	private static final long serialVersionUID = 1413819560547091412L;

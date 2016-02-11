@@ -4,14 +4,14 @@ import java.util.Map;
 
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-import org.openyu.mix.app.vo.AppPen;
+import org.openyu.mix.app.vo.AppInfo;
 import com.sun.xml.bind.AnyTypeAdapter;
 
 /**
  * 祕寶欄位
  */
 @XmlJavaTypeAdapter(AnyTypeAdapter.class)
-public interface TreasurePen extends AppPen
+public interface TreasurePen extends AppInfo
 {
 	String KEY = TreasurePen.class.getName();
 

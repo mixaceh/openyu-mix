@@ -3,14 +3,14 @@ package org.openyu.mix.qixing.vo;
 import java.util.Map;
 
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-import org.openyu.mix.app.vo.AppPen;
+import org.openyu.mix.app.vo.AppInfo;
 import com.sun.xml.bind.AnyTypeAdapter;
 
 /**
  * 七星欄位
  */
 @XmlJavaTypeAdapter(AnyTypeAdapter.class)
-public interface QixingPen extends AppPen
+public interface QixingPen extends AppInfo
 {
 	String KEY = QixingPen.class.getName();
 

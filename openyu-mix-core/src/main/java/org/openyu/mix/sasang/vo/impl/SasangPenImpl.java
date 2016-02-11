@@ -7,7 +7,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import org.apache.commons.lang.builder.ToStringBuilder;
-import org.openyu.mix.app.vo.supporter.AppPenSupporter;
+import org.openyu.mix.app.vo.supporter.AppInfoSupporter;
 import org.openyu.mix.role.vo.Role;
 import org.openyu.mix.sasang.vo.Outcome;
 import org.openyu.mix.sasang.vo.SasangPen;
@@ -15,7 +15,7 @@ import org.openyu.commons.lang.NumberHelper;
 
 @XmlRootElement(name = "sasangPen")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class SasangPenImpl extends AppPenSupporter implements SasangPen
+public class SasangPenImpl extends AppInfoSupporter implements SasangPen
 {
 	private static final long serialVersionUID = 3394460367607072868L;
 

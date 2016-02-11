@@ -3,14 +3,14 @@ package org.openyu.mix.wuxing.vo;
 import java.util.Map;
 
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-import org.openyu.mix.app.vo.AppPen;
+import org.openyu.mix.app.vo.AppInfo;
 import com.sun.xml.bind.AnyTypeAdapter;
 
 /**
  * 五行欄位
  */
 @XmlJavaTypeAdapter(AnyTypeAdapter.class)
-public interface WuxingPen extends AppPen
+public interface WuxingPen extends AppInfo
 {
 	String KEY = WuxingPen.class.getName();
 

@@ -2,14 +2,14 @@ package org.openyu.mix.train.vo;
 
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-import org.openyu.mix.app.vo.AppPen;
+import org.openyu.mix.app.vo.AppInfo;
 import com.sun.xml.bind.AnyTypeAdapter;
 
 /**
  * 訓練欄位
  */
 @XmlJavaTypeAdapter(AnyTypeAdapter.class)
-public interface TrainPen extends AppPen
+public interface TrainPen extends AppInfo
 {
 	String KEY = TrainPen.class.getName();
 
