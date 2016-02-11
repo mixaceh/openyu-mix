@@ -10,7 +10,7 @@ import org.openyu.mix.role.vo.BagPen;
 import org.openyu.mix.role.vo.BagPen.Tab;
 import org.openyu.mix.role.vo.impl.BagPenImpl;
 import org.openyu.commons.enumz.EnumHelper;
-import org.openyu.commons.hibernate.userType.supporter.BaseUserTypeSupporter;
+import org.openyu.commons.hibernate.usertype.supporter.BaseUserTypeSupporter;
 import org.openyu.commons.lang.ArrayHelper;
 
 public class BagPenUserType extends BaseUserTypeSupporter {

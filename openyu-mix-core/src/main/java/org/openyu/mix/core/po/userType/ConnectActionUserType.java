@@ -5,7 +5,7 @@ import java.sql.Types;
 import org.hibernate.engine.spi.SessionImplementor;
 import org.openyu.mix.core.vo.Core.ConnectAction;
 import org.openyu.commons.enumz.EnumHelper;
-import org.openyu.commons.hibernate.userType.supporter.BaseUserTypeSupporter;
+import org.openyu.commons.hibernate.usertype.supporter.BaseUserTypeSupporter;
 
 public class ConnectActionUserType extends BaseUserTypeSupporter {
 

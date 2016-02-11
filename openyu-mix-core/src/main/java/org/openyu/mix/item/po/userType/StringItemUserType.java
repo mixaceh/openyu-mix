@@ -8,7 +8,7 @@ import org.apache.commons.lang.StringUtils;
 import org.hibernate.engine.spi.SessionImplementor;
 import org.openyu.mix.item.vo.Item;
 import org.openyu.commons.enumz.EnumHelper;
-import org.openyu.commons.hibernate.userType.supporter.BaseUserTypeSupporter;
+import org.openyu.commons.hibernate.usertype.supporter.BaseUserTypeSupporter;
 import org.openyu.commons.lang.ArrayHelper;
 
 public class StringItemUserType extends BaseUserTypeSupporter {

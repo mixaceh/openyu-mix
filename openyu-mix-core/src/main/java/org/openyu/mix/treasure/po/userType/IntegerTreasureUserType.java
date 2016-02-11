@@ -8,7 +8,7 @@ import org.apache.commons.lang.StringUtils;
 import org.hibernate.engine.spi.SessionImplementor;
 import org.openyu.mix.treasure.vo.Treasure;
 import org.openyu.commons.enumz.EnumHelper;
-import org.openyu.commons.hibernate.userType.supporter.BaseUserTypeSupporter;
+import org.openyu.commons.hibernate.usertype.supporter.BaseUserTypeSupporter;
 import org.openyu.commons.lang.ArrayHelper;
 
 public class IntegerTreasureUserType extends BaseUserTypeSupporter {

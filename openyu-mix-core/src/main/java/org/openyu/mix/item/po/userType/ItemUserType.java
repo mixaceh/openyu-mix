@@ -21,7 +21,7 @@ import org.openyu.mix.manor.vo.Land;
 import org.openyu.mix.manor.vo.Seed;
 import org.openyu.mix.manor.vo.MatureType;
 import org.openyu.commons.enumz.EnumHelper;
-import org.openyu.commons.hibernate.userType.supporter.BaseUserTypeSupporter;
+import org.openyu.commons.hibernate.usertype.supporter.BaseUserTypeSupporter;
 import org.openyu.commons.lang.ArrayHelper;
 
 /**

@@ -10,9 +10,9 @@ import org.openyu.mix.wuxing.service.impl.WuxingMachineImpl;
 import org.openyu.mix.wuxing.vo.Outcome;
 import org.openyu.mix.wuxing.vo.WuxingPen;
 import org.openyu.mix.wuxing.vo.impl.WuxingPenImpl;
-import org.openyu.commons.entity.userType.StringIntegerUserType;
+import org.openyu.commons.entity.usertype.StringIntegerUserType;
 import org.openyu.commons.enumz.EnumHelper;
-import org.openyu.commons.hibernate.userType.supporter.BaseUserTypeSupporter;
+import org.openyu.commons.hibernate.usertype.supporter.BaseUserTypeSupporter;
 import org.openyu.commons.lang.ArrayHelper;
 
 public class WuxingPenUserType extends BaseUserTypeSupporter {

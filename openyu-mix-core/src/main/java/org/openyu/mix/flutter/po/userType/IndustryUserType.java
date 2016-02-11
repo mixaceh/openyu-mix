@@ -6,7 +6,7 @@ import org.hibernate.engine.spi.SessionImplementor;
 import org.openyu.mix.flutter.vo.Industry;
 import org.openyu.mix.flutter.vo.IndustryCollector;
 import org.openyu.commons.enumz.EnumHelper;
-import org.openyu.commons.hibernate.userType.supporter.BaseUserTypeSupporter;
+import org.openyu.commons.hibernate.usertype.supporter.BaseUserTypeSupporter;
 
 public class IndustryUserType extends BaseUserTypeSupporter {
 

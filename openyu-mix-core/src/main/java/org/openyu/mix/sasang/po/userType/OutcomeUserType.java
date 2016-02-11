@@ -7,7 +7,7 @@ import org.openyu.mix.sasang.service.SasangMachine;
 import org.openyu.mix.sasang.service.impl.SasangMachineImpl;
 import org.openyu.mix.sasang.vo.Outcome;
 import org.openyu.commons.enumz.EnumHelper;
-import org.openyu.commons.hibernate.userType.supporter.BaseUserTypeSupporter;
+import org.openyu.commons.hibernate.usertype.supporter.BaseUserTypeSupporter;
 
 /**
  * 開出的結果

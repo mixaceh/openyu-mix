@@ -13,9 +13,9 @@ import org.openyu.mix.chat.vo.impl.FriendImpl;
 import org.openyu.mix.flutter.vo.GenderType;
 import org.openyu.mix.vip.vo.VipType;
 import org.openyu.commons.bean.LocaleNameBean;
-import org.openyu.commons.entity.userType.NamesBeanUserType;
+import org.openyu.commons.entity.usertype.NamesBeanUserType;
 import org.openyu.commons.enumz.EnumHelper;
-import org.openyu.commons.hibernate.userType.supporter.BaseUserTypeSupporter;
+import org.openyu.commons.hibernate.usertype.supporter.BaseUserTypeSupporter;
 import org.openyu.commons.lang.ArrayHelper;
 
 public class FriendGroupUserType extends BaseUserTypeSupporter {

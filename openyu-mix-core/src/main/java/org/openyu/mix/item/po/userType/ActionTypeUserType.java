@@ -5,7 +5,7 @@ import java.sql.Types;
 import org.hibernate.engine.spi.SessionImplementor;
 import org.openyu.mix.item.service.ItemService.ActionType;
 import org.openyu.commons.enumz.EnumHelper;
-import org.openyu.commons.hibernate.userType.supporter.BaseUserTypeSupporter;
+import org.openyu.commons.hibernate.usertype.supporter.BaseUserTypeSupporter;
 import org.openyu.commons.util.concurrent.MapCache;
 import org.openyu.commons.util.concurrent.impl.MapCacheImpl;
 

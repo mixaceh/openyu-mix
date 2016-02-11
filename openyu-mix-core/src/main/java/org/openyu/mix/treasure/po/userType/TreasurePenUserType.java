@@ -9,7 +9,7 @@ import org.openyu.mix.treasure.vo.Treasure;
 import org.openyu.mix.treasure.vo.TreasurePen;
 import org.openyu.mix.treasure.vo.impl.TreasurePenImpl;
 import org.openyu.commons.enumz.EnumHelper;
-import org.openyu.commons.hibernate.userType.supporter.BaseUserTypeSupporter;
+import org.openyu.commons.hibernate.usertype.supporter.BaseUserTypeSupporter;
 import org.openyu.commons.lang.ArrayHelper;
 
 public class TreasurePenUserType extends BaseUserTypeSupporter {

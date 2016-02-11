@@ -5,7 +5,7 @@ import java.sql.Types;
 import org.hibernate.engine.spi.SessionImplementor;
 import org.openyu.mix.wuxing.service.WuxingService.PutType;
 import org.openyu.commons.enumz.EnumHelper;
-import org.openyu.commons.hibernate.userType.supporter.BaseUserTypeSupporter;
+import org.openyu.commons.hibernate.usertype.supporter.BaseUserTypeSupporter;
 
 public class PutTypeUserType extends BaseUserTypeSupporter {
 
