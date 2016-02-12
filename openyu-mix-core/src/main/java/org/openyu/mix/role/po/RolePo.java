@@ -3,7 +3,7 @@ package org.openyu.mix.role.po;
 import org.openyu.mix.flutter.po.FlutterPo;
 import org.openyu.mix.manor.vo.ManorPen;
 import org.openyu.mix.role.vo.BagInfo;
-import org.openyu.mix.sasang.vo.SasangPen;
+import org.openyu.mix.sasang.vo.SasangInfo;
 import org.openyu.mix.train.vo.TrainPen;
 import org.openyu.mix.treasure.vo.TreasureInfo;
 import org.openyu.mix.wuxing.vo.WuxingPen;
@@ -85,9 +85,9 @@ public interface RolePo extends FlutterPo {
 	 * 
 	 * @return
 	 */
-	SasangPen getSasangPen();
+	SasangInfo getSasangInfo();
 
-	void setSasangPen(SasangPen sasangPen);
+	void setSasangInfo(SasangInfo sasangInfo);
 
 	/**
 	 * 莊園欄位

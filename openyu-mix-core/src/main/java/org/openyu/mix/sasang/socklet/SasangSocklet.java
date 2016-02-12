@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.openyu.mix.app.socklet.supporter.AppSockletServiceSupporter;
 import org.openyu.mix.core.service.CoreMessageType;
 import org.openyu.mix.sasang.service.SasangService;
-import org.openyu.mix.sasang.vo.SasangPen;
+import org.openyu.mix.sasang.vo.SasangInfo;
 import org.openyu.mix.role.vo.Role;
 import org.openyu.socklet.message.vo.Message;
 
@@ -119,12 +119,12 @@ public class SasangSocklet extends AppSockletServiceSupporter {
 	 * @param role
 	 */
 	protected void DEBUG_reset(Role role) {
-		SasangPen sasangPen = role.getSasangPen();
+		SasangInfo sasangInfo = role.getSasangInfo();
 		//
-		boolean result = sasangPen.reset();
+		boolean result = sasangInfo.reset();
 		// 發訊息
 		if (result) {
-			sasangService.sendReset(role, sasangPen);
+			sasangService.sendReset(role, sasangInfo);
 		}
 	}
 }

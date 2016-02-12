@@ -27,7 +27,7 @@ import org.openyu.mix.sasang.service.SasangMachine;
 import org.openyu.mix.sasang.service.SasangService;
 import org.openyu.mix.sasang.vo.Outcome;
 import org.openyu.mix.sasang.vo.SasangCollector;
-import org.openyu.mix.sasang.vo.SasangPen;
+import org.openyu.mix.sasang.vo.SasangInfo;
 import org.openyu.mix.item.service.ItemService;
 import org.openyu.mix.item.service.ItemService.IncreaseItemResult;
 import org.openyu.mix.item.vo.Item;
@@ -116,7 +116,7 @@ public class SasangServiceImpl extends AppServiceSupporter implements SasangServ
 		sendRoleConnect(result, attatch);
 
 		// 已連線
-		result.getSasangPen().setConnected(true);
+		result.getSasangInfo().setConnected(true);
 		//
 		return result;
 	}
@@ -149,7 +149,7 @@ public class SasangServiceImpl extends AppServiceSupporter implements SasangServ
 				CoreMessageType.SASANG_INITIALIZE_RESPONSE, role.getId());
 
 		// 四象欄位
-		fillSasangPen(message, role.getSasangPen());
+		fillSasangInfo(message, role.getSasangInfo());
 		//
 		messageService.addMessage(message);
 
@@ -190,14 +190,14 @@ public class SasangServiceImpl extends AppServiceSupporter implements SasangServ
 	 * 發送四象欄位
 	 * 
 	 * @param role
-	 * @param sasangPen
+	 * @param sasangInfo
 	 * @return
 	 */
-	public Message sendSasangPen(Role role, SasangPen sasangPen) {
+	public Message sendSasangInfo(Role role, SasangInfo sasangInfo) {
 		Message message = messageService.createMessage(CoreModuleType.SASANG, CoreModuleType.CLIENT,
 				CoreMessageType.SASANG_PEN_RESPONSE, role.getId());
 
-		fillSasangPen(message, sasangPen);
+		fillSasangInfo(message, sasangInfo);
 		//
 		messageService.addMessage(message);
 
@@ -208,22 +208,22 @@ public class SasangServiceImpl extends AppServiceSupporter implements SasangServ
 	 * 填充四象欄位
 	 * 
 	 * @param message
-	 * @param sasangPen
+	 * @param sasangInfo
 	 * @return
 	 */
-	public boolean fillSasangPen(Message message, SasangPen sasangPen) {
+	public boolean fillSasangInfo(Message message, SasangInfo sasangInfo) {
 		boolean result = false;
 		// 玩的時間
-		message.addLong(sasangPen.getPlayTime());
+		message.addLong(sasangInfo.getPlayTime());
 		// 每日已玩的次數
-		message.addInt(sasangPen.getDailyTimes());
+		message.addInt(sasangInfo.getDailyTimes());
 
 		// 四象結果
-		Outcome outcome = sasangPen.getOutcome();
+		Outcome outcome = sasangInfo.getOutcome();
 		message.addString((outcome != null ? safeGet(outcome.getId()) : ""));
 
 		// 填充獎勵
-		fillAwards(message, sasangPen.getAwards());
+		fillAwards(message, sasangInfo.getAwards());
 
 		result = true;
 		return result;
@@ -527,7 +527,7 @@ public class SasangServiceImpl extends AppServiceSupporter implements SasangServ
 	 */
 	public PlayResult goldPlay(boolean sendable, Role role) {
 		PlayResult result = null;
-		SasangPen sasangPen = null;
+		SasangInfo sasangInfo = null;
 		//
 		Notice notice = null;// 已玩的通知
 		Prize prize = null;// 已玩的獎勵
@@ -535,7 +535,7 @@ public class SasangServiceImpl extends AppServiceSupporter implements SasangServ
 		ErrorType errorType = checkGoldPlay(role);
 		if (errorType == ErrorType.NO_ERROR) {
 			// 四象
-			sasangPen = role.getSasangPen();
+			sasangInfo = role.getSasangInfo();
 			// 先玩,為了檢查獎勵區空間是否足夠
 			Outcome outcome = sasangMachine.play();
 			// 沒結果,xml可能沒設定,壞掉了
@@ -543,7 +543,7 @@ public class SasangServiceImpl extends AppServiceSupporter implements SasangServ
 				errorType = ErrorType.OUTCOME_NOT_EXIST;
 			} else {
 				// 檢查中獎區
-				errorType = checkAwards(sasangPen, outcome);
+				errorType = checkAwards(sasangInfo, outcome);
 			}
 			//
 			if (errorType == ErrorType.NO_ERROR) {
@@ -555,25 +555,25 @@ public class SasangServiceImpl extends AppServiceSupporter implements SasangServ
 				// 成功
 				if (decreaseGold != 0) {
 					long now = System.currentTimeMillis();
-					sasangPen.setPlayTime(now);// 玩的時間
-					sasangPen.addDailyTimes(1);// 每日已玩的次數
+					sasangInfo.setPlayTime(now);// 玩的時間
+					sasangInfo.addDailyTimes(1);// 每日已玩的次數
 
 					// clone玩的結果
 					//Outcome cloneOutcome = clone(outcome);
 					
 					//#fix sasangMachine.play()內就有clone了 
-					sasangPen.setOutcome(outcome);// 最後的結果
+					sasangInfo.setOutcome(outcome);// 最後的結果
 
 					// 結果,放獎勵
 					prize = outcome.getPrize();
 					// 獎勵區加入道具,並累計道具數量
-					sasangPen.addAwards(prize.getAwards());
+					sasangInfo.addAwards(prize.getAwards());
 
 					// 加到公告,人氣榜
 					notice = addNotice(role, prize);
 
 					// 結果
-					result = new PlayResultImpl(PlayType.BRONZE, now, sasangPen.getDailyTimes(), outcome, 1,
+					result = new PlayResultImpl(PlayType.BRONZE, now, sasangInfo.getDailyTimes(), outcome, 1,
 							spendGold);
 				} else {
 					errorType = ErrorType.GOLD_NOT_ENOUGH;
@@ -584,8 +584,8 @@ public class SasangServiceImpl extends AppServiceSupporter implements SasangServ
 		// 發訊息
 		if (sendable) {
 			// 發送四象欄位
-			if (errorType == ErrorType.NO_ERROR && sasangPen != null) {
-				sendSasangPen(role, sasangPen);
+			if (errorType == ErrorType.NO_ERROR && sasangInfo != null) {
+				sendSasangInfo(role, sasangInfo);
 			}
 			// 玩的訊息
 			sendPlay(errorType, role, result);
@@ -621,10 +621,10 @@ public class SasangServiceImpl extends AppServiceSupporter implements SasangServ
 			return errorType;
 		}
 
-		SasangPen sasangPen = role.getSasangPen();
+		SasangInfo sasangInfo = role.getSasangInfo();
 
 		// 超過每日次數
-		if (sasangPen.getDailyTimes() >= sasangCollector.getDailyTimes()) {
+		if (sasangInfo.getDailyTimes() >= sasangCollector.getDailyTimes()) {
 			errorType = ErrorType.OVER_PLAY_DAILY_TIMES;
 			return errorType;
 		}
@@ -651,7 +651,7 @@ public class SasangServiceImpl extends AppServiceSupporter implements SasangServ
 	 */
 	public PlayResult itemCoinPlay(boolean sendable, Role role, PlayType playType) {
 		PlayResult result = null;
-		SasangPen sasangPen = null;
+		SasangInfo sasangInfo = null;
 		int playTimes = playType.playTimes();// 玩的次數
 		//
 		List<Notice> notices = new LinkedList<Notice>();// 已玩的通知
@@ -660,7 +660,7 @@ public class SasangServiceImpl extends AppServiceSupporter implements SasangServ
 		ErrorType errorType = checkItemCoinPlay(role, playTimes);
 		if (errorType == ErrorType.NO_ERROR) {
 			// 四象
-			sasangPen = role.getSasangPen();
+			sasangInfo = role.getSasangInfo();
 			// 先玩,為了檢查獎勵區空間是否足夠
 			List<Outcome> outcomes = sasangMachine.play(playTimes);
 			// 沒結果,xml可能沒設定,壞掉了
@@ -668,7 +668,7 @@ public class SasangServiceImpl extends AppServiceSupporter implements SasangServ
 				errorType = ErrorType.OUTCOME_NOT_EXIST;
 			} else {
 				// 檢查中獎區
-				errorType = checkAwards(sasangPen, outcomes);
+				errorType = checkAwards(sasangInfo, outcomes);
 			}
 			//
 			if (errorType == ErrorType.NO_ERROR) {
@@ -683,22 +683,22 @@ public class SasangServiceImpl extends AppServiceSupporter implements SasangServ
 				// 扣成功
 				if (spendError == RoleService.ErrorType.NO_ERROR) {
 					long now = System.currentTimeMillis();
-					sasangPen.setPlayTime(now);// 玩的時間
+					sasangInfo.setPlayTime(now);// 玩的時間
 
 					// clone玩的結果
 					List<Outcome> cloneOutcomes = clone(outcomes);
 					// 拿最後一個結果
 					Outcome cloneOutcome = cloneOutcomes.get(cloneOutcomes.size() - 1);
-					sasangPen.setOutcome(cloneOutcome);// 最後的結果
+					sasangInfo.setOutcome(cloneOutcome);// 最後的結果
 
 					// 累計每日已玩的次數,不需每日重置
-					sasangPen.addAccuTimes(spendResult.getTotalTimes());
+					sasangInfo.addAccuTimes(spendResult.getTotalTimes());
 
 					// 所有的結果,放獎勵
 					for (Outcome outcome : outcomes) {
 						Prize prize = outcome.getPrize();
 						// 獎勵區加入道具,並累計道具數量
-						sasangPen.addAwards(prize.getAwards());
+						sasangInfo.addAwards(prize.getAwards());
 
 						// 加到公告,人氣榜
 						Notice notice = addNotice(role, prize);
@@ -724,8 +724,8 @@ public class SasangServiceImpl extends AppServiceSupporter implements SasangServ
 		// 發訊息
 		if (sendable) {
 			// 發送四象欄位
-			if (errorType == ErrorType.NO_ERROR && sasangPen != null) {
-				sendSasangPen(role, sasangPen);
+			if (errorType == ErrorType.NO_ERROR && sasangInfo != null) {
+				sendSasangInfo(role, sasangInfo);
 			}
 			// 玩的訊息
 			sendPlay(errorType, role, result);
@@ -808,31 +808,31 @@ public class SasangServiceImpl extends AppServiceSupporter implements SasangServ
 	/**
 	 * 檢查中獎區
 	 * 
-	 * @param sasangPen
+	 * @param sasangInfo
 	 * @param outcome
 	 * @return
 	 */
-	protected ErrorType checkAwards(SasangPen sasangPen, Outcome outcome) {
+	protected ErrorType checkAwards(SasangInfo sasangInfo, Outcome outcome) {
 
 		List<Outcome> outcomes = new LinkedList<Outcome>();
 		outcomes.add(outcome);
-		return checkAwards(sasangPen, outcomes);
+		return checkAwards(sasangInfo, outcomes);
 	}
 
 	/**
 	 * 檢查中獎區
 	 * 
 	 * @param roleId
-	 * @param sasangPen
+	 * @param sasangInfo
 	 * @param outcomes
 	 * @return
 	 */
-	protected ErrorType checkAwards(SasangPen sasangPen, List<Outcome> outcomes) {
+	protected ErrorType checkAwards(SasangInfo sasangInfo, List<Outcome> outcomes) {
 		ErrorType errorType = ErrorType.NO_ERROR;
 		//
 		// 檢查獎勵區空間是否足夠
 		// 中獎區,clone一個出來
-		Map<String, Integer> cloneAwards = clone(sasangPen.getAwards());
+		Map<String, Integer> cloneAwards = clone(sasangInfo.getAwards());
 		int cloneAwardsSize = cloneAwards.size();
 		//
 		for (Outcome outcome : outcomes) {
@@ -845,7 +845,7 @@ public class SasangServiceImpl extends AppServiceSupporter implements SasangServ
 				if (!contains) {
 					cloneAwardsSize += 1;
 					// 最大中獎區道具種類
-					if (cloneAwardsSize > SasangPen.MAX_AWARDS_SIZE) {
+					if (cloneAwardsSize > SasangInfo.MAX_AWARDS_SIZE) {
 						// 中獎區滿了
 						errorType = ErrorType.AWARDS_FULL;
 						break;
@@ -1128,12 +1128,12 @@ public class SasangServiceImpl extends AppServiceSupporter implements SasangServ
 		ErrorType errorType = checkPutOne(role, itemId, amount);
 		if (errorType == ErrorType.NO_ERROR) {
 			// 四象
-			SasangPen sasangPen = role.getSasangPen();
+			SasangInfo sasangInfo = role.getSasangInfo();
 
 			// 再判斷放入包包是否成功
 			List<IncreaseItemResult> increaseResults = itemService.increaseItemWithItemId(true, role, itemId, amount);
 			if (increaseResults.size() >= 0) {
-				sasangPen.removeAward(itemId);
+				sasangInfo.removeAward(itemId);
 				// 結果
 				result = new PutResultImpl(itemId, amount);
 			} else {
@@ -1174,9 +1174,9 @@ public class SasangServiceImpl extends AppServiceSupporter implements SasangServ
 		}
 
 		// 中獎區道具不存在
-		SasangPen sasangPen = role.getSasangPen();
+		SasangInfo sasangInfo = role.getSasangInfo();
 		// 獎勵道具數量
-		Integer awardAmount = sasangPen.getAwards().get(itemId);
+		Integer awardAmount = sasangInfo.getAwards().get(itemId);
 		if (awardAmount == null || awardAmount < amount) {
 			errorType = ErrorType.AWARD_NOT_EXIST;
 			return errorType;
@@ -1241,8 +1241,8 @@ public class SasangServiceImpl extends AppServiceSupporter implements SasangServ
 			errorType = ErrorType.ROLE_NOT_EXIST;
 		} else {
 			// 四象
-			SasangPen sasangPen = role.getSasangPen();
-			Map<String, Integer> awards = sasangPen.getAwards();
+			SasangInfo sasangInfo = role.getSasangInfo();
+			Map<String, Integer> awards = sasangInfo.getAwards();
 			for (Map.Entry<String, Integer> entry : awards.entrySet()) {
 				String itemId = entry.getKey();
 				int amount = entry.getValue();
@@ -1267,7 +1267,7 @@ public class SasangServiceImpl extends AppServiceSupporter implements SasangServ
 			// 有放到包包成功,從中獎區移除已放入的道具
 			if (result != null) {
 				for (String itemId : result.getAwards().keySet()) {
-					sasangPen.removeAward(itemId);
+					sasangInfo.removeAward(itemId);
 				}
 			}
 
@@ -1320,20 +1320,20 @@ public class SasangServiceImpl extends AppServiceSupporter implements SasangServ
 	 */
 	public boolean reset(boolean sendable, Role role) {
 		boolean result = false;
-		SasangPen sasangPen = null;
+		SasangInfo sasangInfo = null;
 		// 檢查條件
 		ErrorType errorType = checkReset(role);
 		// 超過重置時間
 		if (errorType == ErrorType.OVER_RESET_TIME) {
 			// 四象
-			sasangPen = role.getSasangPen();
+			sasangInfo = role.getSasangInfo();
 			// 重置
-			result = sasangPen.reset();
+			result = sasangInfo.reset();
 		}
 
 		// 發訊息
 		if (sendable && result) {
-			sendReset(role, sasangPen);
+			sendReset(role, sasangInfo);
 		}
 		//
 		return result;
@@ -1354,14 +1354,14 @@ public class SasangServiceImpl extends AppServiceSupporter implements SasangServ
 			return errorType;
 		}
 		//
-		SasangPen sasangPen = role.getSasangPen();
+		SasangInfo sasangInfo = role.getSasangInfo();
 		// 今日早上0點
 		Calendar today = CalendarHelper.today(0, 0, 0);
 		// 明日早上0點
 		Calendar tomorrow = CalendarHelper.tomorrow(0, 0, 0);
 
 		// 玩的時間
-		long playTime = sasangPen.getPlayTime();
+		long playTime = sasangInfo.getPlayTime();
 		boolean overTime = DateHelper.isOverTime(playTime, System.currentTimeMillis(), today.getTimeInMillis(),
 				tomorrow.getTimeInMillis());
 		// 超過重置時間
@@ -1377,13 +1377,13 @@ public class SasangServiceImpl extends AppServiceSupporter implements SasangServ
 	 * 發送重置
 	 * 
 	 * @param role
-	 * @param sasangPen
+	 * @param sasangInfo
 	 */
-	public Message sendReset(Role role, SasangPen sasangPen) {
+	public Message sendReset(Role role, SasangInfo sasangInfo) {
 		Message message = messageService.createMessage(CoreModuleType.SASANG, CoreModuleType.CLIENT,
 				CoreMessageType.SASANG_RESET_RESPONSE, role.getId());
 
-		fillSasangPen(message, sasangPen);
+		fillSasangInfo(message, sasangInfo);
 		//
 		messageService.addMessage(message);
 
@@ -1404,7 +1404,7 @@ public class SasangServiceImpl extends AppServiceSupporter implements SasangServ
 		for (Role role : roleSetService.getRoles(false).values()) {
 			try {
 				// 是否已連線
-				if (!role.isConnected() || !role.getSasangPen().isConnected()) {
+				if (!role.isConnected() || !role.getSasangInfo().isConnected()) {
 					continue;
 				}
 				// 重置

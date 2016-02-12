@@ -9,7 +9,7 @@ import org.openyu.mix.sasang.service.SasangService.ErrorType;
 import org.openyu.mix.sasang.service.SasangService.PlayResult;
 import org.openyu.mix.sasang.service.SasangService.PlayType;
 import org.openyu.mix.sasang.service.SasangService.PutResult;
-import org.openyu.mix.sasang.vo.SasangPen;
+import org.openyu.mix.sasang.vo.SasangInfo;
 import org.openyu.mix.core.service.CoreModuleType;
 import org.openyu.mix.item.vo.Item;
 import org.openyu.mix.role.vo.BagInfo;
@@ -28,35 +28,35 @@ public class SasangServiceImplTest extends SasangTestSupporter {
 	 */
 	public void connect() {
 		Role role = mockRole();
-		SasangPen sasangPen = mockSasangPen(role);
-		role.setSasangPen(sasangPen);
+		SasangInfo sasangInfo = mockSasangInfo(role);
+		role.setSasangInfo(sasangInfo);
 		//
 		sasangService.roleConnect(role.getId(), null);
 	}
 
 	@Test
-	public void sendSasangPen() {
+	public void sendSasangInfo() {
 		Role role = mockRole();
-		SasangPen sasangPen = mockSasangPen(role);
-		role.setSasangPen(sasangPen);
+		SasangInfo sasangInfo = mockSasangInfo(role);
+		role.setSasangInfo(sasangInfo);
 		//
-		sasangService.sendSasangPen(role, role.getSasangPen());
+		sasangService.sendSasangInfo(role, role.getSasangInfo());
 	}
 
 	@Test
-	public void fillSasangPen() {
+	public void fillSasangInfo() {
 		Message result = null;
 		//
 		Role role = mockRole();
-		SasangPen sasangPen = mockSasangPen(role);
-		role.setSasangPen(sasangPen);
+		SasangInfo sasangInfo = mockSasangInfo(role);
+		role.setSasangInfo(sasangInfo);
 		//
 		int count = 1; // 100w
 		long beg = System.currentTimeMillis();
 		//
 		for (int i = 0; i < count; i++) {
 			result = messageService.createMessage(CoreModuleType.SASANG, CoreModuleType.CLIENT, null, role.getId());
-			sasangService.fillSasangPen(result, sasangPen);
+			sasangService.fillSasangInfo(result, sasangInfo);
 		}
 		//
 		long end = System.currentTimeMillis();
@@ -77,7 +77,7 @@ public class SasangServiceImplTest extends SasangTestSupporter {
 		role.setGold(10000 * 10000L);// 1e
 		role.setVipType(VipType._2);// vip
 
-		// SasangPen sasangPen = role.getSasangPen();
+		// SasangInfo sasangInfo = role.getSasangInfo();
 
 		// 青銅按鈕,可玩1次,消耗金幣,有每日次數限制
 		PlayResult result = sasangService.play(true, role, 1);// 玩1次
@@ -181,7 +181,7 @@ public class SasangServiceImplTest extends SasangTestSupporter {
 		role.setLevel(20);// 等級
 		role.setGold(10000 * 10000L);// 1e
 		role.setVipType(VipType._2);// vip
-		SasangPen sasangPen = role.getSasangPen();
+		SasangInfo sasangInfo = role.getSasangInfo();
 
 		// 玩的結果
 		PlayResult result = sasangService.goldPlay(true, role);// 玩1次
@@ -189,7 +189,7 @@ public class SasangServiceImplTest extends SasangTestSupporter {
 		assertEquals(1, result.getDailyTimes());
 
 		// 已玩10次
-		sasangPen.setDailyTimes(10);
+		sasangInfo.setDailyTimes(10);
 		result = sasangService.goldPlay(true, role);// 玩1次
 		System.out.println(result);
 		//
@@ -202,7 +202,7 @@ public class SasangServiceImplTest extends SasangTestSupporter {
 	 */
 	public void checkGoldPlay() {
 		Role role = mockRole();
-		SasangPen sasangPen = role.getSasangPen();
+		SasangInfo sasangInfo = role.getSasangInfo();
 		//
 		ErrorType errorType = sasangService.checkGoldPlay(role);
 		System.out.println(errorType);
@@ -210,13 +210,13 @@ public class SasangServiceImplTest extends SasangTestSupporter {
 		assertEquals(ErrorType.LEVLE_NOT_ENOUGH, errorType);
 
 		role.setLevel(20);
-		sasangPen.setDailyTimes(10);
+		sasangInfo.setDailyTimes(10);
 		errorType = sasangService.checkGoldPlay(role);
 		System.out.println(errorType);
 		// 超過每日次數
 		assertEquals(ErrorType.OVER_PLAY_DAILY_TIMES, errorType);
 
-		sasangPen.setDailyTimes(0);
+		sasangInfo.setDailyTimes(0);
 		errorType = sasangService.checkGoldPlay(role);
 		System.out.println(errorType);
 		// 金幣不足
@@ -241,8 +241,8 @@ public class SasangServiceImplTest extends SasangTestSupporter {
 		role.setGold(10000 * 10000L);// 1e
 		role.setVipType(VipType._2);// vip
 		//
-		SasangPen sasangPen = role.getSasangPen();
-		sasangPen.getAwards().put("T_POTION_HP_G001", 1);
+		SasangInfo sasangInfo = role.getSasangInfo();
+		sasangInfo.getAwards().put("T_POTION_HP_G001", 1);
 		//
 		PutResult result = sasangService.putOne(true, role, "T_POTION_HP_G001", 1);
 		System.out.println(result);
@@ -258,14 +258,14 @@ public class SasangServiceImplTest extends SasangTestSupporter {
 	 */
 	public void checkPutOne() {
 		Role role = mockRole();
-		SasangPen sasangPen = role.getSasangPen();
+		SasangInfo sasangInfo = role.getSasangInfo();
 		//
 		ErrorType errorType = sasangService.checkPutOne(role, "T_POTION_HP_G001", 1);
 		System.out.println(errorType);
 		// 獎勵不存在
 		assertEquals(ErrorType.AWARD_NOT_EXIST, errorType);
 
-		sasangPen.getAwards().put("T_POTION_HP_G001", 1);// 中獎區只有1個
+		sasangInfo.getAwards().put("T_POTION_HP_G001", 1);// 中獎區只有1個
 		errorType = sasangService.checkPutOne(role, "T_POTION_HP_G001", 5);// 偷塞5個
 		System.out.println(errorType);
 		// 獎勵不存在
@@ -295,14 +295,14 @@ public class SasangServiceImplTest extends SasangTestSupporter {
 		role.setGold(10000 * 10000L);// 1e
 		role.setVipType(VipType._2);// vip
 		//
-		SasangPen sasangPen = role.getSasangPen();
-		sasangPen.getAwards().put("T_POTION_HP_G001", 1);
+		SasangInfo sasangInfo = role.getSasangInfo();
+		sasangInfo.getAwards().put("T_POTION_HP_G001", 1);
 		// 弄個不存在的
-		sasangPen.getAwards().put("T_NOT_EXIST", 10);
+		sasangInfo.getAwards().put("T_NOT_EXIST", 10);
 
 		// 有1個放不進去就不放了,以下的不會放入包包
-		sasangPen.getAwards().put("T_POTION_HP_G002", 5);
-		sasangPen.getAwards().put("T_POTION_HP_G003", 10);
+		sasangInfo.getAwards().put("T_POTION_HP_G002", 5);
+		sasangInfo.getAwards().put("T_POTION_HP_G003", 10);
 		//
 		PutResult result = sasangService.putAll(true, role);
 		System.out.println(result);

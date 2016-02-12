@@ -10,9 +10,9 @@ import com.sun.xml.bind.AnyTypeAdapter;
  * 四象欄位資訊
  */
 @XmlJavaTypeAdapter(AnyTypeAdapter.class)
-public interface SasangPen extends AppInfo
+public interface SasangInfo extends AppInfo
 {
-	String KEY = SasangPen.class.getName();
+	String KEY = SasangInfo.class.getName();
 
 	/**
 	 * 最大中獎區道具種類,如:14個道具

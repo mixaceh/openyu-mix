@@ -8,14 +8,14 @@ import org.hibernate.engine.spi.SessionImplementor;
 import org.openyu.mix.sasang.service.SasangMachine;
 import org.openyu.mix.sasang.service.impl.SasangMachineImpl;
 import org.openyu.mix.sasang.vo.Outcome;
-import org.openyu.mix.sasang.vo.SasangPen;
-import org.openyu.mix.sasang.vo.impl.SasangPenImpl;
+import org.openyu.mix.sasang.vo.SasangInfo;
+import org.openyu.mix.sasang.vo.impl.SasangInfoImpl;
 import org.openyu.commons.entity.usertype.StringIntegerUserType;
 import org.openyu.commons.enumz.EnumHelper;
 import org.openyu.commons.hibernate.usertype.supporter.BaseUserTypeSupporter;
 import org.openyu.commons.lang.ArrayHelper;
 
-public class SasangPenUserType extends BaseUserTypeSupporter {
+public class SasangInfoUserType extends BaseUserTypeSupporter {
 
 	private static final long serialVersionUID = -2066924784420555409L;
 
@@ -23,7 +23,7 @@ public class SasangPenUserType extends BaseUserTypeSupporter {
 
 	private StringIntegerUserType stringIntegerUserType = new StringIntegerUserType();
 
-	public SasangPenUserType() {
+	public SasangInfoUserType() {
 		// --------------------------------------------------
 		// 最新版本,目前用1,若將來有新版本
 		// 可用其他版號,如:VolType._2
@@ -38,7 +38,7 @@ public class SasangPenUserType extends BaseUserTypeSupporter {
 
 	@Override
 	public Class<?> returnedClass() {
-		return SasangPen.class;
+		return SasangInfo.class;
 	}
 
 	// --------------------------------------------------
@@ -49,9 +49,9 @@ public class SasangPenUserType extends BaseUserTypeSupporter {
 	@SuppressWarnings("unchecked")
 	public <R, T> R marshal(T value, SessionImplementor session) {
 		R result = null;
-		if (value instanceof SasangPen) {
+		if (value instanceof SasangInfo) {
 			StringBuilder dest = new StringBuilder();
-			SasangPen src = (SasangPen) value;
+			SasangInfo src = (SasangInfo) value;
 			// vol
 			dest.append(assembleVol(getVolType()));
 			// v1
@@ -65,7 +65,7 @@ public class SasangPenUserType extends BaseUserTypeSupporter {
 	/**
 	 * v1 由物件組成欄位
 	 */
-	public String assembleBy_1(SasangPen src) {
+	public String assembleBy_1(SasangInfo src) {
 		StringBuilder result = new StringBuilder();
 		//
 		// 玩的時間
@@ -97,7 +97,7 @@ public class SasangPenUserType extends BaseUserTypeSupporter {
 	 */
 	@SuppressWarnings("unchecked")
 	public <R, T, O> R unmarshal(T value, O owner, SessionImplementor session) {
-		SasangPen result = new SasangPenImpl();
+		SasangInfo result = new SasangInfoImpl();
 		//
 		if (!(value instanceof String)) {
 			return (R) result;
@@ -124,8 +124,8 @@ public class SasangPenUserType extends BaseUserTypeSupporter {
 
 	// --------------------------------------------------
 
-	protected SasangPen disassembleBy_1(StringBuilder src) {
-		SasangPen result = new SasangPenImpl();
+	protected SasangInfo disassembleBy_1(StringBuilder src) {
+		SasangInfo result = new SasangInfoImpl();
 		if (src == null) {
 			return result;
 		}

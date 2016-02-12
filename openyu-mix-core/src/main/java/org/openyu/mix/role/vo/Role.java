@@ -5,7 +5,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import org.openyu.mix.flutter.vo.AttributeGroup;
 import org.openyu.mix.flutter.vo.Flutter;
 import org.openyu.mix.manor.vo.ManorPen;
-import org.openyu.mix.sasang.vo.SasangPen;
+import org.openyu.mix.sasang.vo.SasangInfo;
 import org.openyu.mix.train.vo.TrainPen;
 import org.openyu.mix.treasure.vo.TreasureInfo;
 import org.openyu.mix.vip.vo.VipType;
@@ -166,9 +166,9 @@ public interface Role extends Flutter {
 	 * 
 	 * @return
 	 */
-	SasangPen getSasangPen();
+	SasangInfo getSasangInfo();
 
-	void setSasangPen(SasangPen sasangPen);
+	void setSasangInfo(SasangInfo sasangInfo);
 
 	/**
 	 * 莊園欄位

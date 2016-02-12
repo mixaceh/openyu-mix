@@ -10,7 +10,7 @@ import org.openyu.mix.app.vo.AppResult;
 import org.openyu.mix.item.vo.Item;
 import org.openyu.mix.role.vo.Role;
 import org.openyu.mix.sasang.vo.Outcome;
-import org.openyu.mix.sasang.vo.SasangPen;
+import org.openyu.mix.sasang.vo.SasangInfo;
 import org.openyu.commons.enumz.IntEnum;
 import org.openyu.socklet.message.vo.Message;
 
@@ -243,19 +243,19 @@ public interface SasangService extends AppService {
 	 * 發送四象欄位
 	 * 
 	 * @param role
-	 * @param sasangPen
+	 * @param sasangInfo
 	 * @return
 	 */
-	Message sendSasangPen(Role role, SasangPen sasangPen);
+	Message sendSasangInfo(Role role, SasangInfo sasangInfo);
 
 	/**
 	 * 填充四象欄位
 	 * 
 	 * @param message
-	 * @param sasangPen
+	 * @param sasangInfo
 	 * @return
 	 */
-	boolean fillSasangPen(Message message, SasangPen sasangPen);
+	boolean fillSasangInfo(Message message, SasangInfo sasangInfo);
 
 	/**
 	 * 填充獎勵
@@ -523,10 +523,10 @@ public interface SasangService extends AppService {
 	 * 發送重置
 	 * 
 	 * @param role
-	 * @param sasangPen
+	 * @param sasangInfo
 	 * @return
 	 */
-	Message sendReset(Role role, SasangPen sasangPen);
+	Message sendReset(Role role, SasangInfo sasangInfo);
 
 	/**
 	 * 重置每日已玩的次數,所有線上玩家

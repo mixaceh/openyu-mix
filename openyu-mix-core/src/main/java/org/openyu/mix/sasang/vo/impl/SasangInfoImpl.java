@@ -10,12 +10,12 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.openyu.mix.app.vo.supporter.AppInfoSupporter;
 import org.openyu.mix.role.vo.Role;
 import org.openyu.mix.sasang.vo.Outcome;
-import org.openyu.mix.sasang.vo.SasangPen;
+import org.openyu.mix.sasang.vo.SasangInfo;
 import org.openyu.commons.lang.NumberHelper;
 
-@XmlRootElement(name = "sasangPen")
+@XmlRootElement(name = "sasangInfo")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class SasangPenImpl extends AppInfoSupporter implements SasangPen
+public class SasangInfoImpl extends AppInfoSupporter implements SasangInfo
 {
 	private static final long serialVersionUID = 3394460367607072868L;
 
@@ -52,12 +52,12 @@ public class SasangPenImpl extends AppInfoSupporter implements SasangPen
 	 */
 	private Map<String, Integer> awards = new LinkedHashMap<String, Integer>();
 
-	public SasangPenImpl(Role role)
+	public SasangInfoImpl(Role role)
 	{
 		this.role = role;
 	}
 
-	public SasangPenImpl()
+	public SasangInfoImpl()
 	{
 		this(null);
 	}
@@ -227,8 +227,8 @@ public class SasangPenImpl extends AppInfoSupporter implements SasangPen
 
 	public Object clone()
 	{
-		SasangPenImpl copy = null;
-		copy = (SasangPenImpl) super.clone();
+		SasangInfoImpl copy = null;
+		copy = (SasangInfoImpl) super.clone();
 		//role不要clone,會造成loop
 		copy.outcome = clone(outcome);
 		copy.awards = clone(awards);

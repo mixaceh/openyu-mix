@@ -3,16 +3,16 @@ package org.openyu.mix.sasang.po.usertype;
 import static org.junit.Assert.*;
 
 import org.junit.Test;
-import org.openyu.mix.sasang.po.usertype.SasangPenUserType;
+import org.openyu.mix.sasang.po.usertype.SasangInfoUserType;
 import org.openyu.mix.sasang.vo.Outcome;
-import org.openyu.mix.sasang.vo.SasangPen;
+import org.openyu.mix.sasang.vo.SasangInfo;
 import org.openyu.mix.sasang.vo.impl.OutcomeImpl;
-import org.openyu.mix.sasang.vo.impl.SasangPenImpl;
+import org.openyu.mix.sasang.vo.impl.SasangInfoImpl;
 import org.openyu.commons.junit.supporter.BaseTestSupporter;
 
-public class SasangPenUserTypeTest extends BaseTestSupporter {
+public class SasangInfoUserTypeTest extends BaseTestSupporter {
 
-	private static SasangPenUserType userType = new SasangPenUserType();
+	private static SasangInfoUserType userType = new SasangInfoUserType();
 
 	@Test
 	// 1000000 times: 924 mills.
@@ -20,7 +20,7 @@ public class SasangPenUserTypeTest extends BaseTestSupporter {
 	// 1000000 times: 1075 mills.
 	// verified
 	public void marshal() {
-		SasangPen value = new SasangPenImpl();
+		SasangInfo value = new SasangInfoImpl();
 		value.setPlayTime(1337568856471L);
 		value.setDailyTimes(1);
 		value.setAccuTimes(1);
@@ -56,7 +56,7 @@ public class SasangPenUserTypeTest extends BaseTestSupporter {
 	public void unmarshal() {
 		String value = "♥1♠1337568856471♠1♠1♠123♠2♦T_POTION_HP_G001♣1♦T_POTION_MP_G001♣1";
 		//
-		SasangPen result = null;
+		SasangInfo result = null;
 		//
 		int count = 1000;
 

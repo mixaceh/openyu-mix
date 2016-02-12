@@ -59,7 +59,7 @@
         <armors/>
         <weapons/>
     </equipmentPen>
-    <sasangPen>
+    <sasangInfo>
         <playTime>0</playTime>
         <dailyTimes>0</dailyTimes>
         <accuTimes>0</accuTimes>
@@ -67,7 +67,7 @@
             <only>false</only>
         </outcome>
         <awards/>
-    </sasangPen>
+    </sasangInfo>
     <manorPen>
         <farms>
             <entry key="0">

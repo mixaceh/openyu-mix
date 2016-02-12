@@ -1,17 +1,17 @@
 package org.openyu.mix.sasang.po.bridge;
 
 import org.openyu.commons.hibernate.search.bridge.supporter.BaseStringBridgeSupporter;
-import org.openyu.mix.sasang.po.usertype.SasangPenUserType;
+import org.openyu.mix.sasang.po.usertype.SasangInfoUserType;
 
 //--------------------------------------------------
 //reslove: Hibernate search
 //--------------------------------------------------
-public class SasangPenBridge extends BaseStringBridgeSupporter
+public class SasangInfoBridge extends BaseStringBridgeSupporter
 {
 
-	private SasangPenUserType userType = new SasangPenUserType();
+	private SasangInfoUserType userType = new SasangInfoUserType();
 
-	public SasangPenBridge()
+	public SasangInfoBridge()
 	{
 
 	}

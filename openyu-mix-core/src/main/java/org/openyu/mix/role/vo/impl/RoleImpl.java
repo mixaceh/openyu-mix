@@ -17,8 +17,8 @@ import org.openyu.mix.role.vo.BagInfo;
 import org.openyu.mix.role.vo.EquipmentPen;
 import org.openyu.mix.role.vo.Role;
 import org.openyu.mix.role.vo.RoleField;
-import org.openyu.mix.sasang.vo.SasangPen;
-import org.openyu.mix.sasang.vo.impl.SasangPenImpl;
+import org.openyu.mix.sasang.vo.SasangInfo;
+import org.openyu.mix.sasang.vo.impl.SasangInfoImpl;
 import org.openyu.mix.train.vo.TrainPen;
 import org.openyu.mix.train.vo.impl.TrainPenImpl;
 import org.openyu.mix.treasure.vo.TreasureInfo;
@@ -97,8 +97,8 @@ public class RoleImpl extends FlutterSupporter implements Role {
 	/**
 	 * 四象欄位
 	 */
-	@XmlElement(type = SasangPenImpl.class)
-	private SasangPen sasangPen = new SasangPenImpl(this);
+	@XmlElement(type = SasangInfoImpl.class)
+	private SasangInfo sasangInfo = new SasangInfoImpl(this);
 
 	/**
 	 * 莊園欄位
@@ -258,12 +258,12 @@ public class RoleImpl extends FlutterSupporter implements Role {
 	/**
 	 * 四象欄位
 	 */
-	public SasangPen getSasangPen() {
-		return sasangPen;
+	public SasangInfo getSasangInfo() {
+		return sasangInfo;
 	}
 
-	public void setSasangPen(SasangPen sasangPen) {
-		this.sasangPen = sasangPen;
+	public void setSasangInfo(SasangInfo sasangInfo) {
+		this.sasangInfo = sasangInfo;
 	}
 
 	/**
@@ -327,7 +327,7 @@ public class RoleImpl extends FlutterSupporter implements Role {
 		builder.append("bagInfo", bagInfo);
 		builder.append("equipmentPen", equipmentPen);
 		//
-		builder.append("sasangPen", sasangPen);
+		builder.append("sasangInfo", sasangInfo);
 		builder.append("manorPen", manorPen);
 		builder.append("treasureInfo", treasureInfo);
 		builder.append("trainPen", trainPen);
@@ -343,7 +343,7 @@ public class RoleImpl extends FlutterSupporter implements Role {
 		copy.bagInfo = clone(bagInfo);
 		copy.equipmentPen = clone(equipmentPen);
 		//
-		copy.sasangPen = clone(sasangPen);
+		copy.sasangInfo = clone(sasangInfo);
 		copy.manorPen = clone(manorPen);
 		copy.treasureInfo = clone(treasureInfo);
 		copy.trainPen = clone(trainPen);

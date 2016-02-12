@@ -22,8 +22,8 @@ import org.openyu.mix.sasang.service.adapter.SasangChangeAdapter;
 import org.openyu.mix.sasang.socklet.SasangSocklet;
 import org.openyu.mix.sasang.vo.Outcome;
 import org.openyu.mix.sasang.vo.SasangCollector;
-import org.openyu.mix.sasang.vo.SasangPen;
-import org.openyu.mix.sasang.vo.impl.SasangPenImpl;
+import org.openyu.mix.sasang.vo.SasangInfo;
+import org.openyu.mix.sasang.vo.impl.SasangInfoImpl;
 import org.openyu.mix.role.vo.Role;
 
 public class SasangTestSupporter extends AppTestSupporter {
@@ -156,8 +156,8 @@ public class SasangTestSupporter extends AppTestSupporter {
 	 * 
 	 * @param role
 	 */
-	public static SasangPen mockSasangPen(Role role) {
-		SasangPen result = new SasangPenImpl(role);
+	public static SasangInfo mockSasangInfo(Role role) {
+		SasangInfo result = new SasangInfoImpl(role);
 		//
 		result.setPlayTime(System.currentTimeMillis());
 		result.setDailyTimes(1);

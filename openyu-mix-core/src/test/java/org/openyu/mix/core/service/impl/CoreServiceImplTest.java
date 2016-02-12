@@ -21,7 +21,7 @@ import org.openyu.mix.manor.service.ManorService.CultureType;
 import org.openyu.mix.role.service.RoleService.GoldType;
 import org.openyu.mix.role.vo.BagInfo;
 import org.openyu.mix.role.vo.Role;
-import org.openyu.mix.sasang.vo.SasangPen;
+import org.openyu.mix.sasang.vo.SasangInfo;
 import org.openyu.mix.train.vo.TrainPen;
 import org.openyu.mix.wuxing.vo.WuxingPen;
 
@@ -193,10 +193,10 @@ public class CoreServiceImplTest extends CoreTestSupporter {
 	 * @param role
 	 */
 	public void simulateSasang(Role role) {
-		SasangPen sasangPen = role.getSasangPen();
-		sasangPen.reset();
-		sasangPen.setOutcome(null);
-		sasangPen.getAwards().clear();// 清獎勵
+		SasangInfo sasangInfo = role.getSasangInfo();
+		sasangInfo.reset();
+		sasangInfo.setOutcome(null);
+		sasangInfo.getAwards().clear();// 清獎勵
 
 		// 1.加四象石到包包
 		Item item = itemService.createItem("T_SASANG_PLAY_G001", 10);// 四象石
