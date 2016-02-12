@@ -23,7 +23,7 @@
     <equipmentGroup>
         <attributes/>
     </equipmentGroup>
-    <bagPen>
+    <bagInfo>
         <tabs>
             <entry key="0">
                 <value>
@@ -54,7 +54,7 @@
                 </value>
             </entry>
         </tabs>
-    </bagPen>
+    </bagInfo>
     <equipmentPen>
         <armors/>
         <weapons/>

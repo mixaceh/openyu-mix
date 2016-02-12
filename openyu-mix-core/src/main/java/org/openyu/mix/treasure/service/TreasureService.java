@@ -186,7 +186,7 @@ public interface TreasureService extends AppService {
 	 * 發送祕寶欄位
 	 * 
 	 * @param role
-	 * @param bagPen
+	 * @param bagInfo
 	 * @return
 	 */
 	Message sendTreasurePen(Role role, TreasurePen treasurePen);

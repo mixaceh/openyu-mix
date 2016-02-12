@@ -16,23 +16,23 @@ import org.openyu.mix.item.vo.ItemType;
 import org.openyu.mix.item.vo.Thing;
 import org.openyu.mix.item.vo.ThingType;
 import org.openyu.mix.item.vo.impl.ThingImpl;
-import org.openyu.mix.role.vo.BagPen;
-import org.openyu.mix.role.vo.BagPen.Tab;
+import org.openyu.mix.role.vo.BagInfo;
+import org.openyu.mix.role.vo.BagInfo.Tab;
 
-public class BagPenTabImplTest extends BaseTestSupporter {
+public class BagInfoTabImplTest extends BaseTestSupporter {
 
 	@Test
 	public void writeToXml() {
-		BagPen bagPen = new BagPenImpl();
+		BagInfo bagInfo = new BagInfoImpl();
 		//
-		String result = CollectorHelper.writeToXml(BagPenImpl.class, bagPen);
+		String result = CollectorHelper.writeToXml(BagInfoImpl.class, bagInfo);
 		System.out.println(result);
 		assertNotNull(result);
 	}
 
 	@Test
 	public void readFromXml() {
-		BagPen result = CollectorHelper.readFromXml(BagPenImpl.class);
+		BagInfo result = CollectorHelper.readFromXml(BagInfoImpl.class);
 		System.out.println(result);
 		assertNotNull(result);
 	}
@@ -43,8 +43,8 @@ public class BagPenTabImplTest extends BaseTestSupporter {
 	 * @return
 	 */
 	public static Tab mockTab() {
-		BagPen.Tab result = new BagPenImpl.TabImpl();
-		for (int i = 0; i < BagPen.Tab.MAX_GRID_SIZE; i++) {
+		BagInfo.Tab result = new BagInfoImpl.TabImpl();
+		for (int i = 0; i < BagInfo.Tab.MAX_GRID_SIZE; i++) {
 			Thing thing = new ThingImpl();
 			thing.setId(Thing.UNIQUE_ID_PREFIX + i);
 			thing.setUniqueId("U_" + i);
@@ -63,8 +63,8 @@ public class BagPenTabImplTest extends BaseTestSupporter {
 	 * @return
 	 */
 	public static Tab mockSameThingTab() {
-		BagPen.Tab result = new BagPenImpl.TabImpl();
-		for (int i = 0; i < BagPen.Tab.MAX_GRID_SIZE; i++) {
+		BagInfo.Tab result = new BagInfoImpl.TabImpl();
+		for (int i = 0; i < BagInfo.Tab.MAX_GRID_SIZE; i++) {
 			Thing thing = new ThingImpl();
 			thing.setId(Thing.UNIQUE_ID_PREFIX + 0);
 			thing.setUniqueId("U_" + i);
@@ -99,7 +99,7 @@ public class BagPenTabImplTest extends BaseTestSupporter {
 	// 1000000 times: 32 mills.
 	// verified
 	public void getItemSize() {
-		BagPen.Tab tab = mockTab();
+		BagInfo.Tab tab = mockTab();
 		//
 		Integer result = null;
 		//
@@ -126,7 +126,7 @@ public class BagPenTabImplTest extends BaseTestSupporter {
 	// 1000000 times: 32 mills.
 	// verified
 	public void isFull() {
-		BagPen.Tab tab = mockTab();
+		BagInfo.Tab tab = mockTab();
 		//
 		Boolean result = null;
 		//
@@ -153,10 +153,10 @@ public class BagPenTabImplTest extends BaseTestSupporter {
 	// 1000000 times: 18 mills.
 	// verified
 	public void addItem() {
-		BagPen.Tab tab = new BagPenImpl.TabImpl();
+		BagInfo.Tab tab = new BagInfoImpl.TabImpl();
 		Item item = randomThing();
 		//
-		BagPen.ErrorType result = BagPen.ErrorType.NO_ERROR;
+		BagInfo.ErrorType result = BagInfo.ErrorType.NO_ERROR;
 		//
 		int count = 1;
 		long beg = System.currentTimeMillis();
@@ -168,29 +168,29 @@ public class BagPenTabImplTest extends BaseTestSupporter {
 
 		System.out.println(result);
 		// 沒有錯誤
-		assertEquals(BagPen.ErrorType.NO_ERROR, result);
+		assertEquals(BagInfo.ErrorType.NO_ERROR, result);
 
 		tab.setLocked(true);// 鎖定包包頁
 		result = tab.addItem(0, item);
 		System.out.println(result);
 		tab.setLocked(false); // 解鎖包包頁
 		// 包包頁被鎖定
-		assertEquals(BagPen.ErrorType.TAB_LOCKED, result);
+		assertEquals(BagInfo.ErrorType.TAB_LOCKED, result);
 		//
 		result = tab.addItem(-1, item);
 		System.out.println(result);
 		// 超過格子索引
-		assertEquals(BagPen.ErrorType.OVER_GRID_INDEX, result);
+		assertEquals(BagInfo.ErrorType.OVER_GRID_INDEX, result);
 		//
 		result = tab.addItem(0, (Item) null);
 		System.out.println(result);
 		// 道具不存在
-		assertEquals(BagPen.ErrorType.ITEM_NOT_EXIST, result);
+		assertEquals(BagInfo.ErrorType.ITEM_NOT_EXIST, result);
 		//
 		result = tab.addItem(0, item);
 		System.out.println(result);
 		// 格子已有道具
-		assertEquals(BagPen.ErrorType.ALREADY_HAS_ITEM, result);
+		assertEquals(BagInfo.ErrorType.ALREADY_HAS_ITEM, result);
 
 		// 把包包頁塞滿
 		for (int i = 1; i < Tab.MAX_GRID_SIZE; i++) {
@@ -200,7 +200,7 @@ public class BagPenTabImplTest extends BaseTestSupporter {
 		assertEquals((int) Tab.MAX_GRID_SIZE, (int) tab.getItemSize());
 		result = tab.addItem(0, item);
 		System.out.println(result);
-		assertEquals(BagPen.ErrorType.TAB_FULL, result);
+		assertEquals(BagInfo.ErrorType.TAB_FULL, result);
 	}
 
 	@Test
@@ -209,9 +209,9 @@ public class BagPenTabImplTest extends BaseTestSupporter {
 	// 1000000 times: 18 mills.
 	// verified
 	public void increaseAmount() {
-		BagPen.Tab tab = mockTab();
+		BagInfo.Tab tab = mockTab();
 		//
-		BagPen.ErrorType result = BagPen.ErrorType.NO_ERROR;
+		BagInfo.ErrorType result = BagInfo.ErrorType.NO_ERROR;
 		//
 		int count = 1;
 		long beg = System.currentTimeMillis();
@@ -223,31 +223,31 @@ public class BagPenTabImplTest extends BaseTestSupporter {
 
 		System.out.println(result);
 		// 沒有錯誤
-		assertEquals(BagPen.ErrorType.NO_ERROR, result);
+		assertEquals(BagInfo.ErrorType.NO_ERROR, result);
 		//
 		tab.setLocked(true);// 鎖定包包頁
 		result = tab.increaseAmount(0, 1);
 		System.out.println(result);
 		tab.setLocked(false);// 解鎖包包頁
 		// 包包頁被鎖定
-		assertEquals(BagPen.ErrorType.TAB_LOCKED, result);
+		assertEquals(BagInfo.ErrorType.TAB_LOCKED, result);
 		//
 		result = tab.increaseAmount((Integer) null, 1);
 		System.out.println(result);
 		// 超過格子索引
-		assertEquals(BagPen.ErrorType.OVER_GRID_INDEX, result);
+		assertEquals(BagInfo.ErrorType.OVER_GRID_INDEX, result);
 
 		// 移除索引index=1的道具
 		tab.removeItem(1);
 		result = tab.increaseAmount(1, 1);
 		System.out.println(result);
 		// 道具不存在
-		assertEquals(BagPen.ErrorType.ITEM_NOT_EXIST, result);
+		assertEquals(BagInfo.ErrorType.ITEM_NOT_EXIST, result);
 		//
 		result = tab.increaseAmount(0, 100);
 		System.out.println(result);
 		// 超過道具最大數量
-		assertEquals(BagPen.ErrorType.OVER_MAX_AMOUNT, result);
+		assertEquals(BagInfo.ErrorType.OVER_MAX_AMOUNT, result);
 	}
 
 	@Test
@@ -258,9 +258,9 @@ public class BagPenTabImplTest extends BaseTestSupporter {
 	public void increaseAmountByUniqueId() {
 		final String UNIQUE_ID = "U_0";
 		//
-		BagPen.Tab tab = mockTab();
+		BagInfo.Tab tab = mockTab();
 		//
-		BagPen.ErrorType result = BagPen.ErrorType.NO_ERROR;
+		BagInfo.ErrorType result = BagInfo.ErrorType.NO_ERROR;
 		//
 		int count = 1;
 		long beg = System.currentTimeMillis();
@@ -272,24 +272,24 @@ public class BagPenTabImplTest extends BaseTestSupporter {
 
 		System.out.println(result);
 		// 沒有錯誤
-		assertEquals(BagPen.ErrorType.NO_ERROR, result);
+		assertEquals(BagInfo.ErrorType.NO_ERROR, result);
 		//
 		tab.setLocked(true);// 鎖定包包頁
 		result = tab.increaseAmount(UNIQUE_ID, 1);
 		System.out.println(result);
 		tab.setLocked(false);// 解鎖包包頁
 		// 包包頁被鎖定
-		assertEquals(BagPen.ErrorType.TAB_LOCKED, result);
+		assertEquals(BagInfo.ErrorType.TAB_LOCKED, result);
 		//
 		result = tab.increaseAmount((String) null, 1);
 		System.out.println(result);
 		// 道具不存在
-		assertEquals(BagPen.ErrorType.ITEM_NOT_EXIST, result);
+		assertEquals(BagInfo.ErrorType.ITEM_NOT_EXIST, result);
 		//
 		result = tab.increaseAmount(UNIQUE_ID, 100);
 		System.out.println(result);
 		// 超過道具最大數量
-		assertEquals(BagPen.ErrorType.OVER_MAX_AMOUNT, result);
+		assertEquals(BagInfo.ErrorType.OVER_MAX_AMOUNT, result);
 	}
 
 	@Test
@@ -298,9 +298,9 @@ public class BagPenTabImplTest extends BaseTestSupporter {
 	// 1000000 times: 18 mills.
 	// verified
 	public void removeItem() {
-		BagPen.Tab tab = mockTab();
+		BagInfo.Tab tab = mockTab();
 		//
-		BagPen.ErrorType result = BagPen.ErrorType.NO_ERROR;
+		BagInfo.ErrorType result = BagInfo.ErrorType.NO_ERROR;
 		//
 		int count = 1;
 		long beg = System.currentTimeMillis();
@@ -312,24 +312,24 @@ public class BagPenTabImplTest extends BaseTestSupporter {
 
 		System.out.println(result);
 		// 沒有錯誤
-		assertEquals(BagPen.ErrorType.NO_ERROR, result);
+		assertEquals(BagInfo.ErrorType.NO_ERROR, result);
 
 		tab.setLocked(true);// 鎖定包包頁
 		result = tab.removeItem(0);
 		System.out.println(result);
 		tab.setLocked(false); // 解鎖包包頁
 		// 包包頁被鎖定
-		assertEquals(BagPen.ErrorType.TAB_LOCKED, result);
+		assertEquals(BagInfo.ErrorType.TAB_LOCKED, result);
 		//
 		result = tab.removeItem((Integer) null);
 		System.out.println(result);
 		// 超過格子索引
-		assertEquals(BagPen.ErrorType.OVER_GRID_INDEX, result);
+		assertEquals(BagInfo.ErrorType.OVER_GRID_INDEX, result);
 		//
 		result = tab.removeItem(0);
 		System.out.println(result);
 		// 道具不存在
-		assertEquals(BagPen.ErrorType.ITEM_NOT_EXIST, result);
+		assertEquals(BagInfo.ErrorType.ITEM_NOT_EXIST, result);
 	}
 
 	@Test
@@ -340,9 +340,9 @@ public class BagPenTabImplTest extends BaseTestSupporter {
 	public void removeItemByUniqueId() {
 		final String UNIQUE_ID = "U_0";
 		//
-		BagPen.Tab tab = mockTab();
+		BagInfo.Tab tab = mockTab();
 		//
-		BagPen.ErrorType result = BagPen.ErrorType.NO_ERROR;
+		BagInfo.ErrorType result = BagInfo.ErrorType.NO_ERROR;
 		//
 		int count = 1;
 		long beg = System.currentTimeMillis();
@@ -354,19 +354,19 @@ public class BagPenTabImplTest extends BaseTestSupporter {
 
 		System.out.println(result);
 		// 沒有錯誤
-		assertEquals(BagPen.ErrorType.NO_ERROR, result);
+		assertEquals(BagInfo.ErrorType.NO_ERROR, result);
 
 		tab.setLocked(true);// 鎖定包包頁
 		result = tab.removeItem(UNIQUE_ID);
 		System.out.println(result);
 		tab.setLocked(false); // 解鎖包包頁
 		// 包包頁被鎖定
-		assertEquals(BagPen.ErrorType.TAB_LOCKED, result);
+		assertEquals(BagInfo.ErrorType.TAB_LOCKED, result);
 		//
 		result = tab.removeItem(UNIQUE_ID);
 		System.out.println(result);
 		// 道具不存在
-		assertEquals(BagPen.ErrorType.ITEM_NOT_EXIST, result);
+		assertEquals(BagInfo.ErrorType.ITEM_NOT_EXIST, result);
 	}
 
 	@Test
@@ -375,9 +375,9 @@ public class BagPenTabImplTest extends BaseTestSupporter {
 	// 1000000 times: 18 mills.
 	// verified
 	public void decreaseAmount() {
-		BagPen.Tab tab = mockTab();
+		BagInfo.Tab tab = mockTab();
 		//
-		BagPen.ErrorType result = BagPen.ErrorType.NO_ERROR;
+		BagInfo.ErrorType result = BagInfo.ErrorType.NO_ERROR;
 		//
 		int count = 1;
 		long beg = System.currentTimeMillis();
@@ -389,31 +389,31 @@ public class BagPenTabImplTest extends BaseTestSupporter {
 
 		System.out.println(result);
 		// 沒有錯誤
-		assertEquals(BagPen.ErrorType.NO_ERROR, result);
+		assertEquals(BagInfo.ErrorType.NO_ERROR, result);
 		//
 		tab.setLocked(true);// 鎖定包包頁
 		result = tab.decreaseAmount(0, 1);
 		System.out.println(result);
 		tab.setLocked(false);// 解鎖包包頁
 		// 包包頁被鎖定
-		assertEquals(BagPen.ErrorType.TAB_LOCKED, result);
+		assertEquals(BagInfo.ErrorType.TAB_LOCKED, result);
 		//
 		result = tab.decreaseAmount((Integer) null, 1);
 		System.out.println(result);
 		// 超過格子索引
-		assertEquals(BagPen.ErrorType.OVER_GRID_INDEX, result);
+		assertEquals(BagInfo.ErrorType.OVER_GRID_INDEX, result);
 
 		// 移除索引index=1的道具
 		tab.removeItem(1);
 		result = tab.decreaseAmount(1, 1);
 		System.out.println(result);
 		// 道具不存在
-		assertEquals(BagPen.ErrorType.ITEM_NOT_EXIST, result);
+		assertEquals(BagInfo.ErrorType.ITEM_NOT_EXIST, result);
 		//
 		result = tab.decreaseAmount(0, 100);
 		System.out.println(result);
 		// 數量不足時
-		assertEquals(BagPen.ErrorType.AMOUNT_NOT_ENOUGH, result);
+		assertEquals(BagInfo.ErrorType.AMOUNT_NOT_ENOUGH, result);
 	}
 
 	@Test
@@ -424,9 +424,9 @@ public class BagPenTabImplTest extends BaseTestSupporter {
 	public void decreaseAmountByUniqueId() {
 		final String UNIQUE_ID = "U_0";
 
-		BagPen.Tab tab = mockTab();
+		BagInfo.Tab tab = mockTab();
 		//
-		BagPen.ErrorType result = BagPen.ErrorType.NO_ERROR;
+		BagInfo.ErrorType result = BagInfo.ErrorType.NO_ERROR;
 		//
 		int count = 1;
 		long beg = System.currentTimeMillis();
@@ -438,24 +438,24 @@ public class BagPenTabImplTest extends BaseTestSupporter {
 
 		System.out.println(result);
 		// 沒有錯誤
-		assertEquals(BagPen.ErrorType.NO_ERROR, result);
+		assertEquals(BagInfo.ErrorType.NO_ERROR, result);
 		//
 		tab.setLocked(true);// 鎖定包包頁
 		result = tab.decreaseAmount(UNIQUE_ID, 1);
 		System.out.println(result);
 		tab.setLocked(false);// 解鎖包包頁
 		// 包包頁被鎖定
-		assertEquals(BagPen.ErrorType.TAB_LOCKED, result);
+		assertEquals(BagInfo.ErrorType.TAB_LOCKED, result);
 		//
 		result = tab.decreaseAmount((String) null, 1);
 		System.out.println(result);
 		// 道具不存在
-		assertEquals(BagPen.ErrorType.ITEM_NOT_EXIST, result);
+		assertEquals(BagInfo.ErrorType.ITEM_NOT_EXIST, result);
 		//
 		result = tab.decreaseAmount(0, 100);
 		System.out.println(result);
 		// 數量不足時
-		assertEquals(BagPen.ErrorType.AMOUNT_NOT_ENOUGH, result);
+		assertEquals(BagInfo.ErrorType.AMOUNT_NOT_ENOUGH, result);
 	}
 
 	@Test
@@ -464,9 +464,9 @@ public class BagPenTabImplTest extends BaseTestSupporter {
 	// 1000000 times: 32 mills.
 	// verified
 	public void clearItem() {
-		BagPen.Tab tab = mockTab();
+		BagInfo.Tab tab = mockTab();
 		//
-		BagPen.ErrorType result = BagPen.ErrorType.NO_ERROR;
+		BagInfo.ErrorType result = BagInfo.ErrorType.NO_ERROR;
 		//
 		int count = 1000000;
 		long beg = System.currentTimeMillis();
@@ -478,14 +478,14 @@ public class BagPenTabImplTest extends BaseTestSupporter {
 
 		System.out.println(result);
 		// 沒有錯誤
-		assertEquals(BagPen.ErrorType.NO_ERROR, result);
+		assertEquals(BagInfo.ErrorType.NO_ERROR, result);
 
 		tab.setLocked(true);// 鎖定包包頁
 		result = tab.clearItem();
 		System.out.println(result);
 		tab.setLocked(false);// 解鎖包包頁
 		// 包包頁被鎖定
-		assertEquals(BagPen.ErrorType.TAB_LOCKED, result);
+		assertEquals(BagInfo.ErrorType.TAB_LOCKED, result);
 	}
 
 	@Test
@@ -494,7 +494,7 @@ public class BagPenTabImplTest extends BaseTestSupporter {
 	// 1000000 times: 32 mills.
 	// verified
 	public void getItem() {
-		BagPen.Tab tab = mockTab();
+		BagInfo.Tab tab = mockTab();
 		//
 		Item result = null;
 		//
@@ -522,7 +522,7 @@ public class BagPenTabImplTest extends BaseTestSupporter {
 	public void getItemByUniqueId() {
 		final String UNIQUE_ID = "U_0";
 
-		BagPen.Tab tab = mockTab();
+		BagInfo.Tab tab = mockTab();
 		//
 		Item result = null;
 		//
@@ -546,7 +546,7 @@ public class BagPenTabImplTest extends BaseTestSupporter {
 	public void getItems() {
 		final String ID = "T_0";
 
-		BagPen.Tab tab = mockTab();
+		BagInfo.Tab tab = mockTab();
 		//
 		List<Item> result = null;
 		//
@@ -568,7 +568,7 @@ public class BagPenTabImplTest extends BaseTestSupporter {
 	// 1000000 times: 32 mills.
 	// verified
 	public void getItemsByItemType() {
-		BagPen.Tab tab = mockTab();
+		BagInfo.Tab tab = mockTab();
 		//
 		List<Item> result = null;
 		//
@@ -590,10 +590,10 @@ public class BagPenTabImplTest extends BaseTestSupporter {
 	// 1000000 times: 32 mills.
 	// verified
 	public void setItem() {
-		BagPen.Tab tab = mockTab();
+		BagInfo.Tab tab = mockTab();
 		Thing thing = randomThing();
 		//
-		BagPen.ErrorType result = BagPen.ErrorType.NO_ERROR;
+		BagInfo.ErrorType result = BagInfo.ErrorType.NO_ERROR;
 		//
 		int count = 1000000;
 		long beg = System.currentTimeMillis();
@@ -605,19 +605,19 @@ public class BagPenTabImplTest extends BaseTestSupporter {
 
 		System.out.println(result);
 		// 沒有錯誤
-		assertEquals(BagPen.ErrorType.NO_ERROR, result);
+		assertEquals(BagInfo.ErrorType.NO_ERROR, result);
 
 		tab.setLocked(true);// 鎖定包包頁
 		result = tab.setItem(0, thing);
 		System.out.println(result);
 		tab.setLocked(false); // 解鎖包包頁
 		// 包包頁被鎖定
-		assertEquals(BagPen.ErrorType.TAB_LOCKED, result);
+		assertEquals(BagInfo.ErrorType.TAB_LOCKED, result);
 		//
 		result = tab.setItem(-1, thing);
 		System.out.println(result);
 		// 超過格子索引
-		assertEquals(BagPen.ErrorType.OVER_GRID_INDEX, result);
+		assertEquals(BagInfo.ErrorType.OVER_GRID_INDEX, result);
 	}
 
 	@Test
@@ -626,9 +626,9 @@ public class BagPenTabImplTest extends BaseTestSupporter {
 	// 1000000 times: 32 mills.
 	// verified
 	public void setItemAmount() {
-		BagPen.Tab tab = mockTab();
+		BagInfo.Tab tab = mockTab();
 		//
-		BagPen.ErrorType result = BagPen.ErrorType.NO_ERROR;
+		BagInfo.ErrorType result = BagInfo.ErrorType.NO_ERROR;
 		//
 		int count = 1000000;
 		long beg = System.currentTimeMillis();
@@ -640,7 +640,7 @@ public class BagPenTabImplTest extends BaseTestSupporter {
 
 		System.out.println(result);
 		// 沒有錯誤
-		assertEquals(BagPen.ErrorType.NO_ERROR, result);
+		assertEquals(BagInfo.ErrorType.NO_ERROR, result);
 		assertEquals(0, tab.getItem(0).getAmount());
 
 		tab.setLocked(true);// 鎖定包包頁
@@ -648,12 +648,12 @@ public class BagPenTabImplTest extends BaseTestSupporter {
 		System.out.println(result);
 		tab.setLocked(false); // 解鎖包包頁
 		// 包包頁被鎖定
-		assertEquals(BagPen.ErrorType.TAB_LOCKED, result);
+		assertEquals(BagInfo.ErrorType.TAB_LOCKED, result);
 		//
 		result = tab.setItemAmount(-1, 0);
 		System.out.println(result);
 		// 超過格子索引
-		assertEquals(BagPen.ErrorType.OVER_GRID_INDEX, result);
+		assertEquals(BagInfo.ErrorType.OVER_GRID_INDEX, result);
 	}
 
 	@Test
@@ -664,7 +664,7 @@ public class BagPenTabImplTest extends BaseTestSupporter {
 	public void containIndex() {
 		final Integer INDEX = 0;
 
-		BagPen.Tab tab = mockTab();
+		BagInfo.Tab tab = mockTab();
 		//
 		Boolean result = null;
 		//
@@ -692,7 +692,7 @@ public class BagPenTabImplTest extends BaseTestSupporter {
 	public void getIndex() {
 		final String UNIQUE_ID = "U_0";
 
-		BagPen.Tab tab = mockTab();
+		BagInfo.Tab tab = mockTab();
 		//
 		Integer result = null;
 		//
@@ -716,7 +716,7 @@ public class BagPenTabImplTest extends BaseTestSupporter {
 	public void getIndexs() {
 		final String ID = "T_0";
 
-		BagPen.Tab tab = mockSameThingTab();// 40個相同物品
+		BagInfo.Tab tab = mockSameThingTab();// 40個相同物品
 		//
 		List<Integer> result = null;
 		//
@@ -740,7 +740,7 @@ public class BagPenTabImplTest extends BaseTestSupporter {
 	public void getAmount() {
 		final String ID = "T_0";
 
-		BagPen.Tab tab = mockSameThingTab();// 40個相同物品
+		BagInfo.Tab tab = mockSameThingTab();// 40個相同物品
 		//
 		Integer result = null;
 		//
@@ -762,7 +762,7 @@ public class BagPenTabImplTest extends BaseTestSupporter {
 	// 1000000 times: 528 mills.
 	// verified
 	public void getEmptySize() {
-		BagPen.Tab tab = mockSameThingTab();// 40個相同物品
+		BagInfo.Tab tab = mockSameThingTab();// 40個相同物品
 		tab.removeItem(0);// 移除index=0
 		//
 		Integer result = null;
@@ -790,7 +790,7 @@ public class BagPenTabImplTest extends BaseTestSupporter {
 	// 1000000 times: 528 mills.
 	// verified
 	public void getEmptyIndex() {
-		BagPen.Tab tab = mockSameThingTab();// 40個相同物品
+		BagInfo.Tab tab = mockSameThingTab();// 40個相同物品
 		tab.removeItem(20);// 移除index=20
 		//
 		Integer result = null;
@@ -820,7 +820,7 @@ public class BagPenTabImplTest extends BaseTestSupporter {
 	public void getPutIndex() {
 		final String ID = "T_0";
 		//
-		BagPen.Tab tab = mockSameThingTab();// 40個相同物品
+		BagInfo.Tab tab = mockSameThingTab();// 40個相同物品
 		//
 		Integer result = null;
 		//

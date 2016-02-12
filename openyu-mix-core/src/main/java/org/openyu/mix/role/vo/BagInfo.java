@@ -16,10 +16,10 @@ import com.sun.xml.bind.AnyTypeAdapter;
  * 包包欄位
  */
 @XmlJavaTypeAdapter(AnyTypeAdapter.class)
-public interface BagPen extends AppInfo
+public interface BagInfo extends AppInfo
 {
 
-	String KEY = BagPen.class.getName();
+	String KEY = BagInfo.class.getName();
 
 	// --------------------------------------------------
 	/**

@@ -35,9 +35,9 @@ import org.openyu.mix.item.service.impl.ItemServiceImpl.EnhanceResultImpl;
 import org.openyu.mix.manor.vo.Land;
 import org.openyu.mix.manor.vo.ManorCollector;
 import org.openyu.mix.manor.vo.Seed;
-import org.openyu.mix.role.vo.BagPen;
+import org.openyu.mix.role.vo.BagInfo;
 import org.openyu.mix.role.vo.Role;
-import org.openyu.mix.role.vo.impl.BagPenImplTest;
+import org.openyu.mix.role.vo.impl.BagInfoImplTest;
 import org.openyu.commons.thread.ThreadHelper;
 import org.openyu.socklet.message.vo.Message;
 
@@ -296,9 +296,9 @@ public class ItemServiceImplTest extends ItemTestSupporter {
 	public void sendItem() {
 		Role role = mockRole();
 		// 道具數量=10,最大堆疊數量=100,有120個道具
-		BagPen bagPen = BagPenImplTest.mockBagPen();
-		role.setBagPen(bagPen);
-		Item item = bagPen.getItem(0, 0);
+		BagInfo bagInfo = BagInfoImplTest.mockBagInfo();
+		role.setBagInfo(bagInfo);
+		Item item = bagInfo.getItem(0, 0);
 		//
 		int count = 1;
 		long beg = System.currentTimeMillis();
@@ -318,10 +318,10 @@ public class ItemServiceImplTest extends ItemTestSupporter {
 	public void fillItem() {
 		Role role = mockRole();
 		// 道具數量=10,最大堆疊數量=100,有120個道具
-		BagPen bagPen = BagPenImplTest.mockBagPen();
-		role.setBagPen(bagPen);
+		BagInfo bagInfo = BagInfoImplTest.mockBagInfo();
+		role.setBagInfo(bagInfo);
 		// 道具
-		Item item = bagPen.getItem(0, 0);
+		Item item = bagInfo.getItem(0, 0);
 		//
 		Message result = null;
 		//
@@ -376,28 +376,28 @@ public class ItemServiceImplTest extends ItemTestSupporter {
 	}
 
 	@Test
-	public void sendBagPen() {
+	public void sendBagInfo() {
 		Role role = mockRole();
-		BagPen bagPen = BagPenImplTest.mockBagPen();
-		role.setBagPen(bagPen);
+		BagInfo bagInfo = BagInfoImplTest.mockBagInfo();
+		role.setBagInfo(bagInfo);
 		//
-		itemService.sendBagPen(role.getId(), role.getBagPen());
+		itemService.sendBagInfo(role.getId(), role.getBagInfo());
 	}
 
 	@Test
-	public void fillBagPen() {
+	public void fillBagInfo() {
 		Message result = null;
 		//
 		Role role = mockRole();
-		BagPen bagPen = BagPenImplTest.mockBagPen();
-		role.setBagPen(bagPen);
+		BagInfo bagInfo = BagInfoImplTest.mockBagInfo();
+		role.setBagInfo(bagInfo);
 		//
 		int count = 1;
 		long beg = System.currentTimeMillis();
 		//
 		for (int i = 0; i < count; i++) {
 			result = messageService.createMessage(CoreModuleType.ROLE, CoreModuleType.CLIENT, null, role.getId());
-			itemService.fillBagPen(result, bagPen);
+			itemService.fillBagInfo(result, bagInfo);
 		}
 		//
 		long end = System.currentTimeMillis();
@@ -406,13 +406,13 @@ public class ItemServiceImplTest extends ItemTestSupporter {
 		System.out.println(result);
 
 		// 移除1個道具
-		bagPen.removeItem(0, 0);
+		bagInfo.removeItem(0, 0);
 		// 鎖定 TabType._1,TabType._2
-		bagPen.lock(1);
-		bagPen.lock(2);
+		bagInfo.lock(1);
+		bagInfo.lock(2);
 		//
 		result = messageService.createMessage(CoreModuleType.ROLE, CoreModuleType.CLIENT, null, role.getId());
-		itemService.fillBagPen(result, bagPen);
+		itemService.fillBagInfo(result, bagInfo);
 		System.out.println(result);
 	}
 
@@ -426,13 +426,13 @@ public class ItemServiceImplTest extends ItemTestSupporter {
 	// time.bench: 0.27
 	public void checkIncreaseItem() {
 		final String THING_ID = "T_POTION_HP_G001";
-		BagPen.ErrorType result = BagPen.ErrorType.NO_ERROR;
+		BagInfo.ErrorType result = BagInfo.ErrorType.NO_ERROR;
 		//
 		Role role = mockRole();
 		// 道具數量=10,最大堆疊數量=100,有120個道具
-		BagPen bagPen = BagPenImplTest.mockBagPenWithSameThing(THING_ID);
-		bagPen.removeItem(0, 0);// 移除1個道具
-		role.setBagPen(bagPen);
+		BagInfo bagInfo = BagInfoImplTest.mockBagInfoWithSameThing(THING_ID);
+		bagInfo.removeItem(0, 0);// 移除1個道具
+		role.setBagInfo(bagInfo);
 		//
 		Item item = itemService.createItem(THING_ID, 1);
 		// 最大堆疊數量=0,所以剩餘可放數量=Integer.MAX_VALUE
@@ -441,7 +441,7 @@ public class ItemServiceImplTest extends ItemTestSupporter {
 		result = itemService.checkIncreaseItem(role, item);
 		System.out.println(result);
 		// 沒有錯誤
-		assertEquals(BagPen.ErrorType.NO_ERROR, result);
+		assertEquals(BagInfo.ErrorType.NO_ERROR, result);
 
 		// 最大堆疊數量=50,每格已放10個道具,已放119格
 		// 所以剩餘可放數量=40*119=4760+1個空格(50)=4810
@@ -449,32 +449,32 @@ public class ItemServiceImplTest extends ItemTestSupporter {
 		result = itemService.checkIncreaseItem(role, item);
 		System.out.println(result);
 		// 沒有錯誤
-		assertEquals(BagPen.ErrorType.NO_ERROR, result);
+		assertEquals(BagInfo.ErrorType.NO_ERROR, result);
 
 		// 最大堆疊數量=10,所以剩餘可放數量=5+1個空格的(10)=15
 		item.setMaxAmount(10);
 
 		// 包包內的道具
-		Item existItem = bagPen.getItem(0, 1);
+		Item existItem = bagInfo.getItem(0, 1);
 		existItem.setAmount(5);
 		//
 		result = itemService.checkIncreaseItem(role, item);
 		System.out.println(result);
 		// 沒有錯誤
-		assertEquals(BagPen.ErrorType.NO_ERROR, result);
+		assertEquals(BagInfo.ErrorType.NO_ERROR, result);
 
 		// 最大堆疊數量=10,所以剩餘可放數量=5+1個空格的(10)=15
 		item.setAmount(16);// 放16個 > 剩餘可放數量15個,所以放不進去,包包滿了
 		item.setMaxAmount(10);
 
 		// 包包內的道具
-		existItem = bagPen.getItem(0, 1);
+		existItem = bagInfo.getItem(0, 1);
 		existItem.setAmount(5);
 		//
 		result = itemService.checkIncreaseItem(role, item);
 		System.out.println(result);
 		// 包包滿了
-		assertEquals(BagPen.ErrorType.BAG_FULL, result);
+		assertEquals(BagInfo.ErrorType.BAG_FULL, result);
 	}
 
 	/**
@@ -487,12 +487,12 @@ public class ItemServiceImplTest extends ItemTestSupporter {
 	// time.bench: 0.34
 	public void checkIncreaseItemWithBagFull() {
 		final String THING_ID = "T_POTION_HP_G001";
-		BagPen.ErrorType result = BagPen.ErrorType.NO_ERROR;
+		BagInfo.ErrorType result = BagInfo.ErrorType.NO_ERROR;
 		//
 		Role role = mockRole();
 		// 道具數量=10,最大堆疊數量=100,有120個道具
-		BagPen bagPen = BagPenImplTest.mockBagPenWithSameThing(THING_ID);
-		role.setBagPen(bagPen);
+		BagInfo bagInfo = BagInfoImplTest.mockBagInfoWithSameThing(THING_ID);
+		role.setBagInfo(bagInfo);
 		//
 		Item item = itemService.createItem(THING_ID, 1);
 		// 最大堆疊數量=0,所以剩餘可放數量=Integer.MAX_VALUE
@@ -501,7 +501,7 @@ public class ItemServiceImplTest extends ItemTestSupporter {
 		result = itemService.checkIncreaseItem(role, item);
 		System.out.println(result);
 		// 沒有錯誤
-		assertEquals(BagPen.ErrorType.NO_ERROR, result);
+		assertEquals(BagInfo.ErrorType.NO_ERROR, result);
 
 		// 最大堆疊數量=50,,每格已放10個道具,已放120格
 		// 所以剩餘可放數量=40*120=4800
@@ -509,14 +509,14 @@ public class ItemServiceImplTest extends ItemTestSupporter {
 		result = itemService.checkIncreaseItem(role, item);
 		System.out.println(result);
 		// 沒有錯誤
-		assertEquals(BagPen.ErrorType.NO_ERROR, result);
+		assertEquals(BagInfo.ErrorType.NO_ERROR, result);
 
 		// 最大堆疊數量=10,所以剩餘可放數量=0
 		item.setMaxAmount(10);
 		result = itemService.checkIncreaseItem(role, item);
 		System.out.println(result);
 		// 包包滿了
-		assertEquals(BagPen.ErrorType.BAG_FULL, result);
+		assertEquals(BagInfo.ErrorType.BAG_FULL, result);
 	}
 
 	/**
@@ -529,23 +529,23 @@ public class ItemServiceImplTest extends ItemTestSupporter {
 	// time.bench: 0.33
 	public void checkIncreaseItemWithItemId() {
 		final String THING_ID = "T_POTION_HP_G001";
-		BagPen.ErrorType result = BagPen.ErrorType.NO_ERROR;
+		BagInfo.ErrorType result = BagInfo.ErrorType.NO_ERROR;
 		//
 		Role role = mockRole();
 		// 道具數量=10,最大堆疊數量=100,有120個道具
-		BagPen bagPen = BagPenImplTest.mockBagPenWithSameThing(THING_ID);
-		bagPen.removeItem(0, 0);// 移除1個道具
-		role.setBagPen(bagPen);
+		BagInfo bagInfo = BagInfoImplTest.mockBagInfoWithSameThing(THING_ID);
+		bagInfo.removeItem(0, 0);// 移除1個道具
+		role.setBagInfo(bagInfo);
 		//
 		result = itemService.checkIncreaseItemWithItemId(role, THING_ID, 1);
 		System.out.println(result);
 		// 沒有錯誤
-		assertEquals(BagPen.ErrorType.NO_ERROR, result);
+		assertEquals(BagInfo.ErrorType.NO_ERROR, result);
 
 		result = itemService.checkIncreaseItemWithItemId(role, "T_NOT_EXIST_001", 1);
 		System.out.println(result);
 		// 道具不存在
-		assertEquals(BagPen.ErrorType.ITEM_NOT_EXIST, result);
+		assertEquals(BagInfo.ErrorType.ITEM_NOT_EXIST, result);
 	}
 
 	@Test
@@ -561,9 +561,9 @@ public class ItemServiceImplTest extends ItemTestSupporter {
 		//
 		Role role = mockRole();
 		// 道具數量=10,最大堆疊數量=100,有120個道具
-		BagPen bagPen = BagPenImplTest.mockBagPenWithSameThing(THING_ID);
-		bagPen.removeItem(0, 0);// 移除1個道具
-		role.setBagPen(bagPen);
+		BagInfo bagInfo = BagInfoImplTest.mockBagInfoWithSameThing(THING_ID);
+		bagInfo.removeItem(0, 0);// 移除1個道具
+		role.setBagInfo(bagInfo);
 		//
 		Item item = itemService.createItem(THING_ID, 1);
 		// 最大堆疊數量=0,所以剩餘可放數量=Integer.MAX_VALUE
@@ -587,7 +587,7 @@ public class ItemServiceImplTest extends ItemTestSupporter {
 		item.setMaxAmount(10);
 
 		// 包包內的道具
-		Item existItem = bagPen.getItem(0, 1);
+		Item existItem = bagInfo.getItem(0, 1);
 		existItem.setAmount(5);
 		//
 		result = itemService.increaseItem(true, role, item);
@@ -600,7 +600,7 @@ public class ItemServiceImplTest extends ItemTestSupporter {
 		item.setAmount(6);// 放6個 < 剩餘可放數量15個
 
 		// 包包內的道具
-		existItem = bagPen.getItem(0, 1);
+		existItem = bagInfo.getItem(0, 1);
 		existItem.setAmount(5);// 原有5個,此時放入6個,會多一格新格子,放1個
 		//
 		result = itemService.increaseItem(true, role, item);
@@ -608,14 +608,14 @@ public class ItemServiceImplTest extends ItemTestSupporter {
 		// 沒有錯誤了
 		assertTrue(result.size() > 0);
 		assertEquals(10, existItem.getAmount());
-		assertEquals(1, bagPen.getItem(0, 0).getAmount());
+		assertEquals(1, bagInfo.getItem(0, 0).getAmount());
 
 		// 最大堆疊數量=10,所以剩餘可放數量=5+1個空格的(10)=15
 		item.setMaxAmount(10);
 		item.setAmount(3);// 放3個 < 剩餘可放數量15個
 
 		// 包包內的道具
-		existItem = bagPen.getItem(0, 1);
+		existItem = bagInfo.getItem(0, 1);
 		existItem.setAmount(5);
 		//
 		result = itemService.increaseItem(true, role, item);
@@ -629,7 +629,7 @@ public class ItemServiceImplTest extends ItemTestSupporter {
 		item.setAmount(16);// 放16個 > 剩餘可放數量15個,所以放不進去,包包滿了
 
 		// 包包內的道具
-		existItem = bagPen.getItem(0, 1);
+		existItem = bagInfo.getItem(0, 1);
 		existItem.setAmount(5);
 		//
 		result = itemService.increaseItem(true, role, item);
@@ -639,7 +639,7 @@ public class ItemServiceImplTest extends ItemTestSupporter {
 		assertEquals(5, existItem.getAmount());
 		//
 		Equipment equipment = itemService.createEquipment(WEAPON_ID);// E 級單手劍
-		bagPen.removeItem(0, 0);// 移除1個道具
+		bagInfo.removeItem(0, 0);// 移除1個道具
 		//
 		result = itemService.increaseItem(true, role, equipment);
 		System.out.println(result);
@@ -659,9 +659,9 @@ public class ItemServiceImplTest extends ItemTestSupporter {
 		//
 		Role role = mockRole();
 		// 道具數量=10,最大堆疊數量=100,有120個道具
-		BagPen bagPen = BagPenImplTest.mockBagPenWithSameThing(THING_ID);
-		bagPen.removeItem(0, 0);// 移除1個道具
-		role.setBagPen(bagPen);
+		BagInfo bagInfo = BagInfoImplTest.mockBagInfoWithSameThing(THING_ID);
+		bagInfo.removeItem(0, 0);// 移除1個道具
+		role.setBagInfo(bagInfo);
 		// 最大堆疊數量=0,所以剩餘可放數量=Integer.MAX_VALUE
 		result = itemService.increaseItemWithItemId(true, role, THING_ID, 1);
 		System.out.println(result);
@@ -687,9 +687,9 @@ public class ItemServiceImplTest extends ItemTestSupporter {
 		//
 		Role role = mockRole();
 		// 道具數量=10,最大堆疊數量=100,有120個道具
-		BagPen bagPen = BagPenImplTest.mockBagPenWithSameThing(THING_ID);
-		bagPen.removeItem(0, 0);// 移除1個道具
-		role.setBagPen(bagPen);
+		BagInfo bagInfo = BagInfoImplTest.mockBagInfoWithSameThing(THING_ID);
+		bagInfo.removeItem(0, 0);// 移除1個道具
+		role.setBagInfo(bagInfo);
 		//
 		Map<String, Integer> items = new LinkedHashMap<String, Integer>();
 		items.put(THING_ID, 10);
@@ -717,9 +717,9 @@ public class ItemServiceImplTest extends ItemTestSupporter {
 	public void fillIncreaseItem() {
 		Role role = mockRole();
 		// 道具數量=10,最大堆疊數量=100,有120個道具
-		BagPen bagPen = BagPenImplTest.mockBagPen();
-		role.setBagPen(bagPen);
-		Item item = bagPen.getItem(0, 0);
+		BagInfo bagInfo = BagInfoImplTest.mockBagInfo();
+		role.setBagInfo(bagInfo);
+		Item item = bagInfo.getItem(0, 0);
 		//
 		Message result = null;
 		//
@@ -742,13 +742,13 @@ public class ItemServiceImplTest extends ItemTestSupporter {
 	// 1000000 times: 1959 mills.
 	public void checkDecreaseItem() {
 		final String THING_ID = "T_POTION_HP_G001";
-		BagPen.ErrorType result = BagPen.ErrorType.NO_ERROR;
+		BagInfo.ErrorType result = BagInfo.ErrorType.NO_ERROR;
 		//
 		Role role = mockRole();
 		// 道具數量=10,最大堆疊數量=100,有120個道具
-		BagPen bagPen = BagPenImplTest.mockBagPenWithSameThing(THING_ID);
-		bagPen.removeItem(0, 0);// 移除1個道具
-		role.setBagPen(bagPen);
+		BagInfo bagInfo = BagInfoImplTest.mockBagInfoWithSameThing(THING_ID);
+		bagInfo.removeItem(0, 0);// 移除1個道具
+		role.setBagInfo(bagInfo);
 		//
 		Item item = itemService.createItem(THING_ID, 1);
 		// 最大堆疊數量=0,所以剩餘可放數量=Integer.MAX_VALUE
@@ -766,32 +766,32 @@ public class ItemServiceImplTest extends ItemTestSupporter {
 
 		System.out.println(result);
 		// 沒有錯誤
-		assertEquals(BagPen.ErrorType.NO_ERROR, result);
+		assertEquals(BagInfo.ErrorType.NO_ERROR, result);
 
 		result = itemService.checkDecreaseItem(role, null);
 		System.out.println(result);
 		// 道具不存在
-		assertEquals(BagPen.ErrorType.ITEM_NOT_EXIST, result);
+		assertEquals(BagInfo.ErrorType.ITEM_NOT_EXIST, result);
 
 		// 包包全清空
-		bagPen.clearTab();
+		bagInfo.clearTab();
 		result = itemService.checkDecreaseItem(role, item);
 		System.out.println(result);
 		// 道具數量不足
-		assertEquals(BagPen.ErrorType.AMOUNT_NOT_ENOUGH, result);
+		assertEquals(BagInfo.ErrorType.AMOUNT_NOT_ENOUGH, result);
 	}
 
 	@Test
 	// 1000000 times: 5382 mills.
 	public void checkDecreaseItemWithItemId() {
 		final String THING_ID = "T_POTION_HP_G001";
-		BagPen.ErrorType result = BagPen.ErrorType.NO_ERROR;
+		BagInfo.ErrorType result = BagInfo.ErrorType.NO_ERROR;
 		//
 		Role role = mockRole();
 		// 道具數量=10,最大堆疊數量=100,有120個道具
-		BagPen bagPen = BagPenImplTest.mockBagPenWithSameThing(THING_ID);
-		bagPen.removeItem(0, 0);// 移除1個道具
-		role.setBagPen(bagPen);
+		BagInfo bagInfo = BagInfoImplTest.mockBagInfoWithSameThing(THING_ID);
+		bagInfo.removeItem(0, 0);// 移除1個道具
+		role.setBagInfo(bagInfo);
 		//
 		int count = 1;
 		long beg = System.currentTimeMillis();
@@ -805,33 +805,33 @@ public class ItemServiceImplTest extends ItemTestSupporter {
 
 		System.out.println(result);
 		// 沒有錯誤
-		assertEquals(BagPen.ErrorType.NO_ERROR, result);
+		assertEquals(BagInfo.ErrorType.NO_ERROR, result);
 
 		result = itemService.checkDecreaseItem(role, null, 1);
 		System.out.println(result);
 		// 道具不存在
-		assertEquals(BagPen.ErrorType.ITEM_NOT_EXIST, result);
+		assertEquals(BagInfo.ErrorType.ITEM_NOT_EXIST, result);
 
 		// 包包全清空
-		bagPen.clearTab();
+		bagInfo.clearTab();
 		result = itemService.checkDecreaseItem(role, THING_ID, 1);
 		System.out.println(result);
 		// 道具數量不足
-		assertEquals(BagPen.ErrorType.AMOUNT_NOT_ENOUGH, result);
+		assertEquals(BagInfo.ErrorType.AMOUNT_NOT_ENOUGH, result);
 	}
 
 	@Test
 	// 1000000 times: 5382 mills.
 	public void checkDecreaseItemWithUniqueId() {
 		final String THING_ID = "T_POTION_HP_G001";
-		BagPen.ErrorType result = BagPen.ErrorType.NO_ERROR;
+		BagInfo.ErrorType result = BagInfo.ErrorType.NO_ERROR;
 		//
 		Role role = mockRole();
 		// 道具數量=10,最大堆疊數量=100,有120個道具
-		BagPen bagPen = BagPenImplTest.mockBagPenWithSameThing(THING_ID);
-		bagPen.removeItem(0, 0);// 移除1個道具
-		role.setBagPen(bagPen);
-		Item item = bagPen.getItem(0, 1);
+		BagInfo bagInfo = BagInfoImplTest.mockBagInfoWithSameThing(THING_ID);
+		bagInfo.removeItem(0, 0);// 移除1個道具
+		role.setBagInfo(bagInfo);
+		Item item = bagInfo.getItem(0, 1);
 		//
 		int count = 1;
 		long beg = System.currentTimeMillis();
@@ -845,19 +845,19 @@ public class ItemServiceImplTest extends ItemTestSupporter {
 
 		System.out.println(result);
 		// 沒有錯誤
-		assertEquals(BagPen.ErrorType.NO_ERROR, result);
+		assertEquals(BagInfo.ErrorType.NO_ERROR, result);
 
 		result = itemService.checkDecreaseItemWithUniqueId(role, null, 1);
 		System.out.println(result);
 		// 道具不存在
-		assertEquals(BagPen.ErrorType.ITEM_NOT_EXIST, result);
+		assertEquals(BagInfo.ErrorType.ITEM_NOT_EXIST, result);
 
 		// 包包全清空
-		bagPen.clearTab();
+		bagInfo.clearTab();
 		result = itemService.checkDecreaseItemWithUniqueId(role, item.getUniqueId(), 1);
 		System.out.println(result);
 		// 道具不存在
-		assertEquals(BagPen.ErrorType.ITEM_NOT_EXIST, result);
+		assertEquals(BagInfo.ErrorType.ITEM_NOT_EXIST, result);
 	}
 
 	@Test
@@ -871,9 +871,9 @@ public class ItemServiceImplTest extends ItemTestSupporter {
 		//
 		Role role = mockRole();
 		// 道具數量=10,最大堆疊數量=100,有120個道具
-		BagPen bagPen = BagPenImplTest.mockBagPenWithSameThing(THING_ID);
-		bagPen.removeItem(0, 0);// 移除1個道具
-		role.setBagPen(bagPen);
+		BagInfo bagInfo = BagInfoImplTest.mockBagInfoWithSameThing(THING_ID);
+		bagInfo.removeItem(0, 0);// 移除1個道具
+		role.setBagInfo(bagInfo);
 		//
 		Item item = itemService.createItem(THING_ID, 1);
 
@@ -886,11 +886,11 @@ public class ItemServiceImplTest extends ItemTestSupporter {
 		item.setAmount(15);// 扣15個
 		result = itemService.decreaseItem(true, role, item);
 		// (0,1)=null
-		System.out.println(bagPen.getItem(0, 1));
-		assertNull(bagPen.getItem(0, 1));
+		System.out.println(bagInfo.getItem(0, 1));
+		assertNull(bagInfo.getItem(0, 1));
 		// (0,2)=4
-		System.out.println(bagPen.getItem(0, 2).getAmount());
-		assertEquals(4, bagPen.getItem(0, 2).getAmount());
+		System.out.println(bagInfo.getItem(0, 2).getAmount());
+		assertEquals(4, bagInfo.getItem(0, 2).getAmount());
 
 		// 沒有錯誤
 		assertNotNull(result);
@@ -909,9 +909,9 @@ public class ItemServiceImplTest extends ItemTestSupporter {
 		//
 		Role role = mockRole();
 		// 道具數量=10,最大堆疊數量=100,有120個道具
-		BagPen bagPen = BagPenImplTest.mockBagPenWithSameThing(THING_ID);
-		bagPen.removeItem(0, 0);// 移除1個道具
-		role.setBagPen(bagPen);
+		BagInfo bagInfo = BagInfoImplTest.mockBagInfoWithSameThing(THING_ID);
+		bagInfo.removeItem(0, 0);// 移除1個道具
+		role.setBagInfo(bagInfo);
 		//
 		result = itemService.decreaseItemWithItemId(true, role, THING_ID, 1);
 		System.out.println(result);
@@ -939,10 +939,10 @@ public class ItemServiceImplTest extends ItemTestSupporter {
 		//
 		Role role = mockRole();
 		// 道具數量=10,最大堆疊數量=100,有120個道具
-		BagPen bagPen = BagPenImplTest.mockBagPenWithSameThing(THING_ID);
-		bagPen.removeItem(0, 0);// 移除1個道具
-		role.setBagPen(bagPen);
-		Item item = bagPen.getItem(0, 1);
+		BagInfo bagInfo = BagInfoImplTest.mockBagInfoWithSameThing(THING_ID);
+		bagInfo.removeItem(0, 0);// 移除1個道具
+		role.setBagInfo(bagInfo);
+		Item item = bagInfo.getItem(0, 1);
 		//
 		result = itemService.decreaseItemWithUniqueId(true, role, item.getUniqueId(), 1);
 		System.out.println(result);
@@ -1425,7 +1425,7 @@ public class ItemServiceImplTest extends ItemTestSupporter {
 		// 使用道具強化
 		itemService.useItem(true, role, armor.getUniqueId(), armorE_G001.getUniqueId(), 1);
 		// 扣1個道具,剩9個
-		assertEquals(9, role.getBagPen().getItem(armorE_G001.getUniqueId()).getAmount());
+		assertEquals(9, role.getBagInfo().getItem(armorE_G001.getUniqueId()).getAmount());
 
 		// 強化武器
 		// 10個e武捲放包包
@@ -1443,7 +1443,7 @@ public class ItemServiceImplTest extends ItemTestSupporter {
 		// 使用道具強化
 		itemService.useItem(true, role, weapon.getUniqueId(), weaponE_G001.getUniqueId(), 1);
 		// 扣1個道具,剩9個
-		assertEquals(9, role.getBagPen().getItem(weaponE_G001.getUniqueId()).getAmount());
+		assertEquals(9, role.getBagInfo().getItem(weaponE_G001.getUniqueId()).getAmount());
 
 		// 強化土地
 		// 10個土地捲放包包
@@ -1457,7 +1457,7 @@ public class ItemServiceImplTest extends ItemTestSupporter {
 		// 使用道具強化
 		itemService.useItem(true, role, land.getUniqueId(), landG001.getUniqueId(), 1);
 		// 扣1個道具,剩9個
-		assertEquals(9, role.getBagPen().getItem(landG001.getUniqueId()).getAmount());
+		assertEquals(9, role.getBagInfo().getItem(landG001.getUniqueId()).getAmount());
 
 	}
 
@@ -1544,7 +1544,7 @@ public class ItemServiceImplTest extends ItemTestSupporter {
 		assertEquals(ErrorType.NO_ERROR, result);
 
 		// 扣1個道具,剩9個
-		assertEquals(9, role.getBagPen().getItem(armorE_G001.getUniqueId()).getAmount());
+		assertEquals(9, role.getBagInfo().getItem(armorE_G001.getUniqueId()).getAmount());
 
 		// 不是防具,無法強化
 		result = itemService.useEnhanceArmorThing(true, role, weapon.getUniqueId(), armorE_G001);
@@ -1614,7 +1614,7 @@ public class ItemServiceImplTest extends ItemTestSupporter {
 		assertEquals(ErrorType.NO_ERROR, result);
 
 		// 扣1個道具,剩9個
-		assertEquals(9, role.getBagPen().getItem(weaponE_G001.getUniqueId()).getAmount());
+		assertEquals(9, role.getBagInfo().getItem(weaponE_G001.getUniqueId()).getAmount());
 
 		// 不是武器,無法強化
 		result = itemService.useEnhanceWeaponThing(true, role, armor.getUniqueId(), weaponE_G001);
@@ -1682,7 +1682,7 @@ public class ItemServiceImplTest extends ItemTestSupporter {
 		assertEquals(ErrorType.NO_ERROR, result);
 
 		// 扣1個道具,剩9個
-		assertEquals(9, role.getBagPen().getItem(landG001.getUniqueId()).getAmount());
+		assertEquals(9, role.getBagInfo().getItem(landG001.getUniqueId()).getAmount());
 
 		// 不是土地,無法強化
 		result = itemService.useEnhanceLandThing(true, role, armor.getUniqueId(), landG001);
@@ -1728,12 +1728,12 @@ public class ItemServiceImplTest extends ItemTestSupporter {
 		//
 		System.out.println(result);
 		assertEquals(ErrorType.NO_ERROR, result);
-		assertEquals(8, role.getBagPen().getItem(itemG001.getUniqueId()).getAmount());
+		assertEquals(8, role.getBagInfo().getItem(itemG001.getUniqueId()).getAmount());
 		//
 		result = itemService.useRoleExpThing(true, role, itemG001, 7);
 		System.out.println(result);
 		assertEquals(ErrorType.NO_ERROR, result);
-		assertEquals(1, role.getBagPen().getItem(itemG001.getUniqueId()).getAmount());
+		assertEquals(1, role.getBagInfo().getItem(itemG001.getUniqueId()).getAmount());
 
 		// 使用道具,想願經驗之力
 		for (int i = 0; i < 2; i++) {
@@ -1742,12 +1742,12 @@ public class ItemServiceImplTest extends ItemTestSupporter {
 		//
 		System.out.println(result);
 		assertEquals(ErrorType.NO_ERROR, result);
-		assertEquals(8, role.getBagPen().getItem(itemG002.getUniqueId()).getAmount());
+		assertEquals(8, role.getBagInfo().getItem(itemG002.getUniqueId()).getAmount());
 		//
 		result = itemService.useRoleExpThing(true, role, itemG002, 7);
 		System.out.println(result);
 		assertEquals(ErrorType.NO_ERROR, result);
-		assertEquals(1, role.getBagPen().getItem(itemG002.getUniqueId()).getAmount());
+		assertEquals(1, role.getBagInfo().getItem(itemG002.getUniqueId()).getAmount());
 
 		// 使用道具,憧憬經驗之力
 		for (int i = 0; i < 2; i++) {
@@ -1756,12 +1756,12 @@ public class ItemServiceImplTest extends ItemTestSupporter {
 		//
 		System.out.println(result);
 		assertEquals(ErrorType.NO_ERROR, result);
-		assertEquals(8, role.getBagPen().getItem(itemG003.getUniqueId()).getAmount());
+		assertEquals(8, role.getBagInfo().getItem(itemG003.getUniqueId()).getAmount());
 		//
 		result = itemService.useRoleExpThing(true, role, itemG003, 7);
 		System.out.println(result);
 		assertEquals(ErrorType.NO_ERROR, result);
-		assertEquals(1, role.getBagPen().getItem(itemG003.getUniqueId()).getAmount());
+		assertEquals(1, role.getBagInfo().getItem(itemG003.getUniqueId()).getAmount());
 	}
 
 	@Test
@@ -1789,12 +1789,12 @@ public class ItemServiceImplTest extends ItemTestSupporter {
 		//
 		System.out.println(result);
 		assertEquals(ErrorType.NO_ERROR, result);
-		assertEquals(8, role.getBagPen().getItem(itemG001.getUniqueId()).getAmount());
+		assertEquals(8, role.getBagInfo().getItem(itemG001.getUniqueId()).getAmount());
 		//
 		result = itemService.useRoleSpThing(true, role, itemG001, 7);
 		System.out.println(result);
 		assertEquals(ErrorType.NO_ERROR, result);
-		assertEquals(1, role.getBagPen().getItem(itemG001.getUniqueId()).getAmount());
+		assertEquals(1, role.getBagInfo().getItem(itemG001.getUniqueId()).getAmount());
 
 		// 使用道具,想願技魂之力
 		for (int i = 0; i < 2; i++) {
@@ -1803,12 +1803,12 @@ public class ItemServiceImplTest extends ItemTestSupporter {
 		//
 		System.out.println(result);
 		assertEquals(ErrorType.NO_ERROR, result);
-		assertEquals(8, role.getBagPen().getItem(itemG002.getUniqueId()).getAmount());
+		assertEquals(8, role.getBagInfo().getItem(itemG002.getUniqueId()).getAmount());
 		//
 		result = itemService.useRoleSpThing(true, role, itemG002, 7);
 		System.out.println(result);
 		assertEquals(ErrorType.NO_ERROR, result);
-		assertEquals(1, role.getBagPen().getItem(itemG002.getUniqueId()).getAmount());
+		assertEquals(1, role.getBagInfo().getItem(itemG002.getUniqueId()).getAmount());
 
 		// 使用道具,憧憬技魂之力
 		for (int i = 0; i < 2; i++) {
@@ -1817,12 +1817,12 @@ public class ItemServiceImplTest extends ItemTestSupporter {
 		//
 		System.out.println(result);
 		assertEquals(ErrorType.NO_ERROR, result);
-		assertEquals(8, role.getBagPen().getItem(itemG003.getUniqueId()).getAmount());
+		assertEquals(8, role.getBagInfo().getItem(itemG003.getUniqueId()).getAmount());
 		//
 		result = itemService.useRoleSpThing(true, role, itemG003, 7);
 		System.out.println(result);
 		assertEquals(ErrorType.NO_ERROR, result);
-		assertEquals(1, role.getBagPen().getItem(itemG003.getUniqueId()).getAmount());
+		assertEquals(1, role.getBagInfo().getItem(itemG003.getUniqueId()).getAmount());
 	}
 
 	@Test
@@ -1850,12 +1850,12 @@ public class ItemServiceImplTest extends ItemTestSupporter {
 		//
 		System.out.println(result);
 		assertEquals(ErrorType.NO_ERROR, result);
-		assertEquals(8, role.getBagPen().getItem(itemG001.getUniqueId()).getAmount());
+		assertEquals(8, role.getBagInfo().getItem(itemG001.getUniqueId()).getAmount());
 		//
 		result = itemService.useRoleGoldThing(true, role, itemG001, 7);
 		System.out.println(result);
 		assertEquals(ErrorType.NO_ERROR, result);
-		assertEquals(1, role.getBagPen().getItem(itemG001.getUniqueId()).getAmount());
+		assertEquals(1, role.getBagInfo().getItem(itemG001.getUniqueId()).getAmount());
 
 		// 使用道具,想願金幣之力
 		for (int i = 0; i < 2; i++) {
@@ -1864,12 +1864,12 @@ public class ItemServiceImplTest extends ItemTestSupporter {
 		//
 		System.out.println(result);
 		assertEquals(ErrorType.NO_ERROR, result);
-		assertEquals(8, role.getBagPen().getItem(itemG002.getUniqueId()).getAmount());
+		assertEquals(8, role.getBagInfo().getItem(itemG002.getUniqueId()).getAmount());
 		//
 		result = itemService.useRoleGoldThing(true, role, itemG002, 7);
 		System.out.println(result);
 		assertEquals(ErrorType.NO_ERROR, result);
-		assertEquals(1, role.getBagPen().getItem(itemG002.getUniqueId()).getAmount());
+		assertEquals(1, role.getBagInfo().getItem(itemG002.getUniqueId()).getAmount());
 
 		// 使用道具,憧憬金幣之力
 		for (int i = 0; i < 2; i++) {
@@ -1878,12 +1878,12 @@ public class ItemServiceImplTest extends ItemTestSupporter {
 		//
 		System.out.println(result);
 		assertEquals(ErrorType.NO_ERROR, result);
-		assertEquals(8, role.getBagPen().getItem(itemG003.getUniqueId()).getAmount());
+		assertEquals(8, role.getBagInfo().getItem(itemG003.getUniqueId()).getAmount());
 		//
 		result = itemService.useRoleGoldThing(true, role, itemG003, 7);
 		System.out.println(result);
 		assertEquals(ErrorType.NO_ERROR, result);
-		assertEquals(1, role.getBagPen().getItem(itemG003.getUniqueId()).getAmount());
+		assertEquals(1, role.getBagInfo().getItem(itemG003.getUniqueId()).getAmount());
 	}
 
 	@Test
@@ -1911,12 +1911,12 @@ public class ItemServiceImplTest extends ItemTestSupporter {
 		//
 		System.out.println(result);
 		assertEquals(ErrorType.NO_ERROR, result);
-		assertEquals(8, role.getBagPen().getItem(itemG001.getUniqueId()).getAmount());
+		assertEquals(8, role.getBagInfo().getItem(itemG001.getUniqueId()).getAmount());
 		//
 		result = itemService.useRoleFameThing(true, role, itemG001, 7);
 		System.out.println(result);
 		assertEquals(ErrorType.NO_ERROR, result);
-		assertEquals(1, role.getBagPen().getItem(itemG001.getUniqueId()).getAmount());
+		assertEquals(1, role.getBagInfo().getItem(itemG001.getUniqueId()).getAmount());
 
 		// 使用道具,想願聲望之力
 		for (int i = 0; i < 2; i++) {
@@ -1925,12 +1925,12 @@ public class ItemServiceImplTest extends ItemTestSupporter {
 		//
 		System.out.println(result);
 		assertEquals(ErrorType.NO_ERROR, result);
-		assertEquals(8, role.getBagPen().getItem(itemG002.getUniqueId()).getAmount());
+		assertEquals(8, role.getBagInfo().getItem(itemG002.getUniqueId()).getAmount());
 		//
 		result = itemService.useRoleFameThing(true, role, itemG002, 7);
 		System.out.println(result);
 		assertEquals(ErrorType.NO_ERROR, result);
-		assertEquals(1, role.getBagPen().getItem(itemG002.getUniqueId()).getAmount());
+		assertEquals(1, role.getBagInfo().getItem(itemG002.getUniqueId()).getAmount());
 
 		// 使用道具,憧憬聲望之力
 		for (int i = 0; i < 2; i++) {
@@ -1939,12 +1939,12 @@ public class ItemServiceImplTest extends ItemTestSupporter {
 		//
 		System.out.println(result);
 		assertEquals(ErrorType.NO_ERROR, result);
-		assertEquals(8, role.getBagPen().getItem(itemG003.getUniqueId()).getAmount());
+		assertEquals(8, role.getBagInfo().getItem(itemG003.getUniqueId()).getAmount());
 		//
 		result = itemService.useRoleFameThing(true, role, itemG003, 7);
 		System.out.println(result);
 		assertEquals(ErrorType.NO_ERROR, result);
-		assertEquals(1, role.getBagPen().getItem(itemG003.getUniqueId()).getAmount());
+		assertEquals(1, role.getBagInfo().getItem(itemG003.getUniqueId()).getAmount());
 	}
 
 	@Test

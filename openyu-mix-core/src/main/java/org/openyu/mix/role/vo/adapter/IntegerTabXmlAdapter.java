@@ -8,9 +8,9 @@ import java.util.Map;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 
-import org.openyu.mix.role.vo.BagPen;
-import org.openyu.mix.role.vo.BagPen.Tab;
-import org.openyu.mix.role.vo.impl.BagPenImpl.TabImpl;
+import org.openyu.mix.role.vo.BagInfo;
+import org.openyu.mix.role.vo.BagInfo.Tab;
+import org.openyu.mix.role.vo.impl.BagInfoImpl.TabImpl;
 import org.openyu.commons.jaxb.adapter.supporter.BaseXmlAdapterSupporter;
 
 // --------------------------------------------------
@@ -36,9 +36,9 @@ public class IntegerTabXmlAdapter extends
 		public Integer key;
 
 		@XmlElement(type = TabImpl.class)
-		public BagPen.Tab value;
+		public BagInfo.Tab value;
 
-		public IntegerTabEntry(Integer key, BagPen.Tab value)
+		public IntegerTabEntry(Integer key, BagInfo.Tab value)
 		{
 			this.key = key;
 			this.value = value;
@@ -50,9 +50,9 @@ public class IntegerTabXmlAdapter extends
 	}
 
 	// --------------------------------------------------
-	public Map<Integer, BagPen.Tab> unmarshal(IntegerTabList value) throws Exception
+	public Map<Integer, BagInfo.Tab> unmarshal(IntegerTabList value) throws Exception
 	{
-		Map<Integer, BagPen.Tab> result = new LinkedHashMap<Integer, BagPen.Tab>();
+		Map<Integer, BagInfo.Tab> result = new LinkedHashMap<Integer, BagInfo.Tab>();
 		if (value != null)
 		{
 			for (IntegerTabEntry entry : value.entry)
@@ -63,13 +63,13 @@ public class IntegerTabXmlAdapter extends
 		return result;
 	}
 
-	public IntegerTabList marshal(Map<Integer, BagPen.Tab> value) throws Exception
+	public IntegerTabList marshal(Map<Integer, BagInfo.Tab> value) throws Exception
 	{
 		IntegerTabList result = new IntegerTabList();
 		//
 		if (value != null)
 		{
-			for (Map.Entry<Integer, BagPen.Tab> entry : value.entrySet())
+			for (Map.Entry<Integer, BagInfo.Tab> entry : value.entrySet())
 			{
 				result.entry.add(new IntegerTabEntry(entry.getKey(), entry.getValue()));
 			}

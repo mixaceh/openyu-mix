@@ -23,7 +23,7 @@ import org.openyu.mix.manor.vo.ManorPen.Farm;
 import org.openyu.mix.manor.vo.MatureType;
 import org.openyu.mix.manor.vo.impl.ManorPenImplTest;
 import org.openyu.mix.manor.vo.Seed;
-import org.openyu.mix.role.vo.BagPen;
+import org.openyu.mix.role.vo.BagInfo;
 import org.openyu.mix.role.vo.Role;
 import org.openyu.mix.vip.vo.VipType;
 import org.openyu.socklet.message.vo.Message;
@@ -137,11 +137,11 @@ public class ManorServiceImplTest extends ManorTestSupporter {
 		Role role = mockRole();
 		role.setLevel(20);// 等級
 		role.setGold(10000 * 10000L);// 1e
-		BagPen bagPen = role.getBagPen();
+		BagInfo bagInfo = role.getBagInfo();
 
 		// 土地,塞到包包去
 		Land land = itemService.createLand("L_TROPICS_G001");
-		bagPen.addItem(0, 0, land);
+		bagInfo.addItem(0, 0, land);
 
 		// 農場結果
 		ReclaimResult result = manorService.reclaim(true, role, 0, land.getUniqueId());
@@ -165,7 +165,7 @@ public class ManorServiceImplTest extends ManorTestSupporter {
 	public void checkReclaim() {
 		Role role = mockRole();
 		// 包包
-		BagPen bagPen = role.getBagPen();
+		BagInfo bagInfo = role.getBagInfo();
 		// 莊園
 		ManorPen manorPen = role.getManorPen();
 		// 土地
@@ -183,7 +183,7 @@ public class ManorServiceImplTest extends ManorTestSupporter {
 		assertEquals(ErrorType.LAND_NOT_EXIST, errorType);
 
 		// 土地,塞到包包去
-		bagPen.addItem(0, 0, land);
+		bagInfo.addItem(0, 0, land);
 		errorType = manorService.checkReclaim(role, 0, land.getUniqueId());
 		System.out.println(errorType);
 		// 等級不足
@@ -229,11 +229,11 @@ public class ManorServiceImplTest extends ManorTestSupporter {
 		Role role = mockRole();
 		role.setLevel(20);// 等級
 		role.setGold(10000 * 10000L);// 1e
-		BagPen bagPen = role.getBagPen();
+		BagInfo bagInfo = role.getBagInfo();
 
 		// 土地,塞到包包去
 		Land land = itemService.createLand("L_TROPICS_G001");
-		bagPen.addItem(0, 0, land);
+		bagInfo.addItem(0, 0, land);
 		// 開墾
 		ReclaimResult result = manorService.reclaim(true, role, 0, land.getUniqueId());
 		// System.out.println(result);
@@ -262,7 +262,7 @@ public class ManorServiceImplTest extends ManorTestSupporter {
 	public void checkDisuse() {
 		Role role = mockRole();
 		// 包包
-		BagPen bagPen = role.getBagPen();
+		BagInfo bagInfo = role.getBagInfo();
 		// 莊園
 		ManorPen manorPen = role.getManorPen();
 		// 土地
@@ -314,11 +314,11 @@ public class ManorServiceImplTest extends ManorTestSupporter {
 		role.setGold(10000 * 10000L);// 1e
 		role.setVipType(VipType._2);// vip
 		// 包包
-		BagPen bagPen = role.getBagPen();
+		BagInfo bagInfo = role.getBagInfo();
 		// 種子
 		Seed seed = itemService.createSeed("S_COTTON_G001", 10);
 		// 種子,塞到包包去
-		bagPen.addItem(0, 0, seed);
+		bagInfo.addItem(0, 0, seed);
 		ManorPen manorPen = role.getManorPen();
 
 		// 模擬開墾
@@ -331,7 +331,7 @@ public class ManorServiceImplTest extends ManorTestSupporter {
 
 		// 加道具到包包
 		Item item = itemService.createItem(manorCollector.getWaterItem());
-		bagPen.addItem(0, 1, item);
+		bagInfo.addItem(0, 1, item);
 		// 澆水
 		result = manorService.culture(true, role, CultureType.WATER.getValue(), 0, 0, null);
 		System.out.println(result);
@@ -363,11 +363,11 @@ public class ManorServiceImplTest extends ManorTestSupporter {
 		role.setGold(10000 * 10000L);// 1e
 
 		// 包包
-		BagPen bagPen = role.getBagPen();
+		BagInfo bagInfo = role.getBagInfo();
 		// 種子
 		Seed seed = itemService.createSeed("S_COTTON_G001", 10);
 		// 種子,塞到包包去
-		bagPen.addItem(0, 0, seed);
+		bagInfo.addItem(0, 0, seed);
 
 		// 模擬開墾
 		mockReclaim(role);
@@ -402,11 +402,11 @@ public class ManorServiceImplTest extends ManorTestSupporter {
 		role.setGold(10000 * 10000L);// 1e
 
 		// 包包
-		BagPen bagPen = role.getBagPen();
+		BagInfo bagInfo = role.getBagInfo();
 		// 種子
 		Seed seed = itemService.createSeed("S_COTTON_G001", 10);
 		// 種子,塞到包包去
-		bagPen.addItem(0, 0, seed);
+		bagInfo.addItem(0, 0, seed);
 
 		// 加莊園加速石到包包
 		itemService.increaseItemWithItemId(true, role, "T_MANOR_SPEED_G001", 1);
@@ -439,11 +439,11 @@ public class ManorServiceImplTest extends ManorTestSupporter {
 		role.setGold(10000 * 10000L);// 1e
 
 		// 包包
-		BagPen bagPen = role.getBagPen();
+		BagInfo bagInfo = role.getBagInfo();
 		// 種子
 		Seed seed = itemService.createSeed("S_COTTON_G001", 10);
 		// 種子,塞到包包去
-		bagPen.addItem(0, 0, seed);
+		bagInfo.addItem(0, 0, seed);
 
 		// 模擬開墾
 		mockReclaim(role);
@@ -551,11 +551,11 @@ public class ManorServiceImplTest extends ManorTestSupporter {
 		role.setLevel(20);// 等級
 
 		// 包包
-		BagPen bagPen = role.getBagPen();
+		BagInfo bagInfo = role.getBagInfo();
 		// 種子
 		Seed seed = itemService.createSeed("S_COTTON_G001", 1);
 		// 種子,塞到包包去
-		bagPen.addItem(0, 0, seed);
+		bagInfo.addItem(0, 0, seed);
 
 		// 模擬開墾
 		mockReclaim(role);
@@ -576,7 +576,7 @@ public class ManorServiceImplTest extends ManorTestSupporter {
 		//
 		Role role = mockRole();
 		// 包包
-		BagPen bagPen = role.getBagPen();
+		BagInfo bagInfo = role.getBagInfo();
 		// 種子
 		Seed seed = itemService.createSeed("S_COTTON_G001", 1);
 		//
@@ -586,7 +586,7 @@ public class ManorServiceImplTest extends ManorTestSupporter {
 		assertEquals(ErrorType.SEED_NOT_EXIST, result);
 
 		// 種子,塞到包包去
-		bagPen.addItem(0, 0, seed);
+		bagInfo.addItem(0, 0, seed);
 		result = manorService.checkPlant(role, 0, 0, seed.getUniqueId());
 		System.out.println(result);
 		// 等級不足
@@ -620,7 +620,7 @@ public class ManorServiceImplTest extends ManorTestSupporter {
 	 */
 	public void water() {
 		Role role = mockRole();
-		BagPen bagPen = role.getBagPen();
+		BagInfo bagInfo = role.getBagInfo();
 		role.setGold(10000 * 10000L);// 1e
 		role.setVipType(VipType._2);// vip
 		ManorPen manorPen = role.getManorPen();
@@ -632,7 +632,7 @@ public class ManorServiceImplTest extends ManorTestSupporter {
 
 		// 加道具到包包
 		Item item = itemService.createItem(manorCollector.getWaterItem());
-		bagPen.addItem(0, 0, item);
+		bagInfo.addItem(0, 0, item);
 		//
 		CultureResult result = manorService.water(true, role, 0, 0);
 		System.out.println(result);
@@ -655,7 +655,7 @@ public class ManorServiceImplTest extends ManorTestSupporter {
 	 */
 	public void checkWater() {
 		Role role = mockRole();
-		// BagPen bagPen = role.getBagPen();
+		// BagInfo bagInfo = role.getBagInfo();
 		ManorPen manorPen = role.getManorPen();
 		//
 		manorPen.lock(0);
@@ -686,7 +686,7 @@ public class ManorServiceImplTest extends ManorTestSupporter {
 	 */
 	public void pray() {
 		Role role = mockRole();
-		BagPen bagPen = role.getBagPen();
+		BagInfo bagInfo = role.getBagInfo();
 		role.setGold(10000 * 10000L);// 1e
 		role.setVipType(VipType._2);// vip
 		ManorPen manorPen = role.getManorPen();
@@ -697,7 +697,7 @@ public class ManorServiceImplTest extends ManorTestSupporter {
 		mockPlant(role);
 		// 加道具到包包
 		Item item = itemService.createItem(manorCollector.getPrayItem());
-		bagPen.addItem(0, 0, item);
+		bagInfo.addItem(0, 0, item);
 		//
 		CultureResult result = manorService.pray(true, role, 0, 0);
 		System.out.println(result);
@@ -718,7 +718,7 @@ public class ManorServiceImplTest extends ManorTestSupporter {
 	 */
 	public void checkPray() {
 		Role role = mockRole();
-		// BagPen bagPen = role.getBagPen();
+		// BagInfo bagInfo = role.getBagInfo();
 		ManorPen manorPen = role.getManorPen();
 		//
 		manorPen.lock(0);
@@ -749,7 +749,7 @@ public class ManorServiceImplTest extends ManorTestSupporter {
 	 */
 	public void speed() {
 		Role role = mockRole();
-		BagPen bagPen = role.getBagPen();
+		BagInfo bagInfo = role.getBagInfo();
 		role.setGold(10000 * 10000L);// 1e
 		role.setVipType(VipType._2);// vip
 		ManorPen manorPen = role.getManorPen();
@@ -760,7 +760,7 @@ public class ManorServiceImplTest extends ManorTestSupporter {
 		mockPlant(role);
 		// 加道具到包包
 		Item item = itemService.createItem(manorCollector.getSpeedItem());
-		bagPen.addItem(0, 0, item);
+		bagInfo.addItem(0, 0, item);
 		//
 		CultureResult result = manorService.speed(true, role, 0, 0);
 		System.out.println(result);
@@ -784,7 +784,7 @@ public class ManorServiceImplTest extends ManorTestSupporter {
 		Role role = mockRole();
 		role.setGold(10000 * 10000L);// 1e
 		role.setVipType(VipType._2);// vip
-		// BagPen bagPen = role.getBagPen();
+		// BagInfo bagInfo = role.getBagInfo();
 		ManorPen manorPen = role.getManorPen();
 		//
 		manorPen.lock(0);
@@ -895,7 +895,7 @@ public class ManorServiceImplTest extends ManorTestSupporter {
 		Role role = mockRole();
 		role.setGold(10000 * 10000L);// 1e
 		role.setVipType(VipType._2);// vip
-		BagPen bagPen = role.getBagPen();
+		BagInfo bagInfo = role.getBagInfo();
 		ManorPen manorPen = role.getManorPen();
 
 		// 模擬開墾
@@ -910,7 +910,7 @@ public class ManorServiceImplTest extends ManorTestSupporter {
 		//
 		// 加道具到包包
 		Item item = itemService.createItem(manorCollector.getReviveItem());
-		bagPen.addItem(0, 0, item);
+		bagInfo.addItem(0, 0, item);
 		//
 		CultureResult result = manorService.revive(true, role, 0, 0);
 		System.out.println(result);
@@ -937,7 +937,7 @@ public class ManorServiceImplTest extends ManorTestSupporter {
 	 */
 	public void checkRevive() {
 		Role role = mockRole();
-		// BagPen bagPen = role.getBagPen();
+		// BagInfo bagInfo = role.getBagInfo();
 		ManorPen manorPen = role.getManorPen();
 		//
 		manorPen.lock(0);
@@ -1291,7 +1291,7 @@ public class ManorServiceImplTest extends ManorTestSupporter {
 	public void waterAll() {
 		Role role = mockRole();
 		role.setVipType(VipType._2);
-		BagPen bagPen = role.getBagPen();
+		BagInfo bagInfo = role.getBagInfo();
 		// 模擬開墾
 		mockReclaim(role);
 		// 模擬種植
@@ -1307,9 +1307,9 @@ public class ManorServiceImplTest extends ManorTestSupporter {
 		//
 		// 加5個道具到包包
 		Item item = itemService.createItem(manorCollector.getWaterItem(), 1);
-		bagPen.addItem(0, 0, item);
+		bagInfo.addItem(0, 0, item);
 		item = itemService.createItem(manorCollector.getWaterItem(), 4);
-		bagPen.addItem(0, 1, item);
+		bagInfo.addItem(0, 1, item);
 		//
 		CultureAllResult result = manorService.waterAll(true, role);// 會消耗3個道具
 		System.out.println(result);
@@ -1327,7 +1327,7 @@ public class ManorServiceImplTest extends ManorTestSupporter {
 	public void waterAllByItemCoin() {
 		Role role = mockRole();
 		role.setVipType(VipType._2);
-		BagPen bagPen = role.getBagPen();
+		BagInfo bagInfo = role.getBagInfo();
 		// 模擬開墾
 		mockReclaim(role);
 		// 模擬種植
@@ -1343,7 +1343,7 @@ public class ManorServiceImplTest extends ManorTestSupporter {
 		//
 		// 加1個道具到包包
 		Item item = itemService.createItem(manorCollector.getWaterItem(), 1);
-		bagPen.addItem(0, 0, item);
+		bagInfo.addItem(0, 0, item);
 		//
 		manorService.waterAll(true, role);// 會消耗1個道具,2次儲值幣的總數
 		//
@@ -1364,11 +1364,11 @@ public class ManorServiceImplTest extends ManorTestSupporter {
 		role.setGold(10000 * 10000L);// 1e
 		role.setVipType(VipType._2);// vip
 		// 包包
-		BagPen bagPen = role.getBagPen();
+		BagInfo bagInfo = role.getBagInfo();
 		// 種子
 		Seed seed = itemService.createSeed("S_COTTON_G001", 10);
 		// 種子,塞到包包去
-		bagPen.addItem(0, 0, seed);
+		bagInfo.addItem(0, 0, seed);
 		ManorPen manorPen = role.getManorPen();
 
 		// 模擬開墾
@@ -1385,7 +1385,7 @@ public class ManorServiceImplTest extends ManorTestSupporter {
 
 		// 加1個道具到包包
 		Item item = itemService.createItem(manorCollector.getWaterItem());
-		bagPen.addItem(0, 1, item);
+		bagInfo.addItem(0, 1, item);
 		//
 		CultureAllResult allResult = manorService.cultureAll(true, role, 2);// 會消耗1個道具,1次儲值幣的總數
 		System.out.println(allResult);
@@ -1403,7 +1403,7 @@ public class ManorServiceImplTest extends ManorTestSupporter {
 	public void waterAllByCoin() {
 		Role role = mockRole();
 		role.setVipType(VipType._2);
-		// BagPen bagPen = role.getBagPen();
+		// BagInfo bagInfo = role.getBagInfo();
 		// 模擬開墾
 		mockReclaim(role);
 		// 模擬種植
@@ -1431,7 +1431,7 @@ public class ManorServiceImplTest extends ManorTestSupporter {
 	public void prayAll() {
 		Role role = mockRole();
 		role.setVipType(VipType._2);
-		BagPen bagPen = role.getBagPen();
+		BagInfo bagInfo = role.getBagInfo();
 		// 模擬開墾
 		mockReclaim(role);
 		// 模擬種植
@@ -1447,9 +1447,9 @@ public class ManorServiceImplTest extends ManorTestSupporter {
 		//
 		// 加5個道具到包包
 		Item item = itemService.createItem(manorCollector.getPrayItem(), 1);
-		bagPen.addItem(0, 0, item);
+		bagInfo.addItem(0, 0, item);
 		item = itemService.createItem(manorCollector.getPrayItem(), 4);
-		bagPen.addItem(0, 1, item);
+		bagInfo.addItem(0, 1, item);
 		//
 		CultureAllResult result = manorService.prayAll(true, role);// 會消耗3個道具
 		System.out.println(result);

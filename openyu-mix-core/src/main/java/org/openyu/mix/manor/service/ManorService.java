@@ -262,7 +262,7 @@ public interface ManorService extends AppService {
 	 * 發送莊園欄位
 	 * 
 	 * @param role
-	 * @param bagPen
+	 * @param bagInfo
 	 * @return
 	 */
 	Message sendManorPen(Role role, ManorPen manorPen);

@@ -19,7 +19,7 @@ import org.openyu.mix.manor.vo.ManorPen.Farm;
 import org.openyu.mix.manor.vo.Seed;
 import org.openyu.mix.manor.service.ManorService.CultureType;
 import org.openyu.mix.role.service.RoleService.GoldType;
-import org.openyu.mix.role.vo.BagPen;
+import org.openyu.mix.role.vo.BagInfo;
 import org.openyu.mix.role.vo.Role;
 import org.openyu.mix.sasang.vo.SasangPen;
 import org.openyu.mix.train.vo.TrainPen;
@@ -140,8 +140,8 @@ public class CoreServiceImplTest extends CoreTestSupporter {
 		// 5.加屬性
 		roleService.changeAttribute(true, role, 1, 10, 10, 1000);
 
-		BagPen bagPen = role.getBagPen();
-		bagPen.clearItem(true);// 清包包
+		BagInfo bagInfo = role.getBagInfo();
+		bagInfo.clearItem(true);// 清包包
 
 		// 6.加治癒藥水到包包
 		Item item = itemService.createItem("T_POTION_HP_G001", 10);// 治癒藥水
@@ -266,7 +266,7 @@ public class CoreServiceImplTest extends CoreTestSupporter {
 		// 加道具到包包
 		Item item = itemService.createItem("T_TREASURE_REFRESH_G001", 10);// 祕寶刷新石
 		item.setUniqueId("T_TREASURE_REFRESH_G001");
-		role.getBagPen().addItem(0, 0, item);
+		role.getBagInfo().addItem(0, 0, item);
 
 		// 刷新
 		treasureService.refresh(true, role);
@@ -286,7 +286,7 @@ public class CoreServiceImplTest extends CoreTestSupporter {
 		// 加道具到包包
 		Item item = itemService.createItem("T_TRAIN_INSPIRE_G001", 10);// 訓練鼓舞石
 		item.setUniqueId("T_TRAIN_INSPIRE_G001");
-		role.getBagPen().addItem(0, 0, item);
+		role.getBagInfo().addItem(0, 0, item);
 
 		// 加入
 		trainService.join(true, role);

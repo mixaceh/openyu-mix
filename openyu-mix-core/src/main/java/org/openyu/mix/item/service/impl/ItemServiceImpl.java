@@ -44,11 +44,11 @@ import org.openyu.mix.manor.vo.Seed;
 import org.openyu.mix.manor.vo.MatureType;
 import org.openyu.mix.role.service.RoleHelper;
 import org.openyu.mix.role.service.RoleService.GoldType;
-import org.openyu.mix.role.vo.BagPen;
+import org.openyu.mix.role.vo.BagInfo;
 import org.openyu.mix.role.vo.EquipmentPen;
 import org.openyu.mix.role.vo.Role;
-import org.openyu.mix.role.vo.BagPen.Tab;
-import org.openyu.mix.role.vo.BagPen.TabType;
+import org.openyu.mix.role.vo.BagInfo.Tab;
+import org.openyu.mix.role.vo.BagInfo.TabType;
 import org.openyu.mix.vip.vo.VipCollector;
 import org.openyu.mix.vip.vo.VipType;
 import org.openyu.commons.enumz.EnumHelper;
@@ -418,7 +418,7 @@ public class ItemServiceImpl extends AppServiceSupporter implements ItemService 
 			return result;
 		}
 		//
-		result = role.getBagPen().getItem(uniqueId);
+		result = role.getBagInfo().getItem(uniqueId);
 		return result;
 	}
 
@@ -543,26 +543,26 @@ public class ItemServiceImpl extends AppServiceSupporter implements ItemService 
 	 * @param role
 	 * @return
 	 */
-	public boolean changeBagPenLocked(boolean sendable, Role role) {
+	public boolean changeBagInfoLocked(boolean sendable, Role role) {
 		boolean result = false;
 		//
-		BagPen bagPen = role.getBagPen();
+		BagInfo bagInfo = role.getBagInfo();
 		TabType[] tabTypes = TabType.values();
 		for (TabType tabType : tabTypes) {
 			int index = tabType.getValue();
 			// 由包包頁類型,取得vip類型
 			VipType vipType = vipCollector.getVipType(tabType);
 			if (vipType == null || role.getVipType().getValue() >= vipType.getValue()) {
-				bagPen.unLock(index);
+				bagInfo.unLock(index);
 			} else {
-				bagPen.lock(index);
+				bagInfo.lock(index);
 			}
 			//
 			result = true;
 		}
 		//
 		if (sendable) {
-			sendTabsLocked(role.getId(), bagPen);
+			sendTabsLocked(role.getId(), bagInfo);
 		}
 		//
 		return result;
@@ -587,13 +587,13 @@ public class ItemServiceImpl extends AppServiceSupporter implements ItemService 
 	 * 發送所有包包頁是否鎖定回應
 	 * 
 	 * @param roleId
-	 * @param bagPen
+	 * @param bagInfo
 	 */
-	public void sendTabsLocked(String roleId, BagPen bagPen) {
+	public void sendTabsLocked(String roleId, BagInfo bagInfo) {
 		Message message = messageService.createMessage(CoreModuleType.ITEM, CoreModuleType.CLIENT,
 				CoreMessageType.ITEM_TABS_LOCKED_RESPONSE, roleId);
 
-		Map<Integer, Tab> tabs = bagPen.getTabs();// 包含被鎖定的包包頁
+		Map<Integer, Tab> tabs = bagInfo.getTabs();// 包含被鎖定的包包頁
 		message.addInt(tabs.size());
 		for (Tab tab : tabs.values()) {
 			fillTabLocked(message, tab);
@@ -617,13 +617,13 @@ public class ItemServiceImpl extends AppServiceSupporter implements ItemService 
 	 * 發送包包欄位
 	 * 
 	 * @param roleId
-	 * @param bagPen
+	 * @param bagInfo
 	 */
-	public void sendBagPen(String roleId, BagPen bagPen) {
+	public void sendBagInfo(String roleId, BagInfo bagInfo) {
 		Message message = messageService.createMessage(CoreModuleType.ITEM, CoreModuleType.CLIENT,
 				CoreMessageType.ITEM_BAG_RESPONSE, roleId);
 
-		fillBagPen(message, bagPen);
+		fillBagInfo(message, bagInfo);
 		//
 		messageService.addMessage(message);
 	}
@@ -632,13 +632,13 @@ public class ItemServiceImpl extends AppServiceSupporter implements ItemService 
 	 * 填充包包欄位
 	 * 
 	 * @param message
-	 * @param bagPen
+	 * @param bagInfo
 	 */
-	public void fillBagPen(Message message, BagPen bagPen) {
+	public void fillBagInfo(Message message, BagInfo bagInfo) {
 		// 已解鎖包包頁數量
-		message.addInt(bagPen.getTabSize());
+		message.addInt(bagInfo.getTabSize());
 		//
-		Map<Integer, Tab> tabs = bagPen.getTabs();// 包含被鎖定的包包頁
+		Map<Integer, Tab> tabs = bagInfo.getTabs();// 包含被鎖定的包包頁
 		for (Tab tab : tabs.values()) {
 			// 可能被鎖定
 			if (tab.isLocked()) {
@@ -699,7 +699,7 @@ public class ItemServiceImpl extends AppServiceSupporter implements ItemService 
 	 * @param amount
 	 * @return
 	 */
-	public BagPen.ErrorType checkIncreaseItemWithItemId(Role role, String itemId, int amount) {
+	public BagInfo.ErrorType checkIncreaseItemWithItemId(Role role, String itemId, int amount) {
 		Item item = createItem(itemId, amount);
 		return checkIncreaseItem(role, item);
 	}
@@ -711,31 +711,31 @@ public class ItemServiceImpl extends AppServiceSupporter implements ItemService 
 	 * @param item
 	 * @return
 	 */
-	public BagPen.ErrorType checkIncreaseItem(Role role, Item item) {
-		BagPen.ErrorType errorType = BagPen.ErrorType.NO_ERROR;
+	public BagInfo.ErrorType checkIncreaseItem(Role role, Item item) {
+		BagInfo.ErrorType errorType = BagInfo.ErrorType.NO_ERROR;
 		// 檢查條件
 		// 角色不存在
 		if (role == null) {
-			errorType = BagPen.ErrorType.ROLE_NOT_EXIST;
+			errorType = BagInfo.ErrorType.ROLE_NOT_EXIST;
 			return errorType;
 		}
 
 		// 道具不存在
 		if (item == null) {
-			errorType = BagPen.ErrorType.ITEM_NOT_EXIST;
+			errorType = BagInfo.ErrorType.ITEM_NOT_EXIST;
 			return errorType;
 		}
 
 		// 數量不合法
 		int amount = item.getAmount();// 要放的數量
 		if (amount <= 0) {
-			errorType = BagPen.ErrorType.AMOUNT_NOT_VALID;
+			errorType = BagInfo.ErrorType.AMOUNT_NOT_VALID;
 			return errorType;
 		}
 
-		BagPen bagPen = role.getBagPen();// 包包欄
+		BagInfo bagInfo = role.getBagInfo();// 包包欄
 		// 相同種類的道具集合
-		List<Item> origItems = bagPen.getItems(item.getId());
+		List<Item> origItems = bagInfo.getItems(item.getId());
 		int maxAmount = item.getMaxAmount();// 最大堆疊數量,0=無堆疊數量限制
 
 		// 若已有道具,檢查總剩餘可放的數量
@@ -761,15 +761,15 @@ public class ItemServiceImpl extends AppServiceSupporter implements ItemService 
 		}
 
 		// 若包包已滿,無法再放新一格的道具時,則檢查剩餘可放數量能不能在堆疊上去
-		if (bagPen.isFull()) {
+		if (bagInfo.isFull()) {
 			if (residualAmount < amount) {
-				errorType = BagPen.ErrorType.BAG_FULL;
+				errorType = BagInfo.ErrorType.BAG_FULL;
 				return errorType;
 			}
 		}
 		// 包包沒滿
 		else {
-			int emptySize = bagPen.getEmptySize();
+			int emptySize = bagInfo.getEmptySize();
 			// 當有堆疊數量限制時,maxAmount!=0
 			if (maxAmount != 0) {
 				// residualAmount += (maxAmount * emptySize);//有可能會溢位
@@ -785,7 +785,7 @@ public class ItemServiceImpl extends AppServiceSupporter implements ItemService 
 				}
 				//
 				if (residualAmount < amount) {
-					errorType = BagPen.ErrorType.BAG_FULL;
+					errorType = BagInfo.ErrorType.BAG_FULL;
 					return errorType;
 				}
 			}
@@ -805,8 +805,8 @@ public class ItemServiceImpl extends AppServiceSupporter implements ItemService 
 	 * @param items
 	 * @return
 	 */
-	public BagPen.ErrorType checkIncreaseItems(Role role, Map<String, Integer> items) {
-		BagPen.ErrorType errorType = BagPen.ErrorType.NO_ERROR;
+	public BagInfo.ErrorType checkIncreaseItems(Role role, Map<String, Integer> items) {
+		BagInfo.ErrorType errorType = BagInfo.ErrorType.NO_ERROR;
 		// TODO 未實作
 		return errorType;
 	}
@@ -923,15 +923,15 @@ public class ItemServiceImpl extends AppServiceSupporter implements ItemService 
 			return result;
 		}
 		//
-		BagPen bagPen = role.getBagPen();// 包包欄
+		BagInfo bagInfo = role.getBagInfo();// 包包欄
 		int amount = item.getAmount();// 要加的數量
 		int maxAmount = item.getMaxAmount();// 最大堆疊數量,0=無堆疊數量限制
 		// 檢查是否已有相同道具,若有先堆疊
-		List<int[]> indexes = bagPen.getIndexs(item.getId());
+		List<int[]> indexes = bagInfo.getIndexs(item.getId());
 		for (int[] index : indexes) {
 			int tabIndex = index[0];
 			int gridIndex = index[1];
-			Item origItem = bagPen.getItem(tabIndex, gridIndex);// 原道具
+			Item origItem = bagInfo.getItem(tabIndex, gridIndex);// 原道具
 			// 包包的道具數量
 			int origAmount = origItem.getAmount();// 原數量
 			// 總計數量
@@ -995,7 +995,7 @@ public class ItemServiceImpl extends AppServiceSupporter implements ItemService 
 		boolean rollback = false;// 當包包滿時,是否還原數量
 		// 剩下的數量,就用新空格放,因為上面已經先堆疊了
 		if (amount > 0) {
-			int[] emptyIndex = bagPen.getEmptyIndex();
+			int[] emptyIndex = bagInfo.getEmptyIndex();
 			if (emptyIndex != null) {
 				int tabIndex = emptyIndex[0];
 				int gridIndex = emptyIndex[1];
@@ -1004,11 +1004,11 @@ public class ItemServiceImpl extends AppServiceSupporter implements ItemService 
 					rollback = true;
 				} else {
 					item.setAmount(amount);
-					bagPen.addItem(tabIndex, gridIndex, item);
+					bagInfo.addItem(tabIndex, gridIndex, item);
 
 					// Item newItem = clone(item);//增加的道具
 					// newItem.setAmount(amount);//增加的數量
-					// bagPen.addItem(tabIndex, gridIndex, newItem);
+					// bagInfo.addItem(tabIndex, gridIndex, newItem);
 					//
 					Item cloneItem = clone(item);// 增加的道具
 					// 增加結果
@@ -1029,11 +1029,11 @@ public class ItemServiceImpl extends AppServiceSupporter implements ItemService 
 
 				// 非新的格子時,還原原本數量
 				if (!buffResult.isNewable()) {
-					bagPen.setItemAmount(tabIndex, gridIndex, buffResult.getOrigAmount());
+					bagInfo.setItemAmount(tabIndex, gridIndex, buffResult.getOrigAmount());
 				}
 				// 若新的格子,則刪掉剛放入的
 				else {
-					bagPen.removeItem(tabIndex, gridIndex);
+					bagInfo.removeItem(tabIndex, gridIndex);
 				}
 			}
 			// 因為放失敗了,都還原數量了,就沒有改變的結果
@@ -1100,13 +1100,13 @@ public class ItemServiceImpl extends AppServiceSupporter implements ItemService 
 		Message message = messageService.createMessage(CoreModuleType.ITEM, CoreModuleType.CLIENT,
 				CoreMessageType.ITEM_INCREASE_RESPONSE, role.getId());
 		//
-		BagPen bagPen = role.getBagPen();
+		BagInfo bagInfo = role.getBagInfo();
 		message.addInt(increaseItemResults.size());// 道具個數
 		for (IncreaseItemResult itemResult : increaseItemResults) {
 			int tabIndex = itemResult.getTabIndex();
 			int gridIndex = itemResult.getGridIndex();
 			// 從包包拿道具最後的結果
-			Item item = bagPen.getItem(tabIndex, gridIndex);
+			Item item = bagInfo.getItem(tabIndex, gridIndex);
 			//
 			fillIncreaseItem(message, tabIndex, gridIndex, item);
 		}
@@ -1137,7 +1137,7 @@ public class ItemServiceImpl extends AppServiceSupporter implements ItemService 
 	 * @param amount
 	 * @return
 	 */
-	public BagPen.ErrorType checkDecreaseItem(Role role, String itemId, int amount) {
+	public BagInfo.ErrorType checkDecreaseItem(Role role, String itemId, int amount) {
 		Item item = createItem(itemId, amount);
 		return checkDecreaseItem(role, item);
 	}
@@ -1149,32 +1149,32 @@ public class ItemServiceImpl extends AppServiceSupporter implements ItemService 
 	 * @param item
 	 * @return
 	 */
-	public BagPen.ErrorType checkDecreaseItem(Role role, Item item) {
-		BagPen.ErrorType errorType = BagPen.ErrorType.NO_ERROR;
+	public BagInfo.ErrorType checkDecreaseItem(Role role, Item item) {
+		BagInfo.ErrorType errorType = BagInfo.ErrorType.NO_ERROR;
 		// 檢查條件
 		if (role == null) {
-			errorType = BagPen.ErrorType.ROLE_NOT_EXIST;
+			errorType = BagInfo.ErrorType.ROLE_NOT_EXIST;
 			return errorType;
 		}
 
 		// 道具不存在
 		if (item == null) {
-			errorType = BagPen.ErrorType.ITEM_NOT_EXIST;
+			errorType = BagInfo.ErrorType.ITEM_NOT_EXIST;
 			return errorType;
 		}
 
 		// 數量不合法
 		int amount = item.getAmount();// 要減的數量
 		if (amount <= 0) {
-			errorType = BagPen.ErrorType.AMOUNT_NOT_VALID;
+			errorType = BagInfo.ErrorType.AMOUNT_NOT_VALID;
 			return errorType;
 		}
 
-		BagPen bagPen = role.getBagPen();
-		int totalAmount = bagPen.getAmount(item.getId());
+		BagInfo bagInfo = role.getBagInfo();
+		int totalAmount = bagInfo.getAmount(item.getId());
 		// 道具數量不足
 		if (amount > totalAmount) {
-			errorType = BagPen.ErrorType.AMOUNT_NOT_ENOUGH;
+			errorType = BagInfo.ErrorType.AMOUNT_NOT_ENOUGH;
 			return errorType;
 		}
 		//
@@ -1189,30 +1189,30 @@ public class ItemServiceImpl extends AppServiceSupporter implements ItemService 
 	 * @param amount
 	 * @return
 	 */
-	public BagPen.ErrorType checkDecreaseItemWithUniqueId(Role role, String uniqueId, int amount) {
-		BagPen.ErrorType errorType = BagPen.ErrorType.NO_ERROR;
+	public BagInfo.ErrorType checkDecreaseItemWithUniqueId(Role role, String uniqueId, int amount) {
+		BagInfo.ErrorType errorType = BagInfo.ErrorType.NO_ERROR;
 		// 檢查條件
 		if (role == null) {
-			errorType = BagPen.ErrorType.ROLE_NOT_EXIST;
+			errorType = BagInfo.ErrorType.ROLE_NOT_EXIST;
 			return errorType;
 		}
 
 		// 道具不存在
 		Item item = getItem(role, uniqueId);
 		if (item == null) {
-			errorType = BagPen.ErrorType.ITEM_NOT_EXIST;
+			errorType = BagInfo.ErrorType.ITEM_NOT_EXIST;
 			return errorType;
 		}
 
 		// 數量不合法
 		if (amount <= 0) {
-			errorType = BagPen.ErrorType.AMOUNT_NOT_VALID;
+			errorType = BagInfo.ErrorType.AMOUNT_NOT_VALID;
 			return errorType;
 		}
 
 		// 道具數量不足
 		if (amount > item.getAmount()) {
-			errorType = BagPen.ErrorType.AMOUNT_NOT_ENOUGH;
+			errorType = BagInfo.ErrorType.AMOUNT_NOT_ENOUGH;
 			return errorType;
 		}
 		//
@@ -1301,11 +1301,11 @@ public class ItemServiceImpl extends AppServiceSupporter implements ItemService 
 			return result;
 		}
 		//
-		BagPen bagPen = role.getBagPen();// 包包欄
+		BagInfo bagInfo = role.getBagInfo();// 包包欄
 		int amount = Math.abs(item.getAmount());// 要減的數量
 		// 檢查是否已有相同道具,若有一一減少數量
 		// 相同種類的道具集合
-		List<Item> origItems = bagPen.getItems(item.getId());
+		List<Item> origItems = bagInfo.getItems(item.getId());
 		for (Item origItem : origItems)// 原本的道具
 		{
 			int origAmount = origItem.getAmount();
@@ -1366,13 +1366,13 @@ public class ItemServiceImpl extends AppServiceSupporter implements ItemService 
 	public DecreaseItemResult decreaseItemWithUniqueId(boolean sendable, Role role, String uniqueId, int amount) {
 		DecreaseItemResult result = null;
 		//
-		BagPen bagPen = role.getBagPen();// 包包欄
+		BagInfo bagInfo = role.getBagInfo();// 包包欄
 		amount = Math.abs(amount);
-		Item origItem = bagPen.getItem(uniqueId);// 原道具
-		int[] indexs = bagPen.getIndex(uniqueId);
-		BagPen.ErrorType bagError = bagPen.decreaseAmount(uniqueId, amount);
+		Item origItem = bagInfo.getItem(uniqueId);// 原道具
+		int[] indexs = bagInfo.getIndex(uniqueId);
+		BagInfo.ErrorType bagError = bagInfo.decreaseAmount(uniqueId, amount);
 		//
-		if (bagError == BagPen.ErrorType.NO_ERROR) {
+		if (bagError == BagInfo.ErrorType.NO_ERROR) {
 			Item cloneItem = clone(origItem);// 減少的道具
 			cloneItem.setAmount(amount);// 減少的數量
 			result = new DecreaseResultImpl(indexs[0], indexs[1], cloneItem);
@@ -2257,8 +2257,8 @@ public class ItemServiceImpl extends AppServiceSupporter implements ItemService 
 		}
 
 		// 檢查減少道具
-		BagPen.ErrorType bagError = checkDecreaseItemWithUniqueId(role, item.getUniqueId(), amount);
-		if (bagError != BagPen.ErrorType.NO_ERROR) {
+		BagInfo.ErrorType bagError = checkDecreaseItemWithUniqueId(role, item.getUniqueId(), amount);
+		if (bagError != BagInfo.ErrorType.NO_ERROR) {
 			errorType = ErrorType.CAN_NOT_DECREASE_ITEM;
 			return errorType;
 		}

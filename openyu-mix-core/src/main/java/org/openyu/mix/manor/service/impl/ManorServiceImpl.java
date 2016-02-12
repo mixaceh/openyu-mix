@@ -35,7 +35,7 @@ import org.openyu.mix.role.service.RoleService;
 import org.openyu.mix.role.service.RoleSetService;
 import org.openyu.mix.role.service.RoleService.GoldType;
 import org.openyu.mix.role.service.RoleService.SpendResult;
-import org.openyu.mix.role.vo.BagPen;
+import org.openyu.mix.role.vo.BagInfo;
 import org.openyu.mix.role.vo.Role;
 import org.openyu.mix.vip.vo.VipCollector;
 import org.openyu.mix.vip.vo.VipType;
@@ -363,7 +363,7 @@ public class ManorServiceImpl extends AppServiceSupporter implements ManorServic
 	 * 發送所有農場頁是否鎖定回應
 	 * 
 	 * @param roleId
-	 * @param bagPen
+	 * @param bagInfo
 	 */
 	protected void sendFarmsLocked(String roleId, ManorPen manorPen) {
 		Message message = messageService.createMessage(CoreModuleType.MANOR, CoreModuleType.CLIENT,
@@ -382,7 +382,7 @@ public class ManorServiceImpl extends AppServiceSupporter implements ManorServic
 	 * 發送莊園欄位
 	 * 
 	 * @param role
-	 * @param bagPen
+	 * @param bagInfo
 	 */
 	public Message sendManorPen(Role role, ManorPen manorPen) {
 		Message message = messageService.createMessage(CoreModuleType.MANOR, CoreModuleType.CLIENT,
@@ -658,8 +658,8 @@ public class ManorServiceImpl extends AppServiceSupporter implements ManorServic
 		}
 
 		// 檢查包包減少土地
-		BagPen.ErrorType bagError = itemService.checkDecreaseItem(role, land);
-		if (bagError != BagPen.ErrorType.NO_ERROR) {
+		BagInfo.ErrorType bagError = itemService.checkDecreaseItem(role, land);
+		if (bagError != BagInfo.ErrorType.NO_ERROR) {
 			errorType = ErrorType.CAN_NOT_DECREASE_LAND;
 			return errorType;
 		}
@@ -803,9 +803,9 @@ public class ManorServiceImpl extends AppServiceSupporter implements ManorServic
 		}
 
 		// 包包是否可增加土地
-		BagPen.ErrorType bagError = itemService.checkIncreaseItem(role, land);
+		BagInfo.ErrorType bagError = itemService.checkIncreaseItem(role, land);
 		// 包包無法增加土地
-		if (bagError != BagPen.ErrorType.NO_ERROR) {
+		if (bagError != BagInfo.ErrorType.NO_ERROR) {
 			errorType = ErrorType.CAN_NOT_INCREASE_LAND;
 			return errorType;
 		}
@@ -1270,8 +1270,8 @@ public class ManorServiceImpl extends AppServiceSupporter implements ManorServic
 		Seed seed = (Seed) item;
 
 		// 包包是否減少種子,扣1個種子
-		BagPen.ErrorType bagError = itemService.checkDecreaseItemWithUniqueId(role, seedUniqueId, 1);
-		if (bagError != BagPen.ErrorType.NO_ERROR) {
+		BagInfo.ErrorType bagError = itemService.checkDecreaseItemWithUniqueId(role, seedUniqueId, 1);
+		if (bagError != BagInfo.ErrorType.NO_ERROR) {
 			errorType = ErrorType.CAN_NOT_DECREASE_SEED;
 			return errorType;
 		}
@@ -1560,8 +1560,8 @@ public class ManorServiceImpl extends AppServiceSupporter implements ManorServic
 				// 加速將無法感受到土地強化的效果,不增加產量
 				Map<String, Integer> awardItems = seed.getProducts();
 				// 檢查包包增加多個不同道具
-				BagPen.ErrorType bagError = itemService.checkIncreaseItems(role, awardItems);
-				if (bagError != BagPen.ErrorType.NO_ERROR) {
+				BagInfo.ErrorType bagError = itemService.checkIncreaseItems(role, awardItems);
+				if (bagError != BagInfo.ErrorType.NO_ERROR) {
 					errorType = ErrorType.CAN_NOT_INCREASE_ITEM;
 				} else {
 					// 增加多個道具
@@ -1674,8 +1674,8 @@ public class ManorServiceImpl extends AppServiceSupporter implements ManorServic
 			// 計算種子產出數量
 			Map<String, Integer> awardItems = calcProducts(land, seed);
 			// 檢查包包增加多個不同道具
-			BagPen.ErrorType bagError = itemService.checkIncreaseItems(role, awardItems);
-			if (bagError != BagPen.ErrorType.NO_ERROR) {
+			BagInfo.ErrorType bagError = itemService.checkIncreaseItems(role, awardItems);
+			if (bagError != BagInfo.ErrorType.NO_ERROR) {
 				errorType = ErrorType.CAN_NOT_INCREASE_ITEM;
 			} else {
 				// 增加多個道具
@@ -1787,8 +1787,8 @@ public class ManorServiceImpl extends AppServiceSupporter implements ManorServic
 				// 復活將無法感受到土地強化的效果,不增加產量
 				Map<String, Integer> awardItems = seed.getProducts();
 				// 檢查包包增加多個不同道具
-				BagPen.ErrorType bagError = itemService.checkIncreaseItems(role, awardItems);
-				if (bagError != BagPen.ErrorType.NO_ERROR) {
+				BagInfo.ErrorType bagError = itemService.checkIncreaseItems(role, awardItems);
+				if (bagError != BagInfo.ErrorType.NO_ERROR) {
 					errorType = ErrorType.CAN_NOT_INCREASE_ITEM;
 				} else {
 					// 增加多個道具

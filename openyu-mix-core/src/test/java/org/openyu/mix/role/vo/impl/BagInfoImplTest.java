@@ -14,28 +14,28 @@ import org.openyu.mix.item.vo.ItemType;
 import org.openyu.mix.item.vo.Thing;
 import org.openyu.mix.item.vo.ThingType;
 import org.openyu.mix.item.vo.impl.ThingImpl;
-import org.openyu.mix.role.vo.BagPen;
-import org.openyu.mix.role.vo.BagPen.Tab;
-import org.openyu.mix.role.vo.BagPen.TabType;
+import org.openyu.mix.role.vo.BagInfo;
+import org.openyu.mix.role.vo.BagInfo.Tab;
+import org.openyu.mix.role.vo.BagInfo.TabType;
 import org.openyu.mix.role.vo.Role;
 import org.openyu.commons.collector.CollectorHelper;
 import org.openyu.commons.junit.supporter.BaseTestSupporter;
 import org.openyu.commons.lang.SystemHelper;
 
-public class BagPenImplTest extends BaseTestSupporter {
+public class BagInfoImplTest extends BaseTestSupporter {
 
 	@Test
 	public void writeToXml() {
-		BagPen bagPen = new BagPenImpl();
+		BagInfo bagInfo = new BagInfoImpl();
 		//
-		String result = CollectorHelper.writeToXml(BagPenImpl.class, bagPen);
+		String result = CollectorHelper.writeToXml(BagInfoImpl.class, bagInfo);
 		System.out.println(result);
 		assertNotNull(result);
 	}
 
 	@Test
 	public void readFromXml() {
-		BagPen result = CollectorHelper.readFromXml(BagPenImpl.class);
+		BagInfo result = CollectorHelper.readFromXml(BagInfoImpl.class);
 		System.out.println(result);
 		assertNotNull(result);
 	}
@@ -45,8 +45,8 @@ public class BagPenImplTest extends BaseTestSupporter {
 	 * 
 	 * @return
 	 */
-	public static BagPen mockBagPen() {
-		return mockBagPen(null);
+	public static BagInfo mockBagInfo() {
+		return mockBagInfo(null);
 	}
 
 	/**
@@ -55,9 +55,9 @@ public class BagPenImplTest extends BaseTestSupporter {
 	 * @param role
 	 * @return
 	 */
-	public static BagPen mockBagPen(Role role) {
-		BagPen result = new BagPenImpl(role);
-		TabType[] tabTypes = BagPen.TabType.values();
+	public static BagInfo mockBagInfo(Role role) {
+		BagInfo result = new BagInfoImpl(role);
+		TabType[] tabTypes = BagInfo.TabType.values();
 		for (TabType tabType : tabTypes) {
 			int i = tabType.getValue();
 			//
@@ -65,7 +65,7 @@ public class BagPenImplTest extends BaseTestSupporter {
 			if (tab == null) {
 				continue;
 			}
-			for (int j = 0; j < BagPen.Tab.MAX_GRID_SIZE; j++) {
+			for (int j = 0; j < BagInfo.Tab.MAX_GRID_SIZE; j++) {
 				Thing thing = new ThingImpl();
 				thing.setId(Thing.UNIQUE_ID_PREFIX + i + "" + j);
 				thing.setUniqueId("U_" + i + "" + j);
@@ -84,8 +84,8 @@ public class BagPenImplTest extends BaseTestSupporter {
 	 * 
 	 * @return
 	 */
-	public static BagPen mockBagPenWithSameThing() {
-		return mockBagPenWithSameThing(Thing.UNIQUE_ID_PREFIX + "00");
+	public static BagInfo mockBagInfoWithSameThing() {
+		return mockBagInfoWithSameThing(Thing.UNIQUE_ID_PREFIX + "00");
 	}
 
 	/**
@@ -94,8 +94,8 @@ public class BagPenImplTest extends BaseTestSupporter {
 	 * @param id
 	 * @return
 	 */
-	public static BagPen mockBagPenWithSameThing(String id) {
-		return mockBagPenWithSameThing(null, id);
+	public static BagInfo mockBagInfoWithSameThing(String id) {
+		return mockBagInfoWithSameThing(null, id);
 	}
 
 	/**
@@ -105,9 +105,9 @@ public class BagPenImplTest extends BaseTestSupporter {
 	 * @param id
 	 * @return
 	 */
-	public static BagPen mockBagPenWithSameThing(Role role, String id) {
-		BagPen result = new BagPenImpl(role);
-		TabType[] tabTypes = BagPen.TabType.values();
+	public static BagInfo mockBagInfoWithSameThing(Role role, String id) {
+		BagInfo result = new BagInfoImpl(role);
+		TabType[] tabTypes = BagInfo.TabType.values();
 		for (TabType tabType : tabTypes) {
 			int i = tabType.getValue();
 			//
@@ -115,7 +115,7 @@ public class BagPenImplTest extends BaseTestSupporter {
 			if (tab == null) {
 				continue;
 			}
-			for (int j = 0; j < BagPen.Tab.MAX_GRID_SIZE; j++) {
+			for (int j = 0; j < BagInfo.Tab.MAX_GRID_SIZE; j++) {
 				Thing thing = new ThingImpl();
 				thing.setId(id);
 				thing.setUniqueId("U_" + i + "" + j);
@@ -134,8 +134,8 @@ public class BagPenImplTest extends BaseTestSupporter {
 	 * 
 	 * @return
 	 */
-	public static BagPen mockBagPenWithOneTab() {
-		return mockBagPenWithOneTab(null);
+	public static BagInfo mockBagInfoWithOneTab() {
+		return mockBagInfoWithOneTab(null);
 	}
 
 	/**
@@ -144,12 +144,12 @@ public class BagPenImplTest extends BaseTestSupporter {
 	 * @param role
 	 * @return
 	 */
-	public static BagPen mockBagPenWithOneTab(Role role) {
-		BagPen result = new BagPenImpl(role);
+	public static BagInfo mockBagInfoWithOneTab(Role role) {
+		BagInfo result = new BagInfoImpl(role);
 
 		int i = 0;
 		Tab tab = result.getTab(i);// 第1頁
-		for (int j = 0; j < BagPen.Tab.MAX_GRID_SIZE; j++) {
+		for (int j = 0; j < BagInfo.Tab.MAX_GRID_SIZE; j++) {
 			Thing thing = new ThingImpl();
 			thing.setId(Thing.UNIQUE_ID_PREFIX + i + "" + j);
 			thing.setUniqueId("U_" + i + "" + j);
@@ -187,14 +187,14 @@ public class BagPenImplTest extends BaseTestSupporter {
 	// 1000000 times: 3 mills.
 	// verified
 	public void getTabSize() {
-		BagPen bagPen = mockBagPen();
+		BagInfo bagInfo = mockBagInfo();
 		//
 		int result = 0;
 		//
 		int count = 1000000;
 		long beg = System.currentTimeMillis();
 		for (int i = 0; i < count; i++) {
-			result = bagPen.getTabSize();
+			result = bagInfo.getTabSize();
 		}
 		long end = System.currentTimeMillis();
 		System.out.println(count + " times: " + (end - beg) + " mills. ");
@@ -209,34 +209,34 @@ public class BagPenImplTest extends BaseTestSupporter {
 	// 1000000 times: 32 mills.
 	// verified
 	public void lock() {
-		BagPen bagPen = mockBagPen();
+		BagInfo bagInfo = mockBagInfo();
 		//
-		BagPen.ErrorType result = BagPen.ErrorType.NO_ERROR;
+		BagInfo.ErrorType result = BagInfo.ErrorType.NO_ERROR;
 		//
 		int count = 1000000;
 		long beg = System.currentTimeMillis();
 		for (int i = 0; i < count; i++) {
-			result = bagPen.lock(0);
+			result = bagInfo.lock(0);
 		}
 		long end = System.currentTimeMillis();
 		System.out.println(count + " times: " + (end - beg) + " mills. ");
 
 		System.out.println(result);
 		// 沒有錯誤
-		assertEquals(BagPen.ErrorType.NO_ERROR, result);
+		assertEquals(BagInfo.ErrorType.NO_ERROR, result);
 
-		result = bagPen.lock(-1);
+		result = bagInfo.lock(-1);
 		System.out.println(result);
 		// 超過包包頁索引
-		assertEquals(BagPen.ErrorType.OVER_TAB_INDEX, result);
+		assertEquals(BagInfo.ErrorType.OVER_TAB_INDEX, result);
 		//
-		bagPen.unLock(0);// 解鎖
-		bagPen.removeTab(0);// 移除一個包包頁
+		bagInfo.unLock(0);// 解鎖
+		bagInfo.removeTab(0);// 移除一個包包頁
 		//
-		result = bagPen.lock(0);
+		result = bagInfo.lock(0);
 		System.out.println(result);
 		// 包包頁不存在
-		assertEquals(BagPen.ErrorType.TAB_NOT_EXIST, result);
+		assertEquals(BagInfo.ErrorType.TAB_NOT_EXIST, result);
 	}
 
 	@Test
@@ -245,14 +245,14 @@ public class BagPenImplTest extends BaseTestSupporter {
 	// 1000000 times: 32 mills.
 	// verified
 	public void isFull() {
-		BagPen bagPen = mockBagPen();
+		BagInfo bagInfo = mockBagInfo();
 		//
 		Boolean result = null;
 		//
 		int count = 1000000;
 		long beg = System.currentTimeMillis();
 		for (int i = 0; i < count; i++) {
-			result = bagPen.isFull();
+			result = bagInfo.isFull();
 		}
 		long end = System.currentTimeMillis();
 		System.out.println(count + " times: " + (end - beg) + " mills. ");
@@ -260,24 +260,24 @@ public class BagPenImplTest extends BaseTestSupporter {
 		System.out.println(result);
 		assertTrue(result);
 		//
-		bagPen.removeItem(0, 0);
-		result = bagPen.isFull();
+		bagInfo.removeItem(0, 0);
+		result = bagInfo.isFull();
 		System.out.println(result);
 		assertFalse(result);
 	}
 
 	@Test
 	public void containTabType() {
-		BagPen bagPen = new BagPenImpl();
-		boolean result = bagPen.containIndex(0);
+		BagInfo bagInfo = new BagInfoImpl();
+		boolean result = bagInfo.containIndex(0);
 		System.out.println(result);
-		result = bagPen.containIndex(1);
+		result = bagInfo.containIndex(1);
 		System.out.println(result);
-		result = bagPen.containIndex(2);
+		result = bagInfo.containIndex(2);
 		System.out.println(result);
-		result = bagPen.containIndex(10);
+		result = bagInfo.containIndex(10);
 		System.out.println(result);
-		result = bagPen.containIndex(3);
+		result = bagInfo.containIndex(3);
 		System.out.println(result);
 	}
 
@@ -287,39 +287,39 @@ public class BagPenImplTest extends BaseTestSupporter {
 	// 1000000 times: 18 mills.
 	// verified
 	public void addTab() {
-		BagPen bagPen = new BagPenImpl();
-		bagPen.removeTab(0);
-		BagPen.Tab tab = new BagPenImpl.TabImpl();
+		BagInfo bagInfo = new BagInfoImpl();
+		bagInfo.removeTab(0);
+		BagInfo.Tab tab = new BagInfoImpl.TabImpl();
 		//
-		BagPen.ErrorType result = BagPen.ErrorType.NO_ERROR;
+		BagInfo.ErrorType result = BagInfo.ErrorType.NO_ERROR;
 		//
 		int count = 1;
 		long beg = System.currentTimeMillis();
 		for (int i = 0; i < count; i++) {
-			result = bagPen.addTab(0, tab);
+			result = bagInfo.addTab(0, tab);
 		}
 		long end = System.currentTimeMillis();
 		System.out.println(count + " times: " + (end - beg) + " mills. ");
 
 		System.out.println(result);
 		// 沒有錯誤
-		assertEquals(BagPen.ErrorType.NO_ERROR, result);
+		assertEquals(BagInfo.ErrorType.NO_ERROR, result);
 
-		result = bagPen.addTab(-1, tab);
+		result = bagInfo.addTab(-1, tab);
 		System.out.println(result);
 		// 超過包包頁索引
-		assertEquals(BagPen.ErrorType.OVER_TAB_INDEX, result);
+		assertEquals(BagInfo.ErrorType.OVER_TAB_INDEX, result);
 		//
-		result = bagPen.addTab(0, null);
+		result = bagInfo.addTab(0, null);
 		System.out.println(result);
 		// 包包頁不存在
-		assertEquals(BagPen.ErrorType.TAB_NOT_EXIST, result);
+		assertEquals(BagInfo.ErrorType.TAB_NOT_EXIST, result);
 		//
-		bagPen.removeTab(2);
-		result = bagPen.addTab(0, tab);
+		bagInfo.removeTab(2);
+		result = bagInfo.addTab(0, tab);
 		System.out.println(result);
 		// 包包已有包包頁
-		assertEquals(BagPen.ErrorType.ALREADY_HAS_TAB, result);
+		assertEquals(BagInfo.ErrorType.ALREADY_HAS_TAB, result);
 	}
 
 	@Test
@@ -328,58 +328,58 @@ public class BagPenImplTest extends BaseTestSupporter {
 	// 1000000 times: 18 mills.
 	// verified
 	public void addItem() {
-		BagPen bagPen = mockBagPen();
-		bagPen.removeItem(0, 0);// 移除一個道具
+		BagInfo bagInfo = mockBagInfo();
+		bagInfo.removeItem(0, 0);// 移除一個道具
 		Item item = randomThing();
 		//
-		BagPen.ErrorType result = BagPen.ErrorType.NO_ERROR;
+		BagInfo.ErrorType result = BagInfo.ErrorType.NO_ERROR;
 		//
 		int count = 1;
 		long beg = System.currentTimeMillis();
 		for (int i = 0; i < count; i++) {
-			result = bagPen.addItem(0, 0, item);
+			result = bagInfo.addItem(0, 0, item);
 		}
 		long end = System.currentTimeMillis();
 		System.out.println(count + " times: " + (end - beg) + " mills. ");
 
 		System.out.println(result);
 		// 沒有錯誤
-		assertEquals(BagPen.ErrorType.NO_ERROR, result);
+		assertEquals(BagInfo.ErrorType.NO_ERROR, result);
 
-		bagPen.lock(0);// 鎖定包包頁
-		result = bagPen.addItem(0, 0, item);
+		bagInfo.lock(0);// 鎖定包包頁
+		result = bagInfo.addItem(0, 0, item);
 		System.out.println(result);
-		bagPen.unLock(0);// 解鎖包包頁
+		bagInfo.unLock(0);// 解鎖包包頁
 		// 包包頁被鎖定
-		assertEquals(BagPen.ErrorType.TAB_LOCKED, result);
+		assertEquals(BagInfo.ErrorType.TAB_LOCKED, result);
 		//
-		result = bagPen.addItem(-1, 0, item);
+		result = bagInfo.addItem(-1, 0, item);
 		System.out.println(result);
 		// 超過包包頁索引
-		assertEquals(BagPen.ErrorType.OVER_TAB_INDEX, result);
+		assertEquals(BagInfo.ErrorType.OVER_TAB_INDEX, result);
 		//
-		result = bagPen.addItem(0, 0, (Item) null);
+		result = bagInfo.addItem(0, 0, (Item) null);
 		System.out.println(result);
 		// 道具不存在
-		assertEquals(BagPen.ErrorType.ITEM_NOT_EXIST, result);
+		assertEquals(BagInfo.ErrorType.ITEM_NOT_EXIST, result);
 
 		// 包包頁滿了
-		assertEquals((int) Tab.MAX_GRID_SIZE, (int) bagPen.getTab(0).getItemSize());
-		result = bagPen.addItem(0, 0, item);
+		assertEquals((int) Tab.MAX_GRID_SIZE, (int) bagInfo.getTab(0).getItemSize());
+		result = bagInfo.addItem(0, 0, item);
 		System.out.println(result);
-		assertEquals(BagPen.ErrorType.TAB_FULL, result);
+		assertEquals(BagInfo.ErrorType.TAB_FULL, result);
 		//
-		bagPen.removeItem(0, 1);
-		result = bagPen.addItem(0, 0, item);
+		bagInfo.removeItem(0, 1);
+		result = bagInfo.addItem(0, 0, item);
 		System.out.println(result);
 		// 格子已有道具
-		assertEquals(BagPen.ErrorType.ALREADY_HAS_ITEM, result);
+		assertEquals(BagInfo.ErrorType.ALREADY_HAS_ITEM, result);
 		//
-		bagPen.removeTab(0);// 移除一個包包頁
-		result = bagPen.addItem(0, 0, item);
+		bagInfo.removeTab(0);// 移除一個包包頁
+		result = bagInfo.addItem(0, 0, item);
 		System.out.println(result);
 		// 包包頁不存在
-		assertEquals(BagPen.ErrorType.TAB_NOT_EXIST, result);
+		assertEquals(BagInfo.ErrorType.TAB_NOT_EXIST, result);
 	}
 
 	@Test
@@ -388,50 +388,50 @@ public class BagPenImplTest extends BaseTestSupporter {
 	// 1000000 times: 18 mills.
 	// verified
 	public void increaseAmount() {
-		BagPen bagPen = mockBagPen();
+		BagInfo bagInfo = mockBagInfo();
 		//
-		BagPen.ErrorType result = BagPen.ErrorType.NO_ERROR;
+		BagInfo.ErrorType result = BagInfo.ErrorType.NO_ERROR;
 		//
 		int count = 1;
 		long beg = System.currentTimeMillis();
 		for (int i = 0; i < count; i++) {
-			result = bagPen.increaseAmount(0, 0, 1);
+			result = bagInfo.increaseAmount(0, 0, 1);
 		}
 		long end = System.currentTimeMillis();
 		System.out.println(count + " times: " + (end - beg) + " mills. ");
 
 		System.out.println(result);
 		// 沒有錯誤
-		assertEquals(BagPen.ErrorType.NO_ERROR, result);
+		assertEquals(BagInfo.ErrorType.NO_ERROR, result);
 		//
-		bagPen.lock(0);// 鎖定包包頁
-		result = bagPen.increaseAmount(0, 0, 1);
+		bagInfo.lock(0);// 鎖定包包頁
+		result = bagInfo.increaseAmount(0, 0, 1);
 		System.out.println(result);
-		bagPen.unLock(0);// 解鎖包包頁
+		bagInfo.unLock(0);// 解鎖包包頁
 		// 包包頁被鎖定
-		assertEquals(BagPen.ErrorType.TAB_LOCKED, result);
+		assertEquals(BagInfo.ErrorType.TAB_LOCKED, result);
 		//
-		result = bagPen.increaseAmount(-1, 0, 1);
+		result = bagInfo.increaseAmount(-1, 0, 1);
 		System.out.println(result);
 		// 超過包包頁索引
-		assertEquals(BagPen.ErrorType.OVER_TAB_INDEX, result);
+		assertEquals(BagInfo.ErrorType.OVER_TAB_INDEX, result);
 		//
-		result = bagPen.increaseAmount(0, -1, 1);
+		result = bagInfo.increaseAmount(0, -1, 1);
 		System.out.println(result);
 		// 超過格子索引
-		assertEquals(BagPen.ErrorType.OVER_GRID_INDEX, result);
+		assertEquals(BagInfo.ErrorType.OVER_GRID_INDEX, result);
 
 		// 移除包包頁index=0,格子索引index=1的道具
-		bagPen.removeItem(0, 1);
-		result = bagPen.increaseAmount(0, 1, 1);
+		bagInfo.removeItem(0, 1);
+		result = bagInfo.increaseAmount(0, 1, 1);
 		System.out.println(result);
 		// 道具不存在
-		assertEquals(BagPen.ErrorType.ITEM_NOT_EXIST, result);
+		assertEquals(BagInfo.ErrorType.ITEM_NOT_EXIST, result);
 		//
-		result = bagPen.increaseAmount(0, 0, 100);
+		result = bagInfo.increaseAmount(0, 0, 100);
 		System.out.println(result);
 		// 超過道具最大數量
-		assertEquals(BagPen.ErrorType.OVER_MAX_AMOUNT, result);
+		assertEquals(BagInfo.ErrorType.OVER_MAX_AMOUNT, result);
 	}
 
 	@Test
@@ -442,38 +442,38 @@ public class BagPenImplTest extends BaseTestSupporter {
 	public void increaseAmountWithUniqueId() {
 		final String UNIQUE_ID = "U_00";
 		//
-		BagPen bagPen = mockBagPen();
+		BagInfo bagInfo = mockBagInfo();
 		//
-		BagPen.ErrorType result = BagPen.ErrorType.NO_ERROR;
+		BagInfo.ErrorType result = BagInfo.ErrorType.NO_ERROR;
 		//
 		int count = 1;
 		long beg = System.currentTimeMillis();
 		for (int i = 0; i < count; i++) {
-			result = bagPen.increaseAmount(UNIQUE_ID, 1);
+			result = bagInfo.increaseAmount(UNIQUE_ID, 1);
 		}
 		long end = System.currentTimeMillis();
 		System.out.println(count + " times: " + (end - beg) + " mills. ");
 
 		System.out.println(result);
 		// 沒有錯誤
-		assertEquals(BagPen.ErrorType.NO_ERROR, result);
+		assertEquals(BagInfo.ErrorType.NO_ERROR, result);
 		//
-		bagPen.lock(0);// 鎖定包包頁
-		result = bagPen.increaseAmount(UNIQUE_ID, 1);
+		bagInfo.lock(0);// 鎖定包包頁
+		result = bagInfo.increaseAmount(UNIQUE_ID, 1);
 		System.out.println(result);
-		bagPen.unLock(0);// 解鎖包包頁
+		bagInfo.unLock(0);// 解鎖包包頁
 		// 包包頁被鎖定
-		assertEquals(BagPen.ErrorType.TAB_LOCKED, result);
+		assertEquals(BagInfo.ErrorType.TAB_LOCKED, result);
 		//
-		result = bagPen.increaseAmount((String) null, 1);
+		result = bagInfo.increaseAmount((String) null, 1);
 		System.out.println(result);
 		// 道具不存在
-		assertEquals(BagPen.ErrorType.ITEM_NOT_EXIST, result);
+		assertEquals(BagInfo.ErrorType.ITEM_NOT_EXIST, result);
 		//
-		result = bagPen.increaseAmount(UNIQUE_ID, 100);
+		result = bagInfo.increaseAmount(UNIQUE_ID, 100);
 		System.out.println(result);
 		// 超過道具最大數量
-		assertEquals(BagPen.ErrorType.OVER_MAX_AMOUNT, result);
+		assertEquals(BagInfo.ErrorType.OVER_MAX_AMOUNT, result);
 	}
 
 	@Test
@@ -482,44 +482,44 @@ public class BagPenImplTest extends BaseTestSupporter {
 	// 1000000 times: 18 mills.
 	// verified
 	public void removeItem() {
-		BagPen bagPen = mockBagPen();
+		BagInfo bagInfo = mockBagInfo();
 		//
-		BagPen.ErrorType result = BagPen.ErrorType.NO_ERROR;
+		BagInfo.ErrorType result = BagInfo.ErrorType.NO_ERROR;
 		//
 		int count = 1;
 		long beg = System.currentTimeMillis();
 		for (int i = 0; i < count; i++) {
-			result = bagPen.removeItem(0, 0);
+			result = bagInfo.removeItem(0, 0);
 		}
 		long end = System.currentTimeMillis();
 		System.out.println(count + " times: " + (end - beg) + " mills. ");
 
 		System.out.println(result);
 		// 沒有錯誤
-		assertEquals(BagPen.ErrorType.NO_ERROR, result);
+		assertEquals(BagInfo.ErrorType.NO_ERROR, result);
 
-		bagPen.lock(0);// 鎖定包包頁
-		result = bagPen.removeItem(0, 0);
+		bagInfo.lock(0);// 鎖定包包頁
+		result = bagInfo.removeItem(0, 0);
 		System.out.println(result);
-		bagPen.unLock(0); // 解鎖包包頁
+		bagInfo.unLock(0); // 解鎖包包頁
 		// 包包頁被鎖定
-		assertEquals(BagPen.ErrorType.TAB_LOCKED, result);
+		assertEquals(BagInfo.ErrorType.TAB_LOCKED, result);
 		//
-		result = bagPen.removeItem(0, -1);
+		result = bagInfo.removeItem(0, -1);
 		System.out.println(result);
 		// 超過格子索引
-		assertEquals(BagPen.ErrorType.OVER_GRID_INDEX, result);
+		assertEquals(BagInfo.ErrorType.OVER_GRID_INDEX, result);
 		//
-		result = bagPen.removeItem(0, 0);
+		result = bagInfo.removeItem(0, 0);
 		System.out.println(result);
 		// 道具不存在
-		assertEquals(BagPen.ErrorType.ITEM_NOT_EXIST, result);
+		assertEquals(BagInfo.ErrorType.ITEM_NOT_EXIST, result);
 		//
-		bagPen.removeTab(0);// 移除一個包包頁
-		result = bagPen.removeItem(0, 0);
+		bagInfo.removeTab(0);// 移除一個包包頁
+		result = bagInfo.removeItem(0, 0);
 		System.out.println(result);
 		// 包包頁不存在
-		assertEquals(BagPen.ErrorType.TAB_NOT_EXIST, result);
+		assertEquals(BagInfo.ErrorType.TAB_NOT_EXIST, result);
 	}
 
 	@Test
@@ -530,37 +530,37 @@ public class BagPenImplTest extends BaseTestSupporter {
 	public void removeItemWithUniqueId() {
 		final String UNIQUE_ID = "U_00";
 		//
-		BagPen bagPen = mockBagPen();
+		BagInfo bagInfo = mockBagInfo();
 		//
-		BagPen.ErrorType result = BagPen.ErrorType.NO_ERROR;
+		BagInfo.ErrorType result = BagInfo.ErrorType.NO_ERROR;
 		//
 		int count = 1;
 		long beg = System.currentTimeMillis();
 		for (int i = 0; i < count; i++) {
-			result = bagPen.removeItem(UNIQUE_ID);
+			result = bagInfo.removeItem(UNIQUE_ID);
 		}
 		long end = System.currentTimeMillis();
 		System.out.println(count + " times: " + (end - beg) + " mills. ");
 
 		System.out.println(result);
 		// 沒有錯誤
-		assertEquals(BagPen.ErrorType.NO_ERROR, result);
+		assertEquals(BagInfo.ErrorType.NO_ERROR, result);
 		//
-		result = bagPen.removeItem(UNIQUE_ID);
+		result = bagInfo.removeItem(UNIQUE_ID);
 		System.out.println(result);
 		// 道具不存在
-		assertEquals(BagPen.ErrorType.ITEM_NOT_EXIST, result);
+		assertEquals(BagInfo.ErrorType.ITEM_NOT_EXIST, result);
 		//
 		Thing thing = new ThingImpl();// 再把道具塞回去
 		thing.setId(Thing.UNIQUE_ID_PREFIX + "00");
 		thing.setUniqueId("U_" + "00");
-		bagPen.addItem(0, 0, thing);
-		bagPen.lock(0);// 鎖定包包頁
-		result = bagPen.removeItem(UNIQUE_ID);
+		bagInfo.addItem(0, 0, thing);
+		bagInfo.lock(0);// 鎖定包包頁
+		result = bagInfo.removeItem(UNIQUE_ID);
 		System.out.println(result);
-		bagPen.unLock(0); // 解鎖包包頁
+		bagInfo.unLock(0); // 解鎖包包頁
 		// 包包頁被鎖定
-		assertEquals(BagPen.ErrorType.TAB_LOCKED, result);
+		assertEquals(BagInfo.ErrorType.TAB_LOCKED, result);
 	}
 
 	@Test
@@ -569,50 +569,50 @@ public class BagPenImplTest extends BaseTestSupporter {
 	// 1000000 times: 18 mills.
 	// verified
 	public void decreaseAmount() {
-		BagPen bagPen = mockBagPen();
+		BagInfo bagInfo = mockBagInfo();
 		//
-		BagPen.ErrorType result = BagPen.ErrorType.NO_ERROR;
+		BagInfo.ErrorType result = BagInfo.ErrorType.NO_ERROR;
 		//
 		int count = 1;
 		long beg = System.currentTimeMillis();
 		for (int i = 0; i < count; i++) {
-			result = bagPen.decreaseAmount(0, 0, 1);
+			result = bagInfo.decreaseAmount(0, 0, 1);
 		}
 		long end = System.currentTimeMillis();
 		System.out.println(count + " times: " + (end - beg) + " mills. ");
 
 		System.out.println(result);
 		// 沒有錯誤
-		assertEquals(BagPen.ErrorType.NO_ERROR, result);
+		assertEquals(BagInfo.ErrorType.NO_ERROR, result);
 		//
-		bagPen.lock(0);// 鎖定包包頁
-		result = bagPen.decreaseAmount(0, 0, 1);
+		bagInfo.lock(0);// 鎖定包包頁
+		result = bagInfo.decreaseAmount(0, 0, 1);
 		System.out.println(result);
-		bagPen.unLock(0);// 解鎖包包頁
+		bagInfo.unLock(0);// 解鎖包包頁
 		// 包包頁被鎖定
-		assertEquals(BagPen.ErrorType.TAB_LOCKED, result);
+		assertEquals(BagInfo.ErrorType.TAB_LOCKED, result);
 		//
-		result = bagPen.decreaseAmount(-1, 0, 1);
+		result = bagInfo.decreaseAmount(-1, 0, 1);
 		System.out.println(result);
 		// 超過包包頁索引
-		assertEquals(BagPen.ErrorType.OVER_TAB_INDEX, result);
+		assertEquals(BagInfo.ErrorType.OVER_TAB_INDEX, result);
 		//
-		result = bagPen.decreaseAmount(0, -1, 1);
+		result = bagInfo.decreaseAmount(0, -1, 1);
 		System.out.println(result);
 		// 超過格子索引
-		assertEquals(BagPen.ErrorType.OVER_GRID_INDEX, result);
+		assertEquals(BagInfo.ErrorType.OVER_GRID_INDEX, result);
 
 		// 移除包包頁index=0,移除索引index=1的道具
-		bagPen.removeItem(0, 1);
-		result = bagPen.decreaseAmount(0, 1, 1);
+		bagInfo.removeItem(0, 1);
+		result = bagInfo.decreaseAmount(0, 1, 1);
 		System.out.println(result);
 		// 道具不存在
-		assertEquals(BagPen.ErrorType.ITEM_NOT_EXIST, result);
+		assertEquals(BagInfo.ErrorType.ITEM_NOT_EXIST, result);
 		//
-		result = bagPen.decreaseAmount(0, 0, 100);
+		result = bagInfo.decreaseAmount(0, 0, 100);
 		System.out.println(result);
 		// 數量不足時
-		assertEquals(BagPen.ErrorType.AMOUNT_NOT_ENOUGH, result);
+		assertEquals(BagInfo.ErrorType.AMOUNT_NOT_ENOUGH, result);
 	}
 
 	@Test
@@ -623,38 +623,38 @@ public class BagPenImplTest extends BaseTestSupporter {
 	public void decreaseAmountWithUniqueId() {
 		final String UNIQUE_ID = "U_00";
 
-		BagPen bagPen = mockBagPen();
+		BagInfo bagInfo = mockBagInfo();
 		//
-		BagPen.ErrorType result = BagPen.ErrorType.NO_ERROR;
+		BagInfo.ErrorType result = BagInfo.ErrorType.NO_ERROR;
 		//
 		int count = 1;
 		long beg = System.currentTimeMillis();
 		for (int i = 0; i < count; i++) {
-			result = bagPen.decreaseAmount(UNIQUE_ID, 1);
+			result = bagInfo.decreaseAmount(UNIQUE_ID, 1);
 		}
 		long end = System.currentTimeMillis();
 		System.out.println(count + " times: " + (end - beg) + " mills. ");
 
 		System.out.println(result);
 		// 沒有錯誤
-		assertEquals(BagPen.ErrorType.NO_ERROR, result);
+		assertEquals(BagInfo.ErrorType.NO_ERROR, result);
 		//
-		bagPen.lock(0);// 鎖定包包頁
-		result = bagPen.decreaseAmount(UNIQUE_ID, 1);
+		bagInfo.lock(0);// 鎖定包包頁
+		result = bagInfo.decreaseAmount(UNIQUE_ID, 1);
 		System.out.println(result);
-		bagPen.unLock(0);// 解鎖包包頁
+		bagInfo.unLock(0);// 解鎖包包頁
 		// 包包頁被鎖定
-		assertEquals(BagPen.ErrorType.TAB_LOCKED, result);
+		assertEquals(BagInfo.ErrorType.TAB_LOCKED, result);
 		//
-		result = bagPen.decreaseAmount((String) null, 1);
+		result = bagInfo.decreaseAmount((String) null, 1);
 		System.out.println(result);
 		// 道具不存在
-		assertEquals(BagPen.ErrorType.ITEM_NOT_EXIST, result);
+		assertEquals(BagInfo.ErrorType.ITEM_NOT_EXIST, result);
 		//
-		result = bagPen.decreaseAmount(UNIQUE_ID, 100);
+		result = bagInfo.decreaseAmount(UNIQUE_ID, 100);
 		System.out.println(result);
 		// 數量不足時
-		assertEquals(BagPen.ErrorType.AMOUNT_NOT_ENOUGH, result);
+		assertEquals(BagInfo.ErrorType.AMOUNT_NOT_ENOUGH, result);
 	}
 
 	@Test
@@ -663,30 +663,30 @@ public class BagPenImplTest extends BaseTestSupporter {
 	// 1000000 times: 32 mills.
 	// verified
 	public void clearItem() {
-		BagPen bagPen = mockBagPen();
+		BagInfo bagInfo = mockBagInfo();
 		//
-		BagPen.ErrorType result = BagPen.ErrorType.NO_ERROR;
+		BagInfo.ErrorType result = BagInfo.ErrorType.NO_ERROR;
 		//
 		int count = 1000000;
 		long beg = System.currentTimeMillis();
 		for (int i = 0; i < count; i++) {
-			result = bagPen.clearItem(0);
+			result = bagInfo.clearItem(0);
 		}
 		long end = System.currentTimeMillis();
 		System.out.println(count + " times: " + (end - beg) + " mills. ");
 
 		System.out.println(result);
 		// 沒有錯誤
-		assertEquals(BagPen.ErrorType.NO_ERROR, result);
-		assertEquals(TabType.values().length, bagPen.getTabSize());
+		assertEquals(BagInfo.ErrorType.NO_ERROR, result);
+		assertEquals(TabType.values().length, bagInfo.getTabSize());
 		//
-		bagPen = mockBagPen();
-		bagPen.lock(1);// 鎖定一個包包頁
-		result = bagPen.clearItem(1);
+		bagInfo = mockBagInfo();
+		bagInfo.lock(1);// 鎖定一個包包頁
+		result = bagInfo.clearItem(1);
 		System.out.println(result);
-		assertEquals(BagPen.ErrorType.TAB_LOCKED, result);
+		assertEquals(BagInfo.ErrorType.TAB_LOCKED, result);
 		// 有一個包包頁無法清除,因為已鎖定
-		assertEquals(TabType.values().length, bagPen.getTabSize());
+		assertEquals(TabType.values().length, bagInfo.getTabSize());
 	}
 
 	@Test
@@ -695,30 +695,30 @@ public class BagPenImplTest extends BaseTestSupporter {
 	// 1000000 times: 32 mills.
 	// verified
 	public void clearTab() {
-		BagPen bagPen = mockBagPen();
+		BagInfo bagInfo = mockBagInfo();
 		//
-		BagPen.ErrorType result = BagPen.ErrorType.NO_ERROR;
+		BagInfo.ErrorType result = BagInfo.ErrorType.NO_ERROR;
 		//
 		int count = 1000000;
 		long beg = System.currentTimeMillis();
 		for (int i = 0; i < count; i++) {
-			result = bagPen.clearTab();
+			result = bagInfo.clearTab();
 		}
 		long end = System.currentTimeMillis();
 		System.out.println(count + " times: " + (end - beg) + " mills. ");
 
 		System.out.println(result);
 		// 沒有錯誤
-		assertEquals(BagPen.ErrorType.NO_ERROR, result);
-		assertEquals(0, bagPen.getTabSize());
+		assertEquals(BagInfo.ErrorType.NO_ERROR, result);
+		assertEquals(0, bagInfo.getTabSize());
 		//
-		bagPen = mockBagPen();
-		bagPen.lock(0);// 鎖定一個包包頁
-		result = bagPen.clearTab();
+		bagInfo = mockBagInfo();
+		bagInfo.lock(0);// 鎖定一個包包頁
+		result = bagInfo.clearTab();
 		System.out.println(result);
-		assertEquals(BagPen.ErrorType.AT_LEAST_ONE_TAB_LOCKED, result);
+		assertEquals(BagInfo.ErrorType.AT_LEAST_ONE_TAB_LOCKED, result);
 		// 有一個包包頁無法清除,因為已鎖定
-		assertEquals(1, bagPen.getTabSize());
+		assertEquals(1, bagInfo.getTabSize());
 	}
 
 	@Test
@@ -727,14 +727,14 @@ public class BagPenImplTest extends BaseTestSupporter {
 	// 1000000 times: 32 mills.
 	// verified
 	public void getTab() {
-		BagPen bagPen = mockBagPen();
+		BagInfo bagInfo = mockBagInfo();
 		//
-		BagPen.Tab result = null;
+		BagInfo.Tab result = null;
 		//
 		int count = 1000000;
 		long beg = System.currentTimeMillis();
 		for (int i = 0; i < count; i++) {
-			result = bagPen.getTab(0);
+			result = bagInfo.getTab(0);
 		}
 		long end = System.currentTimeMillis();
 		System.out.println(count + " times: " + (end - beg) + " mills. ");
@@ -742,7 +742,7 @@ public class BagPenImplTest extends BaseTestSupporter {
 		System.out.println(result);
 		assertNotNull(result);
 		//
-		result = bagPen.getTab(-1);
+		result = bagInfo.getTab(-1);
 		System.out.println(result);
 		assertNull(result);
 	}
@@ -753,14 +753,14 @@ public class BagPenImplTest extends BaseTestSupporter {
 	// 1000000 times: 32 mills.
 	// verified
 	public void getItem() {
-		BagPen bagPen = mockBagPen();
+		BagInfo bagInfo = mockBagInfo();
 		//
 		Item result = null;
 		//
 		int count = 1000000;
 		long beg = System.currentTimeMillis();
 		for (int i = 0; i < count; i++) {
-			result = bagPen.getItem(0, 0);
+			result = bagInfo.getItem(0, 0);
 		}
 		long end = System.currentTimeMillis();
 		System.out.println(count + " times: " + (end - beg) + " mills. ");
@@ -768,7 +768,7 @@ public class BagPenImplTest extends BaseTestSupporter {
 		System.out.println(result.getId() + ", " + result.getUniqueId());
 		assertNotNull(result);
 		//
-		result = bagPen.getItem(-1, 0);
+		result = bagInfo.getItem(-1, 0);
 		System.out.println(result);
 		assertNull(result);
 	}
@@ -781,14 +781,14 @@ public class BagPenImplTest extends BaseTestSupporter {
 	public void getItemWithUniqueId() {
 		final String UNIQUE_ID = "U_00";
 
-		BagPen bagPen = mockBagPen();
+		BagInfo bagInfo = mockBagInfo();
 		//
 		Item result = null;
 		//
 		int count = 1000000;
 		long beg = System.currentTimeMillis();
 		for (int i = 0; i < count; i++) {
-			result = bagPen.getItem(UNIQUE_ID);
+			result = bagInfo.getItem(UNIQUE_ID);
 		}
 		long end = System.currentTimeMillis();
 		System.out.println(count + " times: " + (end - beg) + " mills. ");
@@ -805,14 +805,14 @@ public class BagPenImplTest extends BaseTestSupporter {
 	public void getItems() {
 		final String ID = "T_00";
 
-		BagPen bagPen = mockBagPen();
+		BagInfo bagInfo = mockBagInfo();
 		//
 		List<Item> result = null;
 		//
 		int count = 1000000;
 		long beg = System.currentTimeMillis();
 		for (int i = 0; i < count; i++) {
-			result = bagPen.getItems(ID);
+			result = bagInfo.getItems(ID);
 		}
 		long end = System.currentTimeMillis();
 		System.out.println(count + " times: " + (end - beg) + " mills. ");
@@ -827,14 +827,14 @@ public class BagPenImplTest extends BaseTestSupporter {
 	// 1000000 times: 32 mills.
 	// verified
 	public void getItemsWithItemType() {
-		BagPen bagPen = mockBagPen();
+		BagInfo bagInfo = mockBagInfo();
 		//
 		List<Item> result = null;
 		//
 		int count = 1000000;
 		long beg = System.currentTimeMillis();
 		for (int i = 0; i < count; i++) {
-			result = bagPen.getItems(ItemType.THING);
+			result = bagInfo.getItems(ItemType.THING);
 		}
 		long end = System.currentTimeMillis();
 		System.out.println(count + " times: " + (end - beg) + " mills. ");
@@ -850,35 +850,35 @@ public class BagPenImplTest extends BaseTestSupporter {
 	// verified
 	public void setTab() {
 		final Integer INDEX = 0;
-		BagPen bagPen = mockBagPen();
-		BagPen.Tab tab = new BagPenImpl.TabImpl();
+		BagInfo bagInfo = mockBagInfo();
+		BagInfo.Tab tab = new BagInfoImpl.TabImpl();
 		tab.setId(INDEX);
 		//
-		BagPen.ErrorType result = BagPen.ErrorType.NO_ERROR;
+		BagInfo.ErrorType result = BagInfo.ErrorType.NO_ERROR;
 		//
 		int count = 1000000;
 		long beg = System.currentTimeMillis();
 		for (int i = 0; i < count; i++) {
-			result = bagPen.setTab(INDEX, tab);
+			result = bagInfo.setTab(INDEX, tab);
 		}
 		long end = System.currentTimeMillis();
 		System.out.println(count + " times: " + (end - beg) + " mills. ");
 
 		System.out.println(result);
 		// 沒有錯誤
-		assertEquals(BagPen.ErrorType.NO_ERROR, result);
+		assertEquals(BagInfo.ErrorType.NO_ERROR, result);
 
-		bagPen.lock(0);// 鎖定包包頁
-		result = bagPen.setTab(INDEX, tab);
+		bagInfo.lock(0);// 鎖定包包頁
+		result = bagInfo.setTab(INDEX, tab);
 		System.out.println(result);
-		bagPen.unLock(0);// 解鎖包包頁
+		bagInfo.unLock(0);// 解鎖包包頁
 		// 包包頁被鎖定
-		assertEquals(BagPen.ErrorType.TAB_LOCKED, result);
+		assertEquals(BagInfo.ErrorType.TAB_LOCKED, result);
 		//
-		result = bagPen.setTab(-1, tab);
+		result = bagInfo.setTab(-1, tab);
 		System.out.println(result);
 		// 超過格子索引
-		assertEquals(BagPen.ErrorType.OVER_TAB_INDEX, result);
+		assertEquals(BagInfo.ErrorType.OVER_TAB_INDEX, result);
 	}
 
 	@Test
@@ -887,39 +887,39 @@ public class BagPenImplTest extends BaseTestSupporter {
 	// 1000000 times: 32 mills.
 	// verified
 	public void setItem() {
-		BagPen bagPen = mockBagPen();
+		BagInfo bagInfo = mockBagInfo();
 		Thing thing = randomThing();
 		//
-		BagPen.ErrorType result = BagPen.ErrorType.NO_ERROR;
+		BagInfo.ErrorType result = BagInfo.ErrorType.NO_ERROR;
 		//
 		int count = 1000000;
 		long beg = System.currentTimeMillis();
 		for (int i = 0; i < count; i++) {
-			result = bagPen.setItem(0, 0, thing);
+			result = bagInfo.setItem(0, 0, thing);
 		}
 		long end = System.currentTimeMillis();
 		System.out.println(count + " times: " + (end - beg) + " mills. ");
 
 		System.out.println(result);
 		// 沒有錯誤
-		assertEquals(BagPen.ErrorType.NO_ERROR, result);
+		assertEquals(BagInfo.ErrorType.NO_ERROR, result);
 
-		bagPen.lock(0);// 鎖定包包頁
-		result = bagPen.setItem(0, 0, thing);
+		bagInfo.lock(0);// 鎖定包包頁
+		result = bagInfo.setItem(0, 0, thing);
 		System.out.println(result);
-		bagPen.unLock(0); // 解鎖包包頁
+		bagInfo.unLock(0); // 解鎖包包頁
 		// 包包頁被鎖定
-		assertEquals(BagPen.ErrorType.TAB_LOCKED, result);
+		assertEquals(BagInfo.ErrorType.TAB_LOCKED, result);
 		//
-		result = bagPen.setItem(0, -1, thing);
+		result = bagInfo.setItem(0, -1, thing);
 		System.out.println(result);
 		// 超過格子索引
-		assertEquals(BagPen.ErrorType.OVER_GRID_INDEX, result);
+		assertEquals(BagInfo.ErrorType.OVER_GRID_INDEX, result);
 		//
-		result = bagPen.setItem(-1, 0, thing);
+		result = bagInfo.setItem(-1, 0, thing);
 		System.out.println(result);
 		// 超過包包頁索引
-		assertEquals(BagPen.ErrorType.OVER_TAB_INDEX, result);
+		assertEquals(BagInfo.ErrorType.OVER_TAB_INDEX, result);
 	}
 
 	@Test
@@ -928,39 +928,39 @@ public class BagPenImplTest extends BaseTestSupporter {
 	// 1000000 times: 32 mills.
 	// verified
 	public void setItemAmount() {
-		BagPen bagPen = mockBagPen();
+		BagInfo bagInfo = mockBagInfo();
 		//
-		BagPen.ErrorType result = BagPen.ErrorType.NO_ERROR;
+		BagInfo.ErrorType result = BagInfo.ErrorType.NO_ERROR;
 		//
 		int count = 1000000;
 		long beg = System.currentTimeMillis();
 		for (int i = 0; i < count; i++) {
-			result = bagPen.setItemAmount(0, 0, 0);
+			result = bagInfo.setItemAmount(0, 0, 0);
 		}
 		long end = System.currentTimeMillis();
 		System.out.println(count + " times: " + (end - beg) + " mills. ");
 
 		System.out.println(result);
 		// 沒有錯誤
-		assertEquals(BagPen.ErrorType.NO_ERROR, result);
-		assertEquals(0, bagPen.getItem(0, 0).getAmount());
+		assertEquals(BagInfo.ErrorType.NO_ERROR, result);
+		assertEquals(0, bagInfo.getItem(0, 0).getAmount());
 
-		bagPen.lock(0);// 鎖定包包頁
-		result = bagPen.setItemAmount(0, 0, 0);
+		bagInfo.lock(0);// 鎖定包包頁
+		result = bagInfo.setItemAmount(0, 0, 0);
 		System.out.println(result);
-		bagPen.unLock(0); // 解鎖包包頁
+		bagInfo.unLock(0); // 解鎖包包頁
 		// 包包頁被鎖定
-		assertEquals(BagPen.ErrorType.TAB_LOCKED, result);
+		assertEquals(BagInfo.ErrorType.TAB_LOCKED, result);
 		//
-		result = bagPen.setItemAmount(0, -1, 0);
+		result = bagInfo.setItemAmount(0, -1, 0);
 		System.out.println(result);
 		// 超過格子索引
-		assertEquals(BagPen.ErrorType.OVER_GRID_INDEX, result);
+		assertEquals(BagInfo.ErrorType.OVER_GRID_INDEX, result);
 		//
-		result = bagPen.setItemAmount(-1, 0, 0);
+		result = bagInfo.setItemAmount(-1, 0, 0);
 		System.out.println(result);
 		// 超過包包頁索引
-		assertEquals(BagPen.ErrorType.OVER_TAB_INDEX, result);
+		assertEquals(BagInfo.ErrorType.OVER_TAB_INDEX, result);
 	}
 
 	@Test
@@ -971,14 +971,14 @@ public class BagPenImplTest extends BaseTestSupporter {
 	public void containIndex() {
 		final Integer INDEX = 0;
 
-		BagPen bagPen = mockBagPen();
+		BagInfo bagInfo = mockBagInfo();
 		//
 		boolean result = false;
 		//
 		int count = 1000000;
 		long beg = System.currentTimeMillis();
 		for (int i = 0; i < count; i++) {
-			result = bagPen.containIndex(INDEX);
+			result = bagInfo.containIndex(INDEX);
 		}
 		long end = System.currentTimeMillis();
 		System.out.println(count + " times: " + (end - beg) + " mills. ");
@@ -986,7 +986,7 @@ public class BagPenImplTest extends BaseTestSupporter {
 		System.out.println(result);
 		assertTrue(result);
 		//
-		result = bagPen.containIndex(-1);
+		result = bagInfo.containIndex(-1);
 		System.out.println(result);
 		assertFalse(result);
 	}
@@ -997,21 +997,21 @@ public class BagPenImplTest extends BaseTestSupporter {
 	// 1000000 times: 32 mills.
 	// verified
 	public void getTabIndexs() {
-		BagPen bagPen = mockBagPen();
+		BagInfo bagInfo = mockBagInfo();
 		//
 		List<Integer> result = null;
 		//
 		int count = 1000000;
 		long beg = System.currentTimeMillis();
 		for (int i = 0; i < count; i++) {
-			result = bagPen.getTabIndexs();
+			result = bagInfo.getTabIndexs();
 		}
 		long end = System.currentTimeMillis();
 		System.out.println(count + " times: " + (end - beg) + " mills. ");
 
 		System.out.println(result);
 		//
-		result = bagPen.getTabIndexs(true);
+		result = bagInfo.getTabIndexs(true);
 		System.out.println(result);
 	}
 
@@ -1023,14 +1023,14 @@ public class BagPenImplTest extends BaseTestSupporter {
 	public void getIndex() {
 		final String UNIQUE_ID = "U_00";
 
-		BagPen bagPen = mockBagPen();
+		BagInfo bagInfo = mockBagInfo();
 		//
 		int[] result = null;
 		//
 		int count = 1;
 		long beg = System.currentTimeMillis();
 		for (int i = 0; i < count; i++) {
-			result = bagPen.getIndex(UNIQUE_ID);
+			result = bagInfo.getIndex(UNIQUE_ID);
 		}
 		long end = System.currentTimeMillis();
 		System.out.println(count + " times: " + (end - beg) + " mills. ");
@@ -1038,14 +1038,14 @@ public class BagPenImplTest extends BaseTestSupporter {
 		System.out.println(result[0] + ", " + result[1]);
 
 		// 包包頁被鎖定
-		bagPen.lock(0);
-		result = bagPen.getIndex(UNIQUE_ID);
-		bagPen.unLock(0);
+		bagInfo.lock(0);
+		result = bagInfo.getIndex(UNIQUE_ID);
+		bagInfo.unLock(0);
 		// System.out.println(result[0] + ", " + result[1]);
 		assertNull(result);
 
 		// 道具不存在
-		result = bagPen.getIndex("U_xxx");
+		result = bagInfo.getIndex("U_xxx");
 		// System.out.println(result[0] + ", " + result[1]);
 		assertNull(result);
 	}
@@ -1058,14 +1058,14 @@ public class BagPenImplTest extends BaseTestSupporter {
 	public void getIndexs() {
 		final String ID = "T_00";
 
-		BagPen bagPen = mockBagPenWithSameThing();// 160個相同物品
+		BagInfo bagInfo = mockBagInfoWithSameThing();// 160個相同物品
 		//
 		List<int[]> result = null;
 		//
 		int count = 1;
 		long beg = System.currentTimeMillis();
 		for (int i = 0; i < count; i++) {
-			result = bagPen.getIndexs(ID);
+			result = bagInfo.getIndexs(ID);
 		}
 		long end = System.currentTimeMillis();
 		System.out.println(count + " times: " + (end - beg) + " mills. ");
@@ -1082,14 +1082,14 @@ public class BagPenImplTest extends BaseTestSupporter {
 	public void getAmount() {
 		final String ID = "T_00";
 
-		BagPen bagPen = mockBagPenWithSameThing();// 160個相同物品
+		BagInfo bagInfo = mockBagInfoWithSameThing();// 160個相同物品
 		//
 		int result = 0;
 		//
 		int count = 1;
 		long beg = System.currentTimeMillis();
 		for (int i = 0; i < count; i++) {
-			result = bagPen.getAmount(ID);
+			result = bagInfo.getAmount(ID);
 		}
 		long end = System.currentTimeMillis();
 		System.out.println(count + " times: " + (end - beg) + " mills. ");
@@ -1104,15 +1104,15 @@ public class BagPenImplTest extends BaseTestSupporter {
 	// 1000000 times: 528 mills.
 	// verified
 	public void getEmptySize() {
-		BagPen bagPen = mockBagPenWithSameThing();// 160個相同物品
-		bagPen.removeItem(0, 0);// 移除index=0,0
+		BagInfo bagInfo = mockBagInfoWithSameThing();// 160個相同物品
+		bagInfo.removeItem(0, 0);// 移除index=0,0
 		//
 		int result = 0;
 		//
 		int count = 1000000;
 		long beg = System.currentTimeMillis();
 		for (int i = 0; i < count; i++) {
-			result = bagPen.getEmptySize();
+			result = bagInfo.getEmptySize();
 		}
 		long end = System.currentTimeMillis();
 		System.out.println(count + " times: " + (end - beg) + " mills. ");
@@ -1120,8 +1120,8 @@ public class BagPenImplTest extends BaseTestSupporter {
 		System.out.println(result);
 		assertEquals(1, result);
 		//
-		bagPen.clearItem(0);
-		result = bagPen.getEmptySize();
+		bagInfo.clearItem(0);
+		result = bagInfo.getEmptySize();
 		System.out.println(result);
 		assertEquals(40, result);
 	}
@@ -1132,15 +1132,15 @@ public class BagPenImplTest extends BaseTestSupporter {
 	// 1000000 times: 528 mills.
 	// verified
 	public void getEmptyIndex() {
-		BagPen bagPen = mockBagPenWithSameThing();// 160個相同物品
-		bagPen.removeItem(0, 20);// 移除index=0,20
+		BagInfo bagInfo = mockBagInfoWithSameThing();// 160個相同物品
+		bagInfo.removeItem(0, 20);// 移除index=0,20
 		//
 		int[] result = null;
 		//
 		int count = 1000000;
 		long beg = System.currentTimeMillis();
 		for (int i = 0; i < count; i++) {
-			result = bagPen.getEmptyIndex();
+			result = bagInfo.getEmptyIndex();
 		}
 		long end = System.currentTimeMillis();
 		System.out.println(count + " times: " + (end - beg) + " mills. ");
@@ -1149,8 +1149,8 @@ public class BagPenImplTest extends BaseTestSupporter {
 		assertEquals(0, result[0]);
 		assertEquals(20, result[1]);
 		//
-		bagPen.clearItem(0);
-		result = bagPen.getEmptyIndex();
+		bagInfo.clearItem(0);
+		result = bagInfo.getEmptyIndex();
 		SystemHelper.println(result);
 		assertEquals(0, result[0]);
 		assertEquals(0, result[1]);
@@ -1164,14 +1164,14 @@ public class BagPenImplTest extends BaseTestSupporter {
 	public void getPutIndex() {
 		final String ID = "T_00";
 		//
-		BagPen bagPen = mockBagPenWithSameThing();// 160個相同物品
+		BagInfo bagInfo = mockBagInfoWithSameThing();// 160個相同物品
 		//
 		int[] result = null;
 		//
 		int count = 1000000;
 		long beg = System.currentTimeMillis();
 		for (int i = 0; i < count; i++) {
-			result = bagPen.getPutIndex(ID);
+			result = bagInfo.getPutIndex(ID);
 		}
 		long end = System.currentTimeMillis();
 		System.out.println(count + " times: " + (end - beg) + " mills. ");
@@ -1181,19 +1181,19 @@ public class BagPenImplTest extends BaseTestSupporter {
 		assertEquals(0, result[1]);
 
 		// 當有堆疊數量限制時
-		Item item = bagPen.getItem(0, 0);
+		Item item = bagInfo.getItem(0, 0);
 		item.setAmount(item.getMaxAmount());
 		// System.out.println(item.getAmount() + " " + item.getMaxAmount());
-		result = bagPen.getPutIndex(ID);
+		result = bagInfo.getPutIndex(ID);
 		SystemHelper.println(result);
 		assertEquals(0, result[0]);
 		assertEquals(1, result[1]);
 
 		// 無堆疊數量限制時
-		item = bagPen.getItem(0, 0);
+		item = bagInfo.getItem(0, 0);
 		item.setMaxAmount(0);
 		// System.out.println(item.getAmount() + " " + item.getMaxAmount());
-		result = bagPen.getPutIndex(ID);
+		result = bagInfo.getPutIndex(ID);
 		SystemHelper.println(result);
 		assertEquals(0, result[0]);
 		assertEquals(0, result[1]);

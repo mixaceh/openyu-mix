@@ -19,7 +19,7 @@ import org.openyu.mix.train.service.TrainService.JoinResult;
 import org.openyu.mix.train.service.TrainService.QuitResult;
 import org.openyu.mix.train.vo.TrainPen;
 import org.openyu.mix.vip.vo.VipType;
-import org.openyu.mix.role.vo.BagPen;
+import org.openyu.mix.role.vo.BagInfo;
 import org.openyu.mix.role.vo.Role;
 import org.openyu.commons.thread.ThreadHelper;
 import org.openyu.commons.util.CalendarHelper;
@@ -190,12 +190,12 @@ public class TrainServiceImplTest extends TrainTestSupporter {
 		role.setLevel(20);// 等級
 		role.setGold(10000 * 10000L);// 1e
 		//
-		BagPen bagPen = role.getBagPen();
+		BagInfo bagInfo = role.getBagInfo();
 		TrainPen trainPen = role.getTrainPen();
 
 		// 加道具到包包
 		Item item = itemService.createItem(trainCollector.getInspireItem());
-		bagPen.addItem(0, 0, item);
+		bagInfo.addItem(0, 0, item);
 		// 加入訓練
 		trainSetService.addRole(role);
 		// 鼓舞結果

@@ -35,7 +35,7 @@ import org.openyu.mix.role.service.RoleService;
 import org.openyu.mix.role.service.RoleSetService;
 import org.openyu.mix.role.service.RoleService.GoldType;
 import org.openyu.mix.role.service.RoleService.SpendResult;
-import org.openyu.mix.role.vo.BagPen;
+import org.openyu.mix.role.vo.BagInfo;
 import org.openyu.mix.role.vo.Role;
 import org.openyu.mix.vip.vo.VipCollector;
 import org.openyu.commons.enumz.EnumHelper;
@@ -184,7 +184,7 @@ public class WuxingServiceImpl extends AppServiceSupporter implements WuxingServ
 	 * 發送五行欄位
 	 * 
 	 * @param role
-	 * @param bagPen
+	 * @param bagInfo
 	 * @return
 	 */
 	public Message sendWuxingPen(Role role, WuxingPen wuxingPen) {
@@ -1068,7 +1068,7 @@ public class WuxingServiceImpl extends AppServiceSupporter implements WuxingServ
 	 * 發送中獎區
 	 * 
 	 * @param role
-	 * @param bagPen
+	 * @param bagInfo
 	 */
 	public Message sendAwards(Role role, Map<String, Integer> awards) {
 		Message message = messageService.createMessage(CoreModuleType.WUXING, CoreModuleType.CLIENT,
@@ -1180,8 +1180,8 @@ public class WuxingServiceImpl extends AppServiceSupporter implements WuxingServ
 		}
 
 		// 檢查包包增加道具
-		BagPen.ErrorType bagError = itemService.checkIncreaseItem(role, item);
-		if (bagError != BagPen.ErrorType.NO_ERROR) {
+		BagInfo.ErrorType bagError = itemService.checkIncreaseItem(role, item);
+		if (bagError != BagInfo.ErrorType.NO_ERROR) {
 			errorType = ErrorType.CAN_NOT_INCREASE_ITEM;
 			return errorType;
 		}

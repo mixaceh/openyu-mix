@@ -12,15 +12,15 @@ import org.openyu.mix.item.vo.Thing;
 import org.openyu.mix.item.vo.ThingCollector;
 import org.openyu.mix.item.vo.Weapon;
 import org.openyu.mix.item.vo.WeaponCollector;
-import org.openyu.mix.role.po.usertype.BagPenUserType;
-import org.openyu.mix.role.vo.BagPen;
-import org.openyu.mix.role.vo.BagPen.TabType;
-import org.openyu.mix.role.vo.impl.BagPenImpl;
+import org.openyu.mix.role.po.usertype.BagInfoUserType;
+import org.openyu.mix.role.vo.BagInfo;
+import org.openyu.mix.role.vo.BagInfo.TabType;
+import org.openyu.mix.role.vo.impl.BagInfoImpl;
 import org.openyu.commons.junit.supporter.BaseTestSupporter;
 
-public class BagPenUserTypeTest extends BaseTestSupporter {
+public class BagInfoUserTypeTest extends BaseTestSupporter {
 
-	private static BagPenUserType userType = new BagPenUserType();
+	private static BagInfoUserType userType = new BagInfoUserType();
 
 	@Test
 	// 1000000 times: 101 mills.
@@ -28,21 +28,21 @@ public class BagPenUserTypeTest extends BaseTestSupporter {
 	// 1000000 times: 100 mills.
 	// verified
 	public void marshal() {
-		BagPen bagPen = new BagPenImpl();
+		BagInfo bagInfo = new BagInfoImpl();
 		// 道具,放第0頁
 		Thing thing = ThingCollector.getInstance().createThing(
 				"T_POTION_HP_G001");
 		thing.setUniqueId("T_00");
 		thing.setAmount(100);
-		bagPen.addItem(0, 0, thing);
+		bagInfo.addItem(0, 0, thing);
 
 		// 道具,放第1頁
 		thing = ThingCollector.getInstance().createThing("T_POTION_HP_G002");
 		thing.setUniqueId("T_01");
 		thing.setAmount(100);
 		//第一頁解除鎖定
-		bagPen.unLock(1);
-		bagPen.addItem(1, 0, thing);
+		bagInfo.unLock(1);
+		bagInfo.addItem(1, 0, thing);
 		//
 		String result = null;
 		//
@@ -50,7 +50,7 @@ public class BagPenUserTypeTest extends BaseTestSupporter {
 
 		long beg = System.currentTimeMillis();
 		for (int i = 0; i < count; i++) {
-			result = userType.marshal(bagPen, null);
+			result = userType.marshal(bagInfo, null);
 		}
 		long end = System.currentTimeMillis();
 		System.out.println(count + " times: " + (end - beg) + " mills. ");
@@ -67,9 +67,9 @@ public class BagPenUserTypeTest extends BaseTestSupporter {
 		weapon.setUniqueId("W_01");
 		weapon.setAmount(1);
 		weapon.setEnhanceLevel(EnhanceLevel._0);
-		bagPen.addItem(0, 1, weapon);
+		bagInfo.addItem(0, 1, weapon);
 		//
-		result = userType.marshal(bagPen, null);
+		result = userType.marshal(bagInfo, null);
 		// 武器
 		System.out.println(result);
 		assertEquals(
@@ -77,10 +77,10 @@ public class BagPenUserTypeTest extends BaseTestSupporter {
 				result);
 
 		// 鎖定
-		bagPen.lock(1);// 鎖定 TabType._1
-		bagPen.lock(2);// 鎖定 TabType._2
+		bagInfo.lock(1);// 鎖定 TabType._1
+		bagInfo.lock(2);// 鎖定 TabType._2
 		//
-		result = userType.marshal(bagPen, null);
+		result = userType.marshal(bagInfo, null);
 		System.out.println(result);
 		assertEquals(
 				"♥1♠4♠0♠0♠2♠0♠T_POTION_HP_G001♦T_00♦100♦0♠1♠W_MARS_SWORD_E001♦W_01♦1♦0♦0♦5♦21♣40♣0♣0♦22♣4000♣0♣0♦23♣4000♣0♣0♦24♣9600♣0♣0♦25♣60♣0♣0♠1♠1♠1♠0♠T_POTION_HP_G002♦T_01♦100♦0♠2♠1♠0♠10♠0♠0",
@@ -95,7 +95,7 @@ public class BagPenUserTypeTest extends BaseTestSupporter {
 	public void unmarshal() {
 		String value = "♥1♠4♠0♠0♠1♠0♠T_POTION_HP_G001♦T_00♦100♦0♠1♠0♠1♠0♠T_POTION_HP_G002♦T_01♦100♦0♠2♠1♠0♠10♠0♠0";
 		//
-		BagPen result = null;
+		BagInfo result = null;
 		//
 		int count = 1;
 

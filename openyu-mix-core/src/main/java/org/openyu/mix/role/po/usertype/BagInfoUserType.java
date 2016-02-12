@@ -6,20 +6,20 @@ import org.apache.commons.lang.StringUtils;
 import org.hibernate.engine.spi.SessionImplementor;
 import org.openyu.mix.item.po.usertype.ItemUserType;
 import org.openyu.mix.item.vo.Item;
-import org.openyu.mix.role.vo.BagPen;
-import org.openyu.mix.role.vo.BagPen.Tab;
-import org.openyu.mix.role.vo.impl.BagPenImpl;
+import org.openyu.mix.role.vo.BagInfo;
+import org.openyu.mix.role.vo.BagInfo.Tab;
+import org.openyu.mix.role.vo.impl.BagInfoImpl;
 import org.openyu.commons.enumz.EnumHelper;
 import org.openyu.commons.hibernate.usertype.supporter.BaseUserTypeSupporter;
 import org.openyu.commons.lang.ArrayHelper;
 
-public class BagPenUserType extends BaseUserTypeSupporter {
+public class BagInfoUserType extends BaseUserTypeSupporter {
 
 	private static final long serialVersionUID = -2066924784420555409L;
 
 	private static transient ItemUserType itemUserType = new ItemUserType();
 
-	public BagPenUserType() {
+	public BagInfoUserType() {
 		// --------------------------------------------------
 		// 最新版本,目前用1,若將來有新版本
 		// 可用其他版號,如:VolType._2
@@ -34,7 +34,7 @@ public class BagPenUserType extends BaseUserTypeSupporter {
 
 	@Override
 	public Class<?> returnedClass() {
-		return BagPen.class;
+		return BagInfo.class;
 	}
 
 	// --------------------------------------------------
@@ -48,9 +48,9 @@ public class BagPenUserType extends BaseUserTypeSupporter {
 	@SuppressWarnings("unchecked")
 	public <R, T> R marshal(T value, SessionImplementor session) {
 		R result = null;
-		if (value instanceof BagPen) {
+		if (value instanceof BagInfo) {
 			StringBuilder dest = new StringBuilder();
-			BagPen src = (BagPen) value;
+			BagInfo src = (BagInfo) value;
 			// vol
 			dest.append(assembleVol(getVolType()));
 			//
@@ -92,7 +92,7 @@ public class BagPenUserType extends BaseUserTypeSupporter {
 	 */
 	@SuppressWarnings("unchecked")
 	public <R, T, O> R unmarshal(T value, O owner, SessionImplementor session) {
-		BagPen result = new BagPenImpl();
+		BagInfo result = new BagInfoImpl();
 		//
 		if (value instanceof String) {
 			StringBuilder src = new StringBuilder((String) value);
@@ -126,8 +126,8 @@ public class BagPenUserType extends BaseUserTypeSupporter {
 	 * @see ItemUserType
 	 * 
 	 */
-	protected BagPen disassembleBy_1(StringBuilder src) {
-		BagPen result = new BagPenImpl();
+	protected BagInfo disassembleBy_1(StringBuilder src) {
+		BagInfo result = new BagInfoImpl();
 		if (src != null) {
 			// 道具
 			// ♥1♠4♠0♠0♠1♠0♠T_POTION_HP_G001♦T_01♦100♦0♠1♠0♠1♠0♠T_POTION_HP_G002♦T_02♦100♦0♠2♠0♠0♠10♠0♠0

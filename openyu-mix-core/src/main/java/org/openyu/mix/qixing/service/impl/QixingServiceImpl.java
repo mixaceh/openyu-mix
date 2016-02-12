@@ -158,7 +158,7 @@ public class QixingServiceImpl extends AppServiceSupporter implements QixingServ
 	// * 發送七星欄位
 	// *
 	// * @param roleId
-	// * @param bagPen
+	// * @param bagInfo
 	// */
 	// public void sendQixingPen(String roleId, QixingPen qixingPen)
 	// {
@@ -1167,7 +1167,7 @@ public class QixingServiceImpl extends AppServiceSupporter implements QixingServ
 	// * 發送中獎區
 	// *
 	// * @param roleId
-	// * @param bagPen
+	// * @param bagInfo
 	// */
 	// public void sendAwards(String roleId, Map<String, Integer> awards)
 	// {
@@ -1316,9 +1316,9 @@ public class QixingServiceImpl extends AppServiceSupporter implements QixingServ
 	// }
 	//
 	// //檢查包包增加道具
-	// BagPen.ErrorType bagError = itemService.checkIncrease(role.getId(),
+	// BagInfo.ErrorType bagError = itemService.checkIncrease(role.getId(),
 	// item);
-	// if (bagError != BagPen.ErrorType.NO_ERROR)
+	// if (bagError != BagInfo.ErrorType.NO_ERROR)
 	// {
 	// errorType = ErrorType.CAN_NOT_INCREASE_ITEM;
 	// return errorType;

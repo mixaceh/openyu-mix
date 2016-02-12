@@ -16,9 +16,9 @@ import org.openyu.mix.item.vo.Thing;
 import org.openyu.mix.item.vo.Weapon;
 import org.openyu.mix.manor.vo.Land;
 import org.openyu.mix.manor.vo.Seed;
-import org.openyu.mix.role.vo.BagPen;
+import org.openyu.mix.role.vo.BagInfo;
 import org.openyu.mix.role.vo.Role;
-import org.openyu.mix.role.vo.BagPen.Tab;
+import org.openyu.mix.role.vo.BagInfo.Tab;
 import org.openyu.commons.enumz.IntEnum;
 import org.openyu.socklet.message.vo.Message;
 
@@ -400,7 +400,7 @@ public interface ItemService extends AppService {
 	 * @param role
 	 * @return
 	 */
-	boolean changeBagPenLocked(boolean sendable, Role role);
+	boolean changeBagInfoLocked(boolean sendable, Role role);
 
 	/**
 	 * 發送單一包包頁是否鎖定回應
@@ -414,9 +414,9 @@ public interface ItemService extends AppService {
 	 * 發送所有包包頁是否鎖定回應
 	 * 
 	 * @param roleId
-	 * @param bagPen
+	 * @param bagInfo
 	 */
-	void sendTabsLocked(String roleId, BagPen bagPen);
+	void sendTabsLocked(String roleId, BagInfo bagInfo);
 
 	/**
 	 * 填充包包頁是否鎖定
@@ -430,17 +430,17 @@ public interface ItemService extends AppService {
 	 * 發送包包欄位
 	 * 
 	 * @param roleId
-	 * @param bagPen
+	 * @param bagInfo
 	 */
-	void sendBagPen(String roleId, BagPen bagPen);
+	void sendBagInfo(String roleId, BagInfo bagInfo);
 
 	/**
 	 * 填充包包欄位
 	 * 
 	 * @param message
-	 * @param bagPen
+	 * @param bagInfo
 	 */
-	void fillBagPen(Message message, BagPen bagPen);
+	void fillBagInfo(Message message, BagInfo bagInfo);
 
 	/**
 	 * 發送包包頁
@@ -466,7 +466,7 @@ public interface ItemService extends AppService {
 	 * @param amount
 	 * @return
 	 */
-	BagPen.ErrorType checkIncreaseItemWithItemId(Role role, String itemId, int amount);
+	BagInfo.ErrorType checkIncreaseItemWithItemId(Role role, String itemId, int amount);
 
 	/**
 	 * 檢查增加道具
@@ -475,7 +475,7 @@ public interface ItemService extends AppService {
 	 * @param item
 	 * @return
 	 */
-	BagPen.ErrorType checkIncreaseItem(Role role, Item item);
+	BagInfo.ErrorType checkIncreaseItem(Role role, Item item);
 
 	/**
 	 * 檢查增加多個不同道具
@@ -484,7 +484,7 @@ public interface ItemService extends AppService {
 	 * @param items
 	 * @return
 	 */
-	BagPen.ErrorType checkIncreaseItems(Role role, Map<String, Integer> items);
+	BagInfo.ErrorType checkIncreaseItems(Role role, Map<String, Integer> items);
 
 	/**
 	 * 增加道具結果
@@ -595,7 +595,7 @@ public interface ItemService extends AppService {
 	 * @param amount
 	 * @return
 	 */
-	BagPen.ErrorType checkDecreaseItem(Role role, String itemId, int amount);
+	BagInfo.ErrorType checkDecreaseItem(Role role, String itemId, int amount);
 
 	/**
 	 * 檢查減少道具
@@ -604,7 +604,7 @@ public interface ItemService extends AppService {
 	 * @param item
 	 * @return
 	 */
-	BagPen.ErrorType checkDecreaseItem(Role role, Item item);
+	BagInfo.ErrorType checkDecreaseItem(Role role, Item item);
 
 	/**
 	 * 檢查減少道具,by uniqueId
@@ -614,7 +614,7 @@ public interface ItemService extends AppService {
 	 * @param amount
 	 * @return
 	 */
-	BagPen.ErrorType checkDecreaseItemWithUniqueId(Role role, String uniqueId,
+	BagInfo.ErrorType checkDecreaseItemWithUniqueId(Role role, String uniqueId,
 			int amount);
 
 	/**

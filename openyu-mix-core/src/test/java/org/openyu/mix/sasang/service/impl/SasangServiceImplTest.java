@@ -12,7 +12,7 @@ import org.openyu.mix.sasang.service.SasangService.PutResult;
 import org.openyu.mix.sasang.vo.SasangPen;
 import org.openyu.mix.core.service.CoreModuleType;
 import org.openyu.mix.item.vo.Item;
-import org.openyu.mix.role.vo.BagPen;
+import org.openyu.mix.role.vo.BagInfo;
 import org.openyu.mix.role.vo.Role;
 import org.openyu.mix.vip.vo.VipType;
 import org.openyu.commons.thread.ThreadHelper;
@@ -72,7 +72,7 @@ public class SasangServiceImplTest extends SasangTestSupporter {
 	// time.bench: 1.47
 	public void play() {
 		Role role = mockRole();
-		BagPen bagPen = role.getBagPen();
+		BagInfo bagInfo = role.getBagInfo();
 		role.setLevel(20);// 等級
 		role.setGold(10000 * 10000L);// 1e
 		role.setVipType(VipType._2);// vip
@@ -86,7 +86,7 @@ public class SasangServiceImplTest extends SasangTestSupporter {
 
 		// 加道具到包包
 		Item item = itemService.createItem(sasangCollector.getPlayItem(), 5);
-		bagPen.addItem(0, 0, item);
+		bagInfo.addItem(0, 0, item);
 		// 銀按鈕,可玩1次,消耗道具或元寶,沒有每日次數限制
 		result = sasangService.play(true, role, 2);// 玩1次
 		System.out.println(result);
@@ -104,14 +104,14 @@ public class SasangServiceImplTest extends SasangTestSupporter {
 	 */
 	public void itemCoinPlay() {
 		Role role = mockRole();
-		BagPen bagPen = role.getBagPen();
+		BagInfo bagInfo = role.getBagInfo();
 		role.setLevel(20);// 等級
 		role.setGold(10000 * 10000L);// 1e
 		role.setVipType(VipType._2);// vip
 
 		// 加道具到包包
 		Item item = itemService.createItem(sasangCollector.getPlayItem(), 1);
-		bagPen.addItem(0, 0, item);
+		bagInfo.addItem(0, 0, item);
 		// 玩的結果
 		PlayResult result = sasangService.itemCoinPlay(true, role, PlayType.GALACTIC);// 玩1次
 		System.out.println(result);
@@ -131,14 +131,14 @@ public class SasangServiceImplTest extends SasangTestSupporter {
 	 */
 	public void itemCoinPlayByGold() {
 		Role role = mockRole();
-		BagPen bagPen = role.getBagPen();
+		BagInfo bagInfo = role.getBagInfo();
 		role.setLevel(20);// 等級
 		role.setGold(10000 * 10000L);// 1e
 		role.setVipType(VipType._2);// vip
 
 		// 加5個道具到包包
 		Item item = itemService.createItem(sasangCollector.getPlayItem(), 5);
-		bagPen.addItem(0, 0, item);
+		bagInfo.addItem(0, 0, item);
 		// 玩的結果
 		PlayResult result = sasangService.itemCoinPlay(true, role, PlayType.GOLDEN);// 玩20次
 		System.out.println(result);
@@ -177,7 +177,7 @@ public class SasangServiceImplTest extends SasangTestSupporter {
 	 */
 	public void goldPlay() {
 		Role role = mockRole();
-		// BagPen bagPen = role.getBagPen();
+		// BagInfo bagInfo = role.getBagInfo();
 		role.setLevel(20);// 等級
 		role.setGold(10000 * 10000L);// 1e
 		role.setVipType(VipType._2);// vip
@@ -236,7 +236,7 @@ public class SasangServiceImplTest extends SasangTestSupporter {
 	// time.bench: 0.93
 	public void putOne() {
 		Role role = mockRole();
-		// BagPen bagPen = role.getBagPen();
+		// BagInfo bagInfo = role.getBagInfo();
 		role.setLevel(20);// 等級
 		role.setGold(10000 * 10000L);// 1e
 		role.setVipType(VipType._2);// vip
@@ -290,7 +290,7 @@ public class SasangServiceImplTest extends SasangTestSupporter {
 	// time.bench: 0.64
 	public void putAll() {
 		Role role = mockRole();
-		BagPen bagPen = role.getBagPen();
+		BagInfo bagInfo = role.getBagInfo();
 		role.setLevel(20);// 等級
 		role.setGold(10000 * 10000L);// 1e
 		role.setVipType(VipType._2);// vip
@@ -306,7 +306,7 @@ public class SasangServiceImplTest extends SasangTestSupporter {
 		//
 		PutResult result = sasangService.putAll(true, role);
 		System.out.println(result);
-		System.out.println(bagPen);
+		System.out.println(bagInfo);
 		assertNotNull(result);
 
 		// 有1個放不進去就不放了

@@ -258,7 +258,7 @@ public interface QixingService extends AppService
 //	 * 發送七星欄位
 //	 * 
 //	 * @param roleId
-//	 * @param bagPen
+//	 * @param bagInfo
 //	 */
 //	void sendQixingPen(String roleId, QixingPen qixingPen);
 //

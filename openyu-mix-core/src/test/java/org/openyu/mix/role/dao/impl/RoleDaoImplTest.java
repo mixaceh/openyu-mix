@@ -11,7 +11,7 @@ import org.openyu.mix.role.RoleTestSupporter;
 import org.openyu.mix.role.po.RolePo;
 import org.openyu.mix.role.po.impl.RolePoImpl;
 import org.openyu.mix.role.service.impl.RoleServiceImplTest;
-import org.openyu.mix.role.vo.impl.BagPenImplTest;
+import org.openyu.mix.role.vo.impl.BagInfoImplTest;
 import org.openyu.mix.train.vo.TrainPen;
 
 import com.carrotsearch.junitbenchmarks.BenchmarkOptions;
@@ -53,7 +53,7 @@ public class RoleDaoImplTest extends RoleTestSupporter {
 
 		// 包包欄 2012/10/01
 		final String THING_ID = "T_POTION_HP_G001";
-		result.setBagPen(BagPenImplTest.mockBagPenWithSameThing(THING_ID));
+		result.setBagInfo(BagInfoImplTest.mockBagInfoWithSameThing(THING_ID));
 
 		return result;
 	}
@@ -88,7 +88,7 @@ public class RoleDaoImplTest extends RoleTestSupporter {
 			assertEquals(expected.getAccountId(), actual.getAccountId());
 
 			// 包包欄 2012/10/01
-			RoleServiceImplTest.assertBagPen(expected.getBagPen(), actual.getBagPen());
+			RoleServiceImplTest.assertBagInfo(expected.getBagInfo(), actual.getBagInfo());
 
 		}
 	}

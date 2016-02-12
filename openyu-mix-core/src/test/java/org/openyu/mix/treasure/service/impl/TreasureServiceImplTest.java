@@ -21,7 +21,7 @@ import org.openyu.mix.treasure.service.TreasureService.RefreshResult;
 import org.openyu.mix.treasure.vo.Treasure;
 import org.openyu.mix.treasure.vo.TreasurePen;
 import org.openyu.mix.vip.vo.VipType;
-import org.openyu.mix.role.vo.BagPen;
+import org.openyu.mix.role.vo.BagInfo;
 import org.openyu.mix.role.vo.Role;
 import org.openyu.socklet.message.vo.Message;
 
@@ -216,14 +216,14 @@ public class TreasureServiceImplTest extends TreasureTestSupporter {
 	// time.bench: 3.20
 	public void refresh() {
 		Role role = mockRole();
-		BagPen bagPen = role.getBagPen();
+		BagInfo bagInfo = role.getBagInfo();
 		role.setLevel(20);// 等級
 		role.setGold(10000 * 10000L);// 1e
 		role.setVipType(VipType._2);// vip
 
 		// 加道具到包包
 		Item item = itemService.createItem(treasureCollector.getRefreshItem());
-		bagPen.addItem(0, 0, item);
+		bagInfo.addItem(0, 0, item);
 		// 刷新結果
 		RefreshResult result = treasureService.refresh(true, role);
 		System.out.println(result);

@@ -25,9 +25,9 @@ import org.openyu.mix.role.service.RoleService;
 import org.openyu.mix.role.service.StoreRoleService;
 import org.openyu.mix.role.service.adapter.RoleChangeAdapter;
 import org.openyu.mix.role.socklet.RoleSocklet;
-import org.openyu.mix.role.vo.BagPen;
+import org.openyu.mix.role.vo.BagInfo;
 import org.openyu.mix.role.vo.Role;
-import org.openyu.mix.role.vo.impl.BagPenImplTest;
+import org.openyu.mix.role.vo.impl.BagInfoImplTest;
 import org.openyu.mix.role.vo.impl.RoleImpl;
 import org.openyu.mix.app.AppTestSupporter;
 import org.openyu.mix.flutter.vo.Attribute;
@@ -190,8 +190,8 @@ public class RoleTestSupporter extends AppTestSupporter {
 		result.setAcceptorId("slave1");
 		// 帳號
 		result.setAccountId(ACCOUNT_ID);
-		result.setBagPen(BagPenImplTest
-				.mockBagPenWithSameThing("T_POTION_HP_G001"));
+		result.setBagInfo(BagInfoImplTest
+				.mockBagInfoWithSameThing("T_POTION_HP_G001"));
 		return result;
 	}
 
@@ -287,7 +287,7 @@ public class RoleTestSupporter extends AppTestSupporter {
 	 * @param expected
 	 * @param actual
 	 */
-	public static void assertBagPen(BagPen expected, BagPen actual) {
+	public static void assertBagInfo(BagInfo expected, BagInfo actual) {
 		if (expected == null) {
 			assertNull(actual);
 		} else {

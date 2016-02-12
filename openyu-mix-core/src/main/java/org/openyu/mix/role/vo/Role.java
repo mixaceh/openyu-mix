@@ -145,9 +145,9 @@ public interface Role extends Flutter {
 	 * 
 	 * @return
 	 */
-	BagPen getBagPen();
+	BagInfo getBagInfo();
 
-	void setBagPen(BagPen bagPen);
+	void setBagInfo(BagInfo bagInfo);
 
 	/**
 	 * 裝備欄位

@@ -244,7 +244,7 @@ public interface WuxingService extends AppService {
 	 * 發送五行欄位
 	 * 
 	 * @param role
-	 * @param bagPen
+	 * @param bagInfo
 	 * @return
 	 */
 	Message sendWuxingPen(Role role, WuxingPen wuxingPen);

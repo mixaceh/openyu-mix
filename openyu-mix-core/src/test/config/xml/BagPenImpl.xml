@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<bagPen>
+<bagInfo>
     <tabs>
         <entry key="0">
             <value>
@@ -30,4 +30,4 @@
             </value>
         </entry>
     </tabs>
-</bagPen>
+</bagInfo>

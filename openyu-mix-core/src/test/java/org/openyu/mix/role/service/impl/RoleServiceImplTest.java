@@ -18,8 +18,8 @@ import org.openyu.mix.role.po.RolePo;
 import org.openyu.mix.role.po.impl.RolePoImpl;
 import org.openyu.mix.role.service.RoleService.ActionType;
 import org.openyu.mix.role.service.RoleService.GoldType;
-import org.openyu.mix.role.vo.BagPen;
-import org.openyu.mix.role.vo.BagPen.TabType;
+import org.openyu.mix.role.vo.BagInfo;
+import org.openyu.mix.role.vo.BagInfo.TabType;
 import org.openyu.mix.role.vo.Role;
 import org.openyu.mix.role.vo.impl.RoleImpl;
 import org.openyu.mix.account.service.impl.AccountServiceImplTest;
@@ -125,7 +125,7 @@ public class RoleServiceImplTest extends RoleTestSupporter {
 		System.out.println(result);
 		assertNotNull(result);
 		//
-		System.out.println(result.getBagPen());
+		System.out.println(result.getBagInfo());
 		//
 		TrainPen trainPen = result.getTrainPen();
 		trainPen.addDailyMills(20 * 10000L);
@@ -228,7 +228,7 @@ public class RoleServiceImplTest extends RoleTestSupporter {
 	}
 
 	@Test
-	public void createRoleBagPen() {
+	public void createRoleBagInfo() {
 		final String ROLE_ID = "TEST_ROLE";
 		final String NAME = "測試角色";
 		Role result = null;
@@ -247,13 +247,13 @@ public class RoleServiceImplTest extends RoleTestSupporter {
 		System.out.println(count + " times: " + (end - beg) + " mills. ");
 
 		// 包包,只開放第1頁,任務頁,其他頁鎖定
-		BagPen bagPen = result.getBagPen();
-		System.out.println(bagPen);
+		BagInfo bagInfo = result.getBagInfo();
+		System.out.println(bagInfo);
 		// 當包包頁被鎖定,會傳回null,但實際上為非null,locked=true
-		assertNotNull(bagPen.getTab(TabType._0));
-		assertNull(bagPen.getTab(TabType._1));
-		assertNull(bagPen.getTab(TabType._2));
-		assertNotNull(bagPen.getTab(TabType.QUEST));
+		assertNotNull(bagInfo.getTab(TabType._0));
+		assertNull(bagInfo.getTab(TabType._1));
+		assertNull(bagInfo.getTab(TabType._2));
+		assertNotNull(bagInfo.getTab(TabType.QUEST));
 	}
 
 	@Test

@@ -18,9 +18,9 @@ import org.openyu.mix.item.vo.ThingCollector;
 import org.openyu.mix.item.vo.Weapon;
 import org.openyu.mix.item.vo.WeaponCollector;
 import org.openyu.mix.item.vo.thing.EnhanceThing;
-import org.openyu.mix.role.vo.BagPen;
+import org.openyu.mix.role.vo.BagInfo;
 import org.openyu.mix.role.vo.Role;
-import org.openyu.mix.role.vo.impl.BagPenImplTest;
+import org.openyu.mix.role.vo.impl.BagInfoImplTest;
 import org.openyu.commons.thread.ThreadHelper;
 
 public class ItemLogServiceImplTest extends ItemTestSupporter {
@@ -59,7 +59,7 @@ public class ItemLogServiceImplTest extends ItemTestSupporter {
 	@Test
 	public void recordDecreaseItem2() {
 		Role role = mockRole();
-		BagPen bagPen = BagPenImplTest.mockBagPen();
+		BagInfo bagInfo = BagInfoImplTest.mockBagInfo();
 		Item item = mockItem();
 		//
 		DecreaseItemResult result = new DecreaseResultImpl();

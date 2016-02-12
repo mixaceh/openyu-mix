@@ -16,7 +16,7 @@ import org.openyu.mix.manor.vo.ManorCollector;
 import org.openyu.mix.manor.vo.ManorPen;
 import org.openyu.mix.manor.vo.Seed;
 import org.openyu.mix.manor.vo.MatureType;
-import org.openyu.mix.role.vo.BagPen;
+import org.openyu.mix.role.vo.BagInfo;
 import org.openyu.mix.role.vo.Role;
 import org.openyu.socklet.message.vo.Message;
 import org.slf4j.Logger;
@@ -483,9 +483,9 @@ public class ManorSocklet extends AppSockletServiceSupporter {
 	protected Item doGetItem(Role role, String itemId) {
 		Item result = null;
 		// 包包
-		BagPen bagPen = role.getBagPen();
+		BagInfo bagInfo = role.getBagInfo();
 		// 此道具id的所有道具
-		List<Item> items = bagPen.getItems(itemId);
+		List<Item> items = bagInfo.getItems(itemId);
 		// 包包有道具,拿第1個來用
 		if (items.size() > 0) {
 			result = items.get(0);
@@ -493,9 +493,9 @@ public class ManorSocklet extends AppSockletServiceSupporter {
 		// 若沒有道具,塞1個道具到包包
 		else {
 			int amount = 1;// 數量
-			BagPen.ErrorType bagError = itemService.checkIncreaseItemWithItemId(role,
+			BagInfo.ErrorType bagError = itemService.checkIncreaseItemWithItemId(role,
 					itemId, amount);
-			if (bagError != BagPen.ErrorType.NO_ERROR) {
+			if (bagError != BagInfo.ErrorType.NO_ERROR) {
 				return result;
 			}
 			//
@@ -506,7 +506,7 @@ public class ManorSocklet extends AppSockletServiceSupporter {
 				int tabIndex = increaseResult.getTabIndex();
 				int gridIndex = increaseResult.getGridIndex();
 				//
-				result = bagPen.getItem(tabIndex, gridIndex);
+				result = bagInfo.getItem(tabIndex, gridIndex);
 			}
 		}
 		return result;

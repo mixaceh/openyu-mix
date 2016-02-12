@@ -13,7 +13,7 @@ import org.openyu.mix.flutter.vo.impl.AttributeGroupImpl;
 import org.openyu.mix.flutter.vo.supporter.FlutterSupporter;
 import org.openyu.mix.manor.vo.ManorPen;
 import org.openyu.mix.manor.vo.impl.ManorPenImpl;
-import org.openyu.mix.role.vo.BagPen;
+import org.openyu.mix.role.vo.BagInfo;
 import org.openyu.mix.role.vo.EquipmentPen;
 import org.openyu.mix.role.vo.Role;
 import org.openyu.mix.role.vo.RoleField;
@@ -82,8 +82,8 @@ public class RoleImpl extends FlutterSupporter implements Role {
 	/**
 	 * 包包欄位
 	 */
-	@XmlElement(type = BagPenImpl.class)
-	private BagPen bagPen = new BagPenImpl(this);
+	@XmlElement(type = BagInfoImpl.class)
+	private BagInfo bagInfo = new BagInfoImpl(this);
 
 	/**
 	 * 裝備欄位
@@ -231,12 +231,12 @@ public class RoleImpl extends FlutterSupporter implements Role {
 	 * 
 	 * @return
 	 */
-	public BagPen getBagPen() {
-		return bagPen;
+	public BagInfo getBagInfo() {
+		return bagInfo;
 	}
 
-	public void setBagPen(BagPen bagPen) {
-		this.bagPen = bagPen;
+	public void setBagInfo(BagInfo bagInfo) {
+		this.bagInfo = bagInfo;
 	}
 
 	/**
@@ -324,7 +324,7 @@ public class RoleImpl extends FlutterSupporter implements Role {
 		//
 		builder.append("vipType", vipType);
 		builder.append("equipmentGroup", equipmentGroup);
-		builder.append("bagPen", bagPen);
+		builder.append("bagInfo", bagInfo);
 		builder.append("equipmentPen", equipmentPen);
 		//
 		builder.append("sasangPen", sasangPen);
@@ -340,7 +340,7 @@ public class RoleImpl extends FlutterSupporter implements Role {
 		copy = (RoleImpl) super.clone();
 		// copy.account = clone(account);
 		copy.equipmentGroup = clone(equipmentGroup);
-		copy.bagPen = clone(bagPen);
+		copy.bagInfo = clone(bagInfo);
 		copy.equipmentPen = clone(equipmentPen);
 		//
 		copy.sasangPen = clone(sasangPen);

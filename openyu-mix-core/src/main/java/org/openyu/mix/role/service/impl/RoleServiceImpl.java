@@ -39,7 +39,7 @@ import org.openyu.mix.role.po.RolePo;
 import org.openyu.mix.role.service.RoleHelper;
 import org.openyu.mix.role.service.RoleService;
 import org.openyu.mix.role.service.RoleSetService;
-import org.openyu.mix.role.vo.BagPen;
+import org.openyu.mix.role.vo.BagInfo;
 import org.openyu.mix.role.vo.Role;
 import org.openyu.mix.role.vo.RoleCollector;
 import org.openyu.mix.role.vo.impl.RoleImpl;
@@ -169,7 +169,7 @@ public class RoleServiceImpl extends AppServiceSupporter implements RoleService 
 		sendRoleConnect(result, attatch);
 		
 		// 已連線
-		result.getBagPen().setConnected(true);
+		result.getBagInfo().setConnected(true);
 
 		// 同步連線
 		sendSyncRoleConnect(result);
@@ -241,7 +241,7 @@ public class RoleServiceImpl extends AppServiceSupporter implements RoleService 
 		RoleHelper.fillAttributeGroup(message, role.getAttributeGroup());
 
 		// 包包
-		itemService.fillBagPen(message, role.getBagPen());
+		itemService.fillBagInfo(message, role.getBagInfo());
 
 		// TODO 技能
 
@@ -1775,9 +1775,9 @@ public class RoleServiceImpl extends AppServiceSupporter implements RoleService 
 			return result;
 		}
 
-		BagPen.ErrorType bagError = itemService.checkDecreaseItem(role, itemId, everyAmount);
+		BagInfo.ErrorType bagError = itemService.checkDecreaseItem(role, itemId, everyAmount);
 		// 扣道具
-		if (bagError == BagPen.ErrorType.NO_ERROR) {
+		if (bagError == BagInfo.ErrorType.NO_ERROR) {
 			decreaseResults = itemService.decreaseItemWithItemId(sendable, role, itemId, everyAmount);
 			// 失敗
 			if (decreaseResults.size() == 0) {
@@ -1862,7 +1862,7 @@ public class RoleServiceImpl extends AppServiceSupporter implements RoleService 
 			return result;
 		}
 		//
-		BagPen bagPen = role.getBagPen();
+		BagInfo bagInfo = role.getBagInfo();
 		//
 		int itemTimes = 0;// 消耗道具的次數
 		int itemAmount = 0;// 消耗道具的數量
@@ -1872,7 +1872,7 @@ public class RoleServiceImpl extends AppServiceSupporter implements RoleService 
 		int totalTimes = 0;// 真正成功扣道具及儲值幣的次數
 		//
 		// 包包內道具數量
-		int bagAmount = bagPen.getAmount(itemId);// 100
+		int bagAmount = bagInfo.getAmount(itemId);// 100
 		// 可扣道具的次數
 		int canItemTimes = bagAmount / everyAmount;
 		// 100>50,50=50,10<50

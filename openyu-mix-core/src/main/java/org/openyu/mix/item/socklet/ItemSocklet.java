@@ -7,8 +7,8 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.openyu.mix.app.socklet.supporter.AppSockletServiceSupporter;
 import org.openyu.mix.core.service.CoreMessageType;
 import org.openyu.mix.item.service.ItemService;
-import org.openyu.mix.role.vo.BagPen;
-import org.openyu.mix.role.vo.BagPen.Tab;
+import org.openyu.mix.role.vo.BagInfo;
+import org.openyu.mix.role.vo.BagInfo.Tab;
 import org.openyu.mix.role.vo.Role;
 import org.openyu.socklet.message.vo.Message;
 
@@ -98,8 +98,8 @@ public class ItemSocklet extends AppSockletServiceSupporter {
 		}
 		// amount=0,移除此道具
 		else {
-			BagPen bagPen = role.getBagPen();
-			int origAmount = bagPen.getAmount(itemId);
+			BagInfo bagInfo = role.getBagInfo();
+			int origAmount = bagInfo.getAmount(itemId);
 			if (origAmount > 0) {
 				itemService.decreaseItemWithItemId(true, role, itemId, origAmount);
 			}
@@ -113,20 +113,20 @@ public class ItemSocklet extends AppSockletServiceSupporter {
 	 * @param tabIndex
 	 */
 	protected void DEBUG_clearBag(Role role, int tabIndex) {
-		BagPen bagPen = role.getBagPen();
+		BagInfo bagInfo = role.getBagInfo();
 		// tabIndex= -1 ,清所有包包頁
 		if (tabIndex == -1) {
-			BagPen.ErrorType bagError = bagPen.clearItem(true);// 鎖定也清除
-			if (bagError == BagPen.ErrorType.NO_ERROR) {
-				itemService.sendBagPen(role.getId(), bagPen);
+			BagInfo.ErrorType bagError = bagInfo.clearItem(true);// 鎖定也清除
+			if (bagError == BagInfo.ErrorType.NO_ERROR) {
+				itemService.sendBagInfo(role.getId(), bagInfo);
 			}
 		}
 		// 清除指定包包頁
 		else {
-			Tab tab = bagPen.getTab(tabIndex, true);
+			Tab tab = bagInfo.getTab(tabIndex, true);
 			if (tab != null) {
-				BagPen.ErrorType bagError = tab.clearItem(true);// 鎖定也清除
-				if (bagError == BagPen.ErrorType.NO_ERROR) {
+				BagInfo.ErrorType bagError = tab.clearItem(true);// 鎖定也清除
+				if (bagError == BagInfo.ErrorType.NO_ERROR) {
 					itemService.sendTab(role.getId(), tab);
 				}
 			}

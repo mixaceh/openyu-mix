@@ -7,7 +7,7 @@ import org.junit.Test;
 
 import org.openyu.mix.core.service.CoreModuleType;
 import org.openyu.mix.item.vo.Item;
-import org.openyu.mix.role.vo.BagPen;
+import org.openyu.mix.role.vo.BagInfo;
 import org.openyu.mix.role.vo.Role;
 import org.openyu.mix.vip.vo.VipType;
 import org.openyu.mix.wuxing.WuxingTestSupporter;
@@ -73,7 +73,7 @@ public class WuxingServiceImplTest extends WuxingTestSupporter {
 	@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 	public void play() {
 		Role role = mockRole();
-		BagPen bagPen = role.getBagPen();
+		BagInfo bagInfo = role.getBagInfo();
 		role.setLevel(25);// 等級
 		role.setGold(10000 * 10000L);// 1e
 		role.setVipType(VipType._2);// vip
@@ -87,7 +87,7 @@ public class WuxingServiceImplTest extends WuxingTestSupporter {
 
 		// 加道具到包包
 		Item item = itemService.createItem(wuxingCollector.getPlayItem(), 5);
-		bagPen.addItem(0, 0, item);
+		bagInfo.addItem(0, 0, item);
 		// 銀按鈕,可玩1次,消耗道具或元寶,沒有每日次數限制
 		result = wuxingService.play(true, role, 2);// 玩1次
 		System.out.println(result);
@@ -106,14 +106,14 @@ public class WuxingServiceImplTest extends WuxingTestSupporter {
 	@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 	public void itemCoinPlay() {
 		Role role = mockRole();
-		BagPen bagPen = role.getBagPen();
+		BagInfo bagInfo = role.getBagInfo();
 		role.setLevel(25);// 等級
 		role.setGold(10000 * 10000L);// 1e
 		role.setVipType(VipType._2);// vip
 
 		// 加道具到包包
 		Item item = itemService.createItem(wuxingCollector.getPlayItem(), 1);
-		bagPen.addItem(0, 0, item);
+		bagInfo.addItem(0, 0, item);
 		// 玩的結果
 		PlayResult result = wuxingService.itemCoinPlay(true, role, PlayType.GALACTIC);// 玩1次
 		System.out.println(result);
@@ -134,14 +134,14 @@ public class WuxingServiceImplTest extends WuxingTestSupporter {
 	@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 	public void itemCoinPlayWithGold() {
 		Role role = mockRole();
-		BagPen bagPen = role.getBagPen();
+		BagInfo bagInfo = role.getBagInfo();
 		role.setLevel(25);// 等級
 		role.setGold(10000 * 10000L);// 1e
 		role.setVipType(VipType._2);// vip
 
 		// 加5個道具到包包
 		Item item = itemService.createItem(wuxingCollector.getPlayItem(), 5);
-		bagPen.addItem(0, 0, item);
+		bagInfo.addItem(0, 0, item);
 		// 玩的結果
 		PlayResult result = wuxingService.itemCoinPlay(true, role, PlayType.GOLDEN);// 玩20次
 		System.out.println(result);
@@ -180,7 +180,7 @@ public class WuxingServiceImplTest extends WuxingTestSupporter {
 	 */
 	public void goldPlay() {
 		Role role = mockRole();
-		// BagPen bagPen = role.getBagPen();
+		// BagInfo bagInfo = role.getBagInfo();
 		role.setLevel(25);// 等級
 		role.setGold(10000 * 10000L);// 1e
 		role.setVipType(VipType._2);// vip
@@ -239,7 +239,7 @@ public class WuxingServiceImplTest extends WuxingTestSupporter {
 	@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 	public void putOne() {
 		Role role = mockRole();
-		// BagPen bagPen = role.getBagPen();
+		// BagInfo bagInfo = role.getBagInfo();
 		role.setLevel(25);// 等級
 		role.setGold(10000 * 10000L);// 1e
 		role.setVipType(VipType._2);// vip
@@ -295,7 +295,7 @@ public class WuxingServiceImplTest extends WuxingTestSupporter {
 	@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 	public void putAll() {
 		Role role = mockRole();
-		BagPen bagPen = role.getBagPen();
+		BagInfo bagInfo = role.getBagInfo();
 		role.setLevel(25);// 等級
 		role.setGold(10000 * 10000L);// 1e
 		role.setVipType(VipType._2);// vip
@@ -311,7 +311,7 @@ public class WuxingServiceImplTest extends WuxingTestSupporter {
 		//
 		PutResult result = wuxingService.putAll(true, role);
 		System.out.println(result);
-		System.out.println(bagPen);
+		System.out.println(bagInfo);
 		assertNotNull(result);
 
 		// 有1個放不進去就不放了

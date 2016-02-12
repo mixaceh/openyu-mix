@@ -2,7 +2,7 @@ package org.openyu.mix.role.po;
 
 import org.openyu.mix.flutter.po.FlutterPo;
 import org.openyu.mix.manor.vo.ManorPen;
-import org.openyu.mix.role.vo.BagPen;
+import org.openyu.mix.role.vo.BagInfo;
 import org.openyu.mix.sasang.vo.SasangPen;
 import org.openyu.mix.train.vo.TrainPen;
 import org.openyu.mix.treasure.vo.TreasurePen;
@@ -73,9 +73,9 @@ public interface RolePo extends FlutterPo {
 	 * 
 	 * @return
 	 */
-	BagPen getBagPen();
+	BagInfo getBagInfo();
 
-	void setBagPen(BagPen bagPen);
+	void setBagInfo(BagInfo bagInfo);
 
 	// ---------------------------------------------------
 	// 其他模組相關欄位

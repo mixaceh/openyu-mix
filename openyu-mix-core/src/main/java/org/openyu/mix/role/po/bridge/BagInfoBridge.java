@@ -1,17 +1,17 @@
 package org.openyu.mix.role.po.bridge;
 
 import org.openyu.commons.hibernate.search.bridge.supporter.BaseStringBridgeSupporter;
-import org.openyu.mix.role.po.usertype.BagPenUserType;
+import org.openyu.mix.role.po.usertype.BagInfoUserType;
 
 //--------------------------------------------------
 //reslove: Hibernate search
 //--------------------------------------------------
-public class BagPenBridge extends BaseStringBridgeSupporter
+public class BagInfoBridge extends BaseStringBridgeSupporter
 {
 
-	private BagPenUserType userType = new BagPenUserType();
+	private BagInfoUserType userType = new BagInfoUserType();
 
-	public BagPenBridge()
+	public BagInfoBridge()
 	{
 
 	}

@@ -17,7 +17,7 @@ import org.openyu.mix.app.vo.supporter.AppInfoSupporter;
 import org.openyu.mix.item.vo.Item;
 import org.openyu.mix.item.vo.ItemType;
 import org.openyu.mix.item.vo.adapter.IntegerItemXmlAdapter;
-import org.openyu.mix.role.vo.BagPen;
+import org.openyu.mix.role.vo.BagInfo;
 import org.openyu.mix.role.vo.Role;
 import org.openyu.mix.role.vo.adapter.IntegerTabXmlAdapter;
 import org.openyu.commons.bean.supporter.BaseBeanSupporter;
@@ -25,9 +25,9 @@ import org.openyu.commons.bean.supporter.BaseBeanSupporter;
 //--------------------------------------------------
 //jaxb
 //--------------------------------------------------
-@XmlRootElement(name = "bagPen")
+@XmlRootElement(name = "bagInfo")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class BagPenImpl extends AppInfoSupporter implements BagPen {
+public class BagInfoImpl extends AppInfoSupporter implements BagInfo {
 
 	private static final long serialVersionUID = -4684272767483660969L;
 
@@ -43,10 +43,10 @@ public class BagPenImpl extends AppInfoSupporter implements BagPen {
 	@XmlJavaTypeAdapter(IntegerTabXmlAdapter.class)
 	private Map<Integer, Tab> tabs = new LinkedHashMap<Integer, Tab>();
 
-	public BagPenImpl(Role role) {
+	public BagInfoImpl(Role role) {
 		this.role = role;
 		// 建構包包頁
-		TabType[] tabTypes = BagPen.TabType.values();
+		TabType[] tabTypes = BagInfo.TabType.values();
 		for (TabType tabType : tabTypes) {
 			// id=0,1,2,10
 			int tabIndex = tabType.getValue();
@@ -61,7 +61,7 @@ public class BagPenImpl extends AppInfoSupporter implements BagPen {
 		}
 	}
 
-	public BagPenImpl() {
+	public BagInfoImpl() {
 		this(null);
 	}
 
@@ -1174,8 +1174,8 @@ public class BagPenImpl extends AppInfoSupporter implements BagPen {
 	}
 
 	public Object clone() {
-		BagPenImpl copy = null;
-		copy = (BagPenImpl) super.clone();
+		BagInfoImpl copy = null;
+		copy = (BagInfoImpl) super.clone();
 		copy.tabs = clone(tabs);
 		return copy;
 	}

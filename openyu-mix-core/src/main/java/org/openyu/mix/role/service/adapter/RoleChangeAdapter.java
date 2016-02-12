@@ -107,7 +107,7 @@ public class RoleChangeAdapter extends BeanChangeAdapter
 				}
 
 				//改變所有的包包頁是否鎖定
-				itemService.changeBagPenLocked(connected, role);
+				itemService.changeBagInfoLocked(connected, role);
 
 				if (connected)
 				{
