@@ -5,7 +5,7 @@ import java.util.Map;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
-
+import org.openyu.mix.app.vo.AppInfo;
 import org.openyu.mix.item.vo.Item;
 import org.openyu.mix.item.vo.ItemType;
 import org.openyu.commons.bean.BaseBean;
@@ -16,7 +16,7 @@ import com.sun.xml.bind.AnyTypeAdapter;
  * 包包欄位
  */
 @XmlJavaTypeAdapter(AnyTypeAdapter.class)
-public interface BagPen extends BaseBean
+public interface BagPen extends AppInfo
 {
 
 	String KEY = BagPen.class.getName();

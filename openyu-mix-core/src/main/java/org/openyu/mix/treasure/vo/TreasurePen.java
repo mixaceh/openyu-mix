@@ -8,7 +8,7 @@ import org.openyu.mix.app.vo.AppInfo;
 import com.sun.xml.bind.AnyTypeAdapter;
 
 /**
- * 祕寶欄位
+ * 祕寶欄位資訊
  */
 @XmlJavaTypeAdapter(AnyTypeAdapter.class)
 public interface TreasurePen extends AppInfo

@@ -14,7 +14,7 @@ import org.openyu.commons.enumz.IntEnum;
 import com.sun.xml.bind.AnyTypeAdapter;
 
 /**
- * 莊園欄位
+ * 莊園欄位資訊
  */
 @XmlJavaTypeAdapter(AnyTypeAdapter.class)
 public interface ManorPen extends AppInfo

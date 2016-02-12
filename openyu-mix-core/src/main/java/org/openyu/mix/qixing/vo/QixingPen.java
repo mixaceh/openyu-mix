@@ -7,7 +7,7 @@ import org.openyu.mix.app.vo.AppInfo;
 import com.sun.xml.bind.AnyTypeAdapter;
 
 /**
- * 七星欄位
+ * 七星欄位資訊
  */
 @XmlJavaTypeAdapter(AnyTypeAdapter.class)
 public interface QixingPen extends AppInfo

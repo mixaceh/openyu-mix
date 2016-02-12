@@ -167,6 +167,9 @@ public class RoleServiceImpl extends AppServiceSupporter implements RoleService 
 
 		// 發送連線
 		sendRoleConnect(result, attatch);
+		
+		// 已連線
+		result.getBagPen().setConnected(true);
 
 		// 同步連線
 		sendSyncRoleConnect(result);

@@ -7,7 +7,7 @@ import org.openyu.mix.app.vo.AppInfo;
 import com.sun.xml.bind.AnyTypeAdapter;
 
 /**
- * 四象欄位
+ * 四象欄位資訊
  */
 @XmlJavaTypeAdapter(AnyTypeAdapter.class)
 public interface SasangPen extends AppInfo
