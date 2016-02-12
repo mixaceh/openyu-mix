@@ -12,7 +12,7 @@ import org.openyu.mix.role.po.RolePo;
 import org.openyu.mix.role.po.impl.RolePoImpl;
 import org.openyu.mix.role.service.impl.RoleServiceImplTest;
 import org.openyu.mix.role.vo.impl.BagInfoImplTest;
-import org.openyu.mix.train.vo.TrainPen;
+import org.openyu.mix.train.vo.TrainInfo;
 
 import com.carrotsearch.junitbenchmarks.BenchmarkOptions;
 
@@ -168,13 +168,13 @@ public class RoleDaoImplTest extends RoleTestSupporter {
 
 		System.out.println(result);
 		//
-		System.out.println(result.getTrainPen());
+		System.out.println(result.getTrainInfo());
 		//
-		TrainPen trainPen = result.getTrainPen();
-		trainPen.addDailyMills(20 * 10000L);
+		TrainInfo trainInfo = result.getTrainInfo();
+		trainInfo.addDailyMills(20 * 10000L);
 		int update = roleDao.update(result);
 		System.out.println(update);
-		System.out.println(trainPen);
+		System.out.println(trainInfo);
 	}
 
 	@Test
@@ -225,7 +225,7 @@ public class RoleDaoImplTest extends RoleTestSupporter {
 		System.out.println(result);
 		assertTrue(result > 0);
 
-		System.out.println(value.getTrainPen());
+		System.out.println(value.getTrainInfo());
 	}
 
 	@Test

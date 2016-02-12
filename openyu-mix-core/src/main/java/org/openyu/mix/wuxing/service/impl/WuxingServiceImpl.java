@@ -1369,7 +1369,7 @@ public class WuxingServiceImpl extends AppServiceSupporter implements WuxingServ
 	 * 發送重置
 	 * 
 	 * @param role
-	 * @param trainPen
+	 * @param trainInfo
 	 */
 	public Message sendReset(Role role, WuxingPen wuxingPen) {
 		Message message = messageService.createMessage(CoreModuleType.WUXING, CoreModuleType.CLIENT,

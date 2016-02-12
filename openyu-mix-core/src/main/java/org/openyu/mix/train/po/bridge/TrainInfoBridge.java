@@ -1,17 +1,17 @@
 package org.openyu.mix.train.po.bridge;
 
 import org.openyu.commons.hibernate.search.bridge.supporter.BaseStringBridgeSupporter;
-import org.openyu.mix.train.po.usertype.TrainPenUserType;
+import org.openyu.mix.train.po.usertype.TrainInfoUserType;
 
 //--------------------------------------------------
 //reslove: Hibernate search
 //--------------------------------------------------
-public class TrainPenBridge extends BaseStringBridgeSupporter
+public class TrainInfoBridge extends BaseStringBridgeSupporter
 {
 
-	private TrainPenUserType userType = new TrainPenUserType();
+	private TrainInfoUserType userType = new TrainInfoUserType();
 
-	public TrainPenBridge()
+	public TrainInfoBridge()
 	{
 
 	}

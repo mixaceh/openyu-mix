@@ -9,9 +9,9 @@ import com.sun.xml.bind.AnyTypeAdapter;
  * 訓練欄位資訊
  */
 @XmlJavaTypeAdapter(AnyTypeAdapter.class)
-public interface TrainPen extends AppInfo
+public interface TrainInfo extends AppInfo
 {
-	String KEY = TrainPen.class.getName();
+	String KEY = TrainInfo.class.getName();
 
 	/**
 	 * 加入時間,每次加入訓練都會改變

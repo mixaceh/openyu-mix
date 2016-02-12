@@ -32,7 +32,7 @@ import org.openyu.mix.flutter.vo.GenderType;
 import org.openyu.mix.flutter.vo.HairType;
 import org.openyu.mix.flutter.vo.RaceType;
 import org.openyu.mix.role.RoleTestSupporter;
-import org.openyu.mix.train.vo.TrainPen;
+import org.openyu.mix.train.vo.TrainInfo;
 import org.openyu.mix.vip.vo.VipType;
 
 import com.carrotsearch.junitbenchmarks.BenchmarkOptions;
@@ -127,12 +127,12 @@ public class RoleServiceImplTest extends RoleTestSupporter {
 		//
 		System.out.println(result.getBagInfo());
 		//
-		TrainPen trainPen = result.getTrainPen();
-		trainPen.addDailyMills(20 * 10000L);
+		TrainInfo trainInfo = result.getTrainInfo();
+		trainInfo.addDailyMills(20 * 10000L);
 		int update = roleService.update(result);
 		System.out.println(update);
 		//
-		System.out.println(trainPen);
+		System.out.println(trainInfo);
 	}
 
 	@Test

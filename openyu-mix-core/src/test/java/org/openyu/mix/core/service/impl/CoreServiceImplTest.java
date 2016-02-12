@@ -22,7 +22,7 @@ import org.openyu.mix.role.service.RoleService.GoldType;
 import org.openyu.mix.role.vo.BagInfo;
 import org.openyu.mix.role.vo.Role;
 import org.openyu.mix.sasang.vo.SasangInfo;
-import org.openyu.mix.train.vo.TrainPen;
+import org.openyu.mix.train.vo.TrainInfo;
 import org.openyu.mix.wuxing.vo.WuxingPen;
 
 import com.carrotsearch.junitbenchmarks.BenchmarkOptions;
@@ -280,8 +280,8 @@ public class CoreServiceImplTest extends CoreTestSupporter {
 	 * @param role
 	 */
 	public void simulateTrain(Role role) {
-		TrainPen trainPen = role.getTrainPen();
-		trainPen.reset();
+		TrainInfo trainInfo = role.getTrainInfo();
+		trainInfo.reset();
 
 		// 加道具到包包
 		Item item = itemService.createItem("T_TRAIN_INSPIRE_G001", 10);// 訓練鼓舞石

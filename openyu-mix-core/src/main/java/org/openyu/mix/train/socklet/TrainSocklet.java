@@ -8,7 +8,7 @@ import org.openyu.mix.app.socklet.supporter.AppSockletServiceSupporter;
 import org.openyu.mix.core.service.CoreMessageType;
 import org.openyu.mix.train.service.TrainService;
 import org.openyu.mix.train.service.TrainSetService;
-import org.openyu.mix.train.vo.TrainPen;
+import org.openyu.mix.train.vo.TrainInfo;
 import org.openyu.mix.role.vo.Role;
 import org.openyu.socklet.message.vo.Message;
 
@@ -132,17 +132,17 @@ public class TrainSocklet extends AppSockletServiceSupporter {
 	 * @param roleId
 	 */
 	protected void DEBUG_reset(Role role) {
-		TrainPen trainPen = role.getTrainPen();
+		TrainInfo trainInfo = role.getTrainInfo();
 		// 若在訓練中,則離開訓練
 		boolean contains = trainSetService.containRole(role);
 		if (contains) {
 			trainService.quit(true, role);
 		}
 		//
-		boolean result = trainPen.reset();
+		boolean result = trainInfo.reset();
 		// 發訊息
 		if (result) {
-			trainService.sendReset(role, trainPen);
+			trainService.sendReset(role, trainInfo);
 		}
 	}
 }

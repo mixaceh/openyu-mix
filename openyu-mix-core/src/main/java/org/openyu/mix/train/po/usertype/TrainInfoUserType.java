@@ -4,17 +4,17 @@ import java.sql.Types;
 
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.engine.spi.SessionImplementor;
-import org.openyu.mix.train.vo.TrainPen;
-import org.openyu.mix.train.vo.impl.TrainPenImpl;
+import org.openyu.mix.train.vo.TrainInfo;
+import org.openyu.mix.train.vo.impl.TrainInfoImpl;
 import org.openyu.commons.enumz.EnumHelper;
 import org.openyu.commons.hibernate.usertype.supporter.BaseUserTypeSupporter;
 import org.openyu.commons.lang.ArrayHelper;
 
-public class TrainPenUserType extends BaseUserTypeSupporter {
+public class TrainInfoUserType extends BaseUserTypeSupporter {
 
 	private static final long serialVersionUID = -2066924784420555409L;
 
-	public TrainPenUserType() {
+	public TrainInfoUserType() {
 		// --------------------------------------------------
 		// 最新版本,目前用1,若將來有新版本
 		// 可用其他版號,如:VolType._2
@@ -29,7 +29,7 @@ public class TrainPenUserType extends BaseUserTypeSupporter {
 
 	@Override
 	public Class<?> returnedClass() {
-		return TrainPen.class;
+		return TrainInfo.class;
 	}
 
 	// --------------------------------------------------
@@ -40,12 +40,12 @@ public class TrainPenUserType extends BaseUserTypeSupporter {
 	@SuppressWarnings("unchecked")
 	public <R, T> R marshal(T value, SessionImplementor session) {
 		R result = null;
-		if (!(value instanceof TrainPen)) {
+		if (!(value instanceof TrainInfo)) {
 			return result;
 		}
 		//
 		StringBuilder dest = new StringBuilder();
-		TrainPen src = (TrainPen) value;
+		TrainInfo src = (TrainInfo) value;
 		// vol
 		dest.append(assembleVol(getVolType()));
 		// v1
@@ -58,7 +58,7 @@ public class TrainPenUserType extends BaseUserTypeSupporter {
 	/**
 	 * v1 由物件組成欄位
 	 */
-	public String assembleBy_1(TrainPen src) {
+	public String assembleBy_1(TrainInfo src) {
 		StringBuilder result = new StringBuilder();
 		//
 		result.append(toString(src.getJoinTime()));
@@ -81,7 +81,7 @@ public class TrainPenUserType extends BaseUserTypeSupporter {
 	 */
 	@SuppressWarnings("unchecked")
 	public <R, T, O> R unmarshal(T value, O owner, SessionImplementor session) {
-		TrainPen result = new TrainPenImpl();
+		TrainInfo result = new TrainInfoImpl();
 		//
 		if (!(value instanceof String)) {
 			return (R) result;
@@ -108,8 +108,8 @@ public class TrainPenUserType extends BaseUserTypeSupporter {
 
 	// --------------------------------------------------
 
-	protected TrainPen disassembleBy_1(StringBuilder src) {
-		TrainPen result = new TrainPenImpl();
+	protected TrainInfo disassembleBy_1(StringBuilder src) {
+		TrainInfo result = new TrainInfoImpl();
 		if (src == null) {
 			return result;
 		}

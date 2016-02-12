@@ -2,14 +2,14 @@ package org.openyu.mix.train.po.usertype;
 
 import static org.junit.Assert.*;
 import org.junit.Test;
-import org.openyu.mix.train.po.usertype.TrainPenUserType;
-import org.openyu.mix.train.vo.TrainPen;
-import org.openyu.mix.train.vo.impl.TrainPenImpl;
+import org.openyu.mix.train.po.usertype.TrainInfoUserType;
+import org.openyu.mix.train.vo.TrainInfo;
+import org.openyu.mix.train.vo.impl.TrainInfoImpl;
 import org.openyu.commons.junit.supporter.BaseTestSupporter;
 
-public class TrainPenUserTypeTest extends BaseTestSupporter {
+public class TrainInfoUserTypeTest extends BaseTestSupporter {
 
-	private static TrainPenUserType userType = new TrainPenUserType();
+	private static TrainInfoUserType userType = new TrainInfoUserType();
 
 	@Test
 	// 1000000 times: 101 mills.
@@ -17,7 +17,7 @@ public class TrainPenUserTypeTest extends BaseTestSupporter {
 	// 1000000 times: 100 mills.
 	// verified
 	public void marshal() {
-		TrainPen value = new TrainPenImpl();
+		TrainInfo value = new TrainInfoImpl();
 		//
 		value.setJoinTime(180000);
 		value.setQuitTime(270000);
@@ -48,7 +48,7 @@ public class TrainPenUserTypeTest extends BaseTestSupporter {
 	public void unmarshal() {
 		String value = "♥1♠180000♠270000♠5000♠2000";
 		//
-		TrainPen result = null;
+		TrainInfo result = null;
 		//
 		int count = 1;
 

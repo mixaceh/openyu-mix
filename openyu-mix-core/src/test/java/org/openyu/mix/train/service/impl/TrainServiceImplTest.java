@@ -17,7 +17,7 @@ import org.openyu.mix.train.service.TrainService.ErrorType;
 import org.openyu.mix.train.service.TrainService.InspireResult;
 import org.openyu.mix.train.service.TrainService.JoinResult;
 import org.openyu.mix.train.service.TrainService.QuitResult;
-import org.openyu.mix.train.vo.TrainPen;
+import org.openyu.mix.train.vo.TrainInfo;
 import org.openyu.mix.vip.vo.VipType;
 import org.openyu.mix.role.vo.BagInfo;
 import org.openyu.mix.role.vo.Role;
@@ -45,26 +45,26 @@ public class TrainServiceImplTest extends TrainTestSupporter {
 	 */
 	public void listen() {
 		Role role = mockRole();
-		TrainPen trainPen = role.getTrainPen();
+		TrainInfo trainInfo = role.getTrainInfo();
 
 		// 加入
 		trainSetService.addRole(role);
-		trainPen.setJoinTime(System.currentTimeMillis());
+		trainInfo.setJoinTime(System.currentTimeMillis());
 		// 剩10秒結束
-		trainPen.addDailyMills(trainCollector.getDailyMills() - 10 * 1000L);
+		trainInfo.addDailyMills(trainCollector.getDailyMills() - 10 * 1000L);
 		//
 		// ThreadHelper.sleep(10 * 1000L);
 	}
 
 	@Test
-	public void sendTrainPen() {
+	public void sendTrainInfo() {
 		Role role = mockRole();
 		//
-		trainService.sendTrainPen(role, role.getTrainPen());
+		trainService.sendTrainInfo(role, role.getTrainInfo());
 	}
 
 	@Test
-	public void fillTrainPen() {
+	public void fillTrainInfo() {
 		Message result = null;
 		//
 		Role role = mockRole();
@@ -74,7 +74,7 @@ public class TrainServiceImplTest extends TrainTestSupporter {
 		//
 		for (int i = 0; i < count; i++) {
 			result = messageService.createMessage(CoreModuleType.TRAIN, CoreModuleType.CLIENT, null, role.getId());
-			trainService.fillTrainPen(result, role.getTrainPen());
+			trainService.fillTrainInfo(result, role.getTrainInfo());
 		}
 		//
 		long end = System.currentTimeMillis();
@@ -106,7 +106,7 @@ public class TrainServiceImplTest extends TrainTestSupporter {
 	@Test
 	public void checkJoin() {
 		Role role = mockRole();
-		TrainPen trainPen = role.getTrainPen();
+		TrainInfo trainInfo = role.getTrainInfo();
 		//
 		ErrorType errorType = trainService.checkJoin(role);
 		System.out.println(errorType);
@@ -123,13 +123,13 @@ public class TrainServiceImplTest extends TrainTestSupporter {
 
 		// 移除訓練
 		trainSetService.removeRole(role);
-		trainPen.setDailyMills(trainCollector.getDailyMills());// 每天已訓練毫秒
+		trainInfo.setDailyMills(trainCollector.getDailyMills());// 每天已訓練毫秒
 		errorType = trainService.checkJoin(role);
 		System.out.println(errorType);
 		// 超過每天可訓練毫秒
 		assertEquals(ErrorType.OVER_DAILY_MILLS, errorType);
 
-		trainPen.setDailyMills(0);// 每天已訓練毫秒
+		trainInfo.setDailyMills(0);// 每天已訓練毫秒
 		errorType = trainService.checkJoin(role);
 		System.out.println(errorType);
 		// 沒有錯誤
@@ -191,7 +191,7 @@ public class TrainServiceImplTest extends TrainTestSupporter {
 		role.setGold(10000 * 10000L);// 1e
 		//
 		BagInfo bagInfo = role.getBagInfo();
-		TrainPen trainPen = role.getTrainPen();
+		TrainInfo trainInfo = role.getTrainInfo();
 
 		// 加道具到包包
 		Item item = itemService.createItem(trainCollector.getInspireItem());
@@ -203,7 +203,7 @@ public class TrainServiceImplTest extends TrainTestSupporter {
 		System.out.println(result);
 		assertNotNull(result);
 		//
-		trainPen.setInspireTime(0);
+		trainInfo.setInspireTime(0);
 		result = trainService.inspire(true, role);
 		System.out.println(result);
 		assertNotNull(result);
@@ -245,34 +245,34 @@ public class TrainServiceImplTest extends TrainTestSupporter {
 	@Test
 	public void reset() {
 		Role role = mockRole();
-		TrainPen trainPen = role.getTrainPen();
-		trainPen.setDailyMills(5 * 60 * 1000);
-		trainPen.setInspireTime(System.currentTimeMillis());
+		TrainInfo trainInfo = role.getTrainInfo();
+		trainInfo.setDailyMills(5 * 60 * 1000);
+		trainInfo.setInspireTime(System.currentTimeMillis());
 
 		// 今日23點,不用重置
 		Calendar joinTime = CalendarHelper.today(23, 0, 0);
-		trainPen.setJoinTime(joinTime.getTimeInMillis());
+		trainInfo.setJoinTime(joinTime.getTimeInMillis());
 		boolean result = trainService.reset(true, role);
 		//
 		System.out.println(result);
 		assertFalse(result);
-		assertTrue(trainPen.getJoinTime() != 0);
-		assertTrue(trainPen.getDailyMills() != 0);
-		assertTrue(trainPen.getInspireTime() != 0);
+		assertTrue(trainInfo.getJoinTime() != 0);
+		assertTrue(trainInfo.getDailyMills() != 0);
+		assertTrue(trainInfo.getInspireTime() != 0);
 
 		// 昨日23點,可以重置
 		joinTime = CalendarHelper.yesterday(23, 0, 0);
-		trainPen.setJoinTime(joinTime.getTimeInMillis());
+		trainInfo.setJoinTime(joinTime.getTimeInMillis());
 		// 若在訓練中,則離開訓練
 		// 加入訓練
 		trainSetService.addRole(role);
 		result = trainService.reset(true, role);
 		//
 		System.out.println(result);
-		assertTrue(trainPen.getJoinTime() == 0);
-		assertTrue(trainPen.getQuitTime() == 0);
-		assertTrue(trainPen.getDailyMills() == 0);
-		assertTrue(trainPen.getInspireTime() == 0);
+		assertTrue(trainInfo.getJoinTime() == 0);
+		assertTrue(trainInfo.getQuitTime() == 0);
+		assertTrue(trainInfo.getDailyMills() == 0);
+		assertTrue(trainInfo.getInspireTime() == 0);
 	}
 
 	/**
@@ -281,20 +281,20 @@ public class TrainServiceImplTest extends TrainTestSupporter {
 	@Test
 	public void checkReset() {
 		Role role = mockRole();
-		TrainPen trainPen = role.getTrainPen();
-		trainPen.setDailyMills(5 * 60 * 1000);
-		trainPen.setInspireTime(System.currentTimeMillis());
+		TrainInfo trainInfo = role.getTrainInfo();
+		trainInfo.setDailyMills(5 * 60 * 1000);
+		trainInfo.setInspireTime(System.currentTimeMillis());
 
 		// 今日23點,不用重置
 		Calendar joinTime = CalendarHelper.today(23, 0, 0);
-		trainPen.setJoinTime(joinTime.getTimeInMillis());
+		trainInfo.setJoinTime(joinTime.getTimeInMillis());
 		ErrorType errorType = trainService.checkReset(role);
 		System.out.println(errorType);
 		assertEquals(ErrorType.NO_ERROR, errorType);
 
 		// 昨日23點,可以重置
 		joinTime = CalendarHelper.yesterday(23, 0, 0);
-		trainPen.setJoinTime(joinTime.getTimeInMillis());
+		trainInfo.setJoinTime(joinTime.getTimeInMillis());
 		errorType = trainService.checkReset(role);
 		System.out.println(errorType);
 		assertEquals(ErrorType.OVER_RESET_TIME, errorType);

@@ -31,9 +31,9 @@ import org.openyu.mix.role.vo.impl.BagInfoImpl;
 import org.openyu.mix.sasang.po.bridge.SasangInfoBridge;
 import org.openyu.mix.sasang.vo.SasangInfo;
 import org.openyu.mix.sasang.vo.impl.SasangInfoImpl;
-import org.openyu.mix.train.po.bridge.TrainPenBridge;
-import org.openyu.mix.train.vo.TrainPen;
-import org.openyu.mix.train.vo.impl.TrainPenImpl;
+import org.openyu.mix.train.po.bridge.TrainInfoBridge;
+import org.openyu.mix.train.vo.TrainInfo;
+import org.openyu.mix.train.vo.impl.TrainInfoImpl;
 import org.openyu.mix.treasure.po.bridge.TreasureInfoBridge;
 import org.openyu.mix.treasure.vo.TreasureInfo;
 import org.openyu.mix.treasure.vo.impl.TreasureInfoImpl;
@@ -116,7 +116,7 @@ public class RolePoImpl extends FlutterPoSupporter implements RolePo {
 	/**
 	 * 訓練欄位
 	 */
-	private TrainPen trainPen = new TrainPenImpl();
+	private TrainInfo trainInfo = new TrainInfoImpl();
 
 	/**
 	 * 五行欄位
@@ -250,15 +250,15 @@ public class RolePoImpl extends FlutterPoSupporter implements RolePo {
 	}
 
 	@Column(name = "train_info", length = 512)
-	@Type(type = "org.openyu.mix.train.po.usertype.TrainPenUserType")
+	@Type(type = "org.openyu.mix.train.po.usertype.TrainInfoUserType")
 	@Field(store = Store.YES, index = org.hibernate.search.annotations.Index.YES, analyze = Analyze.NO)
-	@FieldBridge(impl = TrainPenBridge.class)
-	public TrainPen getTrainPen() {
-		return trainPen;
+	@FieldBridge(impl = TrainInfoBridge.class)
+	public TrainInfo getTrainInfo() {
+		return trainInfo;
 	}
 
-	public void setTrainPen(TrainPen trainPen) {
-		this.trainPen = trainPen;
+	public void setTrainInfo(TrainInfo trainInfo) {
+		this.trainInfo = trainInfo;
 	}
 
 	@Column(name = "wuxing_info", length = 1024)
@@ -287,7 +287,7 @@ public class RolePoImpl extends FlutterPoSupporter implements RolePo {
 		builder.append("sasangInfo", sasangInfo);
 		builder.append("manorPen", manorPen);
 		builder.append("treasureInfo", treasureInfo);
-		builder.append("trainPen", trainPen);
+		builder.append("trainInfo", trainInfo);
 		builder.append("wuxingPen", wuxingPen);
 		return builder.toString();
 	}
@@ -300,7 +300,7 @@ public class RolePoImpl extends FlutterPoSupporter implements RolePo {
 		copy.sasangInfo = clone(sasangInfo);
 		copy.manorPen = clone(manorPen);
 		copy.treasureInfo = clone(treasureInfo);
-		copy.trainPen = clone(trainPen);
+		copy.trainInfo = clone(trainInfo);
 		copy.wuxingPen = clone(wuxingPen);
 		return copy;
 	}

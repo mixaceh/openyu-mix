@@ -8,7 +8,7 @@ import org.openyu.mix.app.service.AppService;
 import org.openyu.mix.app.vo.AppResult;
 import org.openyu.mix.item.vo.Item;
 import org.openyu.mix.role.vo.Role;
-import org.openyu.mix.train.vo.TrainPen;
+import org.openyu.mix.train.vo.TrainInfo;
 import org.openyu.commons.enumz.IntEnum;
 import org.openyu.socklet.message.vo.Message;
 
@@ -167,17 +167,17 @@ public interface TrainService extends AppService {
 	 * 發送訓練欄位
 	 * 
 	 * @param role
-	 * @param trainPen
+	 * @param trainInfo
 	 */
-	void sendTrainPen(Role role, TrainPen trainPen);
+	void sendTrainInfo(Role role, TrainInfo trainInfo);
 
 	/**
 	 * 填充訓練欄位
 	 * 
 	 * @param message
-	 * @param trainPen
+	 * @param trainInfo
 	 */
-	void fillTrainPen(Message message, TrainPen trainPen);
+	void fillTrainInfo(Message message, TrainInfo trainInfo);
 
 	/**
 	 * 加入訓練結果
@@ -346,9 +346,9 @@ public interface TrainService extends AppService {
 	 * 發送重置訓練
 	 * 
 	 * @param role
-	 * @param trainPen
+	 * @param trainInfo
 	 */
-	void sendReset(Role role, TrainPen trainPen);
+	void sendReset(Role role, TrainInfo trainInfo);
 
 	/**
 	 * 重置每日可訓練毫秒限制,所有線上玩家

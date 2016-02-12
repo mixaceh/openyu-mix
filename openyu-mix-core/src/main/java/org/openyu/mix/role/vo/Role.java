@@ -6,7 +6,7 @@ import org.openyu.mix.flutter.vo.AttributeGroup;
 import org.openyu.mix.flutter.vo.Flutter;
 import org.openyu.mix.manor.vo.ManorPen;
 import org.openyu.mix.sasang.vo.SasangInfo;
-import org.openyu.mix.train.vo.TrainPen;
+import org.openyu.mix.train.vo.TrainInfo;
 import org.openyu.mix.treasure.vo.TreasureInfo;
 import org.openyu.mix.vip.vo.VipType;
 import org.openyu.mix.wuxing.vo.WuxingPen;
@@ -193,9 +193,9 @@ public interface Role extends Flutter {
 	 * 
 	 * @return
 	 */
-	TrainPen getTrainPen();
+	TrainInfo getTrainInfo();
 
-	void setTrainPen(TrainPen trainPen);
+	void setTrainInfo(TrainInfo trainInfo);
 
 	/**
 	 * 五行欄位

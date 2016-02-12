@@ -9,15 +9,15 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 
 import org.openyu.mix.app.vo.supporter.AppInfoSupporter;
 import org.openyu.mix.role.vo.Role;
-import org.openyu.mix.train.vo.TrainPen;
+import org.openyu.mix.train.vo.TrainInfo;
 import org.openyu.commons.lang.NumberHelper;
 
 //--------------------------------------------------
 //jaxb
 //--------------------------------------------------
-@XmlRootElement(name = "trainPen")
+@XmlRootElement(name = "trainInfo")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class TrainPenImpl extends AppInfoSupporter implements TrainPen
+public class TrainInfoImpl extends AppInfoSupporter implements TrainInfo
 {
 
 	private static final long serialVersionUID = 5073307472276879735L;
@@ -53,12 +53,12 @@ public class TrainPenImpl extends AppInfoSupporter implements TrainPen
 	 */
 	private long inspireTime;
 
-	public TrainPenImpl(Role role)
+	public TrainInfoImpl(Role role)
 	{
 		this.role = role;
 	}
 
-	public TrainPenImpl()
+	public TrainInfoImpl()
 	{
 		this(null);
 	}
@@ -170,8 +170,8 @@ public class TrainPenImpl extends AppInfoSupporter implements TrainPen
 
 	public Object clone()
 	{
-		TrainPenImpl copy = null;
-		copy = (TrainPenImpl) super.clone();
+		TrainInfoImpl copy = null;
+		copy = (TrainInfoImpl) super.clone();
 		//role不要clone,會造成loop
 		return copy;
 	}

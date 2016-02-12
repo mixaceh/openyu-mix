@@ -526,7 +526,7 @@ public interface QixingService extends AppService
 //	 * 發送重置
 //	 * 
 //	 * @param roleId
-//	 * @param trainPen
+//	 * @param trainInfo
 //	 */
 //	void sendReset(String roleId, QixingPen qixingPen);
 //

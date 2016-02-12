@@ -19,8 +19,8 @@ import org.openyu.mix.role.vo.Role;
 import org.openyu.mix.role.vo.RoleField;
 import org.openyu.mix.sasang.vo.SasangInfo;
 import org.openyu.mix.sasang.vo.impl.SasangInfoImpl;
-import org.openyu.mix.train.vo.TrainPen;
-import org.openyu.mix.train.vo.impl.TrainPenImpl;
+import org.openyu.mix.train.vo.TrainInfo;
+import org.openyu.mix.train.vo.impl.TrainInfoImpl;
 import org.openyu.mix.treasure.vo.TreasureInfo;
 import org.openyu.mix.treasure.vo.impl.TreasureInfoImpl;
 import org.openyu.mix.vip.vo.VipType;
@@ -115,8 +115,8 @@ public class RoleImpl extends FlutterSupporter implements Role {
 	/**
 	 * 訓練欄位
 	 */
-	@XmlElement(type = TrainPenImpl.class)
-	private TrainPen trainPen = new TrainPenImpl(this);
+	@XmlElement(type = TrainInfoImpl.class)
+	private TrainInfo trainInfo = new TrainInfoImpl(this);
 
 	/**
 	 * 五行欄位
@@ -291,12 +291,12 @@ public class RoleImpl extends FlutterSupporter implements Role {
 	/**
 	 * 訓練欄位
 	 */
-	public TrainPen getTrainPen() {
-		return trainPen;
+	public TrainInfo getTrainInfo() {
+		return trainInfo;
 	}
 
-	public void setTrainPen(TrainPen trainPen) {
-		this.trainPen = trainPen;
+	public void setTrainInfo(TrainInfo trainInfo) {
+		this.trainInfo = trainInfo;
 	}
 
 	/**
@@ -330,7 +330,7 @@ public class RoleImpl extends FlutterSupporter implements Role {
 		builder.append("sasangInfo", sasangInfo);
 		builder.append("manorPen", manorPen);
 		builder.append("treasureInfo", treasureInfo);
-		builder.append("trainPen", trainPen);
+		builder.append("trainInfo", trainInfo);
 		builder.append("wuxingPen", wuxingPen);
 		return builder.toString();
 	}
@@ -346,7 +346,7 @@ public class RoleImpl extends FlutterSupporter implements Role {
 		copy.sasangInfo = clone(sasangInfo);
 		copy.manorPen = clone(manorPen);
 		copy.treasureInfo = clone(treasureInfo);
-		copy.trainPen = clone(trainPen);
+		copy.trainInfo = clone(trainInfo);
 		copy.wuxingPen = clone(wuxingPen);
 		return copy;
 	}

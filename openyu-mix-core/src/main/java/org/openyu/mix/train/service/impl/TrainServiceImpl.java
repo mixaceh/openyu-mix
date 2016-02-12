@@ -25,7 +25,7 @@ import org.openyu.mix.role.vo.Role;
 import org.openyu.mix.train.service.TrainService;
 import org.openyu.mix.train.service.TrainSetService;
 import org.openyu.mix.train.vo.TrainCollector;
-import org.openyu.mix.train.vo.TrainPen;
+import org.openyu.mix.train.vo.TrainInfo;
 import org.openyu.mix.vip.vo.VipCollector;
 import org.openyu.commons.thread.ThreadHelper;
 import org.openyu.commons.thread.ThreadService;
@@ -138,9 +138,9 @@ public class TrainServiceImpl extends AppServiceSupporter implements TrainServic
 		// 所有已加入的訓練角色
 		for (Role role : trainSetService.getRoles().values()) {
 			try {
-				TrainPen trainPen = role.getTrainPen();
+				TrainInfo trainInfo = role.getTrainInfo();
 				// 剩餘毫秒
-				long residualMills = calcResidual(trainPen);
+				long residualMills = calcResidual(trainInfo);
 				// System.out.println("剩餘時間: " + residualMills);
 
 				// 訓練時間滿了,就該離開
@@ -148,7 +148,7 @@ public class TrainServiceImpl extends AppServiceSupporter implements TrainServic
 					removeRoles.add(role);// 移除的角色
 				} else {
 					// 增加每天已訓練毫秒
-					trainPen.addDailyMills(trainCollector.getIntervalMills());
+					trainInfo.addDailyMills(trainCollector.getIntervalMills());
 					// exp=exp * (1 + 活動增加的比率+ 鼓舞增加的比率);
 					// 等級經驗
 					long levelExp = trainCollector.getExps().get(role.getLevel());
@@ -163,7 +163,7 @@ public class TrainServiceImpl extends AppServiceSupporter implements TrainServic
 					// 鼓舞增加的經驗
 					int inspireRate = trainCollector.getInspireRate();
 					long inspireExp = 0L;
-					if (trainPen.getInspireTime() > 0 && inspireRate > 0) {
+					if (trainInfo.getInspireTime() > 0 && inspireRate > 0) {
 						inspireExp = (long) (levelExp * ratio(inspireRate));
 					}
 
@@ -190,8 +190,8 @@ public class TrainServiceImpl extends AppServiceSupporter implements TrainServic
 				// 移除成功
 				if (trainRole != null) {
 					long now = System.currentTimeMillis();
-					TrainPen trainPen = role.getTrainPen();
-					trainPen.setQuitTime(now);// 結束時間
+					TrainInfo trainInfo = role.getTrainInfo();
+					trainInfo.setQuitTime(now);// 結束時間
 					// 發訊息
 					sendQuit(ErrorType.NO_ERROR, role, now);
 				}
@@ -217,7 +217,7 @@ public class TrainServiceImpl extends AppServiceSupporter implements TrainServic
 		sendRoleConnect(result, attatch);
 
 		// 已連線
-		result.getTrainPen().setConnected(true);
+		result.getTrainInfo().setConnected(true);
 		//
 		return result;
 	}
@@ -240,7 +240,7 @@ public class TrainServiceImpl extends AppServiceSupporter implements TrainServic
 				CoreMessageType.TRAIN_INITIALIZE_RESPONSE, role.getId());
 
 		// 訓練欄位
-		fillTrainPen(message, role.getTrainPen());
+		fillTrainInfo(message, role.getTrainInfo());
 		//
 		messageService.addMessage(message);
 
@@ -267,8 +267,8 @@ public class TrainServiceImpl extends AppServiceSupporter implements TrainServic
 			// 移除成功
 			if (trainRole != null) {
 				long now = System.currentTimeMillis();
-				TrainPen trainPen = result.getTrainPen();
-				trainPen.setQuitTime(now);// 結束時間
+				TrainInfo trainInfo = result.getTrainInfo();
+				trainInfo.setQuitTime(now);// 結束時間
 			}
 		}
 
@@ -295,13 +295,13 @@ public class TrainServiceImpl extends AppServiceSupporter implements TrainServic
 	 * 發送訓練欄位
 	 * 
 	 * @param role
-	 * @param trainPen
+	 * @param trainInfo
 	 */
-	public void sendTrainPen(Role role, TrainPen trainPen) {
+	public void sendTrainInfo(Role role, TrainInfo trainInfo) {
 		Message message = messageService.createMessage(CoreModuleType.TRAIN, CoreModuleType.CLIENT,
 				CoreMessageType.TRAIN_PEN_RESPONSE, role.getId());
 
-		fillTrainPen(message, trainPen);
+		fillTrainInfo(message, trainInfo);
 		//
 		messageService.addMessage(message);
 	}
@@ -310,17 +310,17 @@ public class TrainServiceImpl extends AppServiceSupporter implements TrainServic
 	 * 填充訓練欄位
 	 * 
 	 * @param message
-	 * @param trainPen
+	 * @param trainInfo
 	 */
-	public void fillTrainPen(Message message, TrainPen trainPen) {
-		message.addLong(trainPen.getJoinTime());// 加入時間
-		message.addLong(trainPen.getQuitTime());// 離開時間
+	public void fillTrainInfo(Message message, TrainInfo trainInfo) {
+		message.addLong(trainInfo.getJoinTime());// 加入時間
+		message.addLong(trainInfo.getQuitTime());// 離開時間
 		// 每天已訓練毫秒
-		message.addLong(trainPen.getDailyMills());
+		message.addLong(trainInfo.getDailyMills());
 		// 鼓舞時間
-		message.addLong(trainPen.getInspireTime());
+		message.addLong(trainInfo.getInspireTime());
 		// 剩餘毫秒
-		long residualMills = calcResidual(trainPen);
+		long residualMills = calcResidual(trainInfo);
 		message.addLong(residualMills);
 	}
 
@@ -329,10 +329,10 @@ public class TrainServiceImpl extends AppServiceSupporter implements TrainServic
 	 * 
 	 * @return
 	 */
-	public long calcResidual(TrainPen trainPen) {
+	public long calcResidual(TrainInfo trainInfo) {
 		long result = 0L;
 		// 剩餘毫秒
-		result = trainCollector.getDailyMills() - trainPen.getDailyMills();
+		result = trainCollector.getDailyMills() - trainInfo.getDailyMills();
 		//
 		return (result > 0 ? result : 0);
 	}
@@ -418,22 +418,22 @@ public class TrainServiceImpl extends AppServiceSupporter implements TrainServic
 	 */
 	public JoinResult join(boolean sendable, Role role) {
 		JoinResult result = null;
-		TrainPen trainPen = null;
+		TrainInfo trainInfo = null;
 		// 檢查條件
 		ErrorType errorType = checkJoin(role);
 		if (errorType == ErrorType.NO_ERROR) {
 			// 角色
 			// 訓練
-			trainPen = role.getTrainPen();
+			trainInfo = role.getTrainInfo();
 
 			long now = System.currentTimeMillis();
-			trainPen.setJoinTime(now);// 開始時間
-			trainPen.setQuitTime(0);// 結束時間
+			trainInfo.setJoinTime(now);// 開始時間
+			trainInfo.setQuitTime(0);// 結束時間
 
 			// 加入訓練角色
 			trainSetService.addRole(role);
 			// 剩餘毫秒
-			long residualMills = calcResidual(trainPen);
+			long residualMills = calcResidual(trainInfo);
 			// 結果
 			result = new JoinResultImpl(now, 0, residualMills);
 		}
@@ -441,8 +441,8 @@ public class TrainServiceImpl extends AppServiceSupporter implements TrainServic
 		// 發訊息
 		if (sendable) {
 			// 發送訓練欄位
-			if (errorType == ErrorType.NO_ERROR && trainPen != null) {
-				sendTrainPen(role, trainPen);
+			if (errorType == ErrorType.NO_ERROR && trainInfo != null) {
+				sendTrainInfo(role, trainInfo);
 			}
 			//
 			sendJoin(errorType, role);
@@ -479,9 +479,9 @@ public class TrainServiceImpl extends AppServiceSupporter implements TrainServic
 			return errorType;
 		}
 
-		TrainPen trainPen = role.getTrainPen();
+		TrainInfo trainInfo = role.getTrainInfo();
 		// 剩餘毫秒
-		long residualMills = calcResidual(trainPen);
+		long residualMills = calcResidual(trainInfo);
 		// 超過每天可訓練毫秒
 		if (residualMills <= 0) {
 			errorType = ErrorType.OVER_DAILY_MILLS;
@@ -540,13 +540,13 @@ public class TrainServiceImpl extends AppServiceSupporter implements TrainServic
 	 */
 	public QuitResult quit(boolean sendable, Role role) {
 		QuitResult result = null;
-		TrainPen trainPen = null;
+		TrainInfo trainInfo = null;
 		long now = System.currentTimeMillis();
 		// 檢查條件
 		ErrorType errorType = checkQuit(role);
 		if (errorType == ErrorType.NO_ERROR) {
 			// 訓練
-			trainPen = role.getTrainPen();
+			trainInfo = role.getTrainInfo();
 
 			// 是否訓練中
 			boolean contains = trainSetService.containRole(role);
@@ -554,11 +554,11 @@ public class TrainServiceImpl extends AppServiceSupporter implements TrainServic
 				Role trainRole = trainSetService.removeRole(role);
 				// 移除成功
 				if (trainRole != null) {
-					trainPen.setQuitTime(now);// 結束時間
+					trainInfo.setQuitTime(now);// 結束時間
 					// 剩餘毫秒
-					long residualMills = calcResidual(trainPen);
+					long residualMills = calcResidual(trainInfo);
 					// 結果
-					result = new QuitResultImpl(trainPen.getJoinTime(), now, residualMills);
+					result = new QuitResultImpl(trainInfo.getJoinTime(), now, residualMills);
 				}
 				// 無法離開
 				else {
@@ -718,7 +718,7 @@ public class TrainServiceImpl extends AppServiceSupporter implements TrainServic
 		ErrorType errorType = checkInspire(role);
 		if (errorType == ErrorType.NO_ERROR) {
 			// 訓練
-			TrainPen trainPen = role.getTrainPen();
+			TrainInfo trainInfo = role.getTrainInfo();
 
 			// 消耗道具或儲值幣
 			SpendResult spendResult = roleService.spendByItemCoin(sendable, role, trainCollector.getInspireItem(), 1,
@@ -728,7 +728,7 @@ public class TrainServiceImpl extends AppServiceSupporter implements TrainServic
 
 			// 扣成功
 			if (spendError == RoleService.ErrorType.NO_ERROR) {
-				trainPen.setInspireTime(now);// 鼓舞時間
+				trainInfo.setInspireTime(now);// 鼓舞時間
 				// 消耗道具
 				if (spendResult.getItemTimes() > 0)
 
@@ -813,8 +813,8 @@ public class TrainServiceImpl extends AppServiceSupporter implements TrainServic
 		}
 
 		// 已經鼓舞了
-		TrainPen trainPen = role.getTrainPen();
-		if (trainPen.getInspireTime() > 0) {
+		TrainInfo trainInfo = role.getTrainInfo();
+		if (trainInfo.getInspireTime() > 0) {
 			errorType = ErrorType.ALREADY_INSPIRE;
 			return errorType;
 		}
@@ -857,20 +857,20 @@ public class TrainServiceImpl extends AppServiceSupporter implements TrainServic
 	 */
 	public boolean reset(boolean sendable, Role role) {
 		boolean result = false;
-		TrainPen trainPen = null;
+		TrainInfo trainInfo = null;
 		// 檢查條件
 		ErrorType errorType = checkReset(role);
 		// 超過重置時間
 		if (errorType == ErrorType.OVER_RESET_TIME) {
 			// 訓練
-			trainPen = role.getTrainPen();
+			trainInfo = role.getTrainInfo();
 			// 重置
-			result = trainPen.reset();
+			result = trainInfo.reset();
 		}
 
 		// 發訊息
 		if (sendable && result) {
-			sendReset(role, trainPen);
+			sendReset(role, trainInfo);
 		}
 		//
 		return result;
@@ -891,14 +891,14 @@ public class TrainServiceImpl extends AppServiceSupporter implements TrainServic
 			return errorType;
 		}
 		//
-		TrainPen trainPen = role.getTrainPen();
+		TrainInfo trainInfo = role.getTrainInfo();
 		// 今日早上0點
 		Calendar today = CalendarHelper.today(0, 0, 0);
 		// 明日早上0點
 		Calendar tomorrow = CalendarHelper.tomorrow(0, 0, 0);
 
 		// 訓練加入時間
-		long joinTime = trainPen.getJoinTime();
+		long joinTime = trainInfo.getJoinTime();
 		boolean overTime = DateHelper.isOverTime(joinTime, System.currentTimeMillis(), today.getTimeInMillis(),
 				tomorrow.getTimeInMillis());
 		// 超過重置時間
@@ -914,13 +914,13 @@ public class TrainServiceImpl extends AppServiceSupporter implements TrainServic
 	 * 發送重置訓練
 	 * 
 	 * @param role
-	 * @param trainPen
+	 * @param trainInfo
 	 */
-	public void sendReset(Role role, TrainPen trainPen) {
+	public void sendReset(Role role, TrainInfo trainInfo) {
 		Message message = messageService.createMessage(CoreModuleType.TRAIN, CoreModuleType.CLIENT,
 				CoreMessageType.TRAIN_RESET_RESPONSE, role.getId());
 
-		fillTrainPen(message, trainPen);
+		fillTrainInfo(message, trainInfo);
 		//
 		messageService.addMessage(message);
 	}
@@ -939,7 +939,7 @@ public class TrainServiceImpl extends AppServiceSupporter implements TrainServic
 		for (Role role : roleSetService.getRoles(false).values()) {
 			try {
 				// 是否已連線
-				if (!role.isConnected() || !role.getTrainPen().isConnected()) {
+				if (!role.isConnected() || !role.getTrainInfo().isConnected()) {
 					continue;
 				}
 				//
@@ -951,8 +951,8 @@ public class TrainServiceImpl extends AppServiceSupporter implements TrainServic
 					// 移除成功
 					if (trainRole != null) {
 						long now = System.currentTimeMillis();
-						TrainPen trainPen = role.getTrainPen();
-						trainPen.setQuitTime(now);// 結束時間
+						TrainInfo trainInfo = role.getTrainInfo();
+						trainInfo.setQuitTime(now);// 結束時間
 						// 發訊息
 						sendQuit(ErrorType.NO_ERROR, role, now);
 					}

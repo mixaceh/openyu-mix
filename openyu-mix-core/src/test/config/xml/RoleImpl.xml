@@ -97,13 +97,13 @@
         <refreshTime>0</refreshTime>
         <treasures/>
     </treasureInfo>
-    <trainPen>
+    <trainInfo>
         <joinTime>0</joinTime>
         <quitTime>0</quitTime>
         <dailyMills>0</dailyMills>
         <accuMills>0</accuMills>
         <inspireTime>0</inspireTime>
-    </trainPen>
+    </trainInfo>
     <wuxingPen>
         <playTime>0</playTime>
         <dailyTimes>0</dailyTimes>

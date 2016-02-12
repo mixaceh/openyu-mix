@@ -1537,7 +1537,7 @@ public class QixingServiceImpl extends AppServiceSupporter implements QixingServ
 	// * 發送重置
 	// *
 	// * @param roleId
-	// * @param trainPen
+	// * @param trainInfo
 	// */
 	// public void sendReset(String roleId, QixingPen qixingPen)
 	// {
