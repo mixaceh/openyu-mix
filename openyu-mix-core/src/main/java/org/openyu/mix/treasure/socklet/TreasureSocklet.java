@@ -97,7 +97,7 @@ public class TreasureSocklet extends AppSockletServiceSupporter {
 	protected void DEBUG_buy(Role role, int buyValue, int index) {
 		// 所有
 		if (buyValue == -1 || index == -1) {
-			for (Integer gridIndex : role.getTreasurePen().getTreasures()
+			for (Integer gridIndex : role.getTreasureInfo().getTreasures()
 					.keySet()) {
 				// 金幣購買
 				treasureService.buy(true, role, 1, gridIndex);

@@ -1,17 +1,17 @@
 package org.openyu.mix.treasure.po.bridge;
 
 import org.openyu.commons.hibernate.search.bridge.supporter.BaseStringBridgeSupporter;
-import org.openyu.mix.treasure.po.usertype.TreasurePenUserType;
+import org.openyu.mix.treasure.po.usertype.TreasureInfoUserType;
 
 //--------------------------------------------------
 //reslove: Hibernate search
 //--------------------------------------------------
-public class TreasurePenBridge extends BaseStringBridgeSupporter
+public class TreasureInfoBridge extends BaseStringBridgeSupporter
 {
 
-	private TreasurePenUserType userType = new TreasurePenUserType();
+	private TreasureInfoUserType userType = new TreasureInfoUserType();
 
-	public TreasurePenBridge()
+	public TreasureInfoBridge()
 	{
 
 	}

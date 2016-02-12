@@ -25,8 +25,8 @@ import org.openyu.mix.treasure.service.adapter.TreasureChangeAdapter;
 import org.openyu.mix.treasure.socklet.TreasureSocklet;
 import org.openyu.mix.treasure.vo.Treasure;
 import org.openyu.mix.treasure.vo.TreasureCollector;
-import org.openyu.mix.treasure.vo.TreasurePen;
-import org.openyu.mix.treasure.vo.impl.TreasurePenImpl;
+import org.openyu.mix.treasure.vo.TreasureInfo;
+import org.openyu.mix.treasure.vo.impl.TreasureInfoImpl;
 
 public class TreasureTestSupporter extends AppTestSupporter {
 
@@ -137,8 +137,8 @@ public class TreasureTestSupporter extends AppTestSupporter {
 	 * @param role
 	 * @return
 	 */
-	public static TreasurePen mockTreasurePen(Role role) {
-		TreasurePen result = new TreasurePenImpl(role);
+	public static TreasureInfo mockTreasureInfo(Role role) {
+		TreasureInfo result = new TreasureInfoImpl(role);
 		//
 		result.setRefreshTime(System.currentTimeMillis());
 		//

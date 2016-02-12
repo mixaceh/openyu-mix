@@ -10,7 +10,7 @@ import org.openyu.mix.app.vo.AppResult;
 import org.openyu.mix.item.vo.Item;
 import org.openyu.mix.role.vo.Role;
 import org.openyu.mix.treasure.vo.Treasure;
-import org.openyu.mix.treasure.vo.TreasurePen;
+import org.openyu.mix.treasure.vo.TreasureInfo;
 import org.openyu.commons.enumz.IntEnum;
 import org.openyu.socklet.message.vo.Message;
 
@@ -189,16 +189,16 @@ public interface TreasureService extends AppService {
 	 * @param bagInfo
 	 * @return
 	 */
-	Message sendTreasurePen(Role role, TreasurePen treasurePen);
+	Message sendTreasureInfo(Role role, TreasureInfo treasureInfo);
 
 	/**
 	 * 填充祕寶欄位
 	 * 
 	 * @param message
-	 * @param treasurePen
+	 * @param treasureInfo
 	 * @return
 	 */
-	boolean fillTreasurePen(Message message, TreasurePen treasurePen);
+	boolean fillTreasureInfo(Message message, TreasureInfo treasureInfo);
 
 	/**
 	 * 發送上架祕寶

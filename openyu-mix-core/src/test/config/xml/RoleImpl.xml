@@ -93,10 +93,10 @@
             </entry>
         </farms>
     </manorPen>
-    <treasurePen>
+    <treasureInfo>
         <refreshTime>0</refreshTime>
         <treasures/>
-    </treasurePen>
+    </treasureInfo>
     <trainPen>
         <joinTime>0</joinTime>
         <quitTime>0</quitTime>

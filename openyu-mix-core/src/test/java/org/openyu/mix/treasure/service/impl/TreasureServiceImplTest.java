@@ -19,7 +19,7 @@ import org.openyu.mix.treasure.service.impl.TreasureServiceImpl.BuyResultImpl;
 import org.openyu.mix.treasure.service.TreasureService.ErrorType;
 import org.openyu.mix.treasure.service.TreasureService.RefreshResult;
 import org.openyu.mix.treasure.vo.Treasure;
-import org.openyu.mix.treasure.vo.TreasurePen;
+import org.openyu.mix.treasure.vo.TreasureInfo;
 import org.openyu.mix.vip.vo.VipType;
 import org.openyu.mix.role.vo.BagInfo;
 import org.openyu.mix.role.vo.Role;
@@ -45,11 +45,11 @@ public class TreasureServiceImplTest extends TreasureTestSupporter {
 	 */
 	public void listen() {
 		Role role = mockRole();
-		TreasurePen treasurePen = mockTreasurePen(role);
-		role.setTreasurePen(treasurePen);
+		TreasureInfo treasureInfo = mockTreasureInfo(role);
+		role.setTreasureInfo(treasureInfo);
 
 		// 剩2秒刷新
-		treasurePen.setRefreshTime(treasurePen.getRefreshTime() - treasureCollector.getRefreshMills() + 2 * 1000L);
+		treasureInfo.setRefreshTime(treasureInfo.getRefreshTime() - treasureCollector.getRefreshMills() + 2 * 1000L);
 		//
 		// ThreadHelper.sleep(3 * 1000L);
 	}
@@ -61,21 +61,21 @@ public class TreasureServiceImplTest extends TreasureTestSupporter {
 	// public void listen2()
 	// {
 	// Role role = mockRole();
-	// TreasurePen treasurePen = mockTreasurePen(role);
-	// role.setTreasurePen(treasurePen);
+	// TreasureInfo treasureInfo = mockTreasureInfo(role);
+	// role.setTreasureInfo(treasureInfo);
 	//
 	// //超過經過1個周期,剩5秒刷新
-	// treasurePen.setRefreshTime(treasurePen.getRefreshTime()
+	// treasureInfo.setRefreshTime(treasureInfo.getRefreshTime()
 	// - treasureCollector.getRefreshMills() * 2 + 5 * 1000L);
 	// //
 	// ThreadHelper.sleep(60 * 1000L);
 	// }
 
 	@Test
-	public void sendTreasurePen() {
+	public void sendTreasureInfo() {
 		Role role = mockRole();
-		TreasurePen treasurePen = mockTreasurePen(role);
-		role.setTreasurePen(treasurePen);
+		TreasureInfo treasureInfo = mockTreasureInfo(role);
+		role.setTreasureInfo(treasureInfo);
 		//
 		Message result = null;
 		//
@@ -83,7 +83,7 @@ public class TreasureServiceImplTest extends TreasureTestSupporter {
 		long beg = System.currentTimeMillis();
 		//
 		for (int i = 0; i < count; i++) {
-			result = treasureService.sendTreasurePen(role, role.getTreasurePen());
+			result = treasureService.sendTreasureInfo(role, role.getTreasureInfo());
 		}
 		long end = System.currentTimeMillis();
 		System.out.println(count + " times: " + (end - beg) + " mills. ");
@@ -95,10 +95,10 @@ public class TreasureServiceImplTest extends TreasureTestSupporter {
 	}
 
 	@Test
-	public void fillTreasurePen() {
+	public void fillTreasureInfo() {
 		Role role = mockRole();
-		TreasurePen treasurePen = mockTreasurePen(role);
-		role.setTreasurePen(treasurePen);
+		TreasureInfo treasureInfo = mockTreasureInfo(role);
+		role.setTreasureInfo(treasureInfo);
 		//
 		boolean result = false;
 		//
@@ -108,7 +108,7 @@ public class TreasureServiceImplTest extends TreasureTestSupporter {
 		for (int i = 0; i < count; i++) {
 			Message message = messageService.createMessage(CoreModuleType.TREASURE, CoreModuleType.CLIENT, null,
 					role.getId());
-			result = treasureService.fillTreasurePen(message, treasurePen);
+			result = treasureService.fillTreasureInfo(message, treasureInfo);
 		}
 		//
 		long end = System.currentTimeMillis();
@@ -230,8 +230,8 @@ public class TreasureServiceImplTest extends TreasureTestSupporter {
 		assertNotNull(result);
 
 		// 祕寶
-		TreasurePen treasurePen = role.getTreasurePen();
-		assertTrue(treasurePen.getTreasures().size() > 0);
+		TreasureInfo treasureInfo = role.getTreasureInfo();
+		assertTrue(treasureInfo.getTreasures().size() > 0);
 
 		// 扣儲值幣
 		result = treasureService.refresh(true, role);
@@ -267,8 +267,8 @@ public class TreasureServiceImplTest extends TreasureTestSupporter {
 		role.setLevel(20);// 等級
 		role.setGold(10000 * 10000L);// 1e
 		// 祕寶
-		TreasurePen treasurePen = mockTreasurePen(role);
-		role.setTreasurePen(treasurePen);
+		TreasureInfo treasureInfo = mockTreasureInfo(role);
+		role.setTreasureInfo(treasureInfo);
 
 		// 金幣購買
 		BuyResult result = treasureService.buy(true, role, 1, 0);
@@ -317,8 +317,8 @@ public class TreasureServiceImplTest extends TreasureTestSupporter {
 		role.setLevel(20);// 等級
 		role.setGold(10000 * 10000L);// 1e
 		// 祕寶
-		TreasurePen treasurePen = mockTreasurePen(role);
-		role.setTreasurePen(treasurePen);
+		TreasureInfo treasureInfo = mockTreasureInfo(role);
+		role.setTreasureInfo(treasureInfo);
 
 		// 購買結果
 		BuyResult result = treasureService.goldBuy(true, role, 2);
@@ -340,8 +340,8 @@ public class TreasureServiceImplTest extends TreasureTestSupporter {
 	public void checkGoldBuy() {
 		Role role = mockRole();
 		// 祕寶
-		TreasurePen treasurePen = mockTreasurePen(role);
-		role.setTreasurePen(treasurePen);
+		TreasureInfo treasureInfo = mockTreasureInfo(role);
+		role.setTreasureInfo(treasureInfo);
 		//
 		ErrorType errorType = treasureService.checkGoldBuy(role, 0);
 		System.out.println(errorType);
@@ -355,7 +355,7 @@ public class TreasureServiceImplTest extends TreasureTestSupporter {
 		assertEquals(ErrorType.TREASURE_NOT_EXIST, errorType);
 
 		// 祕寶
-		Treasure treasure = treasurePen.getTreasures().get(0);
+		Treasure treasure = treasureInfo.getTreasures().get(0);
 		treasure.setBought(true);
 		errorType = treasureService.checkGoldBuy(role, 0);
 		System.out.println(errorType);
@@ -391,8 +391,8 @@ public class TreasureServiceImplTest extends TreasureTestSupporter {
 		Role role = mockRole();
 		role.setLevel(20);// 等級
 		// 祕寶
-		TreasurePen treasurePen = mockTreasurePen(role);
-		role.setTreasurePen(treasurePen);
+		TreasureInfo treasureInfo = mockTreasureInfo(role);
+		role.setTreasureInfo(treasureInfo);
 
 		role.setVipType(VipType._2);
 		// 購買
@@ -415,8 +415,8 @@ public class TreasureServiceImplTest extends TreasureTestSupporter {
 	public void checkCoinBuy() {
 		Role role = mockRole();
 		// 祕寶
-		TreasurePen treasurePen = mockTreasurePen(role);
-		role.setTreasurePen(treasurePen);
+		TreasureInfo treasureInfo = mockTreasureInfo(role);
+		role.setTreasureInfo(treasureInfo);
 		//
 		ErrorType errorType = treasureService.checkCoinBuy(role, 0);
 		System.out.println(errorType);
@@ -430,7 +430,7 @@ public class TreasureServiceImplTest extends TreasureTestSupporter {
 		assertEquals(ErrorType.TREASURE_NOT_EXIST, errorType);
 
 		// 祕寶
-		Treasure treasure = treasurePen.getTreasures().get(0);
+		Treasure treasure = treasureInfo.getTreasures().get(0);
 		treasure.setBought(true);
 		errorType = treasureService.checkCoinBuy(role, 0);
 		System.out.println(errorType);

@@ -5,7 +5,7 @@ import org.openyu.mix.manor.vo.ManorPen;
 import org.openyu.mix.role.vo.BagInfo;
 import org.openyu.mix.sasang.vo.SasangPen;
 import org.openyu.mix.train.vo.TrainPen;
-import org.openyu.mix.treasure.vo.TreasurePen;
+import org.openyu.mix.treasure.vo.TreasureInfo;
 import org.openyu.mix.wuxing.vo.WuxingPen;
 
 /**
@@ -103,9 +103,9 @@ public interface RolePo extends FlutterPo {
 	 * 
 	 * @return
 	 */
-	TreasurePen getTreasurePen();
+	TreasureInfo getTreasureInfo();
 
-	void setTreasurePen(TreasurePen treasurePen);
+	void setTreasureInfo(TreasureInfo treasureInfo);
 
 	/**
 	 * 訓練欄位

@@ -13,15 +13,15 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.openyu.mix.app.vo.supporter.AppInfoSupporter;
 import org.openyu.mix.role.vo.Role;
 import org.openyu.mix.treasure.vo.Treasure;
-import org.openyu.mix.treasure.vo.TreasurePen;
+import org.openyu.mix.treasure.vo.TreasureInfo;
 import org.openyu.mix.treasure.vo.adapter.IntegerTreasureXmlAdapter;
 
 //--------------------------------------------------
 //jaxb
 //--------------------------------------------------
-@XmlRootElement(name = "treasurePen")
+@XmlRootElement(name = "treasureInfo")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class TreasurePenImpl extends AppInfoSupporter implements TreasurePen
+public class TreasureInfoImpl extends AppInfoSupporter implements TreasureInfo
 {
 
 	private static final long serialVersionUID = 5073307472276879735L;
@@ -43,12 +43,12 @@ public class TreasurePenImpl extends AppInfoSupporter implements TreasurePen
 	@XmlJavaTypeAdapter(IntegerTreasureXmlAdapter.class)
 	private Map<Integer, Treasure> treasures = new LinkedHashMap<Integer, Treasure>();
 
-	public TreasurePenImpl(Role role)
+	public TreasureInfoImpl(Role role)
 	{
 		this.role = role;
 	}
 
-	public TreasurePenImpl()
+	public TreasureInfoImpl()
 	{
 		this(null);
 	}
@@ -84,8 +84,8 @@ public class TreasurePenImpl extends AppInfoSupporter implements TreasurePen
 
 	public Object clone()
 	{
-		TreasurePenImpl copy = null;
-		copy = (TreasurePenImpl) super.clone();
+		TreasureInfoImpl copy = null;
+		copy = (TreasureInfoImpl) super.clone();
 		copy.treasures = clone(treasures);
 		//role不要clone,會造成loop
 		return copy;

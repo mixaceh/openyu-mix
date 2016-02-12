@@ -6,19 +6,19 @@ import java.util.Map;
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.engine.spi.SessionImplementor;
 import org.openyu.mix.treasure.vo.Treasure;
-import org.openyu.mix.treasure.vo.TreasurePen;
-import org.openyu.mix.treasure.vo.impl.TreasurePenImpl;
+import org.openyu.mix.treasure.vo.TreasureInfo;
+import org.openyu.mix.treasure.vo.impl.TreasureInfoImpl;
 import org.openyu.commons.enumz.EnumHelper;
 import org.openyu.commons.hibernate.usertype.supporter.BaseUserTypeSupporter;
 import org.openyu.commons.lang.ArrayHelper;
 
-public class TreasurePenUserType extends BaseUserTypeSupporter {
+public class TreasureInfoUserType extends BaseUserTypeSupporter {
 
 	private static final long serialVersionUID = -2066924784420555409L;
 
 	private static transient TreasureUserType treasureUserType = new TreasureUserType();
 
-	public TreasurePenUserType() {
+	public TreasureInfoUserType() {
 		// --------------------------------------------------
 		// 最新版本,目前用1,若將來有新版本
 		// 可用其他版號,如:VolType._2
@@ -33,7 +33,7 @@ public class TreasurePenUserType extends BaseUserTypeSupporter {
 
 	@Override
 	public Class<?> returnedClass() {
-		return TreasurePen.class;
+		return TreasureInfo.class;
 	}
 
 	// --------------------------------------------------
@@ -44,12 +44,12 @@ public class TreasurePenUserType extends BaseUserTypeSupporter {
 	@SuppressWarnings("unchecked")
 	public <R, T> R marshal(T value, SessionImplementor session) {
 		R result = null;
-		if (!(value instanceof TreasurePen)) {
+		if (!(value instanceof TreasureInfo)) {
 			return result;
 		}
 		//
 		StringBuilder dest = new StringBuilder();
-		TreasurePen src = (TreasurePen) value;
+		TreasureInfo src = (TreasureInfo) value;
 		// vol
 		dest.append(assembleVol(getVolType()));
 		// v1
@@ -62,7 +62,7 @@ public class TreasurePenUserType extends BaseUserTypeSupporter {
 	/**
 	 * v1 由物件組成欄位
 	 */
-	public String assembleBy_1(TreasurePen src) {
+	public String assembleBy_1(TreasureInfo src) {
 		StringBuilder result = new StringBuilder();
 		//
 		result.append(toString(src.getRefreshTime()));// 0
@@ -90,7 +90,7 @@ public class TreasurePenUserType extends BaseUserTypeSupporter {
 	 */
 	@SuppressWarnings("unchecked")
 	public <R, T, O> R unmarshal(T value, O owner, SessionImplementor session) {
-		TreasurePen result = new TreasurePenImpl();
+		TreasureInfo result = new TreasureInfoImpl();
 		//
 		if (!(value instanceof String)) {
 			return (R) result;
@@ -117,8 +117,8 @@ public class TreasurePenUserType extends BaseUserTypeSupporter {
 
 	// --------------------------------------------------
 
-	protected TreasurePen disassembleBy_1(StringBuilder src) {
-		TreasurePen result = new TreasurePenImpl();
+	protected TreasureInfo disassembleBy_1(StringBuilder src) {
+		TreasureInfo result = new TreasureInfoImpl();
 		if (src == null) {
 			return result;
 		}

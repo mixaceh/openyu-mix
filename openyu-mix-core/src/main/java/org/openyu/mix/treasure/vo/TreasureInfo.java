@@ -11,9 +11,9 @@ import com.sun.xml.bind.AnyTypeAdapter;
  * 祕寶欄位資訊
  */
 @XmlJavaTypeAdapter(AnyTypeAdapter.class)
-public interface TreasurePen extends AppInfo
+public interface TreasureInfo extends AppInfo
 {
-	String KEY = TreasurePen.class.getName();
+	String KEY = TreasureInfo.class.getName();
 
 	/**
 	 * 刷新時間

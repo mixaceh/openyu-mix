@@ -21,8 +21,8 @@ import org.openyu.mix.sasang.vo.SasangPen;
 import org.openyu.mix.sasang.vo.impl.SasangPenImpl;
 import org.openyu.mix.train.vo.TrainPen;
 import org.openyu.mix.train.vo.impl.TrainPenImpl;
-import org.openyu.mix.treasure.vo.TreasurePen;
-import org.openyu.mix.treasure.vo.impl.TreasurePenImpl;
+import org.openyu.mix.treasure.vo.TreasureInfo;
+import org.openyu.mix.treasure.vo.impl.TreasureInfoImpl;
 import org.openyu.mix.vip.vo.VipType;
 import org.openyu.mix.wuxing.vo.WuxingPen;
 import org.openyu.mix.wuxing.vo.impl.WuxingPenImpl;
@@ -109,8 +109,8 @@ public class RoleImpl extends FlutterSupporter implements Role {
 	/**
 	 * 祕寶欄位
 	 */
-	@XmlElement(type = TreasurePenImpl.class)
-	private TreasurePen treasurePen = new TreasurePenImpl(this);
+	@XmlElement(type = TreasureInfoImpl.class)
+	private TreasureInfo treasureInfo = new TreasureInfoImpl(this);
 
 	/**
 	 * 訓練欄位
@@ -280,12 +280,12 @@ public class RoleImpl extends FlutterSupporter implements Role {
 	/**
 	 * 祕寶欄位
 	 */
-	public TreasurePen getTreasurePen() {
-		return treasurePen;
+	public TreasureInfo getTreasureInfo() {
+		return treasureInfo;
 	}
 
-	public void setTreasurePen(TreasurePen treasurePen) {
-		this.treasurePen = treasurePen;
+	public void setTreasureInfo(TreasureInfo treasureInfo) {
+		this.treasureInfo = treasureInfo;
 	}
 
 	/**
@@ -329,7 +329,7 @@ public class RoleImpl extends FlutterSupporter implements Role {
 		//
 		builder.append("sasangPen", sasangPen);
 		builder.append("manorPen", manorPen);
-		builder.append("treasurePen", treasurePen);
+		builder.append("treasureInfo", treasureInfo);
 		builder.append("trainPen", trainPen);
 		builder.append("wuxingPen", wuxingPen);
 		return builder.toString();
@@ -345,7 +345,7 @@ public class RoleImpl extends FlutterSupporter implements Role {
 		//
 		copy.sasangPen = clone(sasangPen);
 		copy.manorPen = clone(manorPen);
-		copy.treasurePen = clone(treasurePen);
+		copy.treasureInfo = clone(treasureInfo);
 		copy.trainPen = clone(trainPen);
 		copy.wuxingPen = clone(wuxingPen);
 		return copy;

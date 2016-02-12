@@ -24,7 +24,7 @@ import org.openyu.mix.core.service.CoreModuleType;
 import org.openyu.mix.treasure.service.TreasureService;
 import org.openyu.mix.treasure.vo.Treasure;
 import org.openyu.mix.treasure.vo.TreasureCollector;
-import org.openyu.mix.treasure.vo.TreasurePen;
+import org.openyu.mix.treasure.vo.TreasureInfo;
 import org.openyu.mix.item.service.ItemService;
 import org.openyu.mix.item.service.ItemService.IncreaseItemResult;
 import org.openyu.mix.item.vo.Item;
@@ -156,16 +156,16 @@ public class TreasureServiceImpl extends AppServiceSupporter implements Treasure
 		for (Role role : roleSetService.getRoles(false).values()) {
 			try {
 				// 是否已連線
-				if (!role.isConnected() || !role.getTreasurePen().isConnected()) {
+				if (!role.isConnected() || !role.getTreasureInfo().isConnected()) {
 					continue;
 				}
 
 				// 更新上架祕寶
 				boolean renew = renewTreasures(role);
 				if (renew) {
-					TreasurePen treasurePen = role.getTreasurePen();
+					TreasureInfo treasureInfo = role.getTreasureInfo();
 					// 發訊息
-					sendTreasurePen(role, treasurePen);
+					sendTreasureInfo(role, treasureInfo);
 				}
 			} catch (Exception ex) {
 				ex.printStackTrace();
@@ -193,7 +193,7 @@ public class TreasureServiceImpl extends AppServiceSupporter implements Treasure
 		sendRoleConnect(result, attatch);
 
 		// 已連線
-		result.getTreasurePen().setConnected(true);
+		result.getTreasureInfo().setConnected(true);
 		//
 		return result;
 	}
@@ -206,14 +206,14 @@ public class TreasureServiceImpl extends AppServiceSupporter implements Treasure
 	 */
 	protected boolean renewTreasures(Role role) {
 		boolean result = false;
-		TreasurePen treasurePen = role.getTreasurePen();
+		TreasureInfo treasureInfo = role.getTreasureInfo();
 		// 剩餘毫秒
-		long residualMills = calcResidual(treasurePen);
+		long residualMills = calcResidual(treasureInfo);
 		// System.out.println("剩餘時間: " + residualMills);
 		// 可以再隨機上架祕寶
 		if (residualMills <= 0) {
-			treasurePen.setRefreshTime(System.currentTimeMillis());// 刷新時間
-			treasurePen.setTreasures(randomTreasures());// 隨機上架祕寶
+			treasureInfo.setRefreshTime(System.currentTimeMillis());// 刷新時間
+			treasureInfo.setTreasures(randomTreasures());// 隨機上架祕寶
 			result = true;
 		}
 		return result;
@@ -241,7 +241,7 @@ public class TreasureServiceImpl extends AppServiceSupporter implements Treasure
 				CoreMessageType.TREASURE_INITIALIZE_RESPONSE, role.getId());
 
 		// 祕寶欄位
-		fillTreasurePen(message, role.getTreasurePen());
+		fillTreasureInfo(message, role.getTreasureInfo());
 		//
 		messageService.addMessage(message);
 
@@ -284,14 +284,14 @@ public class TreasureServiceImpl extends AppServiceSupporter implements Treasure
 	 * 發送祕寶欄位
 	 * 
 	 * @param role
-	 * @param treasurePen
+	 * @param treasureInfo
 	 * @return
 	 */
-	public Message sendTreasurePen(Role role, TreasurePen treasurePen) {
+	public Message sendTreasureInfo(Role role, TreasureInfo treasureInfo) {
 		Message message = messageService.createMessage(CoreModuleType.TREASURE, CoreModuleType.CLIENT,
 				CoreMessageType.TREASURE_PEN_RESPONSE, role.getId());
 
-		fillTreasurePen(message, treasurePen);
+		fillTreasureInfo(message, treasureInfo);
 		//
 		messageService.addMessage(message);
 
@@ -302,19 +302,19 @@ public class TreasureServiceImpl extends AppServiceSupporter implements Treasure
 	 * 填充祕寶欄位
 	 * 
 	 * @param message
-	 * @param treasurePen
+	 * @param treasureInfo
 	 * @return
 	 */
-	public boolean fillTreasurePen(Message message, TreasurePen treasurePen) {
+	public boolean fillTreasureInfo(Message message, TreasureInfo treasureInfo) {
 		boolean result = false;
 		// 刷新時間
-		message.addLong(treasurePen.getRefreshTime());
+		message.addLong(treasureInfo.getRefreshTime());
 		// 剩餘毫秒
-		long residualMills = calcResidual(treasurePen);
+		long residualMills = calcResidual(treasureInfo);
 		message.addLong(residualMills);
 
 		// 上架祕寶
-		Map<Integer, Treasure> treasures = treasurePen.getTreasures();
+		Map<Integer, Treasure> treasures = treasureInfo.getTreasures();
 		message.addInt(treasures.size());
 		for (Map.Entry<Integer, Treasure> entry : treasures.entrySet()) {
 			message.addInt(entry.getKey());// 上架祕寶索引
@@ -399,14 +399,14 @@ public class TreasureServiceImpl extends AppServiceSupporter implements Treasure
 	// *
 	// * @return
 	// */
-	// public long calcResidual(TreasurePen treasurePen)
+	// public long calcResidual(TreasureInfo treasureInfo)
 	// {
 	// long result = 0L;
 	// //目前時間
 	// long now = System.currentTimeMillis();
 	//
 	// //經過毫秒
-	// long passMills = now - treasurePen.getRefreshTime();
+	// long passMills = now - treasureInfo.getRefreshTime();
 	// //刷新毫秒
 	// long refreshMills = treasureCollector.getRefreshMills();
 	// //1個周期內
@@ -430,13 +430,13 @@ public class TreasureServiceImpl extends AppServiceSupporter implements Treasure
 	 * 
 	 * @return
 	 */
-	protected long calcResidual(TreasurePen treasurePen) {
+	protected long calcResidual(TreasureInfo treasureInfo) {
 		long result = 0L;
 		// 目前時間
 		long now = System.currentTimeMillis();
 
 		// 經過毫秒
-		long passMills = now - treasurePen.getRefreshTime();
+		long passMills = now - treasureInfo.getRefreshTime();
 		// 剩餘毫秒
 		result = treasureCollector.getRefreshMills() - passMills;
 		//
@@ -617,12 +617,12 @@ public class TreasureServiceImpl extends AppServiceSupporter implements Treasure
 	 */
 	public RefreshResult refresh(boolean sendable, Role role) {
 		RefreshResult result = null;
-		TreasurePen treasurePen = null;
+		TreasureInfo treasureInfo = null;
 		// 檢查條件
 		ErrorType errorType = checkRefresh(role);
 		if (errorType == ErrorType.NO_ERROR) {
 			// 祕寶
-			treasurePen = role.getTreasurePen();
+			treasureInfo = role.getTreasureInfo();
 
 			// 消耗道具或儲值幣
 			SpendResult spendResult = roleService.spendByItemCoin(sendable, role, treasureCollector.getRefreshItem(), 1,
@@ -634,12 +634,12 @@ public class TreasureServiceImpl extends AppServiceSupporter implements Treasure
 			// 扣成功
 			if (spendError == RoleService.ErrorType.NO_ERROR) {
 				long now = System.currentTimeMillis();
-				treasurePen.setRefreshTime(now);// 刷新時間
+				treasureInfo.setRefreshTime(now);// 刷新時間
 				//
 				Map<Integer, Treasure> treasures = randomTreasures();
-				treasurePen.setTreasures(treasures);// 上架祕寶
+				treasureInfo.setTreasures(treasures);// 上架祕寶
 				// 剩餘毫秒
-				long residualMills = calcResidual(treasurePen);
+				long residualMills = calcResidual(treasureInfo);
 
 				// 消耗道具
 				if (spendResult.getItemTimes() > 0) {
@@ -659,8 +659,8 @@ public class TreasureServiceImpl extends AppServiceSupporter implements Treasure
 		// 發訊息
 		if (sendable) {
 			// 發送祕寶欄位
-			if (errorType == ErrorType.NO_ERROR && treasurePen != null) {
-				sendTreasurePen(role, treasurePen);
+			if (errorType == ErrorType.NO_ERROR && treasureInfo != null) {
+				sendTreasureInfo(role, treasureInfo);
 			}
 			// 刷新訊息
 			sendRefresh(errorType, role);
@@ -957,8 +957,8 @@ public class TreasureServiceImpl extends AppServiceSupporter implements Treasure
 		errorType = checkGoldBuy(role, index);
 		if (ErrorType.NO_ERROR.equals(errorType)) {
 			// 祕寶
-			TreasurePen treasurePen = role.getTreasurePen();
-			Treasure treasure = treasurePen.getTreasures().get(index);
+			TreasureInfo treasureInfo = role.getTreasureInfo();
+			Treasure treasure = treasureInfo.getTreasures().get(index);
 			Item item = itemService.createItem(treasure.getId(), treasure.getAmount());
 
 			// 花費的金幣
@@ -1033,8 +1033,8 @@ public class TreasureServiceImpl extends AppServiceSupporter implements Treasure
 		}
 
 		// 祕寶
-		TreasurePen treasurePen = role.getTreasurePen();
-		Treasure treasure = treasurePen.getTreasures().get(index);
+		TreasureInfo treasureInfo = role.getTreasureInfo();
+		Treasure treasure = treasureInfo.getTreasures().get(index);
 		// 祕寶不存在
 		if (treasure == null) {
 			errorType = ErrorType.TREASURE_NOT_EXIST;
@@ -1096,8 +1096,8 @@ public class TreasureServiceImpl extends AppServiceSupporter implements Treasure
 		errorType = checkCoinBuy(role, index);
 		if (ErrorType.NO_ERROR.equals(errorType)) {
 			// 祕寶
-			TreasurePen treasurePen = role.getTreasurePen();
-			Treasure treasure = treasurePen.getTreasures().get(index);
+			TreasureInfo treasureInfo = role.getTreasureInfo();
+			Treasure treasure = treasureInfo.getTreasures().get(index);
 			Item item = itemService.createItem(treasure.getId(), treasure.getAmount());
 
 			// 花費的儲值幣
@@ -1172,8 +1172,8 @@ public class TreasureServiceImpl extends AppServiceSupporter implements Treasure
 		}
 
 		// 祕寶
-		TreasurePen treasurePen = role.getTreasurePen();
-		Treasure treasure = treasurePen.getTreasures().get(index);
+		TreasureInfo treasureInfo = role.getTreasureInfo();
+		Treasure treasure = treasureInfo.getTreasures().get(index);
 		// 祕寶不存在
 		if (treasure == null) {
 			errorType = ErrorType.TREASURE_NOT_EXIST;

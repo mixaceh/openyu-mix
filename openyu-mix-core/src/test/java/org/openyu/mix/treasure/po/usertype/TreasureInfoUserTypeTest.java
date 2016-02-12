@@ -3,16 +3,16 @@ package org.openyu.mix.treasure.po.usertype;
 import static org.junit.Assert.*;
 
 import org.junit.Test;
-import org.openyu.mix.treasure.po.usertype.TreasurePenUserType;
+import org.openyu.mix.treasure.po.usertype.TreasureInfoUserType;
 import org.openyu.mix.treasure.vo.Treasure;
 import org.openyu.mix.treasure.vo.TreasureCollector;
-import org.openyu.mix.treasure.vo.TreasurePen;
-import org.openyu.mix.treasure.vo.impl.TreasurePenImpl;
+import org.openyu.mix.treasure.vo.TreasureInfo;
+import org.openyu.mix.treasure.vo.impl.TreasureInfoImpl;
 import org.openyu.commons.junit.supporter.BaseTestSupporter;
 
-public class TreasurePenUserTypeTest extends BaseTestSupporter {
+public class TreasureInfoUserTypeTest extends BaseTestSupporter {
 
-	private static TreasurePenUserType userType = new TreasurePenUserType();
+	private static TreasureInfoUserType userType = new TreasureInfoUserType();
 
 	@Test
 	// 1000000 times: 101 mills.
@@ -20,7 +20,7 @@ public class TreasurePenUserTypeTest extends BaseTestSupporter {
 	// 1000000 times: 100 mills.
 	// verified
 	public void marshal() {
-		TreasurePen value = new TreasurePenImpl();
+		TreasureInfo value = new TreasureInfoImpl();
 
 		value.setRefreshTime(180000);
 		// 祕寶
@@ -60,7 +60,7 @@ public class TreasurePenUserTypeTest extends BaseTestSupporter {
 	public void unmarshal() {
 		String value = "♥1♠180000♠2♠0♠T_ROLE_EXP_G001♦ROLE_EXP_001♦1♠1♠T_ROLE_EXP_G002♦ROLE_EXP_001♦1";
 		//
-		TreasurePen result = null;
+		TreasureInfo result = null;
 		//
 		int count = 1;
 
