@@ -11,10 +11,10 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.openyu.mix.flutter.vo.AttributeGroup;
 import org.openyu.mix.flutter.vo.impl.AttributeGroupImpl;
 import org.openyu.mix.flutter.vo.supporter.FlutterSupporter;
-import org.openyu.mix.manor.vo.ManorPen;
-import org.openyu.mix.manor.vo.impl.ManorPenImpl;
+import org.openyu.mix.manor.vo.ManorInfo;
+import org.openyu.mix.manor.vo.impl.ManorInfoImpl;
 import org.openyu.mix.role.vo.BagInfo;
-import org.openyu.mix.role.vo.EquipmentPen;
+import org.openyu.mix.role.vo.EquipmentInfo;
 import org.openyu.mix.role.vo.Role;
 import org.openyu.mix.role.vo.RoleField;
 import org.openyu.mix.sasang.vo.SasangInfo;
@@ -24,8 +24,8 @@ import org.openyu.mix.train.vo.impl.TrainInfoImpl;
 import org.openyu.mix.treasure.vo.TreasureInfo;
 import org.openyu.mix.treasure.vo.impl.TreasureInfoImpl;
 import org.openyu.mix.vip.vo.VipType;
-import org.openyu.mix.wuxing.vo.WuxingPen;
-import org.openyu.mix.wuxing.vo.impl.WuxingPenImpl;
+import org.openyu.mix.wuxing.vo.WuxingInfo;
+import org.openyu.mix.wuxing.vo.impl.WuxingInfoImpl;
 import org.openyu.commons.lang.event.EventAttach;
 
 @XmlRootElement(name = "role")
@@ -88,8 +88,8 @@ public class RoleImpl extends FlutterSupporter implements Role {
 	/**
 	 * 裝備欄位
 	 */
-	@XmlElement(type = EquipmentPenImpl.class)
-	private EquipmentPen equipmentPen = new EquipmentPenImpl(this);
+	@XmlElement(type = EquipmentInfoImpl.class)
+	private EquipmentInfo equipmentInfo = new EquipmentInfoImpl(this);
 
 	// ---------------------------------------------------
 	// 其他模組相關欄位
@@ -103,8 +103,8 @@ public class RoleImpl extends FlutterSupporter implements Role {
 	/**
 	 * 莊園欄位
 	 */
-	@XmlElement(type = ManorPenImpl.class)
-	private ManorPen manorPen = new ManorPenImpl(this);
+	@XmlElement(type = ManorInfoImpl.class)
+	private ManorInfo manorInfo = new ManorInfoImpl(this);
 
 	/**
 	 * 祕寶欄位
@@ -121,8 +121,8 @@ public class RoleImpl extends FlutterSupporter implements Role {
 	/**
 	 * 五行欄位
 	 */
-	@XmlElement(type = WuxingPenImpl.class)
-	private WuxingPen wuxingPen = new WuxingPenImpl(this);
+	@XmlElement(type = WuxingInfoImpl.class)
+	private WuxingInfo wuxingInfo = new WuxingInfoImpl(this);
 
 	public RoleImpl() {
 	}
@@ -244,12 +244,12 @@ public class RoleImpl extends FlutterSupporter implements Role {
 	 * 
 	 * @return
 	 */
-	public EquipmentPen getEquipmentPen() {
-		return equipmentPen;
+	public EquipmentInfo getEquipmentInfo() {
+		return equipmentInfo;
 	}
 
-	public void setEquipmentPen(EquipmentPen equipmentPen) {
-		this.equipmentPen = equipmentPen;
+	public void setEquipmentInfo(EquipmentInfo equipmentInfo) {
+		this.equipmentInfo = equipmentInfo;
 	}
 
 	// ---------------------------------------------------
@@ -269,12 +269,12 @@ public class RoleImpl extends FlutterSupporter implements Role {
 	/**
 	 * 莊園欄位
 	 */
-	public ManorPen getManorPen() {
-		return manorPen;
+	public ManorInfo getManorInfo() {
+		return manorInfo;
 	}
 
-	public void setManorPen(ManorPen manorPen) {
-		this.manorPen = manorPen;
+	public void setManorInfo(ManorInfo manorInfo) {
+		this.manorInfo = manorInfo;
 	}
 
 	/**
@@ -302,12 +302,12 @@ public class RoleImpl extends FlutterSupporter implements Role {
 	/**
 	 * 五行欄位
 	 */
-	public WuxingPen getWuxingPen() {
-		return wuxingPen;
+	public WuxingInfo getWuxingInfo() {
+		return wuxingInfo;
 	}
 
-	public void setWuxingPen(WuxingPen wuxingPen) {
-		this.wuxingPen = wuxingPen;
+	public void setWuxingInfo(WuxingInfo wuxingInfo) {
+		this.wuxingInfo = wuxingInfo;
 	}
 
 	public String toString() {
@@ -325,13 +325,13 @@ public class RoleImpl extends FlutterSupporter implements Role {
 		builder.append("vipType", vipType);
 		builder.append("equipmentGroup", equipmentGroup);
 		builder.append("bagInfo", bagInfo);
-		builder.append("equipmentPen", equipmentPen);
+		builder.append("equipmentInfo", equipmentInfo);
 		//
 		builder.append("sasangInfo", sasangInfo);
-		builder.append("manorPen", manorPen);
+		builder.append("manorInfo", manorInfo);
 		builder.append("treasureInfo", treasureInfo);
 		builder.append("trainInfo", trainInfo);
-		builder.append("wuxingPen", wuxingPen);
+		builder.append("wuxingInfo", wuxingInfo);
 		return builder.toString();
 	}
 
@@ -341,13 +341,13 @@ public class RoleImpl extends FlutterSupporter implements Role {
 		// copy.account = clone(account);
 		copy.equipmentGroup = clone(equipmentGroup);
 		copy.bagInfo = clone(bagInfo);
-		copy.equipmentPen = clone(equipmentPen);
+		copy.equipmentInfo = clone(equipmentInfo);
 		//
 		copy.sasangInfo = clone(sasangInfo);
-		copy.manorPen = clone(manorPen);
+		copy.manorInfo = clone(manorInfo);
 		copy.treasureInfo = clone(treasureInfo);
 		copy.trainInfo = clone(trainInfo);
-		copy.wuxingPen = clone(wuxingPen);
+		copy.wuxingInfo = clone(wuxingInfo);
 		return copy;
 	}
 }

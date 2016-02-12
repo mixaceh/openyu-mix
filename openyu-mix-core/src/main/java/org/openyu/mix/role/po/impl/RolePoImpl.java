@@ -21,9 +21,9 @@ import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.FieldBridge;
 import org.hibernate.search.annotations.Store;
 import org.openyu.mix.flutter.po.supporter.FlutterPoSupporter;
-import org.openyu.mix.manor.po.bridge.ManorPenBridge;
-import org.openyu.mix.manor.vo.ManorPen;
-import org.openyu.mix.manor.vo.impl.ManorPenImpl;
+import org.openyu.mix.manor.po.bridge.ManorInfoBridge;
+import org.openyu.mix.manor.vo.ManorInfo;
+import org.openyu.mix.manor.vo.impl.ManorInfoImpl;
 import org.openyu.mix.role.po.RolePo;
 import org.openyu.mix.role.po.bridge.BagInfoBridge;
 import org.openyu.mix.role.vo.BagInfo;
@@ -37,9 +37,9 @@ import org.openyu.mix.train.vo.impl.TrainInfoImpl;
 import org.openyu.mix.treasure.po.bridge.TreasureInfoBridge;
 import org.openyu.mix.treasure.vo.TreasureInfo;
 import org.openyu.mix.treasure.vo.impl.TreasureInfoImpl;
-import org.openyu.mix.wuxing.po.bridge.WuxingPenBridge;
-import org.openyu.mix.wuxing.vo.WuxingPen;
-import org.openyu.mix.wuxing.vo.impl.WuxingPenImpl;
+import org.openyu.mix.wuxing.po.bridge.WuxingInfoBridge;
+import org.openyu.mix.wuxing.vo.WuxingInfo;
+import org.openyu.mix.wuxing.vo.impl.WuxingInfoImpl;
 
 //--------------------------------------------------
 //hibernate
@@ -106,7 +106,7 @@ public class RolePoImpl extends FlutterPoSupporter implements RolePo {
 	/**
 	 * 莊園欄位
 	 */
-	private ManorPen manorPen = new ManorPenImpl();
+	private ManorInfo manorInfo = new ManorInfoImpl();
 
 	/**
 	 * 祕寶欄位
@@ -121,7 +121,7 @@ public class RolePoImpl extends FlutterPoSupporter implements RolePo {
 	/**
 	 * 五行欄位
 	 */
-	private WuxingPen wuxingPen = new WuxingPenImpl();
+	private WuxingInfo wuxingInfo = new WuxingInfoImpl();
 
 	public RolePoImpl() {
 	}
@@ -226,15 +226,15 @@ public class RolePoImpl extends FlutterPoSupporter implements RolePo {
 	}
 
 	@Column(name = "manor_info", length = 2048)
-	@Type(type = "org.openyu.mix.manor.po.usertype.ManorPenUserType")
+	@Type(type = "org.openyu.mix.manor.po.usertype.ManorInfoUserType")
 	@Field(store = Store.YES, index = org.hibernate.search.annotations.Index.YES, analyze = Analyze.NO)
-	@FieldBridge(impl = ManorPenBridge.class)
-	public ManorPen getManorPen() {
-		return manorPen;
+	@FieldBridge(impl = ManorInfoBridge.class)
+	public ManorInfo getManorInfo() {
+		return manorInfo;
 	}
 
-	public void setManorPen(ManorPen manorPen) {
-		this.manorPen = manorPen;
+	public void setManorInfo(ManorInfo manorInfo) {
+		this.manorInfo = manorInfo;
 	}
 
 	@Column(name = "treasure_info", length = 1024)
@@ -262,15 +262,15 @@ public class RolePoImpl extends FlutterPoSupporter implements RolePo {
 	}
 
 	@Column(name = "wuxing_info", length = 1024)
-	@Type(type = "org.openyu.mix.wuxing.po.usertype.WuxingPenUserType")
+	@Type(type = "org.openyu.mix.wuxing.po.usertype.WuxingInfoUserType")
 	@Field(store = Store.YES, index = org.hibernate.search.annotations.Index.YES, analyze = Analyze.NO)
-	@FieldBridge(impl = WuxingPenBridge.class)
-	public WuxingPen getWuxingPen() {
-		return wuxingPen;
+	@FieldBridge(impl = WuxingInfoBridge.class)
+	public WuxingInfo getWuxingInfo() {
+		return wuxingInfo;
 	}
 
-	public void setWuxingPen(WuxingPen wuxingPen) {
-		this.wuxingPen = wuxingPen;
+	public void setWuxingInfo(WuxingInfo wuxingInfo) {
+		this.wuxingInfo = wuxingInfo;
 	}
 
 	public String toString() {
@@ -285,10 +285,10 @@ public class RolePoImpl extends FlutterPoSupporter implements RolePo {
 		//
 		builder.append("bagInfo", bagInfo);
 		builder.append("sasangInfo", sasangInfo);
-		builder.append("manorPen", manorPen);
+		builder.append("manorInfo", manorInfo);
 		builder.append("treasureInfo", treasureInfo);
 		builder.append("trainInfo", trainInfo);
-		builder.append("wuxingPen", wuxingPen);
+		builder.append("wuxingInfo", wuxingInfo);
 		return builder.toString();
 	}
 
@@ -298,10 +298,10 @@ public class RolePoImpl extends FlutterPoSupporter implements RolePo {
 		// copy.account = clone(copy);
 		copy.bagInfo = clone(bagInfo);
 		copy.sasangInfo = clone(sasangInfo);
-		copy.manorPen = clone(manorPen);
+		copy.manorInfo = clone(manorInfo);
 		copy.treasureInfo = clone(treasureInfo);
 		copy.trainInfo = clone(trainInfo);
-		copy.wuxingPen = clone(wuxingPen);
+		copy.wuxingInfo = clone(wuxingInfo);
 		return copy;
 	}
 }

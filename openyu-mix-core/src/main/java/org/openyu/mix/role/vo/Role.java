@@ -4,12 +4,12 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.openyu.mix.flutter.vo.AttributeGroup;
 import org.openyu.mix.flutter.vo.Flutter;
-import org.openyu.mix.manor.vo.ManorPen;
+import org.openyu.mix.manor.vo.ManorInfo;
 import org.openyu.mix.sasang.vo.SasangInfo;
 import org.openyu.mix.train.vo.TrainInfo;
 import org.openyu.mix.treasure.vo.TreasureInfo;
 import org.openyu.mix.vip.vo.VipType;
-import org.openyu.mix.wuxing.vo.WuxingPen;
+import org.openyu.mix.wuxing.vo.WuxingInfo;
 import com.sun.xml.bind.AnyTypeAdapter;
 
 /**
@@ -154,9 +154,9 @@ public interface Role extends Flutter {
 	 * 
 	 * @return
 	 */
-	EquipmentPen getEquipmentPen();
+	EquipmentInfo getEquipmentInfo();
 
-	void setEquipmentPen(EquipmentPen equipmentPen);
+	void setEquipmentInfo(EquipmentInfo equipmentInfo);
 
 	// ---------------------------------------------------
 	// 其他模組相關欄位
@@ -175,9 +175,9 @@ public interface Role extends Flutter {
 	 * 
 	 * @return
 	 */
-	ManorPen getManorPen();
+	ManorInfo getManorInfo();
 
-	void setManorPen(ManorPen manorPen);
+	void setManorInfo(ManorInfo manorInfo);
 
 	/**
 	 * 祕寶欄位
@@ -202,8 +202,8 @@ public interface Role extends Flutter {
 	 * 
 	 * @return
 	 */
-	WuxingPen getWuxingPen();
+	WuxingInfo getWuxingInfo();
 
-	void setWuxingPen(WuxingPen wuxingPen);
+	void setWuxingInfo(WuxingInfo wuxingInfo);
 
 }

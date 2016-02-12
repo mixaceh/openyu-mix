@@ -21,7 +21,7 @@ public class ManorLogServiceImplTest extends ManorTestSupporter {
 		Role role = mockRole();
 		mockReclaim(role);
 		//
-		manorLogService.recordReclaim(role, 0, role.getManorPen().getFarm(0)
+		manorLogService.recordReclaim(role, 0, role.getManorInfo().getFarm(0)
 				.getLand(), 1000L);
 	}
 
@@ -30,7 +30,7 @@ public class ManorLogServiceImplTest extends ManorTestSupporter {
 		Role role = mockRole();
 		mockReclaim(role);
 		//
-		manorLogService.recordDisuse(role, 0, role.getManorPen().getFarm(0)
+		manorLogService.recordDisuse(role, 0, role.getManorInfo().getFarm(0)
 				.getLand(), 1000L);
 	}
 

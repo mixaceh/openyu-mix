@@ -18,7 +18,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 
 import org.openyu.mix.app.vo.supporter.AppInfoSupporter;
 import org.openyu.mix.manor.vo.Land;
-import org.openyu.mix.manor.vo.ManorPen;
+import org.openyu.mix.manor.vo.ManorInfo;
 import org.openyu.mix.manor.vo.Seed;
 import org.openyu.mix.manor.vo.MatureType;
 import org.openyu.mix.manor.vo.adapter.IntegerFarmXmlAdapter;
@@ -29,9 +29,9 @@ import org.openyu.commons.bean.supporter.BaseBeanSupporter;
 //--------------------------------------------------
 //jaxb
 //--------------------------------------------------
-@XmlRootElement(name = "manorPen")
+@XmlRootElement(name = "manorInfo")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class ManorPenImpl extends AppInfoSupporter implements ManorPen
+public class ManorInfoImpl extends AppInfoSupporter implements ManorInfo
 {
 
 	private static final long serialVersionUID = 1413819560547091412L;
@@ -48,11 +48,11 @@ public class ManorPenImpl extends AppInfoSupporter implements ManorPen
 	@XmlJavaTypeAdapter(IntegerFarmXmlAdapter.class)
 	private Map<Integer, Farm> farms = new LinkedHashMap<Integer, Farm>();
 
-	public ManorPenImpl(Role role)
+	public ManorInfoImpl(Role role)
 	{
 		this.role = role;
 		//建構農場頁
-		FarmType[] farmTypes = ManorPen.FarmType.values();
+		FarmType[] farmTypes = ManorInfo.FarmType.values();
 		for (FarmType farmType : farmTypes)
 		{
 			//id=0,1,2
@@ -71,7 +71,7 @@ public class ManorPenImpl extends AppInfoSupporter implements ManorPen
 		}
 	}
 
-	public ManorPenImpl()
+	public ManorInfoImpl()
 	{
 		this(null);
 	}
@@ -1054,8 +1054,8 @@ public class ManorPenImpl extends AppInfoSupporter implements ManorPen
 
 	public Object clone()
 	{
-		ManorPenImpl copy = null;
-		copy = (ManorPenImpl) super.clone();
+		ManorInfoImpl copy = null;
+		copy = (ManorInfoImpl) super.clone();
 		copy.farms = clone(farms);
 		//role不要clone,會造成loop
 		return copy;

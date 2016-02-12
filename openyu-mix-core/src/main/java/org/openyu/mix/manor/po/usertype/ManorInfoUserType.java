@@ -8,21 +8,21 @@ import org.hibernate.engine.spi.SessionImplementor;
 import org.openyu.mix.item.po.usertype.ItemUserType;
 import org.openyu.mix.item.vo.Item;
 import org.openyu.mix.manor.vo.Land;
-import org.openyu.mix.manor.vo.ManorPen;
-import org.openyu.mix.manor.vo.ManorPen.Farm;
+import org.openyu.mix.manor.vo.ManorInfo;
+import org.openyu.mix.manor.vo.ManorInfo.Farm;
 import org.openyu.mix.manor.vo.Seed;
-import org.openyu.mix.manor.vo.impl.ManorPenImpl;
+import org.openyu.mix.manor.vo.impl.ManorInfoImpl;
 import org.openyu.commons.enumz.EnumHelper;
 import org.openyu.commons.hibernate.usertype.supporter.BaseUserTypeSupporter;
 import org.openyu.commons.lang.ArrayHelper;
 
-public class ManorPenUserType extends BaseUserTypeSupporter {
+public class ManorInfoUserType extends BaseUserTypeSupporter {
 
 	private static final long serialVersionUID = -2066924784420555409L;
 
 	private static transient ItemUserType itemUserType = new ItemUserType();
 
-	public ManorPenUserType() {
+	public ManorInfoUserType() {
 		// --------------------------------------------------
 		// 最新版本,目前用1,若將來有新版本
 		// 可用其他版號,如:VolType._2
@@ -37,7 +37,7 @@ public class ManorPenUserType extends BaseUserTypeSupporter {
 
 	@Override
 	public Class<?> returnedClass() {
-		return ManorPen.class;
+		return ManorInfo.class;
 	}
 
 	// --------------------------------------------------
@@ -48,12 +48,12 @@ public class ManorPenUserType extends BaseUserTypeSupporter {
 	@SuppressWarnings("unchecked")
 	public <R, T> R marshal(T value, SessionImplementor session) {
 		R result = null;
-		if (!(value instanceof ManorPen)) {
+		if (!(value instanceof ManorInfo)) {
 			return result;
 		}
 		//
 		StringBuilder dest = new StringBuilder();
-		ManorPen src = (ManorPen) value;
+		ManorInfo src = (ManorInfo) value;
 		// vol
 		dest.append(assembleVol(getVolType()));
 		// v1
@@ -69,7 +69,7 @@ public class ManorPenUserType extends BaseUserTypeSupporter {
 	 * @param src
 	 * @return
 	 */
-	public String assembleBy_1(ManorPen src) {
+	public String assembleBy_1(ManorInfo src) {
 		StringBuilder result = new StringBuilder();
 		//
 		Map<Integer, Farm> farms = src.getFarms();// 包含被鎖定的包包頁
@@ -121,7 +121,7 @@ public class ManorPenUserType extends BaseUserTypeSupporter {
 	 */
 	@SuppressWarnings("unchecked")
 	public <R, T, O> R unmarshal(T value, O owner, SessionImplementor session) {
-		ManorPen result = new ManorPenImpl();
+		ManorInfo result = new ManorInfoImpl();
 		//
 		if (!(value instanceof String)) {
 			return (R) result;
@@ -154,8 +154,8 @@ public class ManorPenUserType extends BaseUserTypeSupporter {
 	 * @see ItemUserType
 	 * 
 	 */
-	protected ManorPen disassembleBy_1(StringBuilder src) {
-		ManorPen result = new ManorPenImpl();
+	protected ManorInfo disassembleBy_1(StringBuilder src) {
+		ManorInfo result = new ManorInfoImpl();
 		if (src == null) {
 			return result;
 		}

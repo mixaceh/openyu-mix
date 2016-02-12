@@ -2,16 +2,16 @@ package org.openyu.mix.wuxing.po.usertype;
 
 import static org.junit.Assert.*;
 import org.junit.Test;
-import org.openyu.mix.wuxing.po.usertype.WuxingPenUserType;
+import org.openyu.mix.wuxing.po.usertype.WuxingInfoUserType;
 import org.openyu.mix.wuxing.vo.Outcome;
-import org.openyu.mix.wuxing.vo.WuxingPen;
+import org.openyu.mix.wuxing.vo.WuxingInfo;
 import org.openyu.mix.wuxing.vo.impl.OutcomeImpl;
-import org.openyu.mix.wuxing.vo.impl.WuxingPenImpl;
+import org.openyu.mix.wuxing.vo.impl.WuxingInfoImpl;
 import org.openyu.commons.junit.supporter.BaseTestSupporter;
 
-public class WuxingPenUserTypeTest extends BaseTestSupporter {
+public class WuxingInfoUserTypeTest extends BaseTestSupporter {
 
-	private static WuxingPenUserType userType = new WuxingPenUserType();
+	private static WuxingInfoUserType userType = new WuxingInfoUserType();
 
 	@Test
 	// 1000000 times: 924 mills.
@@ -19,7 +19,7 @@ public class WuxingPenUserTypeTest extends BaseTestSupporter {
 	// 1000000 times: 1075 mills.
 	// verified
 	public void marshal() {
-		WuxingPen value = new WuxingPenImpl();
+		WuxingInfo value = new WuxingInfoImpl();
 		value.setPlayTime(1337568856471L);
 		value.setDailyTimes(1);
 		value.setAccuTimes(1);
@@ -55,7 +55,7 @@ public class WuxingPenUserTypeTest extends BaseTestSupporter {
 	public void unmarshal() {
 		String value = "♥1♠1337568856471♠1♠1♠21341♠21544♠12315♠2♦T_POTION_HP_G001♣1♦T_POTION_MP_G001♣1";
 		//
-		WuxingPen result = null;
+		WuxingInfo result = null;
 		//
 		int count = 1000;
 

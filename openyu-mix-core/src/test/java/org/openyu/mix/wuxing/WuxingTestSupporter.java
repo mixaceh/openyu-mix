@@ -29,8 +29,8 @@ import org.openyu.mix.wuxing.service.adapter.WuxingChangeAdapter;
 import org.openyu.mix.wuxing.socklet.WuxingSocklet;
 import org.openyu.mix.wuxing.vo.Outcome;
 import org.openyu.mix.wuxing.vo.WuxingCollector;
-import org.openyu.mix.wuxing.vo.WuxingPen;
-import org.openyu.mix.wuxing.vo.impl.WuxingPenImpl;
+import org.openyu.mix.wuxing.vo.WuxingInfo;
+import org.openyu.mix.wuxing.vo.impl.WuxingInfoImpl;
 
 public class WuxingTestSupporter extends AppTestSupporter {
 
@@ -155,8 +155,8 @@ public class WuxingTestSupporter extends AppTestSupporter {
 	 * 
 	 * @param role
 	 */
-	public static WuxingPen mockWuxingPen(Role role) {
-		WuxingPen result = new WuxingPenImpl(role);
+	public static WuxingInfo mockWuxingInfo(Role role) {
+		WuxingInfo result = new WuxingInfoImpl(role);
 		//
 		result.setPlayTime(System.currentTimeMillis());
 		result.setDailyTimes(1);

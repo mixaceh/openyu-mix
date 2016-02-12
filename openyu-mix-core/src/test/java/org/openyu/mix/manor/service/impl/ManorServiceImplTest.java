@@ -18,10 +18,10 @@ import org.openyu.mix.manor.service.ManorService.ErrorType;
 import org.openyu.mix.manor.service.ManorService.ReclaimResult;
 import org.openyu.mix.manor.service.ManorService.SeedResult;
 import org.openyu.mix.manor.vo.Land;
-import org.openyu.mix.manor.vo.ManorPen;
-import org.openyu.mix.manor.vo.ManorPen.Farm;
+import org.openyu.mix.manor.vo.ManorInfo;
+import org.openyu.mix.manor.vo.ManorInfo.Farm;
 import org.openyu.mix.manor.vo.MatureType;
-import org.openyu.mix.manor.vo.impl.ManorPenImplTest;
+import org.openyu.mix.manor.vo.impl.ManorInfoImplTest;
 import org.openyu.mix.manor.vo.Seed;
 import org.openyu.mix.role.vo.BagInfo;
 import org.openyu.mix.role.vo.Role;
@@ -57,8 +57,8 @@ public class ManorServiceImplTest extends ManorTestSupporter {
 		// 模擬種植
 		mockPlant(role);
 		//
-		ManorPen manorPen = role.getManorPen();
-		Seed seed = manorPen.getSeed(0, 0);
+		ManorInfo manorInfo = role.getManorInfo();
+		Seed seed = manorInfo.getSeed(0, 0);
 
 		// 祈禱,減少成長毫秒
 		seed.setPrayTime(System.currentTimeMillis());
@@ -67,7 +67,7 @@ public class ManorServiceImplTest extends ManorTestSupporter {
 		seed.setWaterTime(System.currentTimeMillis());
 
 		// 土地,增加成長速度,AttributeType.MANOR_SPEED_RATE
-		Land land = manorPen.getFarm(0).getLand();
+		Land land = manorInfo.getFarm(0).getLand();
 		// 強化
 		land.setEnhanceLevel(EnhanceLevel._10);
 		itemService.calcEnhanceAttributes(land);
@@ -79,28 +79,28 @@ public class ManorServiceImplTest extends ManorTestSupporter {
 	}
 
 	@Test
-	public void sendManorPen() {
+	public void sendManorInfo() {
 		Role role = mockRole();
-		ManorPen manorPen = ManorPenImplTest.mockManorPen();
-		role.setManorPen(manorPen);
+		ManorInfo manorInfo = ManorInfoImplTest.mockManorInfo();
+		role.setManorInfo(manorInfo);
 		//
-		manorService.sendManorPen(role, role.getManorPen());
+		manorService.sendManorInfo(role, role.getManorInfo());
 	}
 
 	@Test
-	public void fillManorPen() {
+	public void fillManorInfo() {
 		Message result = null;
 		//
 		Role role = mockRole();
-		ManorPen manorPen = ManorPenImplTest.mockManorPen();
-		role.setManorPen(manorPen);
+		ManorInfo manorInfo = ManorInfoImplTest.mockManorInfo();
+		role.setManorInfo(manorInfo);
 		//
 		int count = 1; // 100w
 		long beg = System.currentTimeMillis();
 		//
 		for (int i = 0; i < count; i++) {
 			result = messageService.createMessage(CoreModuleType.MANOR, CoreModuleType.CLIENT, null, role.getId());
-			manorService.fillManorPen(result, manorPen);
+			manorService.fillManorInfo(result, manorInfo);
 		}
 		//
 		long end = System.currentTimeMillis();
@@ -109,19 +109,19 @@ public class ManorServiceImplTest extends ManorTestSupporter {
 		System.out.println(result);
 
 		// 移除1個種子
-		manorPen.removeSeed(0, 0);
+		manorInfo.removeSeed(0, 0);
 		// 鎖定 TabType._1,TabType._2
-		manorPen.lock(1);
-		manorPen.lock(2);
+		manorInfo.lock(1);
+		manorInfo.lock(2);
 		//
 		result = messageService.createMessage(CoreModuleType.MANOR, CoreModuleType.CLIENT, null, role.getId());
-		manorService.fillManorPen(result, manorPen);
+		manorService.fillManorInfo(result, manorInfo);
 		System.out.println(result);
 
 		// 移除 TabType._0 的土地
-		manorPen.getFarm(0).setLand(null);
+		manorInfo.getFarm(0).setLand(null);
 		result = messageService.createMessage(CoreModuleType.MANOR, CoreModuleType.CLIENT, null, role.getId());
-		manorService.fillManorPen(result, manorPen);
+		manorService.fillManorInfo(result, manorInfo);
 		System.out.println(result);
 	}
 
@@ -149,10 +149,10 @@ public class ManorServiceImplTest extends ManorTestSupporter {
 		assertNotNull(result);
 
 		// 莊園
-		ManorPen manorPen = role.getManorPen();
-		assertEquals(1, manorPen.getFarmSize());
+		ManorInfo manorInfo = role.getManorInfo();
+		assertEquals(1, manorInfo.getFarmSize());
 		// 農場
-		Farm farm = manorPen.getFarm(0);
+		Farm farm = manorInfo.getFarm(0);
 		assertEquals(land, farm.getLand());
 		//
 		ThreadHelper.sleep(3 * 1000);
@@ -167,7 +167,7 @@ public class ManorServiceImplTest extends ManorTestSupporter {
 		// 包包
 		BagInfo bagInfo = role.getBagInfo();
 		// 莊園
-		ManorPen manorPen = role.getManorPen();
+		ManorInfo manorInfo = role.getManorInfo();
 		// 土地
 		Land land = itemService.createLand("L_TROPICS_G001");
 		//
@@ -195,14 +195,14 @@ public class ManorServiceImplTest extends ManorTestSupporter {
 		// 沒有錯誤
 		assertEquals(ErrorType.NO_ERROR, errorType);
 
-		manorPen.lock(0);// 鎖定
+		manorInfo.lock(0);// 鎖定
 		errorType = manorService.checkReclaim(role, 0, land.getUniqueId());
 		System.out.println(errorType);
 		// 農場不存在
 		assertEquals(ErrorType.FARM_NOT_EXIST, errorType);
 
-		manorPen.unLock(0);
-		Farm farm = manorPen.getFarm(0);
+		manorInfo.unLock(0);
+		Farm farm = manorInfo.getFarm(0);
 		farm.setLand(land);
 		errorType = manorService.checkReclaim(role, 0, land.getUniqueId());
 		System.out.println(errorType);
@@ -245,10 +245,10 @@ public class ManorServiceImplTest extends ManorTestSupporter {
 		assertNotNull(result);
 
 		// 莊園
-		ManorPen manorPen = role.getManorPen();
-		assertEquals(1, manorPen.getFarmSize());
+		ManorInfo manorInfo = role.getManorInfo();
+		assertEquals(1, manorInfo.getFarmSize());
 		// 農場
-		Farm farm = manorPen.getFarm(0);
+		Farm farm = manorInfo.getFarm(0);
 		// 休耕,所以農場應沒土地了
 		assertNull(farm.getLand());
 		//
@@ -264,7 +264,7 @@ public class ManorServiceImplTest extends ManorTestSupporter {
 		// 包包
 		BagInfo bagInfo = role.getBagInfo();
 		// 莊園
-		ManorPen manorPen = role.getManorPen();
+		ManorInfo manorInfo = role.getManorInfo();
 		// 土地
 		Land land = itemService.createLand("L_TROPICS_G001");
 		//
@@ -274,19 +274,19 @@ public class ManorServiceImplTest extends ManorTestSupporter {
 		assertEquals(ErrorType.GOLD_NOT_ENOUGH, errorType);
 
 		role.setGold(10000 * 10000L);// 1e
-		manorPen.lock(0);
+		manorInfo.lock(0);
 		errorType = manorService.checkDisuse(role, 0);
 		System.out.println(errorType);
 		// 農場不存在
 		assertEquals(ErrorType.FARM_NOT_EXIST, errorType);
 
-		manorPen.unLock(0);
+		manorInfo.unLock(0);
 		errorType = manorService.checkDisuse(role, 0);
 		System.out.println(errorType);
 		// 土地不存在
 		assertEquals(ErrorType.LAND_NOT_EXIST, errorType);
 
-		Farm farm = manorPen.getFarm(0);
+		Farm farm = manorInfo.getFarm(0);
 		farm.setLand(land);
 		errorType = manorService.checkDisuse(role, 0);
 		System.out.println(errorType);
@@ -319,7 +319,7 @@ public class ManorServiceImplTest extends ManorTestSupporter {
 		Seed seed = itemService.createSeed("S_COTTON_G001", 10);
 		// 種子,塞到包包去
 		bagInfo.addItem(0, 0, seed);
-		ManorPen manorPen = role.getManorPen();
+		ManorInfo manorInfo = role.getManorInfo();
 
 		// 模擬開墾
 		mockReclaim(role);
@@ -339,7 +339,7 @@ public class ManorServiceImplTest extends ManorTestSupporter {
 
 		// 種子2
 		seed = mockSeed("S_COTTON_G001");
-		manorPen.addSeed(0, 1, seed);
+		manorInfo.addSeed(0, 1, seed);
 		// 沒道具扣儲值幣
 		result = manorService.culture(true, role, CultureType.WATER.getValue(), 0, 1, null);
 		System.out.println(result);
@@ -372,7 +372,7 @@ public class ManorServiceImplTest extends ManorTestSupporter {
 		// 模擬開墾
 		mockReclaim(role);
 		// 莊園
-		ManorPen manorPen = role.getManorPen();
+		ManorInfo manorInfo = role.getManorInfo();
 
 		// 種植
 		CultureResult result = manorService.culture(true, role, CultureType.PLANT.getValue(), 0, 0, seed.getUniqueId());
@@ -380,7 +380,7 @@ public class ManorServiceImplTest extends ManorTestSupporter {
 		assertNotNull(result);
 
 		// 來吧,裝成熟
-		Seed farmSeed = manorPen.getSeed(0, 0);
+		Seed farmSeed = manorInfo.getSeed(0, 0);
 		farmSeed.setMatureTime(System.currentTimeMillis());
 		farmSeed.setMatureType(MatureType.MATURE);
 
@@ -414,7 +414,7 @@ public class ManorServiceImplTest extends ManorTestSupporter {
 		// 模擬開墾
 		mockReclaim(role);
 		// 莊園
-		ManorPen manorPen = role.getManorPen();
+		ManorInfo manorInfo = role.getManorInfo();
 
 		// 種植
 		CultureResult result = manorService.culture(true, role, CultureType.PLANT.getValue(), 0, 0, seed.getUniqueId());
@@ -448,7 +448,7 @@ public class ManorServiceImplTest extends ManorTestSupporter {
 		// 模擬開墾
 		mockReclaim(role);
 		// 莊園
-		ManorPen manorPen = role.getManorPen();
+		ManorInfo manorInfo = role.getManorInfo();
 
 		// 種植
 		CultureResult result = manorService.culture(true, role, CultureType.PLANT.getValue(), 0, 0, seed.getUniqueId());
@@ -456,7 +456,7 @@ public class ManorServiceImplTest extends ManorTestSupporter {
 		assertNotNull(result);
 
 		// 來吧,搞枯萎
-		Seed farmSeed = manorPen.getSeed(0, 0);
+		Seed farmSeed = manorInfo.getSeed(0, 0);
 		farmSeed.setMatureTime(System.currentTimeMillis());
 		farmSeed.setMatureType(MatureType.WITHER);
 
@@ -593,21 +593,21 @@ public class ManorServiceImplTest extends ManorTestSupporter {
 		assertEquals(ErrorType.LEVLE_NOT_ENOUGH, result);
 		//
 		role.setLevel(20);// 等級
-		ManorPen manorPen = role.getManorPen();
-		manorPen.lock(0);// 鎖定農場
+		ManorInfo manorInfo = role.getManorInfo();
+		manorInfo.lock(0);// 鎖定農場
 		result = manorService.checkPlant(role, 0, 0, seed.getUniqueId());
 		System.out.println(result);
 		// 農場不存在
 		assertEquals(ErrorType.FARM_NOT_EXIST, result);
 		//
 		// 模擬開墾
-		manorPen.unLock(0);// 解鎖農場
+		manorInfo.unLock(0);// 解鎖農場
 		mockReclaim(role);
 		result = manorService.checkPlant(role, 0, 0, seed.getUniqueId());
 		System.out.println(result);
 		assertEquals(ErrorType.NO_ERROR, result);
 		//
-		manorPen.addSeed(0, 0, seed);
+		manorInfo.addSeed(0, 0, seed);
 		result = manorService.checkPlant(role, 0, 0, seed.getUniqueId());
 		System.out.println(result);
 		// 已有種子
@@ -623,7 +623,7 @@ public class ManorServiceImplTest extends ManorTestSupporter {
 		BagInfo bagInfo = role.getBagInfo();
 		role.setGold(10000 * 10000L);// 1e
 		role.setVipType(VipType._2);// vip
-		ManorPen manorPen = role.getManorPen();
+		ManorInfo manorInfo = role.getManorInfo();
 
 		// 模擬開墾
 		mockReclaim(role);
@@ -640,7 +640,7 @@ public class ManorServiceImplTest extends ManorTestSupporter {
 
 		// 種子2
 		Seed seed = mockSeed("S_COTTON_G001");
-		manorPen.addSeed(0, 1, seed);
+		manorInfo.addSeed(0, 1, seed);
 		// 沒道具扣儲值幣
 		result = manorService.water(true, role, 0, 1);
 		System.out.println(result);
@@ -656,15 +656,15 @@ public class ManorServiceImplTest extends ManorTestSupporter {
 	public void checkWater() {
 		Role role = mockRole();
 		// BagInfo bagInfo = role.getBagInfo();
-		ManorPen manorPen = role.getManorPen();
+		ManorInfo manorInfo = role.getManorInfo();
 		//
-		manorPen.lock(0);
+		manorInfo.lock(0);
 		ErrorType result = manorService.checkWater(role, 0, 0);
 		System.out.println(result);
 		// 農場不存在
 		assertEquals(ErrorType.FARM_NOT_EXIST, result);
 
-		manorPen.unLock(0);
+		manorInfo.unLock(0);
 		result = manorService.checkWater(role, 0, 0);
 		System.out.println(result);
 		// 種子不存在
@@ -672,7 +672,7 @@ public class ManorServiceImplTest extends ManorTestSupporter {
 
 		// 模擬種植
 		mockPlant(role);
-		Seed seed = manorPen.getSeed(0, 0);
+		Seed seed = manorInfo.getSeed(0, 0);
 		seed.setWaterTime(System.currentTimeMillis());
 		result = manorService.checkWater(role, 0, 0);
 		System.out.println(result);
@@ -689,7 +689,7 @@ public class ManorServiceImplTest extends ManorTestSupporter {
 		BagInfo bagInfo = role.getBagInfo();
 		role.setGold(10000 * 10000L);// 1e
 		role.setVipType(VipType._2);// vip
-		ManorPen manorPen = role.getManorPen();
+		ManorInfo manorInfo = role.getManorInfo();
 
 		// 模擬開墾
 		mockReclaim(role);
@@ -705,7 +705,7 @@ public class ManorServiceImplTest extends ManorTestSupporter {
 
 		// 種子2
 		Seed seed = mockSeed("S_COTTON_G001");
-		manorPen.addSeed(0, 1, seed);
+		manorInfo.addSeed(0, 1, seed);
 		// 沒道具扣儲值幣
 		result = manorService.pray(true, role, 0, 1);
 		System.out.println(result);
@@ -719,15 +719,15 @@ public class ManorServiceImplTest extends ManorTestSupporter {
 	public void checkPray() {
 		Role role = mockRole();
 		// BagInfo bagInfo = role.getBagInfo();
-		ManorPen manorPen = role.getManorPen();
+		ManorInfo manorInfo = role.getManorInfo();
 		//
-		manorPen.lock(0);
+		manorInfo.lock(0);
 		ErrorType result = manorService.checkPray(role, 0, 0);
 		System.out.println(result);
 		// 農場不存在
 		assertEquals(ErrorType.FARM_NOT_EXIST, result);
 
-		manorPen.unLock(0);
+		manorInfo.unLock(0);
 		result = manorService.checkPray(role, 0, 0);
 		System.out.println(result);
 		// 種子不存在
@@ -735,7 +735,7 @@ public class ManorServiceImplTest extends ManorTestSupporter {
 
 		// 模擬種植
 		mockPlant(role);
-		Seed seed = manorPen.getSeed(0, 0);
+		Seed seed = manorInfo.getSeed(0, 0);
 		seed.setPrayTime(System.currentTimeMillis());
 		result = manorService.checkPray(role, 0, 0);
 		System.out.println(result);
@@ -752,7 +752,7 @@ public class ManorServiceImplTest extends ManorTestSupporter {
 		BagInfo bagInfo = role.getBagInfo();
 		role.setGold(10000 * 10000L);// 1e
 		role.setVipType(VipType._2);// vip
-		ManorPen manorPen = role.getManorPen();
+		ManorInfo manorInfo = role.getManorInfo();
 
 		// 模擬開墾
 		mockReclaim(role);
@@ -767,7 +767,7 @@ public class ManorServiceImplTest extends ManorTestSupporter {
 		assertNotNull(result);
 		// 種子2
 		Seed seed = mockSeed("S_COTTON_G001");
-		manorPen.addSeed(0, 1, seed);
+		manorInfo.addSeed(0, 1, seed);
 		// 沒道具扣儲值幣
 		result = manorService.speed(true, role, 0, 1);
 		System.out.println(result);
@@ -785,15 +785,15 @@ public class ManorServiceImplTest extends ManorTestSupporter {
 		role.setGold(10000 * 10000L);// 1e
 		role.setVipType(VipType._2);// vip
 		// BagInfo bagInfo = role.getBagInfo();
-		ManorPen manorPen = role.getManorPen();
+		ManorInfo manorInfo = role.getManorInfo();
 		//
-		manorPen.lock(0);
+		manorInfo.lock(0);
 		ErrorType result = manorService.checkSpeed(role, 0, 0);
 		System.out.println(result);
 		// 農場不存在
 		assertEquals(ErrorType.FARM_NOT_EXIST, result);
 
-		manorPen.unLock(0);
+		manorInfo.unLock(0);
 		result = manorService.checkSpeed(role, 0, 0);
 		System.out.println(result);
 		// 土地不存在
@@ -809,7 +809,7 @@ public class ManorServiceImplTest extends ManorTestSupporter {
 		// 模擬種植
 		mockPlant(role);
 
-		Seed seed = manorPen.getSeed(0, 0);
+		Seed seed = manorInfo.getSeed(0, 0);
 		// 搞成沒種植
 		seed.setPlantTime(0);
 		seed.setMatureType(MatureType.PENDING);
@@ -826,13 +826,13 @@ public class ManorServiceImplTest extends ManorTestSupporter {
 	 */
 	public void harvest() {
 		Role role = mockRole();
-		ManorPen manorPen = role.getManorPen();
+		ManorInfo manorInfo = role.getManorInfo();
 		// 模擬開墾
 		mockReclaim(role);
 		// 模擬種植
 		mockPlant(role);
 
-		Seed seed = manorPen.getSeed(0, 0);
+		Seed seed = manorInfo.getSeed(0, 0);
 		// 來吧,裝成熟
 		seed.setMatureTime(System.currentTimeMillis());
 		seed.setMatureType(MatureType.MATURE);
@@ -848,15 +848,15 @@ public class ManorServiceImplTest extends ManorTestSupporter {
 	 */
 	public void checkHarvest() {
 		Role role = mockRole();
-		ManorPen manorPen = role.getManorPen();
+		ManorInfo manorInfo = role.getManorInfo();
 		//
-		manorPen.lock(0);
+		manorInfo.lock(0);
 		ErrorType result = manorService.checkHarvest(role, 0, 0);
 		System.out.println(result);
 		// 農場不存在
 		assertEquals(ErrorType.FARM_NOT_EXIST, result);
 
-		manorPen.unLock(0);
+		manorInfo.unLock(0);
 		result = manorService.checkHarvest(role, 0, 0);
 		System.out.println(result);
 		// 土地不存在
@@ -876,7 +876,7 @@ public class ManorServiceImplTest extends ManorTestSupporter {
 		// 還沒成熟
 		assertEquals(ErrorType.NOT_MATURE, result);
 
-		Seed seed = manorPen.getSeed(0, 0);
+		Seed seed = manorInfo.getSeed(0, 0);
 		// 來吧,裝成熟
 		seed.setMatureTime(System.currentTimeMillis());
 		seed.setMatureType(MatureType.MATURE);
@@ -896,14 +896,14 @@ public class ManorServiceImplTest extends ManorTestSupporter {
 		role.setGold(10000 * 10000L);// 1e
 		role.setVipType(VipType._2);// vip
 		BagInfo bagInfo = role.getBagInfo();
-		ManorPen manorPen = role.getManorPen();
+		ManorInfo manorInfo = role.getManorInfo();
 
 		// 模擬開墾
 		mockReclaim(role);
 		// 模擬種植
 		mockPlant(role);
 
-		Seed seed = manorPen.getSeed(0, 0);
+		Seed seed = manorInfo.getSeed(0, 0);
 		// 搞成枯萎
 		seed.setMatureTime(System.currentTimeMillis());
 		seed.setMatureType(MatureType.WITHER);
@@ -918,7 +918,7 @@ public class ManorServiceImplTest extends ManorTestSupporter {
 
 		// 種子2
 		seed = mockSeed("S_COTTON_G001");
-		manorPen.addSeed(0, 1, seed);
+		manorInfo.addSeed(0, 1, seed);
 		// 搞成枯萎
 		seed.setMatureTime(System.currentTimeMillis());
 		seed.setMatureType(MatureType.WITHER);
@@ -938,15 +938,15 @@ public class ManorServiceImplTest extends ManorTestSupporter {
 	public void checkRevive() {
 		Role role = mockRole();
 		// BagInfo bagInfo = role.getBagInfo();
-		ManorPen manorPen = role.getManorPen();
+		ManorInfo manorInfo = role.getManorInfo();
 		//
-		manorPen.lock(0);
+		manorInfo.lock(0);
 		ErrorType result = manorService.checkRevive(role, 0, 0);
 		System.out.println(result);
 		// 農場不存在
 		assertEquals(ErrorType.FARM_NOT_EXIST, result);
 
-		manorPen.unLock(0);
+		manorInfo.unLock(0);
 		result = manorService.checkRevive(role, 0, 0);
 		System.out.println(result);
 		// 土地不存在
@@ -961,7 +961,7 @@ public class ManorServiceImplTest extends ManorTestSupporter {
 
 		// 模擬種植
 		mockPlant(role);
-		Seed seed = manorPen.getSeed(0, 0);
+		Seed seed = manorInfo.getSeed(0, 0);
 
 		// 搞成成長中
 		seed.setMatureTime(0);
@@ -994,15 +994,15 @@ public class ManorServiceImplTest extends ManorTestSupporter {
 	 */
 	public void checkClear() {
 		Role role = mockRole();
-		ManorPen manorPen = role.getManorPen();
+		ManorInfo manorInfo = role.getManorInfo();
 		//
-		manorPen.lock(0);
+		manorInfo.lock(0);
 		ErrorType result = manorService.checkClear(role, 0, 0);
 		System.out.println(result);
 		// 農場不存在
 		assertEquals(ErrorType.FARM_NOT_EXIST, result);
 
-		manorPen.unLock(0);
+		manorInfo.unLock(0);
 		result = manorService.checkClear(role, 0, 0);
 		System.out.println(result);
 		// 種子不存在
@@ -1030,13 +1030,13 @@ public class ManorServiceImplTest extends ManorTestSupporter {
 		// 模擬種植
 		mockPlant(role);
 		//
-		ManorPen manorPen = role.getManorPen();
+		ManorInfo manorInfo = role.getManorInfo();
 		// 種子2
 		Seed seed = mockSeed("S_COTTON_G001");
-		manorPen.addSeed(0, 1, seed);
+		manorInfo.addSeed(0, 1, seed);
 		// 種子3
 		seed = mockSeed("S_OAK_G001");
-		manorPen.addSeed(0, 2, seed);
+		manorInfo.addSeed(0, 2, seed);
 		//
 		List<SeedResult> result = null;
 		//
@@ -1044,7 +1044,7 @@ public class ManorServiceImplTest extends ManorTestSupporter {
 		long beg = System.currentTimeMillis();
 		//
 		for (int i = 0; i < count; i++) {
-			result = manorService.calcGrowings(manorPen);
+			result = manorService.calcGrowings(manorInfo);
 		}
 
 		long end = System.currentTimeMillis();
@@ -1054,7 +1054,7 @@ public class ManorServiceImplTest extends ManorTestSupporter {
 		assertEquals(3, result.size());
 		//
 		seed.setWaterTime(System.currentTimeMillis());
-		result = manorService.calcGrowings(manorPen);
+		result = manorService.calcGrowings(manorInfo);
 		System.out.println(result);
 		assertEquals(3, result.size());
 	}
@@ -1073,13 +1073,13 @@ public class ManorServiceImplTest extends ManorTestSupporter {
 		// 模擬種植
 		mockPlant(role);
 		//
-		ManorPen manorPen = role.getManorPen();
+		ManorInfo manorInfo = role.getManorInfo();
 		// 種子2
 		Seed seed = mockSeed("S_COTTON_G001");
-		manorPen.addSeed(0, 1, seed);
+		manorInfo.addSeed(0, 1, seed);
 		// 種子3
 		seed = mockSeed("S_OAK_G001");
-		manorPen.addSeed(0, 2, seed);
+		manorInfo.addSeed(0, 2, seed);
 		//
 		List<SeedResult> result = null;
 		//
@@ -1087,7 +1087,7 @@ public class ManorServiceImplTest extends ManorTestSupporter {
 		long beg = System.currentTimeMillis();
 		//
 		for (int i = 0; i < count; i++) {
-			result = manorService.calcCanWaters(manorPen);
+			result = manorService.calcCanWaters(manorInfo);
 		}
 
 		long end = System.currentTimeMillis();
@@ -1097,7 +1097,7 @@ public class ManorServiceImplTest extends ManorTestSupporter {
 		assertEquals(3, result.size());
 		//
 		seed.setWaterTime(System.currentTimeMillis());
-		result = manorService.calcCanWaters(manorPen);
+		result = manorService.calcCanWaters(manorInfo);
 		System.out.println(result);
 		assertEquals(2, result.size());
 	}
@@ -1116,13 +1116,13 @@ public class ManorServiceImplTest extends ManorTestSupporter {
 		// 模擬種植
 		mockPlant(role);
 		//
-		ManorPen manorPen = role.getManorPen();
+		ManorInfo manorInfo = role.getManorInfo();
 		// 種子2
 		Seed seed = mockSeed("S_COTTON_G001");
-		manorPen.addSeed(0, 1, seed);
+		manorInfo.addSeed(0, 1, seed);
 		// 種子3
 		seed = mockSeed("S_OAK_G001");
-		manorPen.addSeed(0, 2, seed);
+		manorInfo.addSeed(0, 2, seed);
 		//
 		List<SeedResult> result = null;
 		//
@@ -1130,7 +1130,7 @@ public class ManorServiceImplTest extends ManorTestSupporter {
 		long beg = System.currentTimeMillis();
 		//
 		for (int i = 0; i < count; i++) {
-			result = manorService.calcCanPrays(manorPen);
+			result = manorService.calcCanPrays(manorInfo);
 		}
 
 		long end = System.currentTimeMillis();
@@ -1140,7 +1140,7 @@ public class ManorServiceImplTest extends ManorTestSupporter {
 		assertEquals(3, result.size());
 		//
 		seed.setPrayTime(System.currentTimeMillis());
-		result = manorService.calcCanPrays(manorPen);
+		result = manorService.calcCanPrays(manorInfo);
 		System.out.println(result);
 		assertEquals(2, result.size());
 	}
@@ -1159,13 +1159,13 @@ public class ManorServiceImplTest extends ManorTestSupporter {
 		// 模擬種植
 		mockPlant(role);
 		//
-		ManorPen manorPen = role.getManorPen();
+		ManorInfo manorInfo = role.getManorInfo();
 		// 種子2
 		Seed seed = mockSeed("S_COTTON_G001");
-		manorPen.addSeed(0, 1, seed);
+		manorInfo.addSeed(0, 1, seed);
 		// 種子3
 		seed = mockSeed("S_OAK_G001");
-		manorPen.addSeed(0, 2, seed);
+		manorInfo.addSeed(0, 2, seed);
 		//
 		List<SeedResult> result = null;
 		//
@@ -1173,7 +1173,7 @@ public class ManorServiceImplTest extends ManorTestSupporter {
 		long beg = System.currentTimeMillis();
 		//
 		for (int i = 0; i < count; i++) {
-			result = manorService.calcCanSpeeds(manorPen);
+			result = manorService.calcCanSpeeds(manorInfo);
 		}
 
 		long end = System.currentTimeMillis();
@@ -1183,7 +1183,7 @@ public class ManorServiceImplTest extends ManorTestSupporter {
 		assertEquals(3, result.size());
 		//
 		seed.setMatureType(MatureType.MATURE);
-		result = manorService.calcCanSpeeds(manorPen);
+		result = manorService.calcCanSpeeds(manorInfo);
 		System.out.println(result);
 		assertEquals(2, result.size());
 	}
@@ -1202,15 +1202,15 @@ public class ManorServiceImplTest extends ManorTestSupporter {
 		// 模擬種植
 		mockPlant(role);
 		//
-		ManorPen manorPen = role.getManorPen();
+		ManorInfo manorInfo = role.getManorInfo();
 		// 種子2
 		Seed seed = mockSeed("S_COTTON_G001");
-		manorPen.addSeed(0, 1, seed);
+		manorInfo.addSeed(0, 1, seed);
 		seed.setMatureTime(System.currentTimeMillis());
 		seed.setMatureType(MatureType.MATURE);
 		// 種子3
 		seed = mockSeed("S_OAK_G001");
-		manorPen.addSeed(0, 2, seed);
+		manorInfo.addSeed(0, 2, seed);
 		seed.setMatureTime(System.currentTimeMillis());
 		seed.setMatureType(MatureType.MATURE);
 		//
@@ -1220,7 +1220,7 @@ public class ManorServiceImplTest extends ManorTestSupporter {
 		long beg = System.currentTimeMillis();
 		//
 		for (int i = 0; i < count; i++) {
-			result = manorService.calcCanHarvests(manorPen);
+			result = manorService.calcCanHarvests(manorInfo);
 		}
 
 		long end = System.currentTimeMillis();
@@ -1230,7 +1230,7 @@ public class ManorServiceImplTest extends ManorTestSupporter {
 		assertEquals(2, result.size());
 		//
 		seed.setMatureTime(0);
-		result = manorService.calcCanHarvests(manorPen);
+		result = manorService.calcCanHarvests(manorInfo);
 		System.out.println(result);
 		assertEquals(1, result.size());
 	}
@@ -1249,15 +1249,15 @@ public class ManorServiceImplTest extends ManorTestSupporter {
 		// 模擬種植
 		mockPlant(role);
 		//
-		ManorPen manorPen = role.getManorPen();
+		ManorInfo manorInfo = role.getManorInfo();
 		// 種子2
 		Seed seed = mockSeed("S_COTTON_G001");
-		manorPen.addSeed(0, 1, seed);
+		manorInfo.addSeed(0, 1, seed);
 		seed.setMatureTime(System.currentTimeMillis());
 		seed.setMatureType(MatureType.WITHER);
 		// 種子3
 		seed = mockSeed("S_OAK_G001");
-		manorPen.addSeed(0, 2, seed);
+		manorInfo.addSeed(0, 2, seed);
 		seed.setMatureTime(System.currentTimeMillis());
 		seed.setMatureType(MatureType.WITHER);
 		//
@@ -1267,7 +1267,7 @@ public class ManorServiceImplTest extends ManorTestSupporter {
 		long beg = System.currentTimeMillis();
 		//
 		for (int i = 0; i < count; i++) {
-			result = manorService.calcCanRevives(manorPen);
+			result = manorService.calcCanRevives(manorInfo);
 		}
 
 		long end = System.currentTimeMillis();
@@ -1277,7 +1277,7 @@ public class ManorServiceImplTest extends ManorTestSupporter {
 		assertEquals(2, result.size());
 		//
 		seed.setMatureTime(0);
-		result = manorService.calcCanRevives(manorPen);
+		result = manorService.calcCanRevives(manorInfo);
 		System.out.println(result);
 		assertEquals(1, result.size());
 	}
@@ -1297,13 +1297,13 @@ public class ManorServiceImplTest extends ManorTestSupporter {
 		// 模擬種植
 		mockPlant(role);
 		//
-		ManorPen manorPen = role.getManorPen();
+		ManorInfo manorInfo = role.getManorInfo();
 		// 種子2
 		Seed seed = mockSeed("S_COTTON_G001");
-		manorPen.addSeed(0, 1, seed);
+		manorInfo.addSeed(0, 1, seed);
 		// 種子3
 		seed = mockSeed("S_OAK_G001");
-		manorPen.addSeed(0, 2, seed);
+		manorInfo.addSeed(0, 2, seed);
 		//
 		// 加5個道具到包包
 		Item item = itemService.createItem(manorCollector.getWaterItem(), 1);
@@ -1333,13 +1333,13 @@ public class ManorServiceImplTest extends ManorTestSupporter {
 		// 模擬種植
 		mockPlant(role);
 		//
-		ManorPen manorPen = role.getManorPen();
+		ManorInfo manorInfo = role.getManorInfo();
 		// 種子2
 		Seed seed = mockSeed("S_COTTON_G001");
-		manorPen.addSeed(0, 1, seed);
+		manorInfo.addSeed(0, 1, seed);
 		// 種子3
 		seed = mockSeed("S_OAK_G001");
-		manorPen.addSeed(0, 2, seed);
+		manorInfo.addSeed(0, 2, seed);
 		//
 		// 加1個道具到包包
 		Item item = itemService.createItem(manorCollector.getWaterItem(), 1);
@@ -1369,7 +1369,7 @@ public class ManorServiceImplTest extends ManorTestSupporter {
 		Seed seed = itemService.createSeed("S_COTTON_G001", 10);
 		// 種子,塞到包包去
 		bagInfo.addItem(0, 0, seed);
-		ManorPen manorPen = role.getManorPen();
+		ManorInfo manorInfo = role.getManorInfo();
 
 		// 模擬開墾
 		mockReclaim(role);
@@ -1381,7 +1381,7 @@ public class ManorServiceImplTest extends ManorTestSupporter {
 		//
 		// 種子2
 		seed = mockSeed("S_COTTON_G001");
-		manorPen.addSeed(0, 1, seed);
+		manorInfo.addSeed(0, 1, seed);
 
 		// 加1個道具到包包
 		Item item = itemService.createItem(manorCollector.getWaterItem());
@@ -1409,13 +1409,13 @@ public class ManorServiceImplTest extends ManorTestSupporter {
 		// 模擬種植
 		mockPlant(role);
 		//
-		ManorPen manorPen = role.getManorPen();
+		ManorInfo manorInfo = role.getManorInfo();
 		// 種子2
 		Seed seed = mockSeed("S_COTTON_G001");
-		manorPen.addSeed(0, 1, seed);
+		manorInfo.addSeed(0, 1, seed);
 		// 種子3
 		seed = mockSeed("S_OAK_G001");
-		manorPen.addSeed(0, 2, seed);
+		manorInfo.addSeed(0, 2, seed);
 		//
 		manorService.waterAll(true, role);// 3次儲值幣的總數
 		//
@@ -1437,13 +1437,13 @@ public class ManorServiceImplTest extends ManorTestSupporter {
 		// 模擬種植
 		mockPlant(role);
 		//
-		ManorPen manorPen = role.getManorPen();
+		ManorInfo manorInfo = role.getManorInfo();
 		// 種子2
 		Seed seed = mockSeed("S_COTTON_G001");
-		manorPen.addSeed(0, 1, seed);
+		manorInfo.addSeed(0, 1, seed);
 		// 種子3
 		seed = mockSeed("S_OAK_G001");
-		manorPen.addSeed(0, 2, seed);
+		manorInfo.addSeed(0, 2, seed);
 		//
 		// 加5個道具到包包
 		Item item = itemService.createItem(manorCollector.getPrayItem(), 1);

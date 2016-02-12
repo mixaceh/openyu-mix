@@ -15,7 +15,7 @@ import org.openyu.mix.wuxing.service.WuxingService.ErrorType;
 import org.openyu.mix.wuxing.service.WuxingService.PlayResult;
 import org.openyu.mix.wuxing.service.WuxingService.PlayType;
 import org.openyu.mix.wuxing.service.WuxingService.PutResult;
-import org.openyu.mix.wuxing.vo.WuxingPen;
+import org.openyu.mix.wuxing.vo.WuxingInfo;
 import org.openyu.commons.thread.ThreadHelper;
 import org.openyu.socklet.message.vo.Message;
 
@@ -29,35 +29,35 @@ public class WuxingServiceImplTest extends WuxingTestSupporter {
 	@Test
 	public void connect() {
 		Role role = mockRole();
-		WuxingPen wuxingPen = mockWuxingPen(role);
-		role.setWuxingPen(wuxingPen);
+		WuxingInfo wuxingInfo = mockWuxingInfo(role);
+		role.setWuxingInfo(wuxingInfo);
 		//
 		wuxingService.roleConnect(role.getId(), null);
 	}
 
 	@Test
-	public void sendWuxingPen() {
+	public void sendWuxingInfo() {
 		Role role = mockRole();
-		WuxingPen wuxingPen = mockWuxingPen(role);
-		role.setWuxingPen(wuxingPen);
+		WuxingInfo wuxingInfo = mockWuxingInfo(role);
+		role.setWuxingInfo(wuxingInfo);
 		//
-		wuxingService.sendWuxingPen(role, role.getWuxingPen());
+		wuxingService.sendWuxingInfo(role, role.getWuxingInfo());
 	}
 
 	@Test
-	public void fillWuxingPen() {
+	public void fillWuxingInfo() {
 		Message result = null;
 		//
 		Role role = mockRole();
-		WuxingPen wuxingPen = mockWuxingPen(role);
-		role.setWuxingPen(wuxingPen);
+		WuxingInfo wuxingInfo = mockWuxingInfo(role);
+		role.setWuxingInfo(wuxingInfo);
 		//
 		int count = 1;
 		long beg = System.currentTimeMillis();
 		//
 		for (int i = 0; i < count; i++) {
 			result = messageService.createMessage(CoreModuleType.SASANG, CoreModuleType.CLIENT, null, role.getId());
-			wuxingService.fillWuxingPen(result, wuxingPen);
+			wuxingService.fillWuxingInfo(result, wuxingInfo);
 		}
 		//
 		long end = System.currentTimeMillis();
@@ -78,7 +78,7 @@ public class WuxingServiceImplTest extends WuxingTestSupporter {
 		role.setGold(10000 * 10000L);// 1e
 		role.setVipType(VipType._2);// vip
 
-		// WuxingPen wuxingPen = role.getWuxingPen();
+		// WuxingInfo wuxingInfo = role.getWuxingInfo();
 
 		// 青銅按鈕,可玩1次,消耗金幣,有每日次數限制
 		PlayResult result = wuxingService.play(true, role, 1);// 玩1次
@@ -184,7 +184,7 @@ public class WuxingServiceImplTest extends WuxingTestSupporter {
 		role.setLevel(25);// 等級
 		role.setGold(10000 * 10000L);// 1e
 		role.setVipType(VipType._2);// vip
-		WuxingPen wuxingPen = role.getWuxingPen();
+		WuxingInfo wuxingInfo = role.getWuxingInfo();
 
 		// 玩的結果
 		PlayResult result = wuxingService.goldPlay(true, role);// 玩1次
@@ -192,7 +192,7 @@ public class WuxingServiceImplTest extends WuxingTestSupporter {
 		assertEquals(1, result.getDailyTimes());
 
 		// 已玩10次
-		wuxingPen.setDailyTimes(10);
+		wuxingInfo.setDailyTimes(10);
 		result = wuxingService.goldPlay(true, role);// 玩1次
 		System.out.println(result);
 		//
@@ -205,7 +205,7 @@ public class WuxingServiceImplTest extends WuxingTestSupporter {
 	 */
 	public void checkGoldPlay() {
 		Role role = mockRole();
-		WuxingPen wuxingPen = role.getWuxingPen();
+		WuxingInfo wuxingInfo = role.getWuxingInfo();
 		//
 		ErrorType errorType = wuxingService.checkGoldPlay(role);
 		System.out.println(errorType);
@@ -213,13 +213,13 @@ public class WuxingServiceImplTest extends WuxingTestSupporter {
 		assertEquals(ErrorType.LEVLE_NOT_ENOUGH, errorType);
 
 		role.setLevel(25);
-		wuxingPen.setDailyTimes(10);
+		wuxingInfo.setDailyTimes(10);
 		errorType = wuxingService.checkGoldPlay(role);
 		System.out.println(errorType);
 		// 超過每日次數
 		assertEquals(ErrorType.OVER_PLAY_DAILY_TIMES, errorType);
 
-		wuxingPen.setDailyTimes(0);
+		wuxingInfo.setDailyTimes(0);
 		errorType = wuxingService.checkGoldPlay(role);
 		System.out.println(errorType);
 		// 金幣不足
@@ -244,8 +244,8 @@ public class WuxingServiceImplTest extends WuxingTestSupporter {
 		role.setGold(10000 * 10000L);// 1e
 		role.setVipType(VipType._2);// vip
 		//
-		WuxingPen wuxingPen = role.getWuxingPen();
-		wuxingPen.getAwards().put("T_POTION_HP_G001", 1);
+		WuxingInfo wuxingInfo = role.getWuxingInfo();
+		wuxingInfo.getAwards().put("T_POTION_HP_G001", 1);
 		//
 		PutResult result = wuxingService.putOne(true, role, "T_POTION_HP_G001", 1);
 		System.out.println(result);
@@ -262,14 +262,14 @@ public class WuxingServiceImplTest extends WuxingTestSupporter {
 	@BenchmarkOptions(benchmarkRounds = 1, warmupRounds = 0, concurrency = 1)
 	public void checkPutOne() {
 		Role role = mockRole();
-		WuxingPen wuxingPen = role.getWuxingPen();
+		WuxingInfo wuxingInfo = role.getWuxingInfo();
 		//
 		ErrorType errorType = wuxingService.checkPutOne(role, "T_POTION_HP_G001", 1);
 		System.out.println(errorType);
 		// 獎勵不存在
 		assertEquals(ErrorType.AWARD_NOT_EXIST, errorType);
 
-		wuxingPen.getAwards().put("T_POTION_HP_G001", 1);// 中獎區只有1個
+		wuxingInfo.getAwards().put("T_POTION_HP_G001", 1);// 中獎區只有1個
 		errorType = wuxingService.checkPutOne(role, "T_POTION_HP_G001", 5);// 偷塞5個
 		System.out.println(errorType);
 		// 獎勵不存在
@@ -300,14 +300,14 @@ public class WuxingServiceImplTest extends WuxingTestSupporter {
 		role.setGold(10000 * 10000L);// 1e
 		role.setVipType(VipType._2);// vip
 		//
-		WuxingPen wuxingPen = role.getWuxingPen();
-		wuxingPen.getAwards().put("T_POTION_HP_G001", 1);
+		WuxingInfo wuxingInfo = role.getWuxingInfo();
+		wuxingInfo.getAwards().put("T_POTION_HP_G001", 1);
 		// 弄個不存在的
-		wuxingPen.getAwards().put("T_NOT_EXIST", 10);
+		wuxingInfo.getAwards().put("T_NOT_EXIST", 10);
 
 		// 有1個放不進去就不放了,以下的不會放入包包
-		wuxingPen.getAwards().put("T_POTION_HP_G002", 5);
-		wuxingPen.getAwards().put("T_POTION_HP_G003", 10);
+		wuxingInfo.getAwards().put("T_POTION_HP_G002", 5);
+		wuxingInfo.getAwards().put("T_POTION_HP_G003", 10);
 		//
 		PutResult result = wuxingService.putAll(true, role);
 		System.out.println(result);

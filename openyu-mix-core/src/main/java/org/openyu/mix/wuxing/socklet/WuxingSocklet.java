@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.openyu.mix.app.socklet.supporter.AppSockletServiceSupporter;
 import org.openyu.mix.core.service.CoreMessageType;
 import org.openyu.mix.wuxing.service.WuxingService;
-import org.openyu.mix.wuxing.vo.WuxingPen;
+import org.openyu.mix.wuxing.vo.WuxingInfo;
 import org.openyu.mix.role.vo.Role;
 import org.openyu.socklet.message.vo.Message;
 
@@ -119,12 +119,12 @@ public class WuxingSocklet extends AppSockletServiceSupporter {
 	 * @param roleId
 	 */
 	protected void DEBUG_reset(Role role) {
-		WuxingPen wuxingPen = role.getWuxingPen();
+		WuxingInfo wuxingInfo = role.getWuxingInfo();
 		//
-		boolean result = wuxingPen.reset();
+		boolean result = wuxingInfo.reset();
 		// 發訊息
 		if (result) {
-			wuxingService.sendReset(role, wuxingPen);
+			wuxingService.sendReset(role, wuxingInfo);
 		}
 	}
 }

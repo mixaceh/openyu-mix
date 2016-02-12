@@ -1,17 +1,17 @@
 package org.openyu.mix.manor.po.bridge;
 
 import org.openyu.commons.hibernate.search.bridge.supporter.BaseStringBridgeSupporter;
-import org.openyu.mix.manor.po.usertype.ManorPenUserType;
+import org.openyu.mix.manor.po.usertype.ManorInfoUserType;
 
 //--------------------------------------------------
 //reslove: Hibernate search
 //--------------------------------------------------
-public class ManorPenBridge extends BaseStringBridgeSupporter
+public class ManorInfoBridge extends BaseStringBridgeSupporter
 {
 
-	private ManorPenUserType userType = new ManorPenUserType();
+	private ManorInfoUserType userType = new ManorInfoUserType();
 
-	public ManorPenBridge()
+	public ManorInfoBridge()
 	{
 
 	}

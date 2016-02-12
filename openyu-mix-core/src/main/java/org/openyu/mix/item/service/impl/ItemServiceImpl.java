@@ -45,7 +45,7 @@ import org.openyu.mix.manor.vo.MatureType;
 import org.openyu.mix.role.service.RoleHelper;
 import org.openyu.mix.role.service.RoleService.GoldType;
 import org.openyu.mix.role.vo.BagInfo;
-import org.openyu.mix.role.vo.EquipmentPen;
+import org.openyu.mix.role.vo.EquipmentInfo;
 import org.openyu.mix.role.vo.Role;
 import org.openyu.mix.role.vo.BagInfo.Tab;
 import org.openyu.mix.role.vo.BagInfo.TabType;
@@ -2751,10 +2751,10 @@ public class ItemServiceImpl extends AppServiceSupporter implements ItemService 
 			return result;
 		}
 		// 裝備欄
-		EquipmentPen equipmentPen = role.getEquipmentPen();
+		EquipmentInfo equipmentInfo = role.getEquipmentInfo();
 		// 穿裝備
-		EquipmentPen.ErrorType errorType = equipmentPen.addEquipment(equipment);
-		if (EquipmentPen.ErrorType.NO_ERROR != errorType) {
+		EquipmentInfo.ErrorType errorType = equipmentInfo.addEquipment(equipment);
+		if (EquipmentInfo.ErrorType.NO_ERROR != errorType) {
 			return result;
 		}
 		// 增加equipmentGroup屬性
@@ -2880,10 +2880,10 @@ public class ItemServiceImpl extends AppServiceSupporter implements ItemService 
 			return result;
 		}
 		// 裝備欄
-		EquipmentPen equipmentPen = role.getEquipmentPen();
+		EquipmentInfo equipmentInfo = role.getEquipmentInfo();
 		// 脫裝備
-		EquipmentPen.ErrorType errorType = equipmentPen.removeEquipment(equipment);
-		if (EquipmentPen.ErrorType.NO_ERROR != errorType) {
+		EquipmentInfo.ErrorType errorType = equipmentInfo.removeEquipment(equipment);
+		if (EquipmentInfo.ErrorType.NO_ERROR != errorType) {
 			return result;
 		}
 		// 減少equipmentGroup屬性

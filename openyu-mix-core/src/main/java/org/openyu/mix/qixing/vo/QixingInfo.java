@@ -1,4 +1,4 @@
-package org.openyu.mix.wuxing.vo;
+package org.openyu.mix.qixing.vo;
 
 import java.util.Map;
 
@@ -7,12 +7,12 @@ import org.openyu.mix.app.vo.AppInfo;
 import com.sun.xml.bind.AnyTypeAdapter;
 
 /**
- * 五行欄位資訊
+ * 七星欄位資訊
  */
 @XmlJavaTypeAdapter(AnyTypeAdapter.class)
-public interface WuxingPen extends AppInfo
+public interface QixingInfo extends AppInfo
 {
-	String KEY = WuxingPen.class.getName();
+	String KEY = QixingInfo.class.getName();
 
 	/**
 	 * 最大中獎區道具種類,如:14個道具

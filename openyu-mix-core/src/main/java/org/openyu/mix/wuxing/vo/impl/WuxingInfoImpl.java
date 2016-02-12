@@ -10,12 +10,12 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.openyu.mix.app.vo.supporter.AppInfoSupporter;
 import org.openyu.mix.role.vo.Role;
 import org.openyu.mix.wuxing.vo.Outcome;
-import org.openyu.mix.wuxing.vo.WuxingPen;
+import org.openyu.mix.wuxing.vo.WuxingInfo;
 import org.openyu.commons.lang.NumberHelper;
 
-@XmlRootElement(name = "wuxingPen")
+@XmlRootElement(name = "wuxingInfo")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class WuxingPenImpl extends AppInfoSupporter implements WuxingPen
+public class WuxingInfoImpl extends AppInfoSupporter implements WuxingInfo
 {
 	private static final long serialVersionUID = 3394460367607072868L;
 
@@ -52,12 +52,12 @@ public class WuxingPenImpl extends AppInfoSupporter implements WuxingPen
 	 */
 	private Map<String, Integer> awards = new LinkedHashMap<String, Integer>();
 
-	public WuxingPenImpl(Role role)
+	public WuxingInfoImpl(Role role)
 	{
 		this.role = role;
 	}
 
-	public WuxingPenImpl()
+	public WuxingInfoImpl()
 	{
 		this(null);
 	}
@@ -228,8 +228,8 @@ public class WuxingPenImpl extends AppInfoSupporter implements WuxingPen
 
 	public Object clone()
 	{
-		WuxingPenImpl copy = null;
-		copy = (WuxingPenImpl) super.clone();
+		WuxingInfoImpl copy = null;
+		copy = (WuxingInfoImpl) super.clone();
 		//role不要clone,會造成loop
 		copy.outcome = clone(outcome);
 		copy.awards = clone(awards);

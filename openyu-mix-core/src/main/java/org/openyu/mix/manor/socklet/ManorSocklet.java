@@ -13,7 +13,7 @@ import org.openyu.mix.manor.service.ManorService.CultureType;
 import org.openyu.mix.manor.service.ManorService.ErrorType;
 import org.openyu.mix.manor.service.impl.ManorServiceImpl.CultureResultImpl;
 import org.openyu.mix.manor.vo.ManorCollector;
-import org.openyu.mix.manor.vo.ManorPen;
+import org.openyu.mix.manor.vo.ManorInfo;
 import org.openyu.mix.manor.vo.Seed;
 import org.openyu.mix.manor.vo.MatureType;
 import org.openyu.mix.role.vo.BagInfo;
@@ -232,7 +232,7 @@ public class ManorSocklet extends AppSockletServiceSupporter {
 	protected void DEBUG_disuse(Role role, int farmIndex) {
 		// 所有
 		if (farmIndex == -1) {
-			for (Integer index : role.getManorPen().getFarmIndexs()) {
+			for (Integer index : role.getManorInfo().getFarmIndexs()) {
 				manorService.disuse(true, role, index);
 			}
 		} else {
@@ -254,9 +254,9 @@ public class ManorSocklet extends AppSockletServiceSupporter {
 		}
 
 		// 莊園
-		ManorPen manorPen = role.getManorPen();
+		ManorInfo manorInfo = role.getManorInfo();
 		// 取得一個空格子的index,無放入任何種子
-		int[] emptyIndex = manorPen.getEmptyIndex();
+		int[] emptyIndex = manorInfo.getEmptyIndex();
 		// 拿不到空格,就是都種滿了
 		if (emptyIndex == null) {
 			return;
@@ -314,7 +314,7 @@ public class ManorSocklet extends AppSockletServiceSupporter {
 	protected void DEBUG_speed(Role role, int farmIndex, int gridIndex) {
 		// 所有
 		if (farmIndex == -1 || gridIndex == -1) {
-			for (int[] index : role.getManorPen().getIndexs()) {
+			for (int[] index : role.getManorInfo().getIndexs()) {
 				manorService.culture(true, role, CultureType.SPEED.getValue(),
 						index[0], index[1], null);
 			}
@@ -334,7 +334,7 @@ public class ManorSocklet extends AppSockletServiceSupporter {
 	protected void DEBUG_harvest(Role role, int farmIndex, int gridIndex) {
 		// 所有
 		if (farmIndex == -1 || gridIndex == -1) {
-			for (int[] index : role.getManorPen().getIndexs()) {
+			for (int[] index : role.getManorInfo().getIndexs()) {
 				manorService.culture(true, role,
 						CultureType.HARVEST.getValue(), index[0], index[1],
 						null);
@@ -355,7 +355,7 @@ public class ManorSocklet extends AppSockletServiceSupporter {
 	protected void DEBUG_revive(Role role, int farmIndex, int gridIndex) {
 		// 所有
 		if (farmIndex == -1 || gridIndex == -1) {
-			for (int[] index : role.getManorPen().getIndexs()) {
+			for (int[] index : role.getManorInfo().getIndexs()) {
 				manorService.culture(true, role, CultureType.REVIVE.getValue(),
 						index[0], index[1], null);
 			}
@@ -375,7 +375,7 @@ public class ManorSocklet extends AppSockletServiceSupporter {
 	protected void DEBUG_clear(Role role, int farmIndex, int gridIndex) {
 		// 所有
 		if (farmIndex == -1 || gridIndex == -1) {
-			for (int[] index : role.getManorPen().getIndexs()) {
+			for (int[] index : role.getManorInfo().getIndexs()) {
 				manorService.culture(true, role, CultureType.CLEAR.getValue(),
 						index[0], index[1], null);
 			}
@@ -393,15 +393,15 @@ public class ManorSocklet extends AppSockletServiceSupporter {
 	 * @param gridIndex
 	 */
 	protected void DEBUG_mature(Role role, int farmIndex, int gridIndex) {
-		ManorPen manorPen = role.getManorPen();
+		ManorInfo manorInfo = role.getManorInfo();
 		// 所有
 		if (farmIndex == -1 || gridIndex == -1) {
-			for (int[] index : manorPen.getIndexs()) {
-				Seed seed = manorPen.getSeed(index[0], index[1]);
+			for (int[] index : manorInfo.getIndexs()) {
+				Seed seed = manorInfo.getSeed(index[0], index[1]);
 				doMature(role, index[0], index[1], seed);
 			}
 		} else {
-			Seed seed = manorPen.getSeed(farmIndex, gridIndex);
+			Seed seed = manorInfo.getSeed(farmIndex, gridIndex);
 			doMature(role, farmIndex, gridIndex, seed);
 		}
 	}
@@ -436,15 +436,15 @@ public class ManorSocklet extends AppSockletServiceSupporter {
 	 * @param gridIndex
 	 */
 	protected void DEBUG_wither(Role role, int farmIndex, int gridIndex) {
-		ManorPen manorPen = role.getManorPen();
+		ManorInfo manorInfo = role.getManorInfo();
 		// 所有
 		if (farmIndex == -1 || gridIndex == -1) {
-			for (int[] index : manorPen.getIndexs()) {
-				Seed seed = manorPen.getSeed(index[0], index[1]);
+			for (int[] index : manorInfo.getIndexs()) {
+				Seed seed = manorInfo.getSeed(index[0], index[1]);
 				doWither(role, index[0], index[1], seed);
 			}
 		} else {
-			Seed seed = manorPen.getSeed(farmIndex, gridIndex);
+			Seed seed = manorInfo.getSeed(farmIndex, gridIndex);
 			doWither(role, farmIndex, gridIndex, seed);
 		}
 	}

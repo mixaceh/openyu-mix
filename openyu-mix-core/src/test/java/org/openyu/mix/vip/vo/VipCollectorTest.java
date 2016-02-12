@@ -8,7 +8,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.openyu.commons.collector.CollectorHelper;
 import org.openyu.commons.junit.supporter.BaseTestSupporter;
-import org.openyu.mix.manor.vo.ManorPen.FarmType;
+import org.openyu.mix.manor.vo.ManorInfo.FarmType;
 import org.openyu.mix.role.vo.BagInfo.TabType;
 
 import com.carrotsearch.junitbenchmarks.BenchmarkOptions;

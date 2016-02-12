@@ -7,7 +7,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import org.openyu.mix.manor.vo.ManorPen.FarmType;
+import org.openyu.mix.manor.vo.ManorInfo.FarmType;
 import org.openyu.mix.role.vo.BagInfo.TabType;
 import org.openyu.commons.collector.CollectorHelper;
 import org.openyu.commons.collector.supporter.BaseCollectorSupporter;

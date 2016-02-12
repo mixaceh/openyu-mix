@@ -10,9 +10,9 @@ import org.openyu.mix.app.service.AppService;
 import org.openyu.mix.app.vo.AppResult;
 import org.openyu.mix.item.vo.Item;
 import org.openyu.mix.manor.vo.Land;
-import org.openyu.mix.manor.vo.ManorPen;
+import org.openyu.mix.manor.vo.ManorInfo;
 import org.openyu.mix.manor.vo.Seed;
-import org.openyu.mix.manor.vo.ManorPen.Farm;
+import org.openyu.mix.manor.vo.ManorInfo.Farm;
 import org.openyu.mix.role.vo.Role;
 import org.openyu.commons.enumz.IntEnum;
 import org.openyu.socklet.message.vo.Message;
@@ -256,7 +256,7 @@ public interface ManorService extends AppService {
 	 * @param sendable
 	 * @param role
 	 */
-	boolean changeManorPenLocked(boolean sendable, Role role);
+	boolean changeManorInfoLocked(boolean sendable, Role role);
 
 	/**
 	 * 發送莊園欄位
@@ -265,16 +265,16 @@ public interface ManorService extends AppService {
 	 * @param bagInfo
 	 * @return
 	 */
-	Message sendManorPen(Role role, ManorPen manorPen);
+	Message sendManorInfo(Role role, ManorInfo manorInfo);
 
 	/**
 	 * 填充莊園欄位
 	 * 
 	 * @param message
-	 * @param manorPen
+	 * @param manorInfo
 	 * @return
 	 */
-	boolean fillManorPen(Message message, ManorPen manorPen);
+	boolean fillManorInfo(Message message, ManorInfo manorInfo);
 
 	/**
 	 * 發送農場頁
@@ -708,50 +708,50 @@ public interface ManorService extends AppService {
 	/**
 	 * 計算成長中的種子
 	 * 
-	 * @param manorPen
+	 * @param manorInfo
 	 * @return
 	 */
-	List<SeedResult> calcGrowings(ManorPen manorPen);
+	List<SeedResult> calcGrowings(ManorInfo manorInfo);
 
 	/**
 	 * 計算可以澆水的種子
 	 * 
-	 * @param manorPen
+	 * @param manorInfo
 	 * @return
 	 */
-	List<SeedResult> calcCanWaters(ManorPen manorPen);
+	List<SeedResult> calcCanWaters(ManorInfo manorInfo);
 
 	/**
 	 * 計算可以祈禱的種子
 	 * 
-	 * @param manorPen
+	 * @param manorInfo
 	 * @return
 	 */
-	List<SeedResult> calcCanPrays(ManorPen manorPen);
+	List<SeedResult> calcCanPrays(ManorInfo manorInfo);
 
 	/**
 	 * 計算可以加速的種子
 	 * 
-	 * @param manorPen
+	 * @param manorInfo
 	 * @return
 	 */
-	List<SeedResult> calcCanSpeeds(ManorPen manorPen);
+	List<SeedResult> calcCanSpeeds(ManorInfo manorInfo);
 
 	/**
 	 * 計算可以收割的種子
 	 * 
-	 * @param manorPen
+	 * @param manorInfo
 	 * @return
 	 */
-	List<SeedResult> calcCanHarvests(ManorPen manorPen);
+	List<SeedResult> calcCanHarvests(ManorInfo manorInfo);
 
 	/**
 	 * 計算可以復活的種子
 	 * 
-	 * @param manorPen
+	 * @param manorInfo
 	 * @return
 	 */
-	List<SeedResult> calcCanRevives(ManorPen manorPen);
+	List<SeedResult> calcCanRevives(ManorInfo manorInfo);
 
 	/**
 	 * 耕種所有結果

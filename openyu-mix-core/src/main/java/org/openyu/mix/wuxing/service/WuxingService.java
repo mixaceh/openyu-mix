@@ -10,7 +10,7 @@ import org.openyu.mix.app.vo.AppResult;
 import org.openyu.mix.item.vo.Item;
 import org.openyu.mix.role.vo.Role;
 import org.openyu.mix.wuxing.vo.Outcome;
-import org.openyu.mix.wuxing.vo.WuxingPen;
+import org.openyu.mix.wuxing.vo.WuxingInfo;
 import org.openyu.commons.enumz.IntEnum;
 import org.openyu.socklet.message.vo.Message;
 
@@ -247,16 +247,16 @@ public interface WuxingService extends AppService {
 	 * @param bagInfo
 	 * @return
 	 */
-	Message sendWuxingPen(Role role, WuxingPen wuxingPen);
+	Message sendWuxingInfo(Role role, WuxingInfo wuxingInfo);
 
 	/**
 	 * 填充五行欄位
 	 * 
 	 * @param message
-	 * @param wuxingPen
+	 * @param wuxingInfo
 	 * @return
 	 */
-	boolean fillWuxingPen(Message message, WuxingPen wuxingPen);
+	boolean fillWuxingInfo(Message message, WuxingInfo wuxingInfo);
 
 	/**
 	 * 填充獎勵
@@ -527,7 +527,7 @@ public interface WuxingService extends AppService {
 	 * @param trainInfo
 	 * @return
 	 */
-	Message sendReset(Role role, WuxingPen wuxingPen);
+	Message sendReset(Role role, WuxingInfo wuxingInfo);
 
 	/**
 	 * 重置每日已玩的次數,所有線上玩家

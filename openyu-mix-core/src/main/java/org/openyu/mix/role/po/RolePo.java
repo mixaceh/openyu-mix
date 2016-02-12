@@ -1,12 +1,12 @@
 package org.openyu.mix.role.po;
 
 import org.openyu.mix.flutter.po.FlutterPo;
-import org.openyu.mix.manor.vo.ManorPen;
+import org.openyu.mix.manor.vo.ManorInfo;
 import org.openyu.mix.role.vo.BagInfo;
 import org.openyu.mix.sasang.vo.SasangInfo;
 import org.openyu.mix.train.vo.TrainInfo;
 import org.openyu.mix.treasure.vo.TreasureInfo;
-import org.openyu.mix.wuxing.vo.WuxingPen;
+import org.openyu.mix.wuxing.vo.WuxingInfo;
 
 /**
  * 角色
@@ -94,9 +94,9 @@ public interface RolePo extends FlutterPo {
 	 * 
 	 * @return
 	 */
-	ManorPen getManorPen();
+	ManorInfo getManorInfo();
 
-	void setManorPen(ManorPen manorPen);
+	void setManorInfo(ManorInfo manorInfo);
 
 	/**
 	 * 祕寶欄位
@@ -121,7 +121,7 @@ public interface RolePo extends FlutterPo {
 	 * 
 	 * @return
 	 */
-	WuxingPen getWuxingPen();
+	WuxingInfo getWuxingInfo();
 
-	void setWuxingPen(WuxingPen wuxingPen);
+	void setWuxingInfo(WuxingInfo wuxingInfo);
 }

@@ -14,7 +14,7 @@ import org.openyu.mix.item.vo.Equipment;
 import org.openyu.mix.item.vo.PositionType;
 import org.openyu.mix.item.vo.ItemType;
 import org.openyu.mix.item.vo.Weapon;
-import org.openyu.mix.role.vo.EquipmentPen;
+import org.openyu.mix.role.vo.EquipmentInfo;
 import org.openyu.mix.role.vo.Role;
 import org.openyu.mix.role.vo.adapter.PositionTypeArmorXmlAdapter;
 import org.openyu.mix.role.vo.adapter.PositionTypeWeaponXmlAdapter;
@@ -23,9 +23,9 @@ import org.openyu.commons.bean.supporter.BaseBeanSupporter;
 //--------------------------------------------------
 //jaxb
 //--------------------------------------------------
-@XmlRootElement(name = "equipmentPen")
+@XmlRootElement(name = "equipmentInfo")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class EquipmentPenImpl extends BaseBeanSupporter implements EquipmentPen {
+public class EquipmentInfoImpl extends BaseBeanSupporter implements EquipmentInfo {
 
 	private static final long serialVersionUID = 6755055591625269928L;
 
@@ -47,11 +47,11 @@ public class EquipmentPenImpl extends BaseBeanSupporter implements EquipmentPen 
 	@XmlJavaTypeAdapter(PositionTypeWeaponXmlAdapter.class)
 	private Map<PositionType, Weapon> weapons = new LinkedHashMap<PositionType, Weapon>();
 
-	public EquipmentPenImpl(Role role) {
+	public EquipmentInfoImpl(Role role) {
 		this.role = role;
 	}
 
-	public EquipmentPenImpl() {
+	public EquipmentInfoImpl() {
 		this(null);
 	}
 

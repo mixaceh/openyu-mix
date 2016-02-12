@@ -22,10 +22,10 @@ import org.openyu.mix.flutter.vo.AttributeGroup;
 import org.openyu.mix.manor.service.ManorService;
 import org.openyu.mix.manor.vo.Land;
 import org.openyu.mix.manor.vo.ManorCollector;
-import org.openyu.mix.manor.vo.ManorPen;
+import org.openyu.mix.manor.vo.ManorInfo;
 import org.openyu.mix.manor.vo.Seed;
-import org.openyu.mix.manor.vo.ManorPen.Farm;
-import org.openyu.mix.manor.vo.ManorPen.FarmType;
+import org.openyu.mix.manor.vo.ManorInfo.Farm;
+import org.openyu.mix.manor.vo.ManorInfo.FarmType;
 import org.openyu.mix.manor.vo.MatureType;
 import org.openyu.mix.item.service.ItemService;
 import org.openyu.mix.item.service.ItemService.DecreaseItemResult;
@@ -151,7 +151,7 @@ public class ManorServiceImpl extends AppServiceSupporter implements ManorServic
 		for (Role role : roleSetService.getRoles(false).values()) {
 			try {
 				// 角色是否已連線
-				if (!role.isConnected() || !role.getManorPen().isConnected()) {
+				if (!role.isConnected() || !role.getManorInfo().isConnected()) {
 					continue;
 				}
 
@@ -169,8 +169,8 @@ public class ManorServiceImpl extends AppServiceSupporter implements ManorServic
 	 * @param role
 	 */
 	protected void handleSeed(Role role) {
-		ManorPen manorPen = role.getManorPen();
-		for (Farm farm : manorPen.getFarms().values()) {
+		ManorInfo manorInfo = role.getManorInfo();
+		for (Farm farm : manorInfo.getFarms().values()) {
 			int farmIndex = farm.getId();
 			// 土地
 			Land land = farm.getLand();
@@ -241,7 +241,7 @@ public class ManorServiceImpl extends AppServiceSupporter implements ManorServic
 		sendRoleConnect(result, attatch);
 
 		// 已連線
-		result.getManorPen().setConnected(true);
+		result.getManorInfo().setConnected(true);
 		//
 		return result;
 	}
@@ -263,7 +263,7 @@ public class ManorServiceImpl extends AppServiceSupporter implements ManorServic
 				CoreMessageType.MANOR_INITIALIZE_RESPONSE, role.getId());
 
 		// 莊園
-		fillManorPen(message, role.getManorPen());
+		fillManorInfo(message, role.getManorInfo());
 		//
 		messageService.addMessage(message);
 
@@ -308,26 +308,26 @@ public class ManorServiceImpl extends AppServiceSupporter implements ManorServic
 	 * @param sendable
 	 * @param role
 	 */
-	public boolean changeManorPenLocked(boolean sendable, Role role) {
+	public boolean changeManorInfoLocked(boolean sendable, Role role) {
 		boolean result = false;
 		//
-		ManorPen manorPen = role.getManorPen();
+		ManorInfo manorInfo = role.getManorInfo();
 		FarmType[] tabTypes = FarmType.values();
 		for (FarmType farmType : tabTypes) {
 			int index = farmType.getValue();
 			// 由農場頁類型,取得vip類型
 			VipType vipType = vipCollector.getVipType(farmType);
 			if (vipType == null || role.getVipType().getValue() >= vipType.getValue()) {
-				manorPen.unLock(index);
+				manorInfo.unLock(index);
 			} else {
-				manorPen.lock(index);
+				manorInfo.lock(index);
 			}
 			//
 			result = true;
 		}
 		//
 		if (sendable) {
-			sendFarmsLocked(role.getId(), manorPen);
+			sendFarmsLocked(role.getId(), manorInfo);
 		}
 		//
 		return result;
@@ -365,11 +365,11 @@ public class ManorServiceImpl extends AppServiceSupporter implements ManorServic
 	 * @param roleId
 	 * @param bagInfo
 	 */
-	protected void sendFarmsLocked(String roleId, ManorPen manorPen) {
+	protected void sendFarmsLocked(String roleId, ManorInfo manorInfo) {
 		Message message = messageService.createMessage(CoreModuleType.MANOR, CoreModuleType.CLIENT,
 				CoreMessageType.MANOR_FARMS_LOCKED_RESPONSE, roleId);
 
-		Map<Integer, Farm> tabs = manorPen.getFarms();// 包含被鎖定的農場頁
+		Map<Integer, Farm> tabs = manorInfo.getFarms();// 包含被鎖定的農場頁
 		message.addInt(tabs.size());
 		for (Farm tab : tabs.values()) {
 			fillFarmLocked(message, tab);
@@ -384,11 +384,11 @@ public class ManorServiceImpl extends AppServiceSupporter implements ManorServic
 	 * @param role
 	 * @param bagInfo
 	 */
-	public Message sendManorPen(Role role, ManorPen manorPen) {
+	public Message sendManorInfo(Role role, ManorInfo manorInfo) {
 		Message message = messageService.createMessage(CoreModuleType.MANOR, CoreModuleType.CLIENT,
 				CoreMessageType.MANOR_PEN_RESPONSE, role.getId());
 
-		fillManorPen(message, manorPen);
+		fillManorInfo(message, manorInfo);
 		//
 		messageService.addMessage(message);
 
@@ -399,14 +399,14 @@ public class ManorServiceImpl extends AppServiceSupporter implements ManorServic
 	 * 填充莊園欄位
 	 * 
 	 * @param message
-	 * @param manorPen
+	 * @param manorInfo
 	 */
-	public boolean fillManorPen(Message message, ManorPen manorPen) {
+	public boolean fillManorInfo(Message message, ManorInfo manorInfo) {
 		boolean result = false;
 		// 已解鎖農場頁size
-		message.addInt(manorPen.getFarmSize());
+		message.addInt(manorInfo.getFarmSize());
 		//
-		Map<Integer, Farm> farms = manorPen.getFarms();// 包含被鎖定的農場頁
+		Map<Integer, Farm> farms = manorInfo.getFarms();// 包含被鎖定的農場頁
 		for (Farm farm : farms.values()) {
 			// 可能被鎖定
 			if (farm.isLocked()) {
@@ -567,7 +567,7 @@ public class ManorServiceImpl extends AppServiceSupporter implements ManorServic
 		ErrorType errorType = checkReclaim(role, farmIndex, landUniqueId);
 		if (errorType == ErrorType.NO_ERROR) {
 			// 莊園
-			ManorPen manorPen = role.getManorPen();
+			ManorInfo manorInfo = role.getManorInfo();
 			// 土地
 			land = (Land) itemService.getItem(role, landUniqueId);
 
@@ -581,7 +581,7 @@ public class ManorServiceImpl extends AppServiceSupporter implements ManorServic
 				// 成功
 				if (decreaseResults.size() > 0) {
 					// 農場
-					Farm farm = manorPen.getFarm(farmIndex);
+					Farm farm = manorInfo.getFarm(farmIndex);
 					farm.setLand(land);
 
 					// 開墾結果
@@ -642,9 +642,9 @@ public class ManorServiceImpl extends AppServiceSupporter implements ManorServic
 		}
 
 		// 莊園
-		ManorPen manorPen = role.getManorPen();
+		ManorInfo manorInfo = role.getManorInfo();
 		// 農場不存在
-		Farm farm = manorPen.getFarm(farmIndex);
+		Farm farm = manorInfo.getFarm(farmIndex);
 		if (farm == null) {
 			errorType = ErrorType.FARM_NOT_EXIST;
 			return errorType;
@@ -726,8 +726,8 @@ public class ManorServiceImpl extends AppServiceSupporter implements ManorServic
 		ErrorType errorType = checkDisuse(role, farmIndex);
 		if (errorType == ErrorType.NO_ERROR) {
 			// 莊園
-			ManorPen manorPen = role.getManorPen();
-			Farm farm = manorPen.getFarm(farmIndex);
+			ManorInfo manorInfo = role.getManorInfo();
+			Farm farm = manorInfo.getFarm(farmIndex);
 			// 土地
 			Land land = farm.getLand();
 
@@ -787,9 +787,9 @@ public class ManorServiceImpl extends AppServiceSupporter implements ManorServic
 		}
 
 		// 莊園
-		ManorPen manorPen = role.getManorPen();
+		ManorInfo manorInfo = role.getManorInfo();
 		// 莊園是否有農場
-		Farm farm = manorPen.getFarm(farmIndex);
+		Farm farm = manorInfo.getFarm(farmIndex);
 		if (farm == null) {
 			errorType = ErrorType.FARM_NOT_EXIST;
 			return errorType;
@@ -1208,9 +1208,9 @@ public class ManorServiceImpl extends AppServiceSupporter implements ManorServic
 		errorType = checkPlant(role, farmIndex, gridIndex, seedUniqueId);
 		if (ErrorType.NO_ERROR.equals(errorType)) {
 			// 莊園
-			ManorPen manorPen = role.getManorPen();
+			ManorInfo manorInfo = role.getManorInfo();
 			// 農場
-			Farm farm = manorPen.getFarm(farmIndex);
+			Farm farm = manorInfo.getFarm(farmIndex);
 			// 土地
 			Land land = farm.getLand();
 			// 種子
@@ -1283,9 +1283,9 @@ public class ManorServiceImpl extends AppServiceSupporter implements ManorServic
 		}
 
 		// 莊園
-		ManorPen manorPen = role.getManorPen();
+		ManorInfo manorInfo = role.getManorInfo();
 		// 莊園是否有農場
-		Farm farm = manorPen.getFarm(farmIndex);
+		Farm farm = manorInfo.getFarm(farmIndex);
 		if (farm == null) {
 			errorType = ErrorType.FARM_NOT_EXIST;
 			return errorType;
@@ -1324,13 +1324,13 @@ public class ManorServiceImpl extends AppServiceSupporter implements ManorServic
 		errorType = checkWater(role, farmIndex, gridIndex);
 		if (errorType == ErrorType.NO_ERROR) {
 			// 莊園
-			ManorPen manorPen = role.getManorPen();
+			ManorInfo manorInfo = role.getManorInfo();
 			// 農場
-			Farm farm = manorPen.getFarm(farmIndex);
+			Farm farm = manorInfo.getFarm(farmIndex);
 			// 土地
 			Land land = farm.getLand();
 			// 種子
-			Seed seed = manorPen.getSeed(farmIndex, gridIndex);
+			Seed seed = manorInfo.getSeed(farmIndex, gridIndex);
 
 			// 消耗道具或儲值幣
 			SpendResult spendResult = roleService.spendByItemCoin(sendable, role, manorCollector.getWaterItem(), 1,
@@ -1384,9 +1384,9 @@ public class ManorServiceImpl extends AppServiceSupporter implements ManorServic
 		}
 
 		// 莊園
-		ManorPen manorPen = role.getManorPen();
+		ManorInfo manorInfo = role.getManorInfo();
 		// 莊園是否有農場
-		Farm farm = manorPen.getFarm(farmIndex);
+		Farm farm = manorInfo.getFarm(farmIndex);
 		if (farm == null) {
 			errorType = ErrorType.FARM_NOT_EXIST;
 			return errorType;
@@ -1431,13 +1431,13 @@ public class ManorServiceImpl extends AppServiceSupporter implements ManorServic
 		errorType = checkPray(role, farmIndex, gridIndex);
 		if (errorType == ErrorType.NO_ERROR) {
 			// 莊園
-			ManorPen manorPen = role.getManorPen();
+			ManorInfo manorInfo = role.getManorInfo();
 			// 農場
-			Farm farm = manorPen.getFarm(farmIndex);
+			Farm farm = manorInfo.getFarm(farmIndex);
 			// 土地
 			Land land = farm.getLand();
 			// 種子
-			Seed seed = manorPen.getSeed(farmIndex, gridIndex);
+			Seed seed = manorInfo.getSeed(farmIndex, gridIndex);
 
 			// 消耗道具或儲值幣
 			SpendResult spendResult = roleService.spendByItemCoin(sendable, role, manorCollector.getPrayItem(), 1,
@@ -1491,9 +1491,9 @@ public class ManorServiceImpl extends AppServiceSupporter implements ManorServic
 		}
 
 		// 莊園
-		ManorPen manorPen = role.getManorPen();
+		ManorInfo manorInfo = role.getManorInfo();
 		// 莊園是否有農場
-		Farm farm = manorPen.getFarm(farmIndex);
+		Farm farm = manorInfo.getFarm(farmIndex);
 		if (farm == null) {
 			errorType = ErrorType.FARM_NOT_EXIST;
 			return errorType;
@@ -1538,13 +1538,13 @@ public class ManorServiceImpl extends AppServiceSupporter implements ManorServic
 		errorType = checkSpeed(role, farmIndex, gridIndex);
 		if (errorType == ErrorType.NO_ERROR) {
 			// 莊園
-			ManorPen manorPen = role.getManorPen();
+			ManorInfo manorInfo = role.getManorInfo();
 			// 農場
-			// Farm farm = manorPen.getFarm(farmIndex);
+			// Farm farm = manorInfo.getFarm(farmIndex);
 			// 土地
 			// Land land = farm.getLand();
 			// 種子
-			Seed seed = manorPen.getSeed(farmIndex, gridIndex);
+			Seed seed = manorInfo.getSeed(farmIndex, gridIndex);
 
 			// 消耗道具或儲值幣
 			SpendResult spendResult = roleService.spendByItemCoin(sendable, role, manorCollector.getSpeedItem(), 1,
@@ -1569,7 +1569,7 @@ public class ManorServiceImpl extends AppServiceSupporter implements ManorServic
 					// 成功
 					if (increaseResults.size() > 0) {
 						// 移除種子
-						manorPen.removeSeed(farmIndex, gridIndex);
+						manorInfo.removeSeed(farmIndex, gridIndex);
 
 						// 消耗道具
 						if (spendResult.getItemTimes() > 0) {
@@ -1615,9 +1615,9 @@ public class ManorServiceImpl extends AppServiceSupporter implements ManorServic
 		}
 
 		// 莊園
-		ManorPen manorPen = role.getManorPen();
+		ManorInfo manorInfo = role.getManorInfo();
 		// 莊園是否有農場
-		Farm farm = manorPen.getFarm(farmIndex);
+		Farm farm = manorInfo.getFarm(farmIndex);
 		if (farm == null) {
 			errorType = ErrorType.FARM_NOT_EXIST;
 			return errorType;
@@ -1663,13 +1663,13 @@ public class ManorServiceImpl extends AppServiceSupporter implements ManorServic
 		errorType = checkHarvest(role, farmIndex, gridIndex);
 		if (ErrorType.NO_ERROR.equals(errorType)) {
 			// 莊園
-			ManorPen manorPen = role.getManorPen();
+			ManorInfo manorInfo = role.getManorInfo();
 			// 農場
-			Farm farm = manorPen.getFarm(farmIndex);
+			Farm farm = manorInfo.getFarm(farmIndex);
 			// 土地
 			Land land = farm.getLand();
 			// 種子
-			Seed seed = manorPen.getSeed(farmIndex, gridIndex);
+			Seed seed = manorInfo.getSeed(farmIndex, gridIndex);
 
 			// 計算種子產出數量
 			Map<String, Integer> awardItems = calcProducts(land, seed);
@@ -1683,7 +1683,7 @@ public class ManorServiceImpl extends AppServiceSupporter implements ManorServic
 				// 成功
 				if (increaseResults.size() > 0) {
 					// 移除種子
-					manorPen.removeSeed(farmIndex, gridIndex);
+					manorInfo.removeSeed(farmIndex, gridIndex);
 					// 耕種結果
 					result = new CultureResultImpl(CultureType.HARVEST, farmIndex, gridIndex, seed, 0);
 				} else {
@@ -1717,9 +1717,9 @@ public class ManorServiceImpl extends AppServiceSupporter implements ManorServic
 		}
 
 		// 莊園
-		ManorPen manorPen = role.getManorPen();
+		ManorInfo manorInfo = role.getManorInfo();
 		// 莊園是否有農場
-		Farm farm = manorPen.getFarm(farmIndex);
+		Farm farm = manorInfo.getFarm(farmIndex);
 		if (farm == null) {
 			errorType = ErrorType.FARM_NOT_EXIST;
 			return errorType;
@@ -1765,13 +1765,13 @@ public class ManorServiceImpl extends AppServiceSupporter implements ManorServic
 		errorType = checkRevive(role, farmIndex, gridIndex);
 		if (errorType == ErrorType.NO_ERROR) {
 			// 莊園
-			ManorPen manorPen = role.getManorPen();
+			ManorInfo manorInfo = role.getManorInfo();
 			// 農場
-			// Farm farm = manorPen.getFarm(farmIndex);
+			// Farm farm = manorInfo.getFarm(farmIndex);
 			// 土地
 			// Land land = farm.getLand();
 			// 種子
-			Seed seed = manorPen.getSeed(farmIndex, gridIndex);
+			Seed seed = manorInfo.getSeed(farmIndex, gridIndex);
 
 			// 消耗道具或儲值幣
 			SpendResult spendResult = roleService.spendByItemCoin(sendable, role, manorCollector.getReviveItem(), 1,
@@ -1796,7 +1796,7 @@ public class ManorServiceImpl extends AppServiceSupporter implements ManorServic
 					// 成功
 					if (increaseResults.size() > 0) {
 						// 移除種子
-						manorPen.removeSeed(farmIndex, gridIndex);
+						manorInfo.removeSeed(farmIndex, gridIndex);
 
 						// 消耗道具
 						if (spendResult.getItemTimes() > 0) {
@@ -1840,9 +1840,9 @@ public class ManorServiceImpl extends AppServiceSupporter implements ManorServic
 		}
 
 		// 莊園
-		ManorPen manorPen = role.getManorPen();
+		ManorInfo manorInfo = role.getManorInfo();
 		// 莊園是否有農場
-		Farm farm = manorPen.getFarm(farmIndex);
+		Farm farm = manorInfo.getFarm(farmIndex);
 		if (farm == null) {
 			errorType = ErrorType.FARM_NOT_EXIST;
 			return errorType;
@@ -1888,12 +1888,12 @@ public class ManorServiceImpl extends AppServiceSupporter implements ManorServic
 		errorType = checkClear(role, farmIndex, gridIndex);
 		if (ErrorType.NO_ERROR.equals(errorType)) {
 			// 莊園
-			ManorPen manorPen = role.getManorPen();
+			ManorInfo manorInfo = role.getManorInfo();
 			// 種子
-			Seed seed = manorPen.getSeed(farmIndex, gridIndex);
+			Seed seed = manorInfo.getSeed(farmIndex, gridIndex);
 			// 移除種子
-			ManorPen.ErrorType manorError = manorPen.removeSeed(farmIndex, gridIndex);
-			if (manorError == ManorPen.ErrorType.NO_ERROR) {
+			ManorInfo.ErrorType manorError = manorInfo.removeSeed(farmIndex, gridIndex);
+			if (manorError == ManorInfo.ErrorType.NO_ERROR) {
 				// 耕種結果
 				result = new CultureResultImpl(CultureType.CLEAR, farmIndex, gridIndex, seed, 0);
 			}
@@ -1924,9 +1924,9 @@ public class ManorServiceImpl extends AppServiceSupporter implements ManorServic
 		}
 
 		// 莊園
-		ManorPen manorPen = role.getManorPen();
+		ManorInfo manorInfo = role.getManorInfo();
 		// 莊園是否有農場
-		Farm farm = manorPen.getFarm(farmIndex);
+		Farm farm = manorInfo.getFarm(farmIndex);
 		if (farm == null) {
 			errorType = ErrorType.FARM_NOT_EXIST;
 			return errorType;
@@ -2116,17 +2116,17 @@ public class ManorServiceImpl extends AppServiceSupporter implements ManorServic
 	/**
 	 * 計算成長中的種子
 	 * 
-	 * @param manorPen
+	 * @param manorInfo
 	 * @return
 	 */
-	public List<SeedResult> calcGrowings(ManorPen manorPen) {
+	public List<SeedResult> calcGrowings(ManorInfo manorInfo) {
 		List<SeedResult> result = new LinkedList<SeedResult>();
-		for (int[] index : manorPen.getIndexs()) {
+		for (int[] index : manorInfo.getIndexs()) {
 			int farmIndex = index[0];
 			int gridIndex = index[1];
-			Farm farm = manorPen.getFarm(farmIndex);
+			Farm farm = manorInfo.getFarm(farmIndex);
 			Land land = farm.getLand();
-			Seed seed = manorPen.getSeed(farmIndex, gridIndex);
+			Seed seed = manorInfo.getSeed(farmIndex, gridIndex);
 			boolean growing = isGrowing(seed);
 			// 成長中
 			if (growing) {
@@ -2140,17 +2140,17 @@ public class ManorServiceImpl extends AppServiceSupporter implements ManorServic
 	/**
 	 * 計算可以澆水的種子
 	 * 
-	 * @param manorPen
+	 * @param manorInfo
 	 * @return
 	 */
-	public List<SeedResult> calcCanWaters(ManorPen manorPen) {
+	public List<SeedResult> calcCanWaters(ManorInfo manorInfo) {
 		List<SeedResult> result = new LinkedList<SeedResult>();
-		for (int[] index : manorPen.getIndexs()) {
+		for (int[] index : manorInfo.getIndexs()) {
 			int farmIndex = index[0];
 			int gridIndex = index[1];
-			Farm farm = manorPen.getFarm(farmIndex);
+			Farm farm = manorInfo.getFarm(farmIndex);
 			Land land = farm.getLand();
-			Seed seed = manorPen.getSeed(farmIndex, gridIndex);
+			Seed seed = manorInfo.getSeed(farmIndex, gridIndex);
 			boolean growing = isGrowing(seed);
 			// 成長中,還沒澆水
 			if (growing && seed.getWaterTime() == 0) {
@@ -2164,17 +2164,17 @@ public class ManorServiceImpl extends AppServiceSupporter implements ManorServic
 	/**
 	 * 計算可以祈禱的種子
 	 * 
-	 * @param manorPen
+	 * @param manorInfo
 	 * @return
 	 */
-	public List<SeedResult> calcCanPrays(ManorPen manorPen) {
+	public List<SeedResult> calcCanPrays(ManorInfo manorInfo) {
 		List<SeedResult> result = new LinkedList<SeedResult>();
-		for (int[] index : manorPen.getIndexs()) {
+		for (int[] index : manorInfo.getIndexs()) {
 			int farmIndex = index[0];
 			int gridIndex = index[1];
-			Farm farm = manorPen.getFarm(farmIndex);
+			Farm farm = manorInfo.getFarm(farmIndex);
 			Land land = farm.getLand();
-			Seed seed = manorPen.getSeed(farmIndex, gridIndex);
+			Seed seed = manorInfo.getSeed(farmIndex, gridIndex);
 			boolean growing = isGrowing(seed);
 			// 成長中,還沒祈禱
 			if (growing && seed.getPrayTime() == 0) {
@@ -2188,27 +2188,27 @@ public class ManorServiceImpl extends AppServiceSupporter implements ManorServic
 	/**
 	 * 計算可以加速的種子
 	 * 
-	 * @param manorPen
+	 * @param manorInfo
 	 * @return
 	 */
-	public List<SeedResult> calcCanSpeeds(ManorPen manorPen) {
-		return calcGrowings(manorPen);
+	public List<SeedResult> calcCanSpeeds(ManorInfo manorInfo) {
+		return calcGrowings(manorInfo);
 	}
 
 	/**
 	 * 計算可以收割的種子
 	 * 
-	 * @param manorPen
+	 * @param manorInfo
 	 * @return
 	 */
-	public List<SeedResult> calcCanHarvests(ManorPen manorPen) {
+	public List<SeedResult> calcCanHarvests(ManorInfo manorInfo) {
 		List<SeedResult> result = new LinkedList<SeedResult>();
-		for (int[] index : manorPen.getIndexs()) {
+		for (int[] index : manorInfo.getIndexs()) {
 			int farmIndex = index[0];
 			int gridIndex = index[1];
-			Farm farm = manorPen.getFarm(farmIndex);
+			Farm farm = manorInfo.getFarm(farmIndex);
 			Land land = farm.getLand();
-			Seed seed = manorPen.getSeed(farmIndex, gridIndex);
+			Seed seed = manorInfo.getSeed(farmIndex, gridIndex);
 			boolean mature = isMature(seed);
 			// 已成熟
 			if (mature) {
@@ -2222,17 +2222,17 @@ public class ManorServiceImpl extends AppServiceSupporter implements ManorServic
 	/**
 	 * 計算可以復活的種子
 	 * 
-	 * @param manorPen
+	 * @param manorInfo
 	 * @return
 	 */
-	public List<SeedResult> calcCanRevives(ManorPen manorPen) {
+	public List<SeedResult> calcCanRevives(ManorInfo manorInfo) {
 		List<SeedResult> result = new LinkedList<SeedResult>();
-		for (int[] index : manorPen.getIndexs()) {
+		for (int[] index : manorInfo.getIndexs()) {
 			int farmIndex = index[0];
 			int gridIndex = index[1];
-			Farm farm = manorPen.getFarm(farmIndex);
+			Farm farm = manorInfo.getFarm(farmIndex);
 			Land land = farm.getLand();
-			Seed seed = manorPen.getSeed(farmIndex, gridIndex);
+			Seed seed = manorInfo.getSeed(farmIndex, gridIndex);
 			boolean wither = isWither(seed);
 			// 已枯萎
 			if (wither) {
@@ -2419,9 +2419,9 @@ public class ManorServiceImpl extends AppServiceSupporter implements ManorServic
 		errorType = checkWaterAll(role);
 		if (errorType == ErrorType.NO_ERROR) {
 			// 莊園
-			ManorPen manorPen = role.getManorPen();
+			ManorInfo manorInfo = role.getManorInfo();
 			// 計算成長中,且還沒澆水的種子
-			List<SeedResult> canWaters = calcCanWaters(manorPen);
+			List<SeedResult> canWaters = calcCanWaters(manorInfo);
 			int spendTimes = canWaters.size();
 			// 沒種子可澆水
 			if (spendTimes == 0) {
@@ -2530,9 +2530,9 @@ public class ManorServiceImpl extends AppServiceSupporter implements ManorServic
 		errorType = checkPrayAll(role);
 		if (errorType == ErrorType.NO_ERROR) {
 			// 莊園
-			ManorPen manorPen = role.getManorPen();
+			ManorInfo manorInfo = role.getManorInfo();
 			// 計算成長中,且還沒祈禱的種子
-			List<SeedResult> canPrays = calcCanPrays(manorPen);
+			List<SeedResult> canPrays = calcCanPrays(manorInfo);
 			int spendTimes = canPrays.size();
 			// 沒種子可祈禱
 			if (spendTimes == 0) {

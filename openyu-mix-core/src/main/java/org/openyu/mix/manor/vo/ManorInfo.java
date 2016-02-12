@@ -17,9 +17,9 @@ import com.sun.xml.bind.AnyTypeAdapter;
  * 莊園欄位資訊
  */
 @XmlJavaTypeAdapter(AnyTypeAdapter.class)
-public interface ManorPen extends AppInfo
+public interface ManorInfo extends AppInfo
 {
-	String KEY = ManorPen.class.getName();
+	String KEY = ManorInfo.class.getName();
 
 	// --------------------------------------------------
 	/**

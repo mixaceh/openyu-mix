@@ -16,9 +16,9 @@ import com.sun.xml.bind.AnyTypeAdapter;
  * 裝備欄
  */
 @XmlJavaTypeAdapter(AnyTypeAdapter.class)
-public interface EquipmentPen extends BaseBean
+public interface EquipmentInfo extends BaseBean
 {
-	String KEY = EquipmentPen.class.getName();
+	String KEY = EquipmentInfo.class.getName();
 
 	// --------------------------------------------------
 	/**

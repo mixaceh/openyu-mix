@@ -12,8 +12,8 @@ import java.util.List;
 import java.util.Locale;
 
 import org.junit.Test;
-import org.openyu.mix.manor.vo.ManorPen;
-import org.openyu.mix.manor.vo.ManorPen.FarmType;
+import org.openyu.mix.manor.vo.ManorInfo;
+import org.openyu.mix.manor.vo.ManorInfo.FarmType;
 import org.openyu.mix.role.po.RolePo;
 import org.openyu.mix.role.po.impl.RolePoImpl;
 import org.openyu.mix.role.service.RoleService.ActionType;
@@ -257,7 +257,7 @@ public class RoleServiceImplTest extends RoleTestSupporter {
 	}
 
 	@Test
-	public void createRoleManorPen() {
+	public void createRoleManorInfo() {
 		final String ROLE_ID = "TEST_ROLE";
 		final String NAME = "測試角色";
 		Role result = null;
@@ -276,12 +276,12 @@ public class RoleServiceImplTest extends RoleTestSupporter {
 		System.out.println(count + " times: " + (end - beg) + " mills. ");
 
 		// 莊園,只開放第1頁,其他頁鎖定
-		ManorPen manorPen = result.getManorPen();
-		System.out.println(manorPen);
+		ManorInfo manorInfo = result.getManorInfo();
+		System.out.println(manorInfo);
 		// 當包包頁被鎖定,會傳回null,但實際上為非null,locked=true
-		assertNotNull(manorPen.getFarm(FarmType._0));
-		assertNull(manorPen.getFarm(FarmType._1));
-		assertNull(manorPen.getFarm(FarmType._2));
+		assertNotNull(manorInfo.getFarm(FarmType._0));
+		assertNull(manorInfo.getFarm(FarmType._1));
+		assertNull(manorInfo.getFarm(FarmType._2));
 	}
 
 	@Test

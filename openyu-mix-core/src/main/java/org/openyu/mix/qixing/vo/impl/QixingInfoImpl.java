@@ -10,12 +10,12 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.openyu.mix.app.vo.supporter.AppInfoSupporter;
 import org.openyu.mix.role.vo.Role;
 import org.openyu.mix.qixing.vo.Outcome;
-import org.openyu.mix.qixing.vo.QixingPen;
+import org.openyu.mix.qixing.vo.QixingInfo;
 import org.openyu.commons.lang.NumberHelper;
 
-@XmlRootElement(name = "qixingPen")
+@XmlRootElement(name = "qixingInfo")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class QixingPenImpl extends AppInfoSupporter implements QixingPen
+public class QixingInfoImpl extends AppInfoSupporter implements QixingInfo
 {
 	private static final long serialVersionUID = 3394460367607072868L;
 
@@ -52,12 +52,12 @@ public class QixingPenImpl extends AppInfoSupporter implements QixingPen
 	 */
 	private Map<String, Integer> awards = new LinkedHashMap<String, Integer>();
 
-	public QixingPenImpl(Role role)
+	public QixingInfoImpl(Role role)
 	{
 		this.role = role;
 	}
 
-	public QixingPenImpl()
+	public QixingInfoImpl()
 	{
 		this(null);
 	}
@@ -228,8 +228,8 @@ public class QixingPenImpl extends AppInfoSupporter implements QixingPen
 
 	public Object clone()
 	{
-		QixingPenImpl copy = null;
-		copy = (QixingPenImpl) super.clone();
+		QixingInfoImpl copy = null;
+		copy = (QixingInfoImpl) super.clone();
 		//role不要clone,會造成loop
 		copy.outcome = clone(outcome);
 		copy.awards = clone(awards);

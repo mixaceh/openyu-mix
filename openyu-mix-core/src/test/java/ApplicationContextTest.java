@@ -38,6 +38,9 @@ public class ApplicationContextTest extends BaseTestSupporter {
 
 	// 2015/12/04
 	// count: 275, time: 0 mills., 74,137,736 bytes (74.14 MB) memory used
+
+	// 2016/02/12
+	// count: 178, time: 45,550 mills., 26,504,288 bytes (26.5 MB) memory used
 	public void showBean() {
 		printBean();
 	}

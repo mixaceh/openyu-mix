@@ -10,7 +10,7 @@ import org.openyu.mix.app.service.AppService;
 import org.openyu.mix.app.vo.AppResult;
 import org.openyu.mix.item.vo.Item;
 import org.openyu.mix.qixing.vo.Outcome;
-import org.openyu.mix.qixing.vo.QixingPen;
+import org.openyu.mix.qixing.vo.QixingInfo;
 import org.openyu.commons.enumz.IntEnum;
 import org.openyu.socklet.message.vo.Message;
 
@@ -260,15 +260,15 @@ public interface QixingService extends AppService
 //	 * @param roleId
 //	 * @param bagInfo
 //	 */
-//	void sendQixingPen(String roleId, QixingPen qixingPen);
+//	void sendQixingInfo(String roleId, QixingInfo qixingInfo);
 //
 //	/**
 //	 * 填充七星欄位
 //	 * 
 //	 * @param message
-//	 * @param qixingPen
+//	 * @param qixingInfo
 //	 */
-//	void fillQixingPen(Message message, QixingPen qixingPen);
+//	void fillQixingInfo(Message message, QixingInfo qixingInfo);
 //
 //	/**
 //	 * 填充獎勵
@@ -528,7 +528,7 @@ public interface QixingService extends AppService
 //	 * @param roleId
 //	 * @param trainInfo
 //	 */
-//	void sendReset(String roleId, QixingPen qixingPen);
+//	void sendReset(String roleId, QixingInfo qixingInfo);
 //
 //	/**
 //	 * 重置每日已玩的次數,所有線上玩家

@@ -8,8 +8,8 @@ import java.util.Map;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 
-import org.openyu.mix.manor.vo.ManorPen.Farm;
-import org.openyu.mix.manor.vo.impl.ManorPenImpl.FarmImpl;
+import org.openyu.mix.manor.vo.ManorInfo.Farm;
+import org.openyu.mix.manor.vo.impl.ManorInfoImpl.FarmImpl;
 import org.openyu.commons.jaxb.adapter.supporter.BaseXmlAdapterSupporter;
 
 // --------------------------------------------------

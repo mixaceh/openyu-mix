@@ -14,8 +14,8 @@ import org.openyu.mix.core.service.CoreService.ErrorType;
 import org.openyu.mix.item.vo.Equipment;
 import org.openyu.mix.item.vo.Item;
 import org.openyu.mix.manor.vo.Land;
-import org.openyu.mix.manor.vo.ManorPen;
-import org.openyu.mix.manor.vo.ManorPen.Farm;
+import org.openyu.mix.manor.vo.ManorInfo;
+import org.openyu.mix.manor.vo.ManorInfo.Farm;
 import org.openyu.mix.manor.vo.Seed;
 import org.openyu.mix.manor.service.ManorService.CultureType;
 import org.openyu.mix.role.service.RoleService.GoldType;
@@ -23,7 +23,7 @@ import org.openyu.mix.role.vo.BagInfo;
 import org.openyu.mix.role.vo.Role;
 import org.openyu.mix.sasang.vo.SasangInfo;
 import org.openyu.mix.train.vo.TrainInfo;
-import org.openyu.mix.wuxing.vo.WuxingPen;
+import org.openyu.mix.wuxing.vo.WuxingInfo;
 
 import com.carrotsearch.junitbenchmarks.BenchmarkOptions;
 
@@ -234,9 +234,9 @@ public class CoreServiceImplTest extends CoreTestSupporter {
 		itemService.increaseItemWithItemId(true, role, "T_MANOR_SPEED_G001", 1);
 
 		// 莊園
-		ManorPen manorPen = role.getManorPen();
-		manorPen.clearSeed(true);// 清莊園
-		Farm farm = manorPen.getFarm(0);// 農場
+		ManorInfo manorInfo = role.getManorInfo();
+		manorInfo.clearSeed(true);// 清莊園
+		Farm farm = manorInfo.getFarm(0);// 農場
 		farm.setLand(null);// 清土地
 
 		// 開墾
@@ -304,10 +304,10 @@ public class CoreServiceImplTest extends CoreTestSupporter {
 	public void simulateWuxing(Role role) {
 		role.setLevel(25);
 		//
-		WuxingPen wuxingPen = role.getWuxingPen();
-		wuxingPen.reset();
-		wuxingPen.setOutcome(null);
-		wuxingPen.getAwards().clear();// 清獎勵
+		WuxingInfo wuxingInfo = role.getWuxingInfo();
+		wuxingInfo.reset();
+		wuxingInfo.setOutcome(null);
+		wuxingInfo.getAwards().clear();// 清獎勵
 
 		// 1.加五行石到包包
 		Item item = itemService.createItem("T_WUXING_PLAY_G001", 10);// 五行石

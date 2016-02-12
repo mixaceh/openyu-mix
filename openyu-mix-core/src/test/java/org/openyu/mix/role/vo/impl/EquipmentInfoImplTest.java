@@ -12,22 +12,22 @@ import org.openyu.mix.item.vo.ItemType;
 import org.openyu.mix.item.vo.Weapon;
 import org.openyu.mix.item.vo.impl.ArmorImpl;
 import org.openyu.mix.item.vo.impl.WeaponImpl;
-import org.openyu.mix.role.vo.EquipmentPen;
+import org.openyu.mix.role.vo.EquipmentInfo;
 
-public class EquipmentPenImplTest extends BaseTestSupporter {
+public class EquipmentInfoImplTest extends BaseTestSupporter {
 
 	@Test
 	public void writeToXml() {
-		EquipmentPen equipmentPen = new EquipmentPenImpl();
+		EquipmentInfo equipmentInfo = new EquipmentInfoImpl();
 		//
-		String result = CollectorHelper.writeToXml(EquipmentPenImpl.class, equipmentPen);
+		String result = CollectorHelper.writeToXml(EquipmentInfoImpl.class, equipmentInfo);
 		System.out.println(result);
 		assertNotNull(result);
 	}
 
 	@Test
 	public void readFromXml() {
-		EquipmentPen result = CollectorHelper.readFromXml(EquipmentPenImpl.class);
+		EquipmentInfo result = CollectorHelper.readFromXml(EquipmentInfoImpl.class);
 		System.out.println(result);
 		assertNotNull(result);
 	}
@@ -37,8 +37,8 @@ public class EquipmentPenImplTest extends BaseTestSupporter {
 	 * 
 	 * @return
 	 */
-	public static EquipmentPen mockEquipmentPen() {
-		EquipmentPen result = new EquipmentPenImpl();
+	public static EquipmentInfo mockEquipmentInfo() {
+		EquipmentInfo result = new EquipmentInfoImpl();
 		return result;
 	}
 
@@ -48,9 +48,9 @@ public class EquipmentPenImplTest extends BaseTestSupporter {
 	// 1000000 times: 18 mills.
 	// verified
 	public void addEquipment() {
-		EquipmentPen equipmentPen = mockEquipmentPen();
+		EquipmentInfo equipmentInfo = mockEquipmentInfo();
 		//
-		EquipmentPen.ErrorType result = EquipmentPen.ErrorType.NO_ERROR;
+		EquipmentInfo.ErrorType result = EquipmentInfo.ErrorType.NO_ERROR;
 		// 防具
 		Armor armor = new ArmorImpl();
 		armor.setItemType(ItemType.ARMOR);
@@ -59,38 +59,38 @@ public class EquipmentPenImplTest extends BaseTestSupporter {
 		int count = 1;
 		long beg = System.currentTimeMillis();
 		for (int i = 0; i < count; i++) {
-			result = equipmentPen.addEquipment(armor);
+			result = equipmentInfo.addEquipment(armor);
 		}
 		long end = System.currentTimeMillis();
 		System.out.println(count + " times: " + (end - beg) + " mills. ");
 
 		System.out.println(result);
 		// 沒有錯誤
-		assertEquals(EquipmentPen.ErrorType.NO_ERROR, result);
+		assertEquals(EquipmentInfo.ErrorType.NO_ERROR, result);
 		//
-		result = equipmentPen.addEquipment(null);
+		result = equipmentInfo.addEquipment(null);
 		System.out.println(result);
 		// 道具不存在
-		assertEquals(EquipmentPen.ErrorType.EQUIPMENT_NOT_EXIST, result);
+		assertEquals(EquipmentInfo.ErrorType.EQUIPMENT_NOT_EXIST, result);
 
 		// 武器
 		Weapon weapon = new WeaponImpl();
 		weapon.setItemType(ItemType.WEAPON);
 		weapon.setPositionType(PositionType.LEFT_HAND);// 左手部位
-		result = equipmentPen.addEquipment(weapon);
+		result = equipmentInfo.addEquipment(weapon);
 		System.out.println(result);
-		System.out.println(equipmentPen.getWeapons());
+		System.out.println(equipmentInfo.getWeapons());
 		// 沒有錯誤
-		assertEquals(EquipmentPen.ErrorType.NO_ERROR, result);
+		assertEquals(EquipmentInfo.ErrorType.NO_ERROR, result);
 		//
 		weapon = new WeaponImpl();
 		weapon.setItemType(ItemType.WEAPON);
 		weapon.setPositionType(PositionType.PAIR_HAND);// 雙手部位
-		result = equipmentPen.addEquipment(weapon);
+		result = equipmentInfo.addEquipment(weapon);
 		System.out.println(result);
-		System.out.println(equipmentPen.getWeapons());
+		System.out.println(equipmentInfo.getWeapons());
 		// 沒有錯誤
-		assertEquals(EquipmentPen.ErrorType.NO_ERROR, result);
+		assertEquals(EquipmentInfo.ErrorType.NO_ERROR, result);
 	}
 
 	@Test
@@ -99,53 +99,53 @@ public class EquipmentPenImplTest extends BaseTestSupporter {
 	// 1000000 times: 18 mills.
 	// verified
 	public void removeEquipment() {
-		EquipmentPen equipmentPen = mockEquipmentPen();
+		EquipmentInfo equipmentInfo = mockEquipmentInfo();
 		//
-		EquipmentPen.ErrorType result = EquipmentPen.ErrorType.NO_ERROR;
+		EquipmentInfo.ErrorType result = EquipmentInfo.ErrorType.NO_ERROR;
 		// 防具
 		Armor armor = new ArmorImpl();
 		armor.setItemType(ItemType.ARMOR);
 		armor.setPositionType(PositionType.BODY_HEAD);// 頭部位
-		equipmentPen.addEquipment(armor);
+		equipmentInfo.addEquipment(armor);
 		//
 		int count = 1;
 		long beg = System.currentTimeMillis();
 		for (int i = 0; i < count; i++) {
-			result = equipmentPen.removeEquipment(armor);
+			result = equipmentInfo.removeEquipment(armor);
 		}
 		long end = System.currentTimeMillis();
 		System.out.println(count + " times: " + (end - beg) + " mills. ");
 
 		System.out.println(result);
 		// 沒有錯誤
-		assertEquals(EquipmentPen.ErrorType.NO_ERROR, result);
+		assertEquals(EquipmentInfo.ErrorType.NO_ERROR, result);
 		//
-		result = equipmentPen.removeEquipment(armor);
+		result = equipmentInfo.removeEquipment(armor);
 		System.out.println(result);
 		// 道具不存在
-		assertEquals(EquipmentPen.ErrorType.EQUIPMENT_NOT_EXIST, result);
+		assertEquals(EquipmentInfo.ErrorType.EQUIPMENT_NOT_EXIST, result);
 		//
-		result = equipmentPen.removeEquipment(null);
+		result = equipmentInfo.removeEquipment(null);
 		System.out.println(result);
 		// 道具不存在
-		assertEquals(EquipmentPen.ErrorType.EQUIPMENT_NOT_EXIST, result);
+		assertEquals(EquipmentInfo.ErrorType.EQUIPMENT_NOT_EXIST, result);
 
 		// 武器
 		Weapon weapon = new WeaponImpl();
 		weapon.setItemType(ItemType.WEAPON);
 		weapon.setPositionType(PositionType.LEFT_HAND);// 左手部位
-		equipmentPen.addEquipment(weapon);
+		equipmentInfo.addEquipment(weapon);
 
 		//
-		result = equipmentPen.removeEquipment(weapon);
+		result = equipmentInfo.removeEquipment(weapon);
 		System.out.println(result);
 		// 沒有錯誤
-		assertEquals(EquipmentPen.ErrorType.NO_ERROR, result);
+		assertEquals(EquipmentInfo.ErrorType.NO_ERROR, result);
 		//
-		result = equipmentPen.removeEquipment(weapon);
+		result = equipmentInfo.removeEquipment(weapon);
 		System.out.println(result);
 		// 道具不存在
-		assertEquals(EquipmentPen.ErrorType.EQUIPMENT_NOT_EXIST, result);
+		assertEquals(EquipmentInfo.ErrorType.EQUIPMENT_NOT_EXIST, result);
 
 	}
 }

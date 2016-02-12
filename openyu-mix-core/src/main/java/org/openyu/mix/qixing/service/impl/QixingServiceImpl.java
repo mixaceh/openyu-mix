@@ -93,7 +93,7 @@ public class QixingServiceImpl extends AppServiceSupporter implements QixingServ
 	// sendConnect(result, attatch);
 	//
 	// //已連線
-	// result.getQixingPen().setConnected(true);
+	// result.getQixingInfo().setConnected(true);
 	// //
 	// return result;
 	// }
@@ -120,7 +120,7 @@ public class QixingServiceImpl extends AppServiceSupporter implements QixingServ
 	// role.getId());
 	//
 	// //七星欄位
-	// fillQixingPen(message, role.getQixingPen());
+	// fillQixingInfo(message, role.getQixingInfo());
 	// //
 	// messageService.addMessage(message);
 	// }
@@ -160,12 +160,12 @@ public class QixingServiceImpl extends AppServiceSupporter implements QixingServ
 	// * @param roleId
 	// * @param bagInfo
 	// */
-	// public void sendQixingPen(String roleId, QixingPen qixingPen)
+	// public void sendQixingInfo(String roleId, QixingInfo qixingInfo)
 	// {
 	// Message message = messageService.createMessage(CoreModuleType.WUXING,
 	// CoreModuleType.CLIENT, CoreMessageType.WUXING_PEN_RESPONSE, roleId);
 	//
-	// fillQixingPen(message, qixingPen);
+	// fillQixingInfo(message, qixingInfo);
 	// //
 	// messageService.addMessage(message);
 	//
@@ -175,17 +175,17 @@ public class QixingServiceImpl extends AppServiceSupporter implements QixingServ
 	// * 填充七星欄位
 	// *
 	// * @param message
-	// * @param qixingPen
+	// * @param qixingInfo
 	// */
-	// public void fillQixingPen(Message message, QixingPen qixingPen)
+	// public void fillQixingInfo(Message message, QixingInfo qixingInfo)
 	// {
 	// //玩的時間
-	// message.addLong(qixingPen.getPlayTime());
+	// message.addLong(qixingInfo.getPlayTime());
 	// //每日已玩的次數
-	// message.addInt(qixingPen.getDailyTimes());
+	// message.addInt(qixingInfo.getDailyTimes());
 	//
 	// //七星結果
-	// Outcome outcome = qixingPen.getOutcome();
+	// Outcome outcome = qixingInfo.getOutcome();
 	// message.addString((outcome != null ? safeGet(outcome.getId()) : ""));
 	// message.addString((outcome != null ? safeGet(outcome.getBankerId()) :
 	// ""));
@@ -193,7 +193,7 @@ public class QixingServiceImpl extends AppServiceSupporter implements QixingServ
 	// ""));
 	//
 	// //填充獎勵
-	// fillAwards(message, qixingPen.getAwards());
+	// fillAwards(message, qixingInfo.getAwards());
 	// }
 	//
 	// /**
@@ -534,7 +534,7 @@ public class QixingServiceImpl extends AppServiceSupporter implements QixingServ
 	// {
 	// PlayResult result = null;
 	// Role role = null;
-	// QixingPen qixingPen = null;
+	// QixingInfo qixingInfo = null;
 	// //
 	// List<Notice> notices = new LinkedList<Notice>();//已玩的通知
 	// List<Prize> prizes = new LinkedList<Prize>();//已玩的獎勵
@@ -545,7 +545,7 @@ public class QixingServiceImpl extends AppServiceSupporter implements QixingServ
 	// //角色
 	// role = getRoleService().getRole(roleId);
 	// //七星
-	// qixingPen = role.getQixingPen();
+	// qixingInfo = role.getQixingInfo();
 	// //先玩,為了檢查獎勵區空間是否足夠
 	// Outcome outcome = qixingMachine.start();
 	// //沒結果,xml可能沒設定,壞掉了
@@ -556,7 +556,7 @@ public class QixingServiceImpl extends AppServiceSupporter implements QixingServ
 	// else
 	// {
 	// //檢查中獎區
-	// errorType = checkAwards(qixingPen, outcome);
+	// errorType = checkAwards(qixingInfo, outcome);
 	// }
 	// //
 	// if (errorType == ErrorType.NO_ERROR)
@@ -570,19 +570,19 @@ public class QixingServiceImpl extends AppServiceSupporter implements QixingServ
 	// if (decreaseGold != 0)
 	// {
 	// long now = System.currentTimeMillis();
-	// qixingPen.setPlayTime(now);//玩的時間
-	// qixingPen.addDailyTimes(1);//每日已玩的次數
+	// qixingInfo.setPlayTime(now);//玩的時間
+	// qixingInfo.addDailyTimes(1);//每日已玩的次數
 	//
 	// //clone玩的結果
 	// Outcome cloneOutcome = clone(outcome);
-	// qixingPen.setOutcome(cloneOutcome);//最後的結果
+	// qixingInfo.setOutcome(cloneOutcome);//最後的結果
 	//
 	// //結果,放獎勵
 	// prizes = cloneOutcome.getPrizes();
 	// //獎勵區加入道具,並累計道具數量
 	// for (Prize prize : prizes)
 	// {
-	// qixingPen.addAwards(prize.getAwards());
+	// qixingInfo.addAwards(prize.getAwards());
 	// //加到公告通知公告區
 	// Notice notice = addNotice(role, prize);
 	// if (notice != null)
@@ -593,7 +593,7 @@ public class QixingServiceImpl extends AppServiceSupporter implements QixingServ
 	//
 	// //結果
 	// result = new PlayResultImpl(PlayType.BRONZE, now,
-	// qixingPen.getDailyTimes(),
+	// qixingInfo.getDailyTimes(),
 	// cloneOutcome, 1, spendGold);
 	// }
 	// else
@@ -607,9 +607,9 @@ public class QixingServiceImpl extends AppServiceSupporter implements QixingServ
 	// if (sendable)
 	// {
 	// //發送七星欄位
-	// if (errorType == ErrorType.NO_ERROR && qixingPen != null)
+	// if (errorType == ErrorType.NO_ERROR && qixingInfo != null)
 	// {
-	// sendQixingPen(roleId, qixingPen);
+	// sendQixingInfo(roleId, qixingInfo);
 	// }
 	// //玩的訊息
 	// sendPlay(errorType, roleId, result);
@@ -651,10 +651,10 @@ public class QixingServiceImpl extends AppServiceSupporter implements QixingServ
 	// return errorType;
 	// }
 	//
-	// QixingPen qixingPen = role.getQixingPen();
+	// QixingInfo qixingInfo = role.getQixingInfo();
 	//
 	// //超過每日次數
-	// if (qixingPen.getDailyTimes() >= qixingCollector.getDailyTimes())
+	// if (qixingInfo.getDailyTimes() >= qixingCollector.getDailyTimes())
 	// {
 	// errorType = ErrorType.OVER_PLAY_DAILY_TIMES;
 	// return errorType;
@@ -686,7 +686,7 @@ public class QixingServiceImpl extends AppServiceSupporter implements QixingServ
 	// {
 	// PlayResult result = null;
 	// Role role = null;
-	// QixingPen qixingPen = null;
+	// QixingInfo qixingInfo = null;
 	// int playTimes = playType.playTimes();//玩的次數
 	// //
 	// List<Notice> notices = new LinkedList<Notice>();//已玩的通知
@@ -698,7 +698,7 @@ public class QixingServiceImpl extends AppServiceSupporter implements QixingServ
 	// //角色
 	// role = getRoleService().getRole(roleId);
 	// //七星
-	// qixingPen = role.getQixingPen();
+	// qixingInfo = role.getQixingInfo();
 	// //先玩,為了檢查獎勵區空間是否足夠
 	// List<Outcome> outcomes = qixingMachine.start(playTimes);
 	// //沒結果,xml可能沒設定,壞掉了
@@ -709,7 +709,7 @@ public class QixingServiceImpl extends AppServiceSupporter implements QixingServ
 	// else
 	// {
 	// //檢查中獎區
-	// errorType = checkAwards(qixingPen, outcomes);
+	// errorType = checkAwards(qixingInfo, outcomes);
 	// }
 	// //
 	// if (errorType == ErrorType.NO_ERROR)
@@ -727,16 +727,16 @@ public class QixingServiceImpl extends AppServiceSupporter implements QixingServ
 	// if (spendError == RoleService.ErrorType.NO_ERROR)
 	// {
 	// long now = System.currentTimeMillis();
-	// qixingPen.setPlayTime(now);//玩的時間
+	// qixingInfo.setPlayTime(now);//玩的時間
 	//
 	// //clone玩的結果
 	// List<Outcome> cloneOutcomes = clone(outcomes);
 	// //拿最後一個結果
 	// Outcome cloneOutcome = cloneOutcomes.get(cloneOutcomes.size() - 1);
-	// qixingPen.setOutcome(cloneOutcome);//最後的結果
+	// qixingInfo.setOutcome(cloneOutcome);//最後的結果
 	//
 	// //累計每日已玩的次數,不需每日重置
-	// qixingPen.addAccuTimes(spendResult.getTotalTimes());
+	// qixingInfo.addAccuTimes(spendResult.getTotalTimes());
 	//
 	// //所有的結果,放獎勵
 	// for (Outcome outcome : outcomes)
@@ -745,7 +745,7 @@ public class QixingServiceImpl extends AppServiceSupporter implements QixingServ
 	// for (Prize prize : buffPrizes)
 	// {
 	// //獎勵區加入道具,並累計道具數量
-	// qixingPen.addAwards(prize.getAwards());
+	// qixingInfo.addAwards(prize.getAwards());
 	//
 	// //加到公告通知公告區
 	// Notice notice = addNotice(role, prize);
@@ -778,9 +778,9 @@ public class QixingServiceImpl extends AppServiceSupporter implements QixingServ
 	// if (sendable)
 	// {
 	// //發送七星欄位
-	// if (errorType == ErrorType.NO_ERROR && qixingPen != null)
+	// if (errorType == ErrorType.NO_ERROR && qixingInfo != null)
 	// {
-	// sendQixingPen(roleId, qixingPen);
+	// sendQixingInfo(roleId, qixingInfo);
 	// }
 	// //玩的訊息
 	// sendPlay(errorType, roleId, result);
@@ -869,34 +869,34 @@ public class QixingServiceImpl extends AppServiceSupporter implements QixingServ
 	// /**
 	// * 檢查中獎區
 	// *
-	// * @param qixingPen
+	// * @param qixingInfo
 	// * @param outcome
 	// * @return
 	// */
-	// protected ErrorType checkAwards(QixingPen qixingPen, Outcome outcome)
+	// protected ErrorType checkAwards(QixingInfo qixingInfo, Outcome outcome)
 	// {
 	//
 	// List<Outcome> outcomes = new LinkedList<Outcome>();
 	// outcomes.add(outcome);
-	// return checkAwards(qixingPen, outcomes);
+	// return checkAwards(qixingInfo, outcomes);
 	// }
 	//
 	// /**
 	// * 檢查中獎區
 	// *
 	// * @param roleId
-	// * @param qixingPen
+	// * @param qixingInfo
 	// * @param outcomes
 	// * @return
 	// */
-	// protected ErrorType checkAwards(QixingPen qixingPen, List<Outcome>
+	// protected ErrorType checkAwards(QixingInfo qixingInfo, List<Outcome>
 	// outcomes)
 	// {
 	// ErrorType errorType = ErrorType.NO_ERROR;
 	// //
 	// //檢查獎勵區空間是否足夠
 	// //中獎區,clone一個出來
-	// Map<String, Integer> cloneAwards = clone(qixingPen.getAwards());
+	// Map<String, Integer> cloneAwards = clone(qixingInfo.getAwards());
 	// int cloneAwardsSize = cloneAwards.size();
 	// //
 	// for (Outcome outcome : outcomes)
@@ -914,7 +914,7 @@ public class QixingServiceImpl extends AppServiceSupporter implements QixingServ
 	// {
 	// cloneAwardsSize += 1;
 	// //最大中獎區道具種類
-	// if (cloneAwardsSize > QixingPen.MAX_AWARDS_SIZE)
+	// if (cloneAwardsSize > QixingInfo.MAX_AWARDS_SIZE)
 	// {
 	// //中獎區滿了
 	// errorType = ErrorType.AWARDS_FULL;
@@ -1244,7 +1244,7 @@ public class QixingServiceImpl extends AppServiceSupporter implements QixingServ
 	// //角色
 	// Role role = getRoleService().getRole(roleId);
 	// //七星
-	// QixingPen qixingPen = role.getQixingPen();
+	// QixingInfo qixingInfo = role.getQixingInfo();
 	//
 	// //再判斷放入包包是否成功
 	// List<IncreaseResult> increaseResults = itemService.increase(true, roleId,
@@ -1252,7 +1252,7 @@ public class QixingServiceImpl extends AppServiceSupporter implements QixingServ
 	// amount);
 	// if (increaseResults.size() >= 0)
 	// {
-	// qixingPen.removeAward(itemId);
+	// qixingInfo.removeAward(itemId);
 	// //結果
 	// result = new PutResultImpl(itemId, amount);
 	// }
@@ -1306,9 +1306,9 @@ public class QixingServiceImpl extends AppServiceSupporter implements QixingServ
 	// }
 	//
 	// //中獎區道具不存在
-	// QixingPen qixingPen = role.getQixingPen();
+	// QixingInfo qixingInfo = role.getQixingInfo();
 	// //獎勵道具數量
-	// Integer awardAmount = qixingPen.getAwards().get(itemId);
+	// Integer awardAmount = qixingInfo.getAwards().get(itemId);
 	// if (awardAmount == null || awardAmount < amount)
 	// {
 	// errorType = ErrorType.AWARD_NOT_EXIST;
@@ -1381,8 +1381,8 @@ public class QixingServiceImpl extends AppServiceSupporter implements QixingServ
 	// else
 	// {
 	// //七星
-	// QixingPen qixingPen = role.getQixingPen();
-	// Map<String, Integer> awards = qixingPen.getAwards();
+	// QixingInfo qixingInfo = role.getQixingInfo();
+	// Map<String, Integer> awards = qixingInfo.getAwards();
 	// for (Map.Entry<String, Integer> entry : awards.entrySet())
 	// {
 	// String itemId = entry.getKey();
@@ -1414,7 +1414,7 @@ public class QixingServiceImpl extends AppServiceSupporter implements QixingServ
 	// {
 	// for (String itemId : result.getAwards().keySet())
 	// {
-	// qixingPen.removeAward(itemId);
+	// qixingInfo.removeAward(itemId);
 	// }
 	// }
 	//
@@ -1471,7 +1471,7 @@ public class QixingServiceImpl extends AppServiceSupporter implements QixingServ
 	// public boolean reset(boolean sendable, String roleId)
 	// {
 	// boolean result = false;
-	// QixingPen qixingPen = null;
+	// QixingInfo qixingInfo = null;
 	// //檢查條件
 	// ErrorType errorType = checkReset(roleId);
 	// //超過重置時間
@@ -1480,15 +1480,15 @@ public class QixingServiceImpl extends AppServiceSupporter implements QixingServ
 	// //角色
 	// Role role = getRoleService().getRole(roleId);
 	// //訓練
-	// qixingPen = role.getQixingPen();
+	// qixingInfo = role.getQixingInfo();
 	// //重置
-	// result = qixingPen.reset();
+	// result = qixingInfo.reset();
 	// }
 	//
 	// //發訊息
 	// if (sendable && result)
 	// {
-	// sendReset(roleId, qixingPen);
+	// sendReset(roleId, qixingInfo);
 	// }
 	// //
 	// return result;
@@ -1512,14 +1512,14 @@ public class QixingServiceImpl extends AppServiceSupporter implements QixingServ
 	// return errorType;
 	// }
 	// //
-	// QixingPen qixingPen = role.getQixingPen();
+	// QixingInfo qixingInfo = role.getQixingInfo();
 	// //今日早上0點
 	// Calendar today = CalendarHelper.today(0, 0, 0);
 	// //明日早上0點
 	// Calendar tomorrow = CalendarHelper.tomorrow(0, 0, 0);
 	//
 	// //玩的時間
-	// long playTime = qixingPen.getPlayTime();
+	// long playTime = qixingInfo.getPlayTime();
 	// boolean overTime = DateHelper.isOverTime(playTime,
 	// System.currentTimeMillis(),
 	// today.getTimeInMillis(), tomorrow.getTimeInMillis());
@@ -1539,12 +1539,12 @@ public class QixingServiceImpl extends AppServiceSupporter implements QixingServ
 	// * @param roleId
 	// * @param trainInfo
 	// */
-	// public void sendReset(String roleId, QixingPen qixingPen)
+	// public void sendReset(String roleId, QixingInfo qixingInfo)
 	// {
 	// Message message = messageService.createMessage(CoreModuleType.WUXING,
 	// CoreModuleType.CLIENT, CoreMessageType.WUXING_RESET_RESPONSE, roleId);
 	//
-	// fillQixingPen(message, qixingPen);
+	// fillQixingInfo(message, qixingInfo);
 	// //
 	// messageService.addMessage(message);
 	//
@@ -1567,7 +1567,7 @@ public class QixingServiceImpl extends AppServiceSupporter implements QixingServ
 	// try
 	// {
 	// //是否已連線
-	// if (!role.isConnected() || !role.getQixingPen().isConnected())
+	// if (!role.isConnected() || !role.getQixingInfo().isConnected())
 	// {
 	// continue;
 	// }

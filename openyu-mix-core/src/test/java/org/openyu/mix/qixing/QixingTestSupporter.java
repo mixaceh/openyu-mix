@@ -19,8 +19,8 @@ import org.openyu.mix.role.vo.Role;
 //import org.openyu.mix.qixing.service.socklet.QixingSocklet;
 import org.openyu.mix.qixing.vo.Outcome;
 import org.openyu.mix.qixing.vo.QixingCollector;
-import org.openyu.mix.qixing.vo.QixingPen;
-import org.openyu.mix.qixing.vo.impl.QixingPenImpl;
+import org.openyu.mix.qixing.vo.QixingInfo;
+import org.openyu.mix.qixing.vo.impl.QixingInfoImpl;
 
 public class QixingTestSupporter extends AppTestSupporter {
 	protected static QixingCollector qixingCollector = QixingCollector.getInstance();
@@ -83,9 +83,9 @@ public class QixingTestSupporter extends AppTestSupporter {
 	// *
 	// * @param role
 	// */
-	// public static QixingPen mockQixingPen(Role role)
+	// public static QixingInfo mockQixingInfo(Role role)
 	// {
-	// QixingPen result = new QixingPenImpl(role);
+	// QixingInfo result = new QixingInfoImpl(role);
 	// //
 	// result.setPlayTime(System.currentTimeMillis());
 	// result.setDailyTimes(1);

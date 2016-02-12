@@ -10,33 +10,33 @@ import java.util.List;
 
 import org.junit.Test;
 import org.openyu.mix.manor.vo.Land;
-import org.openyu.mix.manor.vo.ManorPen;
-import org.openyu.mix.manor.vo.ManorPen.Farm;
-import org.openyu.mix.manor.vo.ManorPen.FarmType;
+import org.openyu.mix.manor.vo.ManorInfo;
+import org.openyu.mix.manor.vo.ManorInfo.Farm;
+import org.openyu.mix.manor.vo.ManorInfo.FarmType;
 import org.openyu.mix.manor.vo.Seed;
-import org.openyu.mix.manor.vo.impl.ManorPenImpl.FarmImpl;
+import org.openyu.mix.manor.vo.impl.ManorInfoImpl.FarmImpl;
 import org.openyu.mix.role.vo.Role;
 import org.openyu.commons.collector.CollectorHelper;
 import org.openyu.commons.junit.supporter.BaseTestSupporter;
 import org.openyu.commons.lang.SystemHelper;
 
-public class ManorPenImplTest extends BaseTestSupporter {
+public class ManorInfoImplTest extends BaseTestSupporter {
 
 	@Test
 	public void writeToXml() {
-		ManorPen value = new ManorPenImpl();
+		ManorInfo value = new ManorInfoImpl();
 		//
 		Farm farm = new FarmImpl(0);
 		value.getFarms().put(farm.getId(), farm);
 		//
-		String result = CollectorHelper.writeToXml(ManorPenImpl.class, value);
+		String result = CollectorHelper.writeToXml(ManorInfoImpl.class, value);
 		System.out.println(result);
 		assertNotNull(result);
 	}
 
 	@Test
 	public void readFromXml() {
-		ManorPen result = CollectorHelper.readFromXml(ManorPenImpl.class);
+		ManorInfo result = CollectorHelper.readFromXml(ManorInfoImpl.class);
 		System.out.println(result);
 		assertNotNull(result);
 	}
@@ -46,8 +46,8 @@ public class ManorPenImplTest extends BaseTestSupporter {
 	 * 
 	 * @return
 	 */
-	public static ManorPen mockManorPen() {
-		return mockManorPen(null);
+	public static ManorInfo mockManorInfo() {
+		return mockManorInfo(null);
 	}
 
 	/**
@@ -56,8 +56,8 @@ public class ManorPenImplTest extends BaseTestSupporter {
 	 * @param role
 	 * @return
 	 */
-	public static ManorPen mockManorPen(Role role) {
-		ManorPen result = new ManorPenImpl(role);
+	public static ManorInfo mockManorInfo(Role role) {
+		ManorInfo result = new ManorInfoImpl(role);
 		FarmType[] farmTypes = FarmType.values();
 		for (FarmType farmType : farmTypes) {
 			int i = farmType.getValue();
@@ -73,7 +73,7 @@ public class ManorPenImplTest extends BaseTestSupporter {
 			land.setMaxAmount(1);
 			farm.setLand(land);
 			//
-			for (int j = 0; j < ManorPen.Farm.MAX_GRID_SIZE; j++) {
+			for (int j = 0; j < ManorInfo.Farm.MAX_GRID_SIZE; j++) {
 				Seed seed = new SeedImpl();
 				seed.setId(Seed.UNIQUE_ID_PREFIX + i + "" + j);
 				seed.setUniqueId("U_" + i + "" + j);
@@ -92,8 +92,8 @@ public class ManorPenImplTest extends BaseTestSupporter {
 	 * 
 	 * @return
 	 */
-	public static ManorPen mockManorPenBySameSeed() {
-		return mockManorPenBySameSeed(Seed.UNIQUE_ID_PREFIX + "00");
+	public static ManorInfo mockManorInfoBySameSeed() {
+		return mockManorInfoBySameSeed(Seed.UNIQUE_ID_PREFIX + "00");
 	}
 
 	/**
@@ -102,8 +102,8 @@ public class ManorPenImplTest extends BaseTestSupporter {
 	 * @param id
 	 * @return
 	 */
-	public static ManorPen mockManorPenBySameSeed(String id) {
-		return mockManorPenBySameSeed(null, id);
+	public static ManorInfo mockManorInfoBySameSeed(String id) {
+		return mockManorInfoBySameSeed(null, id);
 	}
 
 	/**
@@ -113,9 +113,9 @@ public class ManorPenImplTest extends BaseTestSupporter {
 	 * @param id
 	 * @return
 	 */
-	public static ManorPen mockManorPenBySameSeed(Role role, String id) {
-		ManorPen result = new ManorPenImpl(role);
-		FarmType[] farmTypes = ManorPen.FarmType.values();
+	public static ManorInfo mockManorInfoBySameSeed(Role role, String id) {
+		ManorInfo result = new ManorInfoImpl(role);
+		FarmType[] farmTypes = ManorInfo.FarmType.values();
 		for (FarmType farmType : farmTypes) {
 			int i = farmType.getValue();
 			//
@@ -127,7 +127,7 @@ public class ManorPenImplTest extends BaseTestSupporter {
 			Land land = new LandImpl(Land.UNIQUE_ID_PREFIX + i);
 			farm.setLand(land);
 			//
-			for (int j = 0; j < ManorPen.Farm.MAX_GRID_SIZE; j++) {
+			for (int j = 0; j < ManorInfo.Farm.MAX_GRID_SIZE; j++) {
 				Seed seed = new SeedImpl();
 				seed.setId(id);
 				seed.setUniqueId("U_" + i + "" + j);
@@ -146,8 +146,8 @@ public class ManorPenImplTest extends BaseTestSupporter {
 	 * 
 	 * @return
 	 */
-	public static ManorPen mockManorPenByOneFarm() {
-		return mockManorPenByOneFarm(null);
+	public static ManorInfo mockManorInfoByOneFarm() {
+		return mockManorInfoByOneFarm(null);
 	}
 
 	/**
@@ -156,15 +156,15 @@ public class ManorPenImplTest extends BaseTestSupporter {
 	 * @param role
 	 * @return
 	 */
-	public static ManorPen mockManorPenByOneFarm(Role role) {
-		ManorPen result = new ManorPenImpl(role);
+	public static ManorInfo mockManorInfoByOneFarm(Role role) {
+		ManorInfo result = new ManorInfoImpl(role);
 
 		int i = 0;
 		Farm farm = new FarmImpl(i);// 第1頁
 		Land land = new LandImpl(Land.UNIQUE_ID_PREFIX + i);
 		farm.setLand(land);
 		//
-		for (int j = 0; j < ManorPen.Farm.MAX_GRID_SIZE; j++) {
+		for (int j = 0; j < ManorInfo.Farm.MAX_GRID_SIZE; j++) {
 			Seed seed = new SeedImpl();
 			seed.setId(Seed.UNIQUE_ID_PREFIX + i + "" + j);
 			seed.setUniqueId("U_" + i + "" + j);
@@ -197,14 +197,14 @@ public class ManorPenImplTest extends BaseTestSupporter {
 	// 1000000 times: 3 mills.
 	// verified
 	public void getFarmSize() {
-		ManorPen manorPen = mockManorPen();
+		ManorInfo manorInfo = mockManorInfo();
 		//
 		int result = 0;
 		//
 		int count = 1000000;
 		long beg = System.currentTimeMillis();
 		for (int i = 0; i < count; i++) {
-			result = manorPen.getFarmSize();
+			result = manorInfo.getFarmSize();
 		}
 		long end = System.currentTimeMillis();
 		System.out.println(count + " times: " + (end - beg) + " mills. ");
@@ -212,9 +212,9 @@ public class ManorPenImplTest extends BaseTestSupporter {
 		System.out.println(result);
 		assertEquals(FarmType.values().length, result);
 		//
-		manorPen.lock(0);
-		manorPen.lock(1);
-		result = manorPen.getFarmSize();
+		manorInfo.lock(0);
+		manorInfo.lock(1);
+		result = manorInfo.getFarmSize();
 		System.out.println(result);
 		assertEquals(FarmType.values().length - 2, result);
 	}
@@ -225,14 +225,14 @@ public class ManorPenImplTest extends BaseTestSupporter {
 	// 1000000 times: 32 mills.
 	// verified
 	public void isFull() {
-		ManorPen manorPen = mockManorPen();
+		ManorInfo manorInfo = mockManorInfo();
 		//
 		Boolean result = null;
 		//
 		int count = 1000000;
 		long beg = System.currentTimeMillis();
 		for (int i = 0; i < count; i++) {
-			result = manorPen.isFull();
+			result = manorInfo.isFull();
 		}
 		long end = System.currentTimeMillis();
 		System.out.println(count + " times: " + (end - beg) + " mills. ");
@@ -240,8 +240,8 @@ public class ManorPenImplTest extends BaseTestSupporter {
 		System.out.println(result);
 		assertTrue(result);
 		//
-		manorPen.removeSeed(0, 0);
-		result = manorPen.isFull();
+		manorInfo.removeSeed(0, 0);
+		result = manorInfo.isFull();
 		System.out.println(result);
 		assertFalse(result);
 	}
@@ -252,39 +252,39 @@ public class ManorPenImplTest extends BaseTestSupporter {
 	// 1000000 times: 18 mills.
 	// verified
 	public void addFarm() {
-		ManorPen manorPen = new ManorPenImpl();
-		manorPen.removeFarm(0);
-		ManorPen.Farm farm = new ManorPenImpl.FarmImpl();
+		ManorInfo manorInfo = new ManorInfoImpl();
+		manorInfo.removeFarm(0);
+		ManorInfo.Farm farm = new ManorInfoImpl.FarmImpl();
 		//
-		ManorPen.ErrorType result = ManorPen.ErrorType.NO_ERROR;
+		ManorInfo.ErrorType result = ManorInfo.ErrorType.NO_ERROR;
 		//
 		int count = 1;
 		long beg = System.currentTimeMillis();
 		for (int i = 0; i < count; i++) {
-			result = manorPen.addFarm(0, farm);
+			result = manorInfo.addFarm(0, farm);
 		}
 		long end = System.currentTimeMillis();
 		System.out.println(count + " times: " + (end - beg) + " mills. ");
 
 		System.out.println(result);
 		// 沒有錯誤
-		assertEquals(ManorPen.ErrorType.NO_ERROR, result);
+		assertEquals(ManorInfo.ErrorType.NO_ERROR, result);
 
-		result = manorPen.addFarm(-1, farm);
+		result = manorInfo.addFarm(-1, farm);
 		System.out.println(result);
 		// 超過農場頁索引
-		assertEquals(ManorPen.ErrorType.OVER_FARM_INDEX, result);
+		assertEquals(ManorInfo.ErrorType.OVER_FARM_INDEX, result);
 		//
-		result = manorPen.addFarm(0, null);
+		result = manorInfo.addFarm(0, null);
 		System.out.println(result);
 		// 農場頁不存在
-		assertEquals(ManorPen.ErrorType.FARM_NOT_EXIST, result);
+		assertEquals(ManorInfo.ErrorType.FARM_NOT_EXIST, result);
 		//
-		manorPen.removeFarm(2);
-		result = manorPen.addFarm(0, farm);
+		manorInfo.removeFarm(2);
+		result = manorInfo.addFarm(0, farm);
 		System.out.println(result);
 		// 莊園已有農場頁
-		assertEquals(ManorPen.ErrorType.ALREADY_HAS_FARM, result);
+		assertEquals(ManorInfo.ErrorType.ALREADY_HAS_FARM, result);
 	}
 
 	//
@@ -294,52 +294,52 @@ public class ManorPenImplTest extends BaseTestSupporter {
 	// 1000000 times: 18 mills.
 	// verified
 	public void addSeed() {
-		ManorPen manorPen = mockManorPen();
-		manorPen.removeSeed(0, 0);// 移除一個種子
+		ManorInfo manorInfo = mockManorInfo();
+		manorInfo.removeSeed(0, 0);// 移除一個種子
 		Seed seed = randomSeed();
 		//
-		ManorPen.ErrorType result = ManorPen.ErrorType.NO_ERROR;
+		ManorInfo.ErrorType result = ManorInfo.ErrorType.NO_ERROR;
 		//
 		int count = 1;
 		long beg = System.currentTimeMillis();
 		for (int i = 0; i < count; i++) {
-			result = manorPen.addSeed(0, 0, seed);
+			result = manorInfo.addSeed(0, 0, seed);
 		}
 		long end = System.currentTimeMillis();
 		System.out.println(count + " times: " + (end - beg) + " mills. ");
 
 		System.out.println(result);
 		// 沒有錯誤
-		assertEquals(ManorPen.ErrorType.NO_ERROR, result);
+		assertEquals(ManorInfo.ErrorType.NO_ERROR, result);
 
 		//
-		result = manorPen.addSeed(-1, 0, seed);
+		result = manorInfo.addSeed(-1, 0, seed);
 		System.out.println(result);
 		// 超過農場頁索引
-		assertEquals(ManorPen.ErrorType.OVER_FARM_INDEX, result);
+		assertEquals(ManorInfo.ErrorType.OVER_FARM_INDEX, result);
 		//
-		result = manorPen.addSeed(0, 0, (Seed) null);
+		result = manorInfo.addSeed(0, 0, (Seed) null);
 		System.out.println(result);
 		// 種子不存在
-		assertEquals(ManorPen.ErrorType.SEED_NOT_EXIST, result);
+		assertEquals(ManorInfo.ErrorType.SEED_NOT_EXIST, result);
 
 		// 農場頁滿了
-		assertEquals((int) Farm.MAX_GRID_SIZE, (int) manorPen.getFarm(0).getSeedSize());
-		result = manorPen.addSeed(0, 0, seed);
+		assertEquals((int) Farm.MAX_GRID_SIZE, (int) manorInfo.getFarm(0).getSeedSize());
+		result = manorInfo.addSeed(0, 0, seed);
 		System.out.println(result);
-		assertEquals(ManorPen.ErrorType.FARM_FULL, result);
+		assertEquals(ManorInfo.ErrorType.FARM_FULL, result);
 		//
-		manorPen.removeSeed(0, 1);
-		result = manorPen.addSeed(0, 0, seed);
+		manorInfo.removeSeed(0, 1);
+		result = manorInfo.addSeed(0, 0, seed);
 		System.out.println(result);
 		// 格子已有種子
-		assertEquals(ManorPen.ErrorType.ALREADY_HAS_SEED, result);
+		assertEquals(ManorInfo.ErrorType.ALREADY_HAS_SEED, result);
 		//
-		manorPen.removeFarm(0);// 移除一個農場頁
-		result = manorPen.addSeed(0, 0, seed);
+		manorInfo.removeFarm(0);// 移除一個農場頁
+		result = manorInfo.addSeed(0, 0, seed);
 		System.out.println(result);
 		// 農場頁不存在
-		assertEquals(ManorPen.ErrorType.FARM_NOT_EXIST, result);
+		assertEquals(ManorInfo.ErrorType.FARM_NOT_EXIST, result);
 	}
 
 	@Test
@@ -348,37 +348,37 @@ public class ManorPenImplTest extends BaseTestSupporter {
 	// 1000000 times: 18 mills.
 	// verified
 	public void removeSeed() {
-		ManorPen manorPen = mockManorPen();
+		ManorInfo manorInfo = mockManorInfo();
 		//
-		ManorPen.ErrorType result = ManorPen.ErrorType.NO_ERROR;
+		ManorInfo.ErrorType result = ManorInfo.ErrorType.NO_ERROR;
 		//
 		int count = 1;
 		long beg = System.currentTimeMillis();
 		for (int i = 0; i < count; i++) {
-			result = manorPen.removeSeed(0, 0);
+			result = manorInfo.removeSeed(0, 0);
 		}
 		long end = System.currentTimeMillis();
 		System.out.println(count + " times: " + (end - beg) + " mills. ");
 
 		System.out.println(result);
 		// 沒有錯誤
-		assertEquals(ManorPen.ErrorType.NO_ERROR, result);
+		assertEquals(ManorInfo.ErrorType.NO_ERROR, result);
 		//
-		result = manorPen.removeSeed(0, -1);
+		result = manorInfo.removeSeed(0, -1);
 		System.out.println(result);
 		// 超過格子索引
-		assertEquals(ManorPen.ErrorType.OVER_GRID_INDEX, result);
+		assertEquals(ManorInfo.ErrorType.OVER_GRID_INDEX, result);
 		//
-		result = manorPen.removeSeed(0, 0);
+		result = manorInfo.removeSeed(0, 0);
 		System.out.println(result);
 		// 種子不存在
-		assertEquals(ManorPen.ErrorType.SEED_NOT_EXIST, result);
+		assertEquals(ManorInfo.ErrorType.SEED_NOT_EXIST, result);
 		//
-		manorPen.removeFarm(0);// 移除一個農場頁
-		result = manorPen.removeSeed(0, 0);
+		manorInfo.removeFarm(0);// 移除一個農場頁
+		result = manorInfo.removeSeed(0, 0);
 		System.out.println(result);
 		// 農場頁不存在
-		assertEquals(ManorPen.ErrorType.FARM_NOT_EXIST, result);
+		assertEquals(ManorInfo.ErrorType.FARM_NOT_EXIST, result);
 	}
 
 	@Test
@@ -389,26 +389,26 @@ public class ManorPenImplTest extends BaseTestSupporter {
 	public void removeSeedByUniqueId() {
 		final String UNIQUE_ID = "U_00";
 		//
-		ManorPen manorPen = mockManorPen();
+		ManorInfo manorInfo = mockManorInfo();
 		//
-		ManorPen.ErrorType result = ManorPen.ErrorType.NO_ERROR;
+		ManorInfo.ErrorType result = ManorInfo.ErrorType.NO_ERROR;
 		//
 		int count = 1;
 		long beg = System.currentTimeMillis();
 		for (int i = 0; i < count; i++) {
-			result = manorPen.removeSeed(UNIQUE_ID);
+			result = manorInfo.removeSeed(UNIQUE_ID);
 		}
 		long end = System.currentTimeMillis();
 		System.out.println(count + " times: " + (end - beg) + " mills. ");
 
 		System.out.println(result);
 		// 沒有錯誤
-		assertEquals(ManorPen.ErrorType.NO_ERROR, result);
+		assertEquals(ManorInfo.ErrorType.NO_ERROR, result);
 		//
-		result = manorPen.removeSeed(UNIQUE_ID);
+		result = manorInfo.removeSeed(UNIQUE_ID);
 		System.out.println(result);
 		// 種子不存在
-		assertEquals(ManorPen.ErrorType.SEED_NOT_EXIST, result);
+		assertEquals(ManorInfo.ErrorType.SEED_NOT_EXIST, result);
 	}
 
 	@Test
@@ -417,22 +417,22 @@ public class ManorPenImplTest extends BaseTestSupporter {
 	// 1000000 times: 32 mills.
 	// verified
 	public void clearSeed() {
-		ManorPen manorPen = mockManorPen();
+		ManorInfo manorInfo = mockManorInfo();
 		//
-		ManorPen.ErrorType result = ManorPen.ErrorType.NO_ERROR;
+		ManorInfo.ErrorType result = ManorInfo.ErrorType.NO_ERROR;
 		//
 		int count = 1000000;
 		long beg = System.currentTimeMillis();
 		for (int i = 0; i < count; i++) {
-			result = manorPen.clearSeed(0);
+			result = manorInfo.clearSeed(0);
 		}
 		long end = System.currentTimeMillis();
 		System.out.println(count + " times: " + (end - beg) + " mills. ");
 
 		System.out.println(result);
 		// 沒有錯誤
-		assertEquals(ManorPen.ErrorType.NO_ERROR, result);
-		assertEquals(FarmType.values().length, manorPen.getFarmSize());
+		assertEquals(ManorInfo.ErrorType.NO_ERROR, result);
+		assertEquals(FarmType.values().length, manorInfo.getFarmSize());
 	}
 
 	@Test
@@ -441,22 +441,22 @@ public class ManorPenImplTest extends BaseTestSupporter {
 	// 1000000 times: 32 mills.
 	// verified
 	public void clearFarm() {
-		ManorPen manorPen = mockManorPen();
+		ManorInfo manorInfo = mockManorInfo();
 		//
-		ManorPen.ErrorType result = ManorPen.ErrorType.NO_ERROR;
+		ManorInfo.ErrorType result = ManorInfo.ErrorType.NO_ERROR;
 		//
 		int count = 1000000;
 		long beg = System.currentTimeMillis();
 		for (int i = 0; i < count; i++) {
-			result = manorPen.clearFarm();
+			result = manorInfo.clearFarm();
 		}
 		long end = System.currentTimeMillis();
 		System.out.println(count + " times: " + (end - beg) + " mills. ");
 
 		System.out.println(result);
 		// 沒有錯誤
-		assertEquals(ManorPen.ErrorType.NO_ERROR, result);
-		assertEquals(0, manorPen.getFarmSize());
+		assertEquals(ManorInfo.ErrorType.NO_ERROR, result);
+		assertEquals(0, manorInfo.getFarmSize());
 	}
 
 	@Test
@@ -465,14 +465,14 @@ public class ManorPenImplTest extends BaseTestSupporter {
 	// 1000000 times: 32 mills.
 	// verified
 	public void getFarm() {
-		ManorPen manorPen = mockManorPen();
+		ManorInfo manorInfo = mockManorInfo();
 		//
-		ManorPen.Farm result = null;
+		ManorInfo.Farm result = null;
 		//
 		int count = 1000000;
 		long beg = System.currentTimeMillis();
 		for (int i = 0; i < count; i++) {
-			result = manorPen.getFarm(0);
+			result = manorInfo.getFarm(0);
 		}
 		long end = System.currentTimeMillis();
 		System.out.println(count + " times: " + (end - beg) + " mills. ");
@@ -480,7 +480,7 @@ public class ManorPenImplTest extends BaseTestSupporter {
 		System.out.println(result);
 		assertNotNull(result);
 		//
-		result = manorPen.getFarm(-1);
+		result = manorInfo.getFarm(-1);
 		System.out.println(result);
 		assertNull(result);
 	}
@@ -491,14 +491,14 @@ public class ManorPenImplTest extends BaseTestSupporter {
 	// 1000000 times: 32 mills.
 	// verified
 	public void getSeed() {
-		ManorPen manorPen = mockManorPen();
+		ManorInfo manorInfo = mockManorInfo();
 		//
 		Seed result = null;
 		//
 		int count = 1000000;
 		long beg = System.currentTimeMillis();
 		for (int i = 0; i < count; i++) {
-			result = manorPen.getSeed(0, 0);
+			result = manorInfo.getSeed(0, 0);
 		}
 		long end = System.currentTimeMillis();
 		System.out.println(count + " times: " + (end - beg) + " mills. ");
@@ -506,7 +506,7 @@ public class ManorPenImplTest extends BaseTestSupporter {
 		System.out.println(result.getId() + ", " + result.getUniqueId());
 		assertNotNull(result);
 		//
-		result = manorPen.getSeed(-1, 0);
+		result = manorInfo.getSeed(-1, 0);
 		System.out.println(result);
 		assertNull(result);
 	}
@@ -519,14 +519,14 @@ public class ManorPenImplTest extends BaseTestSupporter {
 	public void getSeedByUniqueId() {
 		final String UNIQUE_ID = "U_00";
 
-		ManorPen manorPen = mockManorPen();
+		ManorInfo manorInfo = mockManorInfo();
 		//
 		Seed result = null;
 		//
 		int count = 1000000;
 		long beg = System.currentTimeMillis();
 		for (int i = 0; i < count; i++) {
-			result = manorPen.getSeed(UNIQUE_ID);
+			result = manorInfo.getSeed(UNIQUE_ID);
 		}
 		long end = System.currentTimeMillis();
 		System.out.println(count + " times: " + (end - beg) + " mills. ");
@@ -543,14 +543,14 @@ public class ManorPenImplTest extends BaseTestSupporter {
 	public void getSeeds() {
 		final String ID = "S_00";
 
-		ManorPen manorPen = mockManorPen();
+		ManorInfo manorInfo = mockManorInfo();
 		//
 		List<Seed> result = null;
 		//
 		int count = 1000000;
 		long beg = System.currentTimeMillis();
 		for (int i = 0; i < count; i++) {
-			result = manorPen.getSeeds(ID);
+			result = manorInfo.getSeeds(ID);
 		}
 		long end = System.currentTimeMillis();
 		System.out.println(count + " times: " + (end - beg) + " mills. ");
@@ -566,28 +566,28 @@ public class ManorPenImplTest extends BaseTestSupporter {
 	// verified
 	public void setFarm() {
 		final Integer INDEX = 0;
-		ManorPen manorPen = mockManorPen();
-		ManorPen.Farm farm = new ManorPenImpl.FarmImpl();
+		ManorInfo manorInfo = mockManorInfo();
+		ManorInfo.Farm farm = new ManorInfoImpl.FarmImpl();
 		farm.setId(INDEX);
 		//
-		ManorPen.ErrorType result = ManorPen.ErrorType.NO_ERROR;
+		ManorInfo.ErrorType result = ManorInfo.ErrorType.NO_ERROR;
 		//
 		int count = 1000000;
 		long beg = System.currentTimeMillis();
 		for (int i = 0; i < count; i++) {
-			result = manorPen.setFarm(INDEX, farm);
+			result = manorInfo.setFarm(INDEX, farm);
 		}
 		long end = System.currentTimeMillis();
 		System.out.println(count + " times: " + (end - beg) + " mills. ");
 
 		System.out.println(result);
 		// 沒有錯誤
-		assertEquals(ManorPen.ErrorType.NO_ERROR, result);
+		assertEquals(ManorInfo.ErrorType.NO_ERROR, result);
 		//
-		result = manorPen.setFarm(-1, farm);
+		result = manorInfo.setFarm(-1, farm);
 		System.out.println(result);
 		// 超過格子索引
-		assertEquals(ManorPen.ErrorType.OVER_FARM_INDEX, result);
+		assertEquals(ManorInfo.ErrorType.OVER_FARM_INDEX, result);
 	}
 
 	@Test
@@ -596,32 +596,32 @@ public class ManorPenImplTest extends BaseTestSupporter {
 	// 1000000 times: 32 mills.
 	// verified
 	public void setSeed() {
-		ManorPen manorPen = mockManorPen();
+		ManorInfo manorInfo = mockManorInfo();
 		Seed thing = randomSeed();
 		//
-		ManorPen.ErrorType result = ManorPen.ErrorType.NO_ERROR;
+		ManorInfo.ErrorType result = ManorInfo.ErrorType.NO_ERROR;
 		//
 		int count = 1000000;
 		long beg = System.currentTimeMillis();
 		for (int i = 0; i < count; i++) {
-			result = manorPen.setSeed(0, 0, thing);
+			result = manorInfo.setSeed(0, 0, thing);
 		}
 		long end = System.currentTimeMillis();
 		System.out.println(count + " times: " + (end - beg) + " mills. ");
 
 		System.out.println(result);
 		// 沒有錯誤
-		assertEquals(ManorPen.ErrorType.NO_ERROR, result);
+		assertEquals(ManorInfo.ErrorType.NO_ERROR, result);
 		//
-		result = manorPen.setSeed(0, -1, thing);
+		result = manorInfo.setSeed(0, -1, thing);
 		System.out.println(result);
 		// 超過格子索引
-		assertEquals(ManorPen.ErrorType.OVER_GRID_INDEX, result);
+		assertEquals(ManorInfo.ErrorType.OVER_GRID_INDEX, result);
 		//
-		result = manorPen.setSeed(-1, 0, thing);
+		result = manorInfo.setSeed(-1, 0, thing);
 		System.out.println(result);
 		// 超過農場頁索引
-		assertEquals(ManorPen.ErrorType.OVER_FARM_INDEX, result);
+		assertEquals(ManorInfo.ErrorType.OVER_FARM_INDEX, result);
 	}
 
 	@Test
@@ -632,14 +632,14 @@ public class ManorPenImplTest extends BaseTestSupporter {
 	public void containIndex() {
 		final Integer INDEX = 0;
 
-		ManorPen manorPen = mockManorPen();
+		ManorInfo manorInfo = mockManorInfo();
 		//
 		boolean result = false;
 		//
 		int count = 1000000;
 		long beg = System.currentTimeMillis();
 		for (int i = 0; i < count; i++) {
-			result = manorPen.containIndex(INDEX);
+			result = manorInfo.containIndex(INDEX);
 		}
 		long end = System.currentTimeMillis();
 		System.out.println(count + " times: " + (end - beg) + " mills. ");
@@ -647,7 +647,7 @@ public class ManorPenImplTest extends BaseTestSupporter {
 		System.out.println(result);
 		assertTrue(result);
 		//
-		result = manorPen.containIndex(-1);
+		result = manorInfo.containIndex(-1);
 		System.out.println(result);
 		assertFalse(result);
 	}
@@ -658,21 +658,21 @@ public class ManorPenImplTest extends BaseTestSupporter {
 	// 1000000 times: 32 mills.
 	// verified
 	public void getFarmIndexs() {
-		ManorPen manorPen = mockManorPen();
+		ManorInfo manorInfo = mockManorInfo();
 		//
 		List<Integer> result = null;
 		//
 		int count = 1000000;
 		long beg = System.currentTimeMillis();
 		for (int i = 0; i < count; i++) {
-			result = manorPen.getFarmIndexs();
+			result = manorInfo.getFarmIndexs();
 		}
 		long end = System.currentTimeMillis();
 		System.out.println(count + " times: " + (end - beg) + " mills. ");
 
 		System.out.println(result);
 		//
-		result = manorPen.getFarmIndexs(true);
+		result = manorInfo.getFarmIndexs(true);
 		System.out.println(result);
 	}
 
@@ -684,21 +684,21 @@ public class ManorPenImplTest extends BaseTestSupporter {
 	public void getIndex() {
 		final String UNIQUE_ID = "U_00";
 
-		ManorPen manorPen = mockManorPen();
+		ManorInfo manorInfo = mockManorInfo();
 		//
 		int[] result = null;
 		//
 		int count = 1;
 		long beg = System.currentTimeMillis();
 		for (int i = 0; i < count; i++) {
-			result = manorPen.getIndex(UNIQUE_ID);
+			result = manorInfo.getIndex(UNIQUE_ID);
 		}
 		long end = System.currentTimeMillis();
 		System.out.println(count + " times: " + (end - beg) + " mills. ");
 
 		System.out.println(result[0] + ", " + result[1]);
 		// 種子不存在
-		result = manorPen.getIndex("U_xxx");
+		result = manorInfo.getIndex("U_xxx");
 		// System.out.println(result[0] + ", " + result[1]);
 		assertNull(result);
 	}
@@ -711,14 +711,14 @@ public class ManorPenImplTest extends BaseTestSupporter {
 	public void getIndexsById() {
 		final String ID = "S_00";
 
-		ManorPen manorPen = mockManorPenBySameSeed();// 9個相同種子
+		ManorInfo manorInfo = mockManorInfoBySameSeed();// 9個相同種子
 		//
 		List<int[]> result = null;
 		//
 		int count = 1;
 		long beg = System.currentTimeMillis();
 		for (int i = 0; i < count; i++) {
-			result = manorPen.getIndexs(ID);
+			result = manorInfo.getIndexs(ID);
 		}
 		long end = System.currentTimeMillis();
 		System.out.println(count + " times: " + (end - beg) + " mills. ");
@@ -733,15 +733,15 @@ public class ManorPenImplTest extends BaseTestSupporter {
 	// 1000000 times: 538 mills.
 	// verified
 	public void getIndexs() {
-		ManorPen manorPen = mockManorPenBySameSeed();// 9個相同種子
-		manorPen.removeSeed(0, 0);// 移掉1個
+		ManorInfo manorInfo = mockManorInfoBySameSeed();// 9個相同種子
+		manorInfo.removeSeed(0, 0);// 移掉1個
 		//
 		List<int[]> result = null;
 		//
 		int count = 1;
 		long beg = System.currentTimeMillis();
 		for (int i = 0; i < count; i++) {
-			result = manorPen.getIndexs();
+			result = manorInfo.getIndexs();
 		}
 		long end = System.currentTimeMillis();
 		System.out.println(count + " times: " + (end - beg) + " mills. ");
@@ -756,15 +756,15 @@ public class ManorPenImplTest extends BaseTestSupporter {
 	// 1000000 times: 528 mills.
 	// verified
 	public void getEmptySize() {
-		ManorPen manorPen = mockManorPenBySameSeed();// 81個相同種子
-		manorPen.removeSeed(0, 0);// 移除index=0,0
+		ManorInfo manorInfo = mockManorInfoBySameSeed();// 81個相同種子
+		manorInfo.removeSeed(0, 0);// 移除index=0,0
 		//
 		int result = 0;
 		//
 		int count = 1000000;
 		long beg = System.currentTimeMillis();
 		for (int i = 0; i < count; i++) {
-			result = manorPen.getEmptySize();
+			result = manorInfo.getEmptySize();
 		}
 		long end = System.currentTimeMillis();
 		System.out.println(count + " times: " + (end - beg) + " mills. ");
@@ -772,8 +772,8 @@ public class ManorPenImplTest extends BaseTestSupporter {
 		System.out.println(result);
 		assertEquals(1, result);
 		//
-		manorPen.clearSeed(0);
-		result = manorPen.getEmptySize();
+		manorInfo.clearSeed(0);
+		result = manorInfo.getEmptySize();
 		System.out.println(result);
 		assertEquals(9, result);
 	}
@@ -784,15 +784,15 @@ public class ManorPenImplTest extends BaseTestSupporter {
 	// 1000000 times: 528 mills.
 	// verified
 	public void getEmptyIndex() {
-		ManorPen manorPen = mockManorPenBySameSeed();// 81個相同物品
-		manorPen.removeSeed(0, 8);// 移除index=0,8
+		ManorInfo manorInfo = mockManorInfoBySameSeed();// 81個相同物品
+		manorInfo.removeSeed(0, 8);// 移除index=0,8
 		//
 		int[] result = null;
 		//
 		int count = 1000000;
 		long beg = System.currentTimeMillis();
 		for (int i = 0; i < count; i++) {
-			result = manorPen.getEmptyIndex();
+			result = manorInfo.getEmptyIndex();
 		}
 		long end = System.currentTimeMillis();
 		System.out.println(count + " times: " + (end - beg) + " mills. ");
@@ -801,8 +801,8 @@ public class ManorPenImplTest extends BaseTestSupporter {
 		assertEquals(0, result[0]);
 		assertEquals(8, result[1]);
 		//
-		manorPen.clearSeed(0);
-		result = manorPen.getEmptyIndex();
+		manorInfo.clearSeed(0);
+		result = manorInfo.getEmptyIndex();
 		SystemHelper.println(result);
 		assertEquals(0, result[0]);
 		assertEquals(0, result[1]);

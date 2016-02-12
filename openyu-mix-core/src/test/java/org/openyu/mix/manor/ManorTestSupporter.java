@@ -22,10 +22,10 @@ import org.openyu.mix.manor.service.adapter.ManorChangeAdapter;
 import org.openyu.mix.manor.socklet.ManorSocklet;
 import org.openyu.mix.manor.vo.Land;
 import org.openyu.mix.manor.vo.ManorCollector;
-import org.openyu.mix.manor.vo.ManorPen;
+import org.openyu.mix.manor.vo.ManorInfo;
 import org.openyu.mix.manor.vo.Seed;
-import org.openyu.mix.manor.vo.ManorPen.Farm;
-import org.openyu.mix.manor.vo.impl.ManorPenImpl.FarmImpl;
+import org.openyu.mix.manor.vo.ManorInfo.Farm;
+import org.openyu.mix.manor.vo.impl.ManorInfoImpl.FarmImpl;
 import org.openyu.mix.role.vo.Role;
 
 public class ManorTestSupporter extends AppTestSupporter {
@@ -144,7 +144,7 @@ public class ManorTestSupporter extends AppTestSupporter {
 	 * @param role
 	 */
 	public static void mockReclaim(Role role) {
-		ManorPen manorPen = role.getManorPen();
+		ManorInfo manorInfo = role.getManorInfo();
 		Farm farm = new FarmImpl(0);
 		//
 		Land land = manorCollector.createLand("L_TROPICS_G001");
@@ -153,7 +153,7 @@ public class ManorTestSupporter extends AppTestSupporter {
 		//
 		farm.setLand(land);
 		//
-		manorPen.setFarm(farm.getId(), farm);
+		manorInfo.setFarm(farm.getId(), farm);
 	}
 
 	/**
@@ -162,8 +162,8 @@ public class ManorTestSupporter extends AppTestSupporter {
 	 * @param role
 	 */
 	public static void mockPlant(Role role) {
-		ManorPen manorPen = role.getManorPen();
-		Farm farm = manorPen.getFarm(0);
+		ManorInfo manorInfo = role.getManorInfo();
+		Farm farm = manorInfo.getFarm(0);
 
 		// 種植1個種子
 		Seed seed = mockSeed("S_COTTON_G001");

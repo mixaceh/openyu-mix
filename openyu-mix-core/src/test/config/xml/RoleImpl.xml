@@ -55,10 +55,10 @@
             </entry>
         </tabs>
     </bagInfo>
-    <equipmentPen>
+    <equipmentInfo>
         <armors/>
         <weapons/>
-    </equipmentPen>
+    </equipmentInfo>
     <sasangInfo>
         <playTime>0</playTime>
         <dailyTimes>0</dailyTimes>
@@ -68,7 +68,7 @@
         </outcome>
         <awards/>
     </sasangInfo>
-    <manorPen>
+    <manorInfo>
         <farms>
             <entry key="0">
                 <value>
@@ -92,7 +92,7 @@
                 </value>
             </entry>
         </farms>
-    </manorPen>
+    </manorInfo>
     <treasureInfo>
         <refreshTime>0</refreshTime>
         <treasures/>
@@ -104,7 +104,7 @@
         <accuMills>0</accuMills>
         <inspireTime>0</inspireTime>
     </trainInfo>
-    <wuxingPen>
+    <wuxingInfo>
         <playTime>0</playTime>
         <dailyTimes>0</dailyTimes>
         <accuTimes>0</accuTimes>
@@ -112,5 +112,5 @@
             <only>false</only>
         </outcome>
         <awards/>
-    </wuxingPen>
+    </wuxingInfo>
 </role>

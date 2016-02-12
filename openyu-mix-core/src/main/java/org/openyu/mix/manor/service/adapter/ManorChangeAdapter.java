@@ -52,7 +52,7 @@ public class ManorChangeAdapter extends BeanChangeAdapter {
 				}
 
 				// 改變所有的農場頁是否鎖定
-				manorService.changeManorPenLocked(connected, role);
+				manorService.changeManorInfoLocked(connected, role);
 			} else {
 				// just for pretty
 			}

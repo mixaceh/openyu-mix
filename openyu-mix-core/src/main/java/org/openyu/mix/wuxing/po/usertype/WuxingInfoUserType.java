@@ -8,14 +8,14 @@ import org.hibernate.engine.spi.SessionImplementor;
 import org.openyu.mix.wuxing.service.WuxingMachine;
 import org.openyu.mix.wuxing.service.impl.WuxingMachineImpl;
 import org.openyu.mix.wuxing.vo.Outcome;
-import org.openyu.mix.wuxing.vo.WuxingPen;
-import org.openyu.mix.wuxing.vo.impl.WuxingPenImpl;
+import org.openyu.mix.wuxing.vo.WuxingInfo;
+import org.openyu.mix.wuxing.vo.impl.WuxingInfoImpl;
 import org.openyu.commons.entity.usertype.StringIntegerUserType;
 import org.openyu.commons.enumz.EnumHelper;
 import org.openyu.commons.hibernate.usertype.supporter.BaseUserTypeSupporter;
 import org.openyu.commons.lang.ArrayHelper;
 
-public class WuxingPenUserType extends BaseUserTypeSupporter {
+public class WuxingInfoUserType extends BaseUserTypeSupporter {
 
 	private static final long serialVersionUID = -2066924784420555409L;
 
@@ -23,7 +23,7 @@ public class WuxingPenUserType extends BaseUserTypeSupporter {
 
 	private StringIntegerUserType stringIntegerUserType = new StringIntegerUserType();
 
-	public WuxingPenUserType() {
+	public WuxingInfoUserType() {
 		// --------------------------------------------------
 		// 最新版本,目前用1,若將來有新版本
 		// 可用其他版號,如:VolType._2
@@ -38,7 +38,7 @@ public class WuxingPenUserType extends BaseUserTypeSupporter {
 
 	@Override
 	public Class<?> returnedClass() {
-		return WuxingPen.class;
+		return WuxingInfo.class;
 	}
 
 	// --------------------------------------------------
@@ -49,9 +49,9 @@ public class WuxingPenUserType extends BaseUserTypeSupporter {
 	@SuppressWarnings("unchecked")
 	public <R, T> R marshal(T value, SessionImplementor session) {
 		R result = null;
-		if (value instanceof WuxingPen) {
+		if (value instanceof WuxingInfo) {
 			StringBuilder dest = new StringBuilder();
-			WuxingPen src = (WuxingPen) value;
+			WuxingInfo src = (WuxingInfo) value;
 			// vol
 			dest.append(assembleVol(getVolType()));
 			// v1
@@ -65,7 +65,7 @@ public class WuxingPenUserType extends BaseUserTypeSupporter {
 	/**
 	 * v1 由物件組成欄位
 	 */
-	public String assembleBy_1(WuxingPen src) {
+	public String assembleBy_1(WuxingInfo src) {
 		StringBuilder result = new StringBuilder();
 		//
 		// 玩的時間
@@ -103,7 +103,7 @@ public class WuxingPenUserType extends BaseUserTypeSupporter {
 	 */
 	@SuppressWarnings("unchecked")
 	public <R, T, O> R unmarshal(T value, O owner, SessionImplementor session) {
-		WuxingPen result = new WuxingPenImpl();
+		WuxingInfo result = new WuxingInfoImpl();
 		//
 		if (!(value instanceof String)) {
 			return (R) result;
@@ -130,8 +130,8 @@ public class WuxingPenUserType extends BaseUserTypeSupporter {
 
 	// --------------------------------------------------
 
-	protected WuxingPen disassembleBy_1(StringBuilder src) {
-		WuxingPen result = new WuxingPenImpl();
+	protected WuxingInfo disassembleBy_1(StringBuilder src) {
+		WuxingInfo result = new WuxingInfoImpl();
 		if (src == null) {
 			return result;
 		}
