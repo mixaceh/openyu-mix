@@ -7,9 +7,9 @@ import org.openyu.mix.app.service.AppService;
 import org.openyu.mix.system.vo.Relation;
 
 /**
- * 伺服器關連集合服務, 存放所有本地的關連在mem中
+ * 服器關連儲存庫, 存放所有本地的關連在mem中
  */
-public interface RelationSetService extends AppService {
+public interface RelationRepository extends AppService {
 
 	// --------------------------------------------------
 	// biz

@@ -11,7 +11,7 @@ import org.openyu.mix.role.service.RoleService;
 import org.openyu.mix.role.service.RoleRepository;
 import org.openyu.mix.role.vo.Role;
 import org.openyu.mix.system.service.SystemService;
-import org.openyu.mix.system.service.RelationSetService;
+import org.openyu.mix.system.service.RelationRepository;
 import org.openyu.mix.system.vo.Context;
 import org.openyu.mix.system.vo.Relation;
 import org.openyu.mix.system.vo.impl.ContextImpl;
@@ -41,8 +41,8 @@ public class SystemServiceImpl extends AppServiceSupporter implements SystemServ
 	protected transient RoleRepository roleRepository;
 
 	@Autowired
-	@Qualifier("relationSetService")
-	protected transient RelationSetService relationSetService;
+	@Qualifier("relationRepository")
+	protected transient RelationRepository relationRepository;
 
 	/**
 	 * 本文
@@ -106,7 +106,7 @@ public class SystemServiceImpl extends AppServiceSupporter implements SystemServ
 		message.addString((context != null ? this.context.getId() : ""));
 
 		// 取得所有註冊的伺服器關連
-		Map<String, Relation> registerRelations = relationSetService.getRegisterRelations();
+		Map<String, Relation> registerRelations = relationRepository.getRegisterRelations();
 		int size = registerRelations.size();
 		message.addInt(size);// 1, int, size
 		//
@@ -177,11 +177,11 @@ public class SystemServiceImpl extends AppServiceSupporter implements SystemServ
 			Relation relation = new RelationImpl();
 			relation.setId(rationId);
 			// 加入註冊的伺服器關連
-			relationSetService.addRegisterRelation(relation);
+			relationRepository.addRegisterRelation(relation);
 		}
 		//
 		// System.out.println("getRegisterRelationIds: "
-		// + relationSetService.getRegisterRelationIds());
+		// + relationRepository.getRegisterRelationIds());
 
 		// 發送連線
 		sendContextConnect(result, attatch);
@@ -264,7 +264,7 @@ public class SystemServiceImpl extends AppServiceSupporter implements SystemServ
 	 * @return
 	 */
 	public <T> Relation relationConnect(String relationId, T attatch) {
-		Relation result = relationSetService.getRelation(relationId);
+		Relation result = relationRepository.getRelation(relationId);
 		if (result == null) {
 			return null;
 		}
@@ -275,7 +275,7 @@ public class SystemServiceImpl extends AppServiceSupporter implements SystemServ
 		// 已連線
 		result.setConnected(true);
 		//
-		Relation registerRelation = relationSetService.getRegisterRelation(relationId);
+		Relation registerRelation = relationRepository.getRegisterRelation(relationId);
 		if (registerRelation != null) {
 			registerRelation.setEnterTime(result.getEnterTime());
 			registerRelation.setConnected(result.isConnected());
@@ -317,7 +317,7 @@ public class SystemServiceImpl extends AppServiceSupporter implements SystemServ
 	 * @return
 	 */
 	public <T> Relation relationDisconnect(String relationId, T attatch) {
-		Relation result = relationSetService.getRelation(relationId);
+		Relation result = relationRepository.getRelation(relationId);
 		if (result == null) {
 			return null;
 		}
@@ -326,7 +326,7 @@ public class SystemServiceImpl extends AppServiceSupporter implements SystemServ
 		// 已斷線
 		result.setConnected(false);
 		//
-		Relation registerRelation = relationSetService.getRegisterRelation(relationId);
+		Relation registerRelation = relationRepository.getRegisterRelation(relationId);
 		if (registerRelation != null) {
 			registerRelation.setLeaveTime(result.getLeaveTime());
 			registerRelation.setConnected(result.isConnected());

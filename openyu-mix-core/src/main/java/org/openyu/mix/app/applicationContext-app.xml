@@ -135,9 +135,9 @@
 		</property>
 	</bean>
 
-	<!-- 伺服器關連集合服務 -->
-	<bean id="relationSetService"
-		class="org.openyu.mix.system.service.impl.RelationSetServiceImpl"
+	<!-- 伺服器關連儲存庫 -->
+	<bean id="relationRepository"
+		class="org.openyu.mix.system.service.impl.RelationRepositoryImpl"
 		parent="appServiceSupporter" />
 
 	<!-- 角色儲存庫 -->

@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.openyu.mix.app.service.supporter.AppServiceSupporter;
-import org.openyu.mix.system.service.RelationSetService;
+import org.openyu.mix.system.service.RelationRepository;
 import org.openyu.mix.system.vo.Relation;
 import org.openyu.commons.util.concurrent.MapCache;
 import org.openyu.commons.util.concurrent.impl.MapCacheImpl;
@@ -14,20 +14,20 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * 伺服器關連服務
+ * 伺服器關連儲存庫
  */
-public class RelationSetServiceImpl extends AppServiceSupporter implements RelationSetService {
+public class RelationRepositoryImpl extends AppServiceSupporter implements RelationRepository {
 
 	private static final long serialVersionUID = -1599710087845689459L;
 
-	private static transient final Logger LOGGER = LoggerFactory.getLogger(RelationSetServiceImpl.class);
+	private static transient final Logger LOGGER = LoggerFactory.getLogger(RelationRepositoryImpl.class);
 
 	/**
 	 * 所有註冊的伺服器關連, connected=是否已連線
 	 */
 	protected MapCache<String, Relation> registerRelations = new MapCacheImpl<String, Relation>();
 
-	public RelationSetServiceImpl() {
+	public RelationRepositoryImpl() {
 	}
 
 	@Override

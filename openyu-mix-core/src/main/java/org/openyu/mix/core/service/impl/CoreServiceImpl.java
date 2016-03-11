@@ -33,7 +33,7 @@ import org.openyu.mix.role.service.adapter.RoleChangeAdapter;
 import org.openyu.mix.role.vo.Role;
 import org.openyu.mix.sasang.service.SasangService;
 import org.openyu.mix.sasang.service.adapter.SasangChangeAdapter;
-import org.openyu.mix.system.service.RelationSetService;
+import org.openyu.mix.system.service.RelationRepository;
 import org.openyu.mix.system.service.SystemService;
 import org.openyu.mix.system.vo.Context;
 import org.openyu.mix.system.vo.Relation;
@@ -78,8 +78,8 @@ public class CoreServiceImpl extends AppServiceSupporter implements CoreService 
 	protected transient SystemService systemService;
 
 	@Autowired
-	@Qualifier("relationSetService")
-	protected transient RelationSetService relationSetService;
+	@Qualifier("relationRepository")
+	protected transient RelationRepository relationRepository;
 
 	@Autowired
 	@Qualifier("chatSetService")
@@ -741,7 +741,7 @@ public class CoreServiceImpl extends AppServiceSupporter implements CoreService 
 				return result;
 			}
 			// 伺服器關連集合服務
-			relationSetService.addRelation(result);
+			relationRepository.addRelation(result);
 			// 系統服務, 伺服器關連連線
 			result = systemService.relationConnect(relationId, attatch);
 		} catch (Exception e) {
@@ -760,14 +760,14 @@ public class CoreServiceImpl extends AppServiceSupporter implements CoreService 
 	public <T> Relation relationDisconnect(String relationId, T attatch) {
 		Relation result = null;
 		try {
-			result = relationSetService.getRelation(relationId);
+			result = relationRepository.getRelation(relationId);
 			if (result == null) {
 				return null;
 			}
 			// 系統服務, 伺服器關連斷線
 			result = systemService.relationDisconnect(relationId, attatch);
 			// 伺服器關連集合服務
-			relationSetService.removeRelation(result);
+			relationRepository.removeRelation(result);
 		} catch (Exception e) {
 			LOGGER.error(new StringBuilder("Exception encountered during relationDisconnect()").toString(), e);
 		}

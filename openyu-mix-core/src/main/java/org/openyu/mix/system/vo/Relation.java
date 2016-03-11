@@ -8,7 +8,7 @@ import org.openyu.commons.bean.SeqIdAuditNamesBean;
 import com.sun.xml.bind.AnyTypeAdapter;
 
 /**
- * 伺服器關連
+ * 接收器關連
  */
 @XmlJavaTypeAdapter(AnyTypeAdapter.class)
 public interface Relation extends SeqIdAuditNamesBean {
