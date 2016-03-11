@@ -60,7 +60,7 @@ public class ChatServiceImplTest extends ChatTestSupporter {
 	public void sendSpeak() {
 		Role role = mockRole();
 		//
-		List<String> receivers = roleSetService.getRoleIds();
+		List<String> receivers = roleRepository.getRoleIds();
 		chatService.sendSpeak(ErrorType.NO_ERROR, receivers, ChannelType.WORLD,
 				role, role.getName(), "Hello world", "<hr/>");
 	}

@@ -32,7 +32,7 @@ import org.openyu.mix.item.service.ItemService;
 import org.openyu.mix.item.service.ItemService.IncreaseItemResult;
 import org.openyu.mix.item.vo.Item;
 import org.openyu.mix.role.service.RoleService;
-import org.openyu.mix.role.service.RoleSetService;
+import org.openyu.mix.role.service.RoleRepository;
 import org.openyu.mix.role.service.RoleService.GoldType;
 import org.openyu.mix.role.service.RoleService.SpendResult;
 import org.openyu.mix.role.vo.BagInfo;
@@ -64,8 +64,8 @@ public class SasangServiceImpl extends AppServiceSupporter implements SasangServ
 	protected transient RoleService roleService;
 
 	@Autowired
-	@Qualifier("roleSetService")
-	protected transient RoleSetService roleSetService;
+	@Qualifier("roleRepository")
+	protected transient RoleRepository roleRepository;
 
 	@Autowired
 	@Qualifier("sasangMachine")
@@ -104,7 +104,7 @@ public class SasangServiceImpl extends AppServiceSupporter implements SasangServ
 	 * @param attatch
 	 */
 	public <T> Role roleConnect(String roleId, T attatch) {
-		Role result = roleSetService.getRole(roleId);
+		Role result = roleRepository.getRole(roleId);
 		if (result == null) {
 			return result;
 		}
@@ -164,7 +164,7 @@ public class SasangServiceImpl extends AppServiceSupporter implements SasangServ
 	 * @return
 	 */
 	public <T> Role roleDisconnect(String roleId, T attatch) {
-		Role result = roleSetService.getRole(roleId);
+		Role result = roleRepository.getRole(roleId);
 		if (result == null) {
 			return result;
 		}
@@ -941,7 +941,7 @@ public class SasangServiceImpl extends AppServiceSupporter implements SasangServ
 			return;
 		}
 		// 取所有角色id,只限本地
-		List<String> receivers = roleSetService.getRoleIds(false);
+		List<String> receivers = roleRepository.getRoleIds(false);
 		//
 		Message message = messageService.createMessage(CoreModuleType.SASANG, CoreModuleType.CLIENT,
 				CoreMessageType.SASANG_NOTICE_RESPONSE, receivers);
@@ -961,7 +961,7 @@ public class SasangServiceImpl extends AppServiceSupporter implements SasangServ
 			return;
 		}
 		// 取所有角色id,只限本地
-		List<String> receivers = roleSetService.getRoleIds(false);
+		List<String> receivers = roleRepository.getRoleIds(false);
 		//
 		Message message = messageService.createMessage(CoreModuleType.SASANG, CoreModuleType.CLIENT,
 				CoreMessageType.SASANG_NOTICES_RESPONSE, receivers);
@@ -1019,7 +1019,7 @@ public class SasangServiceImpl extends AppServiceSupporter implements SasangServ
 			return;
 		}
 		// 取所有角色id
-		List<String> receivers = roleSetService.getRoleIds();
+		List<String> receivers = roleRepository.getRoleIds();
 		//
 		Message message = messageService.createMessage(CoreModuleType.SASANG, CoreModuleType.CLIENT,
 				CoreMessageType.SASANG_FAMOUS_PLAY_RESPONSE, receivers);
@@ -1046,7 +1046,7 @@ public class SasangServiceImpl extends AppServiceSupporter implements SasangServ
 			return;
 		}
 		// 取所有角色id
-		List<String> receivers = roleSetService.getRoleIds();
+		List<String> receivers = roleRepository.getRoleIds();
 		//
 		Message message = messageService.createMessage(CoreModuleType.SASANG, CoreModuleType.CLIENT,
 				CoreMessageType.SASANG_FAMOUS_PLAYS_RESPONSE, receivers);
@@ -1401,7 +1401,7 @@ public class SasangServiceImpl extends AppServiceSupporter implements SasangServ
 	public int reset(boolean sendable) {
 		int result = 0;
 		// false=只有本地
-		for (Role role : roleSetService.getRoles(false).values()) {
+		for (Role role : roleRepository.getRoles(false).values()) {
 			try {
 				// 是否已連線
 				if (!role.isConnected() || !role.getSasangInfo().isConnected()) {

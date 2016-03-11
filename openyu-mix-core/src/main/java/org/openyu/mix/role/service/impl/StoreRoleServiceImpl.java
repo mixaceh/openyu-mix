@@ -17,7 +17,7 @@ import org.openyu.mix.core.service.CoreMessageType;
 import org.openyu.mix.core.service.CoreModuleType;
 import org.openyu.mix.core.vo.StoreType;
 import org.openyu.mix.role.service.RoleService;
-import org.openyu.mix.role.service.RoleSetService;
+import org.openyu.mix.role.service.RoleRepository;
 import org.openyu.mix.role.service.StoreRoleService;
 import org.openyu.mix.role.vo.Role;
 import org.openyu.mix.role.vo.RoleCollector;
@@ -50,8 +50,8 @@ public class StoreRoleServiceImpl extends AppServiceSupporter implements StoreRo
 	private static transient final Logger LOGGER = LoggerFactory.getLogger(StoreRoleServiceImpl.class);
 
 	@Autowired
-	@Qualifier("roleSetService")
-	protected transient RoleSetService roleSetService;
+	@Qualifier("roleRepository")
+	protected transient RoleRepository roleRepository;
 
 	@Autowired
 	@Qualifier("roleService")
@@ -148,7 +148,7 @@ public class StoreRoleServiceImpl extends AppServiceSupporter implements StoreRo
 	public int storeRoles(boolean sendable) {
 		int result = 0;
 		//
-		for (Role role : roleSetService.getRoles(false).values()) {
+		for (Role role : roleRepository.getRoles(false).values()) {
 			try {
 				// 儲存角色
 				boolean stored = storeRole(sendable, role);

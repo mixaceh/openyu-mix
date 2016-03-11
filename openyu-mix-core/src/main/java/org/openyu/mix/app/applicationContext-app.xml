@@ -140,8 +140,8 @@
 		class="org.openyu.mix.system.service.impl.RelationSetServiceImpl"
 		parent="appServiceSupporter" />
 
-	<!-- 角色集合服務 -->
-	<bean id="roleSetService" class="org.openyu.mix.role.service.impl.RoleSetServiceImpl"
+	<!-- 角色儲存庫 -->
+	<bean id="roleRepository" class="org.openyu.mix.role.service.impl.RoleRepositoryImpl"
 		parent="appServiceSupporter" />
 
 	<!-- 聊天角色集合服務 -->

@@ -38,7 +38,7 @@ import org.openyu.mix.role.dao.RoleDao;
 import org.openyu.mix.role.po.RolePo;
 import org.openyu.mix.role.service.RoleHelper;
 import org.openyu.mix.role.service.RoleService;
-import org.openyu.mix.role.service.RoleSetService;
+import org.openyu.mix.role.service.RoleRepository;
 import org.openyu.mix.role.vo.BagInfo;
 import org.openyu.mix.role.vo.Role;
 import org.openyu.mix.role.vo.RoleCollector;
@@ -69,8 +69,8 @@ public class RoleServiceImpl extends AppServiceSupporter implements RoleService 
 	protected transient ItemService itemService;
 
 	@Autowired
-	@Qualifier("roleSetService")
-	protected transient RoleSetService roleSetService;
+	@Qualifier("roleRepository")
+	protected transient RoleRepository roleRepository;
 
 	/**
 	 * 行業數據
@@ -143,7 +143,7 @@ public class RoleServiceImpl extends AppServiceSupporter implements RoleService 
 	 * @return
 	 */
 	public <T> Role roleConnect(String roleId, T attatch) {
-		Role result = roleSetService.getRole(roleId);
+		Role result = roleRepository.getRole(roleId);
 		if (result == null) {
 			return null;
 		}
@@ -260,7 +260,7 @@ public class RoleServiceImpl extends AppServiceSupporter implements RoleService 
 	 * @return
 	 */
 	public <T> Role roleDisconnect(String roleId, T attatch) {
-		Role result = roleSetService.getRole(roleId);
+		Role result = roleRepository.getRole(roleId);
 		if (result == null) {
 			return null;
 		}
@@ -316,7 +316,7 @@ public class RoleServiceImpl extends AppServiceSupporter implements RoleService 
 	 */
 	public Role syncRoleConnect(Role syncRole) {
 		// LOGGER.info("syncRoleConnect: " + syncRole.getId());
-		return roleSetService.addSyncRole(syncRole);
+		return roleRepository.addSyncRole(syncRole);
 	}
 
 	/**
@@ -343,7 +343,7 @@ public class RoleServiceImpl extends AppServiceSupporter implements RoleService 
 	 */
 	public Role syncRoleDisconnect(String syncRoleId) {
 		// LOGGER.info("syncRoleDisconnect: " + syncRoleId);
-		return roleSetService.removeSyncRole(syncRoleId);
+		return roleRepository.removeSyncRole(syncRoleId);
 	}
 
 	/**
@@ -380,7 +380,7 @@ public class RoleServiceImpl extends AppServiceSupporter implements RoleService 
 		// +", "+syncRoleId+", "+value);
 
 		// 檢查條件
-		Role syncRole = roleSetService.getSyncRole(syncRoleId);
+		Role syncRole = roleRepository.getSyncRole(syncRoleId);
 		if (syncRole == null) {
 			return null;
 		}
@@ -1176,7 +1176,7 @@ public class RoleServiceImpl extends AppServiceSupporter implements RoleService 
 		int famousLevel = role.getLevel() - diffLevel;
 		if ((famousLevel / 10) < (role.getLevel() / 10)) {
 			// 取所有角色id
-			List<String> receivers = roleSetService.getRoleIds();
+			List<String> receivers = roleRepository.getRoleIds();
 			//
 			Message message = messageService.createMessage(CoreModuleType.ROLE, CoreModuleType.CLIENT,
 					CoreMessageType.ROLE_FAMOUS_LEVEL_RESPONSE, receivers);

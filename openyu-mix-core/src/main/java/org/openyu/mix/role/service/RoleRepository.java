@@ -7,11 +7,11 @@ import org.openyu.mix.app.service.AppService;
 import org.openyu.mix.role.vo.Role;
 
 /**
- * 角色集合服務, 存放所有本地/同步的角色在mem中
+ * 角色儲存庫, 存放所有本地/同步的角色在mem中
  * 
  * org/openyu/mix/app/applicationContext-app.xml
  */
-public interface RoleSetService extends AppService {
+public interface RoleRepository extends AppService {
 
 	// --------------------------------------------------
 	// biz

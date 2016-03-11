@@ -24,7 +24,7 @@ import org.openyu.mix.chat.vo.FriendGroup;
 import org.openyu.mix.core.service.CoreMessageType;
 import org.openyu.mix.core.service.CoreModuleType;
 import org.openyu.mix.role.service.RoleService;
-import org.openyu.mix.role.service.RoleSetService;
+import org.openyu.mix.role.service.RoleRepository;
 import org.openyu.mix.role.vo.Role;
 import org.openyu.commons.enumz.EnumHelper;
 import org.openyu.commons.lang.ClassHelper;
@@ -45,8 +45,8 @@ public class ChatServiceImpl extends AppServiceSupporter implements ChatService 
 	protected transient RoleService roleService;
 
 	@Autowired
-	@Qualifier("roleSetService")
-	protected transient RoleSetService roleSetService;
+	@Qualifier("roleRepository")
+	protected transient RoleRepository roleRepository;
 
 	@Autowired
 	@Qualifier("chatSetService")
@@ -107,7 +107,7 @@ public class ChatServiceImpl extends AppServiceSupporter implements ChatService 
 	 * @return
 	 */
 	public <T> Role roleConnect(String roleId, T attatch) {
-		Role result = roleSetService.getRole(roleId);
+		Role result = roleRepository.getRole(roleId);
 		if (result == null) {
 			return result;
 		}
@@ -154,7 +154,7 @@ public class ChatServiceImpl extends AppServiceSupporter implements ChatService 
 	 */
 	protected void retrieveFriendGroup(FriendGroup friendGroup) {
 		for (Friend friend : friendGroup.getFriends().values()) {
-			Role destRole = roleSetService.getRole(friend.getId());
+			Role destRole = roleRepository.getRole(friend.getId());
 			// 對方不在線上,就不重讀了
 			if (destRole == null) {
 				continue;
@@ -305,7 +305,7 @@ public class ChatServiceImpl extends AppServiceSupporter implements ChatService 
 	 * @return
 	 */
 	public <T> Role roleDisconnect(String roleId, T attatch) {
-		Role result = roleSetService.getRole(roleId);
+		Role result = roleRepository.getRole(roleId);
 		if (result == null) {
 			return result;
 		}
@@ -424,7 +424,7 @@ public class ChatServiceImpl extends AppServiceSupporter implements ChatService 
 			return;
 		}
 		// 取本地所有角色id
-		List<String> receivers = roleSetService.getRoleIds(false);
+		List<String> receivers = roleRepository.getRoleIds(false);
 
 		// TODO 過濾詞句
 
@@ -446,7 +446,7 @@ public class ChatServiceImpl extends AppServiceSupporter implements ChatService 
 			return;
 		}
 		// 取所有角色id
-		List<String> receivers = roleSetService.getRoleIds();
+		List<String> receivers = roleRepository.getRoleIds();
 
 		// TODO 過濾詞句
 
@@ -468,7 +468,7 @@ public class ChatServiceImpl extends AppServiceSupporter implements ChatService 
 			return;
 		}
 		// 取本地所有角色id
-		List<String> receivers = roleSetService.getRoleIds(false);
+		List<String> receivers = roleRepository.getRoleIds(false);
 
 		// TODO 過濾詞句
 

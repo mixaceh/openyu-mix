@@ -27,7 +27,7 @@ import org.openyu.mix.flutter.vo.RaceType;
 import org.openyu.mix.manor.service.ManorService;
 import org.openyu.mix.manor.service.adapter.ManorChangeAdapter;
 import org.openyu.mix.role.service.RoleService;
-import org.openyu.mix.role.service.RoleSetService;
+import org.openyu.mix.role.service.RoleRepository;
 import org.openyu.mix.role.service.StoreRoleService;
 import org.openyu.mix.role.service.adapter.RoleChangeAdapter;
 import org.openyu.mix.role.vo.Role;
@@ -58,8 +58,8 @@ public class CoreServiceImpl extends AppServiceSupporter implements CoreService 
 	protected transient AccountService accountService;
 
 	@Autowired
-	@Qualifier("roleSetService")
-	protected transient RoleSetService roleSetService;
+	@Qualifier("roleRepository")
+	protected transient RoleRepository roleRepository;
 
 	@Autowired
 	@Qualifier("roleService")
@@ -169,7 +169,7 @@ public class CoreServiceImpl extends AppServiceSupporter implements CoreService 
 			}
 
 			// 加到mem
-			roleSetService.addRole(result);
+			roleRepository.addRole(result);
 
 			// --------------------------------------------------
 			// 檢查聊天
@@ -242,7 +242,7 @@ public class CoreServiceImpl extends AppServiceSupporter implements CoreService 
 	public <T> Role roleDisconnect(String roleId, T attatch) {
 		Role result = null;// 角色
 		try {
-			result = roleSetService.getRole(roleId);
+			result = roleRepository.getRole(roleId);
 			if (result == null) {
 				return result;
 			}
@@ -565,7 +565,7 @@ public class CoreServiceImpl extends AppServiceSupporter implements CoreService 
 			LOGGER.error(new StringBuilder("Exception encountered during storeChat()").toString(), e);
 		} finally {
 			// 從mem移除
-			roleSetService.removeRole(role);
+			roleRepository.removeRole(role);
 		}
 	}
 

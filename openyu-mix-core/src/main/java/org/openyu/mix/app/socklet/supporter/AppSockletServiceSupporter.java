@@ -1,7 +1,7 @@
 package org.openyu.mix.app.socklet.supporter;
 
 import org.openyu.mix.role.ex.RoleException;
-import org.openyu.mix.role.service.RoleSetService;
+import org.openyu.mix.role.service.RoleRepository;
 import org.openyu.mix.role.vo.Role;
 import org.openyu.mix.chat.service.ChatSetService;
 import org.openyu.mix.app.socklet.AppSockletService;
@@ -33,8 +33,8 @@ public class AppSockletServiceSupporter extends SockletServiceSupporter implemen
 	 * 角色集合服務, 存放所有本地/同步的角色在mem中
 	 */
 	@Autowired
-	@Qualifier("roleSetService")
-	protected transient RoleSetService roleSetService;
+	@Qualifier("roleRepository")
+	protected transient RoleRepository roleRepository;
 
 	/**
 	 * 聊天角色集合服務, 存放所有本地/同步的角色在mem中
@@ -58,7 +58,7 @@ public class AppSockletServiceSupporter extends SockletServiceSupporter implemen
 	 */
 	protected Role checkRole(String roleId) {
 		Role result = null;
-		result = roleSetService.getRole(roleId);
+		result = roleRepository.getRole(roleId);
 		if (result == null) {
 			throw new RoleException("[" + roleId + "] is not in memory");
 		}

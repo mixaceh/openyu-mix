@@ -22,7 +22,7 @@ import org.openyu.mix.mail.vo.MailCollector;
 import org.openyu.mix.mail.vo.MailType;
 import org.openyu.mix.mail.vo.impl.MailImpl;
 import org.openyu.mix.role.service.RoleService;
-import org.openyu.mix.role.service.RoleSetService;
+import org.openyu.mix.role.service.RoleRepository;
 import org.openyu.mix.role.vo.Role;
 import org.openyu.commons.lang.StringHelper;
 import org.openyu.commons.util.CalendarHelper;
@@ -47,8 +47,8 @@ public class MailServiceImpl extends AppServiceSupporter implements MailService 
 	protected transient RoleService roleService;
 
 	@Autowired
-	@Qualifier("roleSetService")
-	protected transient RoleSetService roleSetService;
+	@Qualifier("roleRepository")
+	protected transient RoleRepository roleRepository;
 
 	private transient MailCollector mailCollector = MailCollector.getInstance();
 

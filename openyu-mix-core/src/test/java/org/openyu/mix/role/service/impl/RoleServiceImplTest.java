@@ -192,7 +192,7 @@ public class RoleServiceImplTest extends RoleTestSupporter {
 		Role role = roleService.createRole(ROLE_ID, NAME, RaceType.RONG, CareerType.WARRIOR_1, GenderType.FEMALE,
 				HairType.SHORT, FaceType.CUTE);
 		// 加到mem
-		roleSetService.addRole(role);
+		roleRepository.addRole(role);
 		//
 		roleService.roleConnect(ROLE_ID, account);
 	}
@@ -217,7 +217,7 @@ public class RoleServiceImplTest extends RoleTestSupporter {
 			result = roleService.createRole(ROLE_ID, NAME, RaceType.RONG, CareerType.WARRIOR_1, GenderType.FEMALE,
 					HairType.SHORT, FaceType.CUTE);
 			// 加到mem
-			roleSetService.addRole(result);
+			roleRepository.addRole(result);
 		}
 		//
 		long end = System.currentTimeMillis();
@@ -240,7 +240,7 @@ public class RoleServiceImplTest extends RoleTestSupporter {
 			result = roleService.createRole(ROLE_ID, NAME, RaceType.RONG, CareerType.WARRIOR_1, GenderType.FEMALE,
 					HairType.SHORT, FaceType.CUTE);
 			// 加到mem
-			roleSetService.addRole(result);
+			roleRepository.addRole(result);
 		}
 		//
 		long end = System.currentTimeMillis();
@@ -269,7 +269,7 @@ public class RoleServiceImplTest extends RoleTestSupporter {
 			result = roleService.createRole(ROLE_ID, NAME, RaceType.RONG, CareerType.WARRIOR_1, GenderType.FEMALE,
 					HairType.SHORT, FaceType.CUTE);
 			// 加到mem
-			roleSetService.addRole(result);
+			roleRepository.addRole(result);
 		}
 		//
 		long end = System.currentTimeMillis();

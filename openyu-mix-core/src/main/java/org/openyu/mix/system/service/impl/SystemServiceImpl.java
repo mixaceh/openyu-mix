@@ -8,7 +8,7 @@ import org.openyu.mix.app.service.supporter.AppServiceSupporter;
 import org.openyu.mix.core.service.CoreMessageType;
 import org.openyu.mix.core.service.CoreModuleType;
 import org.openyu.mix.role.service.RoleService;
-import org.openyu.mix.role.service.RoleSetService;
+import org.openyu.mix.role.service.RoleRepository;
 import org.openyu.mix.role.vo.Role;
 import org.openyu.mix.system.service.SystemService;
 import org.openyu.mix.system.service.RelationSetService;
@@ -37,8 +37,8 @@ public class SystemServiceImpl extends AppServiceSupporter implements SystemServ
 	protected transient RoleService roleService;
 
 	@Autowired
-	@Qualifier("roleSetService")
-	protected transient RoleSetService roleSetService;
+	@Qualifier("roleRepository")
+	protected transient RoleRepository roleRepository;
 
 	@Autowired
 	@Qualifier("relationSetService")
@@ -68,7 +68,7 @@ public class SystemServiceImpl extends AppServiceSupporter implements SystemServ
 	 * @return
 	 */
 	public <T> Role roleConnect(String roleId, T attatch) {
-		Role result = roleSetService.getRole(roleId);
+		Role result = roleRepository.getRole(roleId);
 		if (result == null) {
 			return null;
 		}
@@ -132,7 +132,7 @@ public class SystemServiceImpl extends AppServiceSupporter implements SystemServ
 	 * @return
 	 */
 	public <T> Role roleDisconnect(String roleId, T attatch) {
-		Role result = roleSetService.getRole(roleId);
+		Role result = roleRepository.getRole(roleId);
 		if (result == null) {
 			return null;
 		}
@@ -198,7 +198,7 @@ public class SystemServiceImpl extends AppServiceSupporter implements SystemServ
 	 */
 	public <T> Message sendContextConnect(Context context, T attatch) {
 		// 發送給所有client
-		List<String> receivers = roleSetService.getRoleIds();
+		List<String> receivers = roleRepository.getRoleIds();
 		//
 		Message message = messageService.createMessage(CoreModuleType.SYSTEM, CoreModuleType.CLIENT,
 				CoreMessageType.SYSTEM_CONTEXT_CONNECT_RESPONSE, receivers);
@@ -243,7 +243,7 @@ public class SystemServiceImpl extends AppServiceSupporter implements SystemServ
 	 */
 	public <T> Message sendContextDisconnect(Context context, T attatch) {
 		// 發送給所有client
-		List<String> receivers = roleSetService.getRoleIds();
+		List<String> receivers = roleRepository.getRoleIds();
 		//
 		Message message = messageService.createMessage(CoreModuleType.SYSTEM, CoreModuleType.CLIENT,
 				CoreMessageType.SYSTEM_CONTEXT_DISCONNECT_RESPONSE, receivers);
@@ -296,7 +296,7 @@ public class SystemServiceImpl extends AppServiceSupporter implements SystemServ
 	 */
 	public <T> Message sendRelationConnect(Relation relation, T attatch) {
 		// 發送給所有client
-		List<String> receivers = roleSetService.getRoleIds();
+		List<String> receivers = roleRepository.getRoleIds();
 		//
 		Message message = messageService.createMessage(CoreModuleType.SYSTEM, CoreModuleType.CLIENT,
 				CoreMessageType.SYSTEM_RELATION_CONNECT_RESPONSE, receivers);
@@ -347,7 +347,7 @@ public class SystemServiceImpl extends AppServiceSupporter implements SystemServ
 	 */
 	public <T> Message sendRelationDisconnect(Relation relation, T attatch) {
 		// 發送給所有client
-		List<String> receivers = roleSetService.getRoleIds();
+		List<String> receivers = roleRepository.getRoleIds();
 		//
 		Message message = messageService.createMessage(CoreModuleType.SYSTEM, CoreModuleType.CLIENT,
 				CoreMessageType.SYSTEM_RELATION_DISCONNECT_RESPONSE, receivers);
@@ -385,7 +385,7 @@ public class SystemServiceImpl extends AppServiceSupporter implements SystemServ
 	 */
 	public <T> Message sendRelationRefused(Relation relation, T attatch) {
 		// 發送給所有client
-		List<String> receivers = roleSetService.getRoleIds();
+		List<String> receivers = roleRepository.getRoleIds();
 		//
 		Message message = messageService.createMessage(CoreModuleType.SYSTEM, CoreModuleType.CLIENT,
 				CoreMessageType.SYSTEM_RELATION_REFUSED_RESPONSE, receivers);

@@ -76,7 +76,7 @@ public class CoreServiceImplTest extends CoreTestSupporter {
 		// 讓連線的log寫入
 		ThreadHelper.sleep(3 * 1000);
 		//
-		Role role = roleSetService.getRole(ROLE_ID);
+		Role role = roleRepository.getRole(ROLE_ID);
 
 		System.out.println(role);
 		assertNotNull(role);
@@ -97,7 +97,7 @@ public class CoreServiceImplTest extends CoreTestSupporter {
 		// 讓連線的log寫入
 		ThreadHelper.sleep(3 * 1000);
 		//
-		Role role = roleSetService.getRole(ROLE_ID);
+		Role role = roleRepository.getRole(ROLE_ID);
 
 		// 各模組
 		simulateRole(role);// 角色

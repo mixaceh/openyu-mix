@@ -36,7 +36,7 @@ import org.openyu.socklet.message.service.MessageService;
 import org.openyu.socklet.message.service.ProtocolService;
 import org.openyu.socklet.message.vo.Message;
 import org.openyu.mix.role.service.RoleService;
-import org.openyu.mix.role.service.RoleSetService;
+import org.openyu.mix.role.service.RoleRepository;
 import org.openyu.mix.role.service.impl.RoleServiceImpl;
 import org.openyu.mix.role.vo.Role;
 import org.openyu.mix.account.service.AccountService;
@@ -96,7 +96,7 @@ public class AppTestSupporter extends BaseTestSupporter {
 	/**
 	 * 角色集合服務
 	 */
-	protected static RoleSetService roleSetService;
+	protected static RoleRepository roleRepository;
 
 	/**
 	 * 聊天角色集合服務
@@ -152,7 +152,7 @@ public class AppTestSupporter extends BaseTestSupporter {
 		// applicationContext.getBean("roleService");
 
 		// 角色集合
-		roleSetService = (RoleSetService) applicationContext.getBean("roleSetService");
+		roleRepository = (RoleRepository) applicationContext.getBean("roleRepository");
 		// 聊天角色集合
 		chatSetService = (ChatSetService) applicationContext.getBean("chatSetService");
 	}
@@ -223,9 +223,9 @@ public class AppTestSupporter extends BaseTestSupporter {
 		// }
 
 		@Test
-		public void roleSetService() {
-			System.out.println(roleSetService);
-			assertNotNull(roleSetService);
+		public void roleRepository() {
+			System.out.println(roleRepository);
+			assertNotNull(roleRepository);
 		}
 
 		@Test
@@ -329,7 +329,7 @@ public class AppTestSupporter extends BaseTestSupporter {
 		result = roleService.createRole(roleId, name, RaceType.RONG, CareerType.WARRIOR_1, GenderType.FEMALE,
 				HairType.SHORT, FaceType.CUTE);
 		// 加到mem
-		roleSetService.addRole(result);
+		roleRepository.addRole(result);
 		return result;
 	}
 

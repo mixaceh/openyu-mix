@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.openyu.mix.core.service.CoreMessageType;
 import org.openyu.mix.activity.service.ActivityService;
 import org.openyu.mix.app.socklet.supporter.AppSockletServiceSupporter;
-import org.openyu.mix.role.service.RoleSetService;
+import org.openyu.mix.role.service.RoleRepository;
 import org.openyu.socklet.message.vo.Message;
 
 public class ActivitySocklet extends AppSockletServiceSupporter {
@@ -17,8 +17,8 @@ public class ActivitySocklet extends AppSockletServiceSupporter {
 	private static transient final Logger LOGGER = LoggerFactory.getLogger(ActivitySocklet.class);
 
 	@Autowired
-	@Qualifier("roleSetService")
-	protected transient RoleSetService roleSetService;
+	@Qualifier("roleRepository")
+	protected transient RoleRepository roleRepository;
 
 	@Autowired
 	@Qualifier("activityService")

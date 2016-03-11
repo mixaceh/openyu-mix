@@ -32,7 +32,7 @@ import org.openyu.mix.item.service.ItemService.DecreaseItemResult;
 import org.openyu.mix.item.service.ItemService.IncreaseItemResult;
 import org.openyu.mix.item.vo.Item;
 import org.openyu.mix.role.service.RoleService;
-import org.openyu.mix.role.service.RoleSetService;
+import org.openyu.mix.role.service.RoleRepository;
 import org.openyu.mix.role.service.RoleService.GoldType;
 import org.openyu.mix.role.service.RoleService.SpendResult;
 import org.openyu.mix.role.vo.BagInfo;
@@ -65,8 +65,8 @@ public class ManorServiceImpl extends AppServiceSupporter implements ManorServic
 	protected transient RoleService roleService;
 
 	@Autowired
-	@Qualifier("roleSetService")
-	protected transient RoleSetService roleSetService;
+	@Qualifier("roleRepository")
+	protected transient RoleRepository roleRepository;
 
 	private transient ManorCollector manorCollector = ManorCollector.getInstance();
 
@@ -148,7 +148,7 @@ public class ManorServiceImpl extends AppServiceSupporter implements ManorServic
 	 */
 	protected void listen() {
 		// false=只有本地
-		for (Role role : roleSetService.getRoles(false).values()) {
+		for (Role role : roleRepository.getRoles(false).values()) {
 			try {
 				// 角色是否已連線
 				if (!role.isConnected() || !role.getManorInfo().isConnected()) {
@@ -229,7 +229,7 @@ public class ManorServiceImpl extends AppServiceSupporter implements ManorServic
 	 * @return
 	 */
 	public <T> Role roleConnect(String roleId, T attatch) {
-		Role result = roleSetService.getRole(roleId);
+		Role result = roleRepository.getRole(roleId);
 		if (result == null) {
 			return result;
 		}
@@ -278,7 +278,7 @@ public class ManorServiceImpl extends AppServiceSupporter implements ManorServic
 	 * @return
 	 */
 	public <T> Role roleDisconnect(String roleId, T attatch) {
-		Role result = roleSetService.getRole(roleId);
+		Role result = roleRepository.getRole(roleId);
 		if (result == null) {
 			return result;
 		}

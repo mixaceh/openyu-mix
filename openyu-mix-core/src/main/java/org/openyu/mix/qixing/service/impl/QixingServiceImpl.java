@@ -12,7 +12,7 @@ import org.openyu.mix.qixing.service.QixingService;
 import org.openyu.mix.qixing.vo.QixingCollector;
 import org.openyu.mix.item.service.ItemService;
 import org.openyu.mix.role.service.RoleService;
-import org.openyu.mix.role.service.RoleSetService;
+import org.openyu.mix.role.service.RoleRepository;
 import org.openyu.mix.vip.vo.VipCollector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,8 +38,8 @@ public class QixingServiceImpl extends AppServiceSupporter implements QixingServ
 	protected transient RoleService roleService;
 
 	@Autowired
-	@Qualifier("roleSetService")
-	protected transient RoleSetService roleSetService;
+	@Qualifier("roleRepository")
+	protected transient RoleRepository roleRepository;
 
 	@Autowired
 	@Qualifier("qixingMachine")

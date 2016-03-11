@@ -32,7 +32,7 @@ import org.openyu.mix.item.service.ItemService;
 import org.openyu.mix.item.service.ItemService.IncreaseItemResult;
 import org.openyu.mix.item.vo.Item;
 import org.openyu.mix.role.service.RoleService;
-import org.openyu.mix.role.service.RoleSetService;
+import org.openyu.mix.role.service.RoleRepository;
 import org.openyu.mix.role.service.RoleService.GoldType;
 import org.openyu.mix.role.service.RoleService.SpendResult;
 import org.openyu.mix.role.vo.BagInfo;
@@ -64,8 +64,8 @@ public class WuxingServiceImpl extends AppServiceSupporter implements WuxingServ
 	protected transient RoleService roleService;
 
 	@Autowired
-	@Qualifier("roleSetService")
-	protected transient RoleSetService roleSetService;
+	@Qualifier("roleRepository")
+	protected transient RoleRepository roleRepository;
 
 	@Autowired
 	@Qualifier("wuxingMachine")
@@ -104,7 +104,7 @@ public class WuxingServiceImpl extends AppServiceSupporter implements WuxingServ
 	 * @param attatch
 	 */
 	public <T> Role roleConnect(String roleId, T attatch) {
-		Role result = roleSetService.getRole(roleId);
+		Role result = roleRepository.getRole(roleId);
 		if (result == null) {
 			return result;
 		}
@@ -158,7 +158,7 @@ public class WuxingServiceImpl extends AppServiceSupporter implements WuxingServ
 	 * @return
 	 */
 	public <T> Role roleDisconnect(String roleId, T attatch) {
-		Role result = roleSetService.getRole(roleId);
+		Role result = roleRepository.getRole(roleId);
 		if (result == null) {
 			return result;
 		}
@@ -944,7 +944,7 @@ public class WuxingServiceImpl extends AppServiceSupporter implements WuxingServ
 			return;
 		}
 		// 取所有角色id,只限本地
-		List<String> receivers = roleSetService.getRoleIds(false);
+		List<String> receivers = roleRepository.getRoleIds(false);
 		//
 		Message message = messageService.createMessage(CoreModuleType.WUXING, CoreModuleType.CLIENT,
 				CoreMessageType.WUXING_NOTICE_RESPONSE, receivers);
@@ -965,7 +965,7 @@ public class WuxingServiceImpl extends AppServiceSupporter implements WuxingServ
 			return;
 		}
 		// 取所有角色id,只限本地
-		List<String> receivers = roleSetService.getRoleIds(false);
+		List<String> receivers = roleRepository.getRoleIds(false);
 		//
 		Message message = messageService.createMessage(CoreModuleType.WUXING, CoreModuleType.CLIENT,
 				CoreMessageType.WUXING_NOTICES_RESPONSE, receivers);
@@ -1024,7 +1024,7 @@ public class WuxingServiceImpl extends AppServiceSupporter implements WuxingServ
 			return;
 		}
 		// 取所有角色id
-		List<String> receivers = roleSetService.getRoleIds();
+		List<String> receivers = roleRepository.getRoleIds();
 		//
 		Message message = messageService.createMessage(CoreModuleType.WUXING, CoreModuleType.CLIENT,
 				CoreMessageType.WUXING_FAMOUS_PLAY_RESPONSE, receivers);
@@ -1051,7 +1051,7 @@ public class WuxingServiceImpl extends AppServiceSupporter implements WuxingServ
 			return;
 		}
 		// 取所有角色id
-		List<String> receivers = roleSetService.getRoleIds();
+		List<String> receivers = roleRepository.getRoleIds();
 		//
 		Message message = messageService.createMessage(CoreModuleType.WUXING, CoreModuleType.CLIENT,
 				CoreMessageType.WUXING_FAMOUS_PLAYS_RESPONSE, receivers);
@@ -1393,7 +1393,7 @@ public class WuxingServiceImpl extends AppServiceSupporter implements WuxingServ
 	public int reset(boolean sendable) {
 		int result = 0;
 		// false=只有本地
-		for (Role role : roleSetService.getRoles(false).values()) {
+		for (Role role : roleRepository.getRoles(false).values()) {
 			try {
 				// 是否已連線
 				if (!role.isConnected() || !role.getWuxingInfo().isConnected()) {

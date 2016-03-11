@@ -19,7 +19,7 @@ import org.openyu.mix.core.service.CoreModuleType;
 import org.openyu.mix.item.service.ItemService;
 import org.openyu.mix.item.vo.Item;
 import org.openyu.mix.role.service.RoleService;
-import org.openyu.mix.role.service.RoleSetService;
+import org.openyu.mix.role.service.RoleRepository;
 import org.openyu.mix.role.service.RoleService.SpendResult;
 import org.openyu.mix.role.vo.Role;
 import org.openyu.mix.train.service.TrainService;
@@ -56,8 +56,8 @@ public class TrainServiceImpl extends AppServiceSupporter implements TrainServic
 	protected transient RoleService roleService;
 
 	@Autowired
-	@Qualifier("roleSetService")
-	protected transient RoleSetService roleSetService;
+	@Qualifier("roleRepository")
+	protected transient RoleRepository roleRepository;
 
 	@Autowired
 	@Qualifier("trainSetService")
@@ -206,7 +206,7 @@ public class TrainServiceImpl extends AppServiceSupporter implements TrainServic
 	 * @param attatch
 	 */
 	public <T> Role roleConnect(String roleId, T attatch) {
-		Role result = roleSetService.getRole(roleId);
+		Role result = roleRepository.getRole(roleId);
 		if (result == null) {
 			return result;
 		}
@@ -255,7 +255,7 @@ public class TrainServiceImpl extends AppServiceSupporter implements TrainServic
 	 * @return
 	 */
 	public <T> Role roleDisconnect(String roleId, T attatch) {
-		Role result = roleSetService.getRole(roleId);
+		Role result = roleRepository.getRole(roleId);
 		if (result == null) {
 			return result;
 		}
@@ -936,7 +936,7 @@ public class TrainServiceImpl extends AppServiceSupporter implements TrainServic
 	public int reset(boolean sendable) {
 		int result = 0;
 		// false=只有本地
-		for (Role role : roleSetService.getRoles(false).values()) {
+		for (Role role : roleRepository.getRoles(false).values()) {
 			try {
 				// 是否已連線
 				if (!role.isConnected() || !role.getTrainInfo().isConnected()) {

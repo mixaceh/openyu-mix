@@ -12,7 +12,7 @@ import org.openyu.mix.core.service.CoreMessageType;
 import org.openyu.mix.core.service.CoreModuleType;
 import org.openyu.mix.item.service.ItemService;
 import org.openyu.mix.role.service.RoleService;
-import org.openyu.mix.role.service.RoleSetService;
+import org.openyu.mix.role.service.RoleRepository;
 import org.openyu.mix.role.vo.Role;
 import org.openyu.mix.vip.vo.VipCollector;
 import org.openyu.commons.thread.ThreadHelper;
@@ -42,8 +42,8 @@ public class ActivityServiceImpl extends AppServiceSupporter implements Activity
 	protected transient RoleService roleService;
 
 	@Autowired
-	@Qualifier("roleSetService")
-	private transient RoleSetService roleSetService;
+	@Qualifier("roleRepository")
+	private transient RoleRepository roleRepository;
 
 	private transient ActivityCollector activityCollector = ActivityCollector.getInstance();
 
@@ -132,7 +132,7 @@ public class ActivityServiceImpl extends AppServiceSupporter implements Activity
 	 * @return
 	 */
 	public <T> Role roleConnect(String roleId, T attatch) {
-		Role result = roleSetService.getRole(roleId);
+		Role result = roleRepository.getRole(roleId);
 		if (result == null) {
 			return result;
 		}
@@ -179,7 +179,7 @@ public class ActivityServiceImpl extends AppServiceSupporter implements Activity
 	 * @return
 	 */
 	public <T> Role roleDisconnect(String roleId, T attatch) {
-		Role result = roleSetService.getRole(roleId);
+		Role result = roleRepository.getRole(roleId);
 		if (result == null) {
 			return result;
 		}
