@@ -144,11 +144,11 @@
 	<bean id="roleRepository" class="org.openyu.mix.role.service.impl.RoleRepositoryImpl"
 		parent="appServiceSupporter" />
 
-	<!-- 聊天角色集合服務 -->
-	<bean id="chatSetService" class="org.openyu.mix.chat.service.impl.ChatSetServiceImpl"
+	<!-- 聊天角色儲存庫 -->
+	<bean id="chatRepository" class="org.openyu.mix.chat.service.impl.ChatRepositoryImpl"
 		parent="appServiceSupporter" />
 
-	<!-- 訓練角色集合服務 -->
-	<bean id="trainSetService" class="org.openyu.mix.train.service.impl.TrainSetServiceImpl"
+	<!-- 訓練角色儲存庫 -->
+	<bean id="trainRepository" class="org.openyu.mix.train.service.impl.TrainRepositoryImpl"
 		parent="appServiceSupporter" />
 </beans>

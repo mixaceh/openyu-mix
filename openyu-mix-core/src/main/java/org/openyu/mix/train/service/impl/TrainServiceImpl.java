@@ -23,7 +23,7 @@ import org.openyu.mix.role.service.RoleRepository;
 import org.openyu.mix.role.service.RoleService.SpendResult;
 import org.openyu.mix.role.vo.Role;
 import org.openyu.mix.train.service.TrainService;
-import org.openyu.mix.train.service.TrainSetService;
+import org.openyu.mix.train.service.TrainRepository;
 import org.openyu.mix.train.vo.TrainCollector;
 import org.openyu.mix.train.vo.TrainInfo;
 import org.openyu.mix.vip.vo.VipCollector;
@@ -60,8 +60,8 @@ public class TrainServiceImpl extends AppServiceSupporter implements TrainServic
 	protected transient RoleRepository roleRepository;
 
 	@Autowired
-	@Qualifier("trainSetService")
-	protected transient TrainSetService trainSetService;
+	@Qualifier("trainRepository")
+	protected transient TrainRepository trainRepository;
 
 	private transient TrainCollector trainCollector = TrainCollector.getInstance();
 
@@ -136,7 +136,7 @@ public class TrainServiceImpl extends AppServiceSupporter implements TrainServic
 	protected void listen() {
 		List<Role> removeRoles = new LinkedList<Role>();// 移除的角色
 		// 所有已加入的訓練角色
-		for (Role role : trainSetService.getRoles().values()) {
+		for (Role role : trainRepository.getRoles().values()) {
 			try {
 				TrainInfo trainInfo = role.getTrainInfo();
 				// 剩餘毫秒
@@ -186,7 +186,7 @@ public class TrainServiceImpl extends AppServiceSupporter implements TrainServic
 		if (removeRoles.size() > 0) {
 			for (Role role : removeRoles) {
 				String roleId = role.getId();
-				Role trainRole = trainSetService.removeRole(roleId);
+				Role trainRole = trainRepository.removeRole(roleId);
 				// 移除成功
 				if (trainRole != null) {
 					long now = System.currentTimeMillis();
@@ -261,9 +261,9 @@ public class TrainServiceImpl extends AppServiceSupporter implements TrainServic
 		}
 
 		// 是否訓練中
-		boolean contains = trainSetService.containRole(roleId);
+		boolean contains = trainRepository.containRole(roleId);
 		if (contains) {
-			Role trainRole = trainSetService.removeRole(roleId);
+			Role trainRole = trainRepository.removeRole(roleId);
 			// 移除成功
 			if (trainRole != null) {
 				long now = System.currentTimeMillis();
@@ -431,7 +431,7 @@ public class TrainServiceImpl extends AppServiceSupporter implements TrainServic
 			trainInfo.setQuitTime(0);// 結束時間
 
 			// 加入訓練角色
-			trainSetService.addRole(role);
+			trainRepository.addRole(role);
 			// 剩餘毫秒
 			long residualMills = calcResidual(trainInfo);
 			// 結果
@@ -473,7 +473,7 @@ public class TrainServiceImpl extends AppServiceSupporter implements TrainServic
 		}
 
 		// 已經加入訓練了
-		boolean contains = trainSetService.containRole(role);
+		boolean contains = trainRepository.containRole(role);
 		if (contains) {
 			errorType = ErrorType.ALREADY_JOIN;
 			return errorType;
@@ -549,9 +549,9 @@ public class TrainServiceImpl extends AppServiceSupporter implements TrainServic
 			trainInfo = role.getTrainInfo();
 
 			// 是否訓練中
-			boolean contains = trainSetService.containRole(role);
+			boolean contains = trainRepository.containRole(role);
 			if (contains) {
-				Role trainRole = trainSetService.removeRole(role);
+				Role trainRole = trainRepository.removeRole(role);
 				// 移除成功
 				if (trainRole != null) {
 					trainInfo.setQuitTime(now);// 結束時間
@@ -591,7 +591,7 @@ public class TrainServiceImpl extends AppServiceSupporter implements TrainServic
 		}
 
 		// 還沒加入訓練
-		boolean contains = trainSetService.containRole(role);
+		boolean contains = trainRepository.containRole(role);
 		if (!contains) {
 			errorType = ErrorType.NOT_JOIN;
 			return errorType;
@@ -806,7 +806,7 @@ public class TrainServiceImpl extends AppServiceSupporter implements TrainServic
 		}
 
 		// 還沒加入訓練
-		boolean contains = trainSetService.containRole(role);
+		boolean contains = trainRepository.containRole(role);
 		if (!contains) {
 			errorType = ErrorType.NOT_JOIN;
 			return errorType;
@@ -945,9 +945,9 @@ public class TrainServiceImpl extends AppServiceSupporter implements TrainServic
 				//
 				String roleId = role.getId();
 				// 是否訓練中
-				boolean contains = trainSetService.containRole(roleId);
+				boolean contains = trainRepository.containRole(roleId);
 				if (contains) {
-					Role trainRole = trainSetService.removeRole(roleId);
+					Role trainRole = trainRepository.removeRole(roleId);
 					// 移除成功
 					if (trainRole != null) {
 						long now = System.currentTimeMillis();

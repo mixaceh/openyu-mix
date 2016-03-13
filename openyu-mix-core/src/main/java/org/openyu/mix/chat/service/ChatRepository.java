@@ -11,7 +11,7 @@ import org.openyu.mix.chat.vo.Chat;
  * 
  * org/openyu/mix/app/applicationContext-app.xml
  */
-public interface ChatSetService extends AppService {
+public interface ChatRepository extends AppService {
 
 	// --------------------------------------------------
 	// biz

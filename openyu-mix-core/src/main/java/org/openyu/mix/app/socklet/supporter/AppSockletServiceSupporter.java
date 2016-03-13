@@ -3,7 +3,7 @@ package org.openyu.mix.app.socklet.supporter;
 import org.openyu.mix.role.ex.RoleException;
 import org.openyu.mix.role.service.RoleRepository;
 import org.openyu.mix.role.vo.Role;
-import org.openyu.mix.chat.service.ChatSetService;
+import org.openyu.mix.chat.service.ChatRepository;
 import org.openyu.mix.app.socklet.AppSockletService;
 import org.openyu.mix.chat.ex.ChatException;
 import org.openyu.mix.chat.vo.Chat;
@@ -40,8 +40,8 @@ public class AppSockletServiceSupporter extends SockletServiceSupporter implemen
 	 * 聊天角色集合服務, 存放所有本地/同步的角色在mem中
 	 */
 	@Autowired
-	@Qualifier("chatSetService")
-	protected transient ChatSetService chatSetService;
+	@Qualifier("chatRepository")
+	protected transient ChatRepository chatRepository;
 
 	public AppSockletServiceSupporter() {
 	}
@@ -73,7 +73,7 @@ public class AppSockletServiceSupporter extends SockletServiceSupporter implemen
 	 */
 	protected Chat checkChat(String chatId) {
 		Chat result = null;
-		result = chatSetService.getChat(chatId);
+		result = chatRepository.getChat(chatId);
 		if (result == null) {
 			throw new ChatException("[" + chatId + "] is not in memory");
 		}

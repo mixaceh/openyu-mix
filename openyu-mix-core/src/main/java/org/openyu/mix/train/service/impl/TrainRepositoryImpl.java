@@ -9,18 +9,18 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.openyu.mix.app.service.supporter.AppServiceSupporter;
 import org.openyu.mix.role.vo.Role;
-import org.openyu.mix.train.service.TrainSetService;
+import org.openyu.mix.train.service.TrainRepository;
 
 /**
  * 訓練角色集合服務, 存放所有本地/同步的訓練角色在mem中
  */
-public class TrainSetServiceImpl extends AppServiceSupporter implements TrainSetService {
+public class TrainRepositoryImpl extends AppServiceSupporter implements TrainRepository {
 
 	private static final long serialVersionUID = 281568249375735970L;
 
-	private static transient final Logger LOGGER = LoggerFactory.getLogger(TrainSetServiceImpl.class);
+	private static transient final Logger LOGGER = LoggerFactory.getLogger(TrainRepositoryImpl.class);
 
-	public TrainSetServiceImpl() {
+	public TrainRepositoryImpl() {
 	}
 
 	@Override

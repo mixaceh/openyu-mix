@@ -13,7 +13,7 @@ import org.apache.commons.lang.builder.ToStringStyle;
 import org.openyu.mix.app.service.supporter.AppServiceSupporter;
 import org.openyu.mix.app.vo.supporter.AppResultSupporter;
 import org.openyu.mix.chat.service.ChatService;
-import org.openyu.mix.chat.service.ChatSetService;
+import org.openyu.mix.chat.service.ChatRepository;
 import org.openyu.mix.chat.service.StoreChatService;
 import org.openyu.mix.chat.vo.Chat;
 import org.openyu.mix.chat.vo.ChatCollector;
@@ -50,8 +50,8 @@ public class StoreChatServiceImpl extends AppServiceSupporter implements StoreCh
 	private static transient final Logger LOGGER = LoggerFactory.getLogger(StoreChatServiceImpl.class);
 
 	@Autowired
-	@Qualifier("chatSetService")
-	protected transient ChatSetService chatSetService;
+	@Qualifier("chatRepository")
+	protected transient ChatRepository chatRepository;
 
 	@Autowired
 	@Qualifier("chatService")
@@ -144,7 +144,7 @@ public class StoreChatServiceImpl extends AppServiceSupporter implements StoreCh
 	public int storeChats(boolean sendable) {
 		int result = 0;
 		//
-		for (Chat chat : chatSetService.getChats(false).values()) {
+		for (Chat chat : chatRepository.getChats(false).values()) {
 			try {
 				// 儲存聊天角色
 				boolean stored = storeChat(sendable, chat);

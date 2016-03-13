@@ -178,7 +178,7 @@ public class ChatTestSupporter extends AppTestSupporter {
 		Chat result = chatService.createChat(role.getId());
 
 		// 加到mem
-		chatSetService.addChat(result);
+		chatRepository.addChat(result);
 		return result;
 	}
 

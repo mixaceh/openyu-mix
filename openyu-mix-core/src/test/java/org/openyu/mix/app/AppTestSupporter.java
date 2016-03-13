@@ -10,7 +10,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.orm.hibernate4.HibernateTransactionManager;
-import org.openyu.mix.chat.service.ChatSetService;
+import org.openyu.mix.chat.service.ChatRepository;
 import org.openyu.mix.core.service.CoreMessageType;
 import org.openyu.mix.core.service.CoreModuleType;
 import org.openyu.mix.flutter.vo.Attribute;
@@ -101,7 +101,7 @@ public class AppTestSupporter extends BaseTestSupporter {
 	/**
 	 * 聊天角色集合服務
 	 */
-	protected static ChatSetService chatSetService;
+	protected static ChatRepository chatRepository;
 
 	/**
 	 * 客戶端
@@ -154,7 +154,7 @@ public class AppTestSupporter extends BaseTestSupporter {
 		// 角色集合
 		roleRepository = (RoleRepository) applicationContext.getBean("roleRepository");
 		// 聊天角色集合
-		chatSetService = (ChatSetService) applicationContext.getBean("chatSetService");
+		chatRepository = (ChatRepository) applicationContext.getBean("chatRepository");
 	}
 
 	// --------------------------------------------------
@@ -229,9 +229,9 @@ public class AppTestSupporter extends BaseTestSupporter {
 		}
 
 		@Test
-		public void chatSetService() {
-			System.out.println(chatSetService);
-			assertNotNull(chatSetService);
+		public void chatRepository() {
+			System.out.println(chatRepository);
+			assertNotNull(chatRepository);
 		}
 	}
 

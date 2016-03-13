@@ -38,7 +38,7 @@ public class ChatServiceImplTest extends ChatTestSupporter {
 		}
 
 		// 加到mem
-		chatSetService.addChat(result);
+		chatRepository.addChat(result);
 		//
 		long end = System.currentTimeMillis();
 		System.out.println(count + " times: " + (end - beg) + " mills. ");

@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.openyu.mix.app.socklet.supporter.AppSockletServiceSupporter;
 import org.openyu.mix.core.service.CoreMessageType;
 import org.openyu.mix.train.service.TrainService;
-import org.openyu.mix.train.service.TrainSetService;
+import org.openyu.mix.train.service.TrainRepository;
 import org.openyu.mix.train.vo.TrainInfo;
 import org.openyu.mix.role.vo.Role;
 import org.openyu.socklet.message.vo.Message;
@@ -17,8 +17,8 @@ public class TrainSocklet extends AppSockletServiceSupporter {
 			.getLogger(TrainSocklet.class);
 
 	@Autowired
-	@Qualifier("trainSetService")
-	protected transient TrainSetService trainSetService;
+	@Qualifier("trainRepository")
+	protected transient TrainRepository trainRepository;
 
 	@Autowired
 	@Qualifier("trainService")
@@ -134,7 +134,7 @@ public class TrainSocklet extends AppSockletServiceSupporter {
 	protected void DEBUG_reset(Role role) {
 		TrainInfo trainInfo = role.getTrainInfo();
 		// 若在訓練中,則離開訓練
-		boolean contains = trainSetService.containRole(role);
+		boolean contains = trainRepository.containRole(role);
 		if (contains) {
 			trainService.quit(true, role);
 		}

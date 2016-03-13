@@ -8,7 +8,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.openyu.mix.app.service.supporter.AppServiceSupporter;
-import org.openyu.mix.chat.service.ChatSetService;
+import org.openyu.mix.chat.service.ChatRepository;
 import org.openyu.mix.chat.vo.Chat;
 import org.openyu.commons.util.concurrent.MapCache;
 import org.openyu.commons.util.concurrent.impl.MapCacheImpl;
@@ -16,11 +16,11 @@ import org.openyu.commons.util.concurrent.impl.MapCacheImpl;
 /**
  * 聊天角色集合服務, 存放所有本地/同步的角色在mem中
  */
-public class ChatSetServiceImpl extends AppServiceSupporter implements ChatSetService {
+public class ChatRepositoryImpl extends AppServiceSupporter implements ChatRepository {
 
 	private static final long serialVersionUID = -6007699325820709918L;
 
-	private static transient final Logger LOGGER = LoggerFactory.getLogger(ChatSetServiceImpl.class);
+	private static transient final Logger LOGGER = LoggerFactory.getLogger(ChatRepositoryImpl.class);
 
 	/**
 	 * 同步chat, 來自於其它server上的chat
@@ -29,7 +29,7 @@ public class ChatSetServiceImpl extends AppServiceSupporter implements ChatSetSe
 	 */
 	private MapCache<String, Chat> syncChats = new MapCacheImpl<String, Chat>();
 
-	public ChatSetServiceImpl() {
+	public ChatRepositoryImpl() {
 	}
 
 	@Override

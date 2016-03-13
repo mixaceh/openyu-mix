@@ -48,7 +48,7 @@ public class TrainServiceImplTest extends TrainTestSupporter {
 		TrainInfo trainInfo = role.getTrainInfo();
 
 		// 加入
-		trainSetService.addRole(role);
+		trainRepository.addRole(role);
 		trainInfo.setJoinTime(System.currentTimeMillis());
 		// 剩10秒結束
 		trainInfo.addDailyMills(trainCollector.getDailyMills() - 10 * 1000L);
@@ -115,14 +115,14 @@ public class TrainServiceImplTest extends TrainTestSupporter {
 
 		role.setLevel(20);// 等級
 		// 加入訓練
-		trainSetService.addRole(role);
+		trainRepository.addRole(role);
 		errorType = trainService.checkJoin(role);
 		System.out.println(errorType);
 		// 已經加入訓練了
 		assertEquals(ErrorType.ALREADY_JOIN, errorType);
 
 		// 移除訓練
-		trainSetService.removeRole(role);
+		trainRepository.removeRole(role);
 		trainInfo.setDailyMills(trainCollector.getDailyMills());// 每天已訓練毫秒
 		errorType = trainService.checkJoin(role);
 		System.out.println(errorType);
@@ -147,7 +147,7 @@ public class TrainServiceImplTest extends TrainTestSupporter {
 		role.setGold(10000 * 10000L);// 1e
 
 		// 加入訓練
-		trainSetService.addRole(role);
+		trainRepository.addRole(role);
 		// 離開結果
 		QuitResult result = trainService.quit(true, role);
 		System.out.println(result);
@@ -169,7 +169,7 @@ public class TrainServiceImplTest extends TrainTestSupporter {
 		assertEquals(ErrorType.NOT_JOIN, errorType);
 
 		// 加入訓練
-		trainSetService.addRole(role);
+		trainRepository.addRole(role);
 		errorType = trainService.checkQuit(role);
 		System.out.println(errorType);
 		// 沒有錯誤
@@ -197,7 +197,7 @@ public class TrainServiceImplTest extends TrainTestSupporter {
 		Item item = itemService.createItem(trainCollector.getInspireItem());
 		bagInfo.addItem(0, 0, item);
 		// 加入訓練
-		trainSetService.addRole(role);
+		trainRepository.addRole(role);
 		// 鼓舞結果
 		InspireResult result = trainService.inspire(true, role);
 		System.out.println(result);
@@ -218,7 +218,7 @@ public class TrainServiceImplTest extends TrainTestSupporter {
 	public void checkInspire() {
 		Role role = mockRole();
 		// 移除訓練
-		trainSetService.removeRole(role);
+		trainRepository.removeRole(role);
 		//
 		ErrorType errorType = trainService.checkInspire(role);
 		System.out.println(errorType);
@@ -232,7 +232,7 @@ public class TrainServiceImplTest extends TrainTestSupporter {
 		assertEquals(ErrorType.NOT_JOIN, errorType);
 
 		// 加入訓練
-		trainSetService.addRole(role);
+		trainRepository.addRole(role);
 		errorType = trainService.checkInspire(role);
 		System.out.println(errorType);
 		// 沒有錯誤
@@ -265,7 +265,7 @@ public class TrainServiceImplTest extends TrainTestSupporter {
 		trainInfo.setJoinTime(joinTime.getTimeInMillis());
 		// 若在訓練中,則離開訓練
 		// 加入訓練
-		trainSetService.addRole(role);
+		trainRepository.addRole(role);
 		result = trainService.reset(true, role);
 		//
 		System.out.println(result);

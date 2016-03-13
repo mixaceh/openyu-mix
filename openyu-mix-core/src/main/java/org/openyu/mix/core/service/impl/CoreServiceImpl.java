@@ -15,7 +15,7 @@ import org.openyu.mix.app.vo.impl.AccountResultImpl;
 import org.openyu.mix.app.vo.impl.RoleResultImpl;
 import org.openyu.mix.app.vo.supporter.AppResultSupporter;
 import org.openyu.mix.chat.service.ChatService;
-import org.openyu.mix.chat.service.ChatSetService;
+import org.openyu.mix.chat.service.ChatRepository;
 import org.openyu.mix.chat.service.StoreChatService;
 import org.openyu.mix.chat.vo.Chat;
 import org.openyu.mix.core.service.CoreService;
@@ -82,8 +82,8 @@ public class CoreServiceImpl extends AppServiceSupporter implements CoreService 
 	protected transient RelationRepository relationRepository;
 
 	@Autowired
-	@Qualifier("chatSetService")
-	protected transient ChatSetService chatSetService;
+	@Qualifier("chatRepository")
+	protected transient ChatRepository chatRepository;
 
 	@Autowired
 	@Qualifier("chatService")
@@ -177,7 +177,7 @@ public class CoreServiceImpl extends AppServiceSupporter implements CoreService 
 			Chat chat = checkChat(roleId);
 			// 加到mem
 			if (chat != null) {
-				chatSetService.addChat(chat);
+				chatRepository.addChat(chat);
 			}
 
 			// --------------------------------------------------
@@ -270,7 +270,7 @@ public class CoreServiceImpl extends AppServiceSupporter implements CoreService 
 			result.removeBeanChangeListener(wuxingChangeAdapter);// 五行
 
 			// 當斷線時,聊天角色存檔
-			Chat chat = chatSetService.getChat(roleId);
+			Chat chat = chatRepository.getChat(roleId);
 			storeChat(chat);
 
 			// 當斷線時,角色存檔
@@ -549,7 +549,7 @@ public class CoreServiceImpl extends AppServiceSupporter implements CoreService 
 			LOGGER.error(new StringBuilder("Exception encountered during storeChat()").toString(), e);
 		} finally {
 			// 從mem移除
-			chatSetService.removeChat(chat);
+			chatRepository.removeChat(chat);
 		}
 	}
 

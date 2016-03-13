@@ -11,7 +11,7 @@ import org.openyu.mix.app.service.supporter.AppServiceSupporter;
 import org.openyu.mix.chat.dao.ChatDao;
 import org.openyu.mix.chat.po.ChatPo;
 import org.openyu.mix.chat.service.ChatService;
-import org.openyu.mix.chat.service.ChatSetService;
+import org.openyu.mix.chat.service.ChatRepository;
 import org.openyu.mix.chat.service.DebugService;
 import org.openyu.mix.chat.vo.ChannelType;
 import org.openyu.mix.chat.vo.impl.ChannelImpl;
@@ -49,8 +49,8 @@ public class ChatServiceImpl extends AppServiceSupporter implements ChatService 
 	protected transient RoleRepository roleRepository;
 
 	@Autowired
-	@Qualifier("chatSetService")
-	protected transient ChatSetService chatSetService;
+	@Qualifier("chatRepository")
+	protected transient ChatRepository chatRepository;
 
 	@Autowired
 	@Qualifier("debugService")

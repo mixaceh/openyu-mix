@@ -11,7 +11,7 @@ import org.openyu.mix.role.vo.Role;
  * 
  *  org/openyu/mix/train/applicationContext-app.xml
  */
-public interface TrainSetService extends AppService {
+public interface TrainRepository extends AppService {
 
 	// --------------------------------------------------
 	// biz

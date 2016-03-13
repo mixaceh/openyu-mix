@@ -176,7 +176,7 @@ public class CoreServiceImplTest extends CoreTestSupporter {
 		Role role3 = mockRole3();
 		Chat chat3 = ChatTestSupporter.mockChat3();
 		// 本身的聊天角色
-		Chat chat = chatSetService.getChat(role.getId());
+		Chat chat = chatRepository.getChat(role.getId());
 
 		// 1.加好友列表
 		FriendGroup friendGroup = chat.getFriendGroup();
