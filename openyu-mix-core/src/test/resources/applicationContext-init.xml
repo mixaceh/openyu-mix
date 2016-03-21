@@ -16,12 +16,10 @@
 		class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor" />
 	-->
 	<context:annotation-config />
-	<!--
-	<aop:aspectj-autoproxy /> 
-	 -->
-	<aop:aspectj-autoproxy proxy-target-class="true" />
+	<aop:aspectj-autoproxy proxy-target-class="false" />
 
 	<!-- service -->
-	<import resource="classpath:org/openyu/commons/service/applicationContext-service.xml" />
+	<import
+		resource="classpath:org/openyu/commons/service/applicationContext-service.xml" />
 
 </beans>
