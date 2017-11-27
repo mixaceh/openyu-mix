@@ -441,6 +441,14 @@ public enum CoreMessageType implements MessageType {
 	 * 1, int, 增減的vip等級
 	 */
 	ROLE_DEBUG_CHANGE_VIP_REQUEST(151909),
+	
+	/**
+	 * 查看角色資訊
+	 * 
+	 * 0, String, 角色id
+	 * 
+	 */
+	ROLE_DEBUG_INFO_REQUEST(151910),
 
 	// ---------------------------------------------------
 	// 角色回應

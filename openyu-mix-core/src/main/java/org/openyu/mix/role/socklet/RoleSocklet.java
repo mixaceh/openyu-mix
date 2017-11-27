@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.openyu.mix.account.service.AccountService;
 import org.openyu.mix.account.service.AccountService.CoinType;
+import org.openyu.mix.account.vo.impl.AccountImpl;
 import org.openyu.mix.app.socklet.supporter.AppSockletServiceSupporter;
 import org.openyu.mix.core.service.CoreMessageType;
 import org.openyu.mix.role.service.RoleService;
@@ -183,6 +184,13 @@ public class RoleSocklet extends AppSockletServiceSupporter {
 			DEBUG_changeVip(role, vip);
 			break;
 		}
+		case ROLE_DEBUG_INFO_REQUEST: {
+			String roleId = message.getString(0);
+			//
+			Role role = checkRole(roleId);
+			DEBUG_info(role);
+			break;
+		}
 		default: {
 			LOGGER.error("Can't resolve: " + message);
 			break;
@@ -310,5 +318,9 @@ public class RoleSocklet extends AppSockletServiceSupporter {
 		} else {
 			roleService.changeVip(true, role, vip);
 		}
+	}
+	
+	protected void DEBUG_info(Role role) {
+			roleService.sendRoleConnect(role, new AccountImpl());
 	}
 }

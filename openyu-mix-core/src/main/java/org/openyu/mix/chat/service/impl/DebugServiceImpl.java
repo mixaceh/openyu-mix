@@ -32,6 +32,8 @@ public class DebugServiceImpl extends AppServiceSupporter implements DebugServic
 	/**
 	 * 秘技
 	 * 
+	 * info //查看角色資訊
+	 * 
 	 * exp 100 //增減經驗
 	 * 
 	 * level 1 //增減重置等級,0=重置
@@ -139,6 +141,19 @@ public class DebugServiceImpl extends AppServiceSupporter implements DebugServic
 		// ---------------------------------------------------
 		// TODO 角色
 		// ---------------------------------------------------
+		// 查看角色資訊
+		// info
+		pos = 5;
+		if (text.length() > pos && buff.substring(0, pos).equals("info ")) {
+			//
+			Message message = messageService.createMessage(CoreModuleType.CHAT, CoreModuleType.ROLE,
+					CoreMessageType.ROLE_DEBUG_INFO_REQUEST);
+			message.addString(roleId);// 角色id
+			//
+			messageService.addMessage(message);
+			return;
+		}
+
 		// 祕技增減經驗
 		// exp 100
 		// 01234
