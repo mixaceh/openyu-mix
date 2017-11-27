@@ -273,13 +273,11 @@ public class TreasureServiceImplTest extends TreasureTestSupporter {
 		// 金幣購買
 		BuyResult result = treasureService.buy(true, role, 1, 0);
 		System.out.println(result);
-		assertNotNull(result);
 
 		// 儲值幣購買
 		role.setVipType(VipType._2);
 		result = treasureService.buy(true, role, 2, 2);
 		System.out.println(result);
-		assertNotNull(result);
 		//
 		ThreadHelper.sleep(3 * 1000L);
 	}
@@ -312,7 +310,7 @@ public class TreasureServiceImplTest extends TreasureTestSupporter {
 	 * 金幣購買秘寶
 	 */
 	@Test
-	public void goldBuy() {
+	public void doBuyWithGold() {
 		Role role = mockRole();
 		role.setLevel(20);// 等級
 		role.setGold(10000 * 10000L);// 1e
@@ -321,12 +319,12 @@ public class TreasureServiceImplTest extends TreasureTestSupporter {
 		role.setTreasureInfo(treasureInfo);
 
 		// 購買結果
-		BuyResult result = treasureService.goldBuy(true, role, 2);
+		BuyResult result = treasureService.doBuyWithGold(true, role, 2);
 		System.out.println(result);
 		assertNotNull(result);
 
 		// 再買一次,應該是失敗
-		result = treasureService.goldBuy(true, role, 2);
+		result = treasureService.doBuyWithGold(true, role, 2);
 		System.out.println(result);
 		assertNull(result);
 		//
@@ -337,19 +335,19 @@ public class TreasureServiceImplTest extends TreasureTestSupporter {
 	 * 檢查金幣購買秘寶
 	 */
 	@Test
-	public void checkGoldBuy() {
+	public void checkBuyWithGold() {
 		Role role = mockRole();
 		// 祕寶
 		TreasureInfo treasureInfo = mockTreasureInfo(role);
 		role.setTreasureInfo(treasureInfo);
 		//
-		ErrorType errorType = treasureService.checkGoldBuy(role, 0);
+		ErrorType errorType = treasureService.checkBuyWithGold(role, 0);
 		System.out.println(errorType);
 		// 等級不足
 		assertEquals(ErrorType.LEVLE_NOT_ENOUGH, errorType);
 		//
 		role.setLevel(20);// 等級
-		errorType = treasureService.checkGoldBuy(role, -1);
+		errorType = treasureService.checkBuyWithGold(role, -1);
 		System.out.println(errorType);
 		// 祕寶不存在
 		assertEquals(ErrorType.TREASURE_NOT_EXIST, errorType);
@@ -357,7 +355,7 @@ public class TreasureServiceImplTest extends TreasureTestSupporter {
 		// 祕寶
 		Treasure treasure = treasureInfo.getTreasures().get(0);
 		treasure.setBought(true);
-		errorType = treasureService.checkGoldBuy(role, 0);
+		errorType = treasureService.checkBuyWithGold(role, 0);
 		System.out.println(errorType);
 		// 祕寶已購買
 		assertEquals(ErrorType.ALREADY_BUY, errorType);
@@ -365,19 +363,19 @@ public class TreasureServiceImplTest extends TreasureTestSupporter {
 		treasure.setBought(false);
 		String origId = treasure.getId();
 		treasure.setId("NO ITEM");
-		errorType = treasureService.checkGoldBuy(role, 0);
+		errorType = treasureService.checkBuyWithGold(role, 0);
 		System.out.println(errorType);
 		// 道具不存在
 		assertEquals(ErrorType.ITEM_NOT_EXIST, errorType);
 
 		treasure.setId(origId);
-		errorType = treasureService.checkGoldBuy(role, 0);
+		errorType = treasureService.checkBuyWithGold(role, 0);
 		System.out.println(errorType);
 		// 金幣不足
 		assertEquals(ErrorType.GOLD_NOT_ENOUGH, errorType);
 
 		role.setGold(10000 * 10000L);// 1e
-		errorType = treasureService.checkGoldBuy(role, 0);
+		errorType = treasureService.checkBuyWithGold(role, 0);
 		System.out.println(errorType);
 		// 沒有錯誤
 		assertEquals(ErrorType.NO_ERROR, errorType);
@@ -387,7 +385,7 @@ public class TreasureServiceImplTest extends TreasureTestSupporter {
 	 * 儲值幣購買秘寶
 	 */
 	@Test
-	public void coinBuy() {
+	public void doBuyWithCoin() {
 		Role role = mockRole();
 		role.setLevel(20);// 等級
 		// 祕寶
@@ -396,12 +394,12 @@ public class TreasureServiceImplTest extends TreasureTestSupporter {
 
 		role.setVipType(VipType._2);
 		// 購買
-		BuyResult result = treasureService.coinBuy(true, role, 2);
+		BuyResult result = treasureService.doBuyWithCoin(true, role, 2);
 		System.out.println(result);
 		assertNotNull(result);
 
 		// 再買一次,應該是失敗
-		result = treasureService.coinBuy(true, role, 2);
+		result = treasureService.doBuyWithCoin(true, role, 2);
 		System.out.println(result);
 		assertNull(result);
 		//
@@ -412,19 +410,19 @@ public class TreasureServiceImplTest extends TreasureTestSupporter {
 	 * 檢查儲值幣購買秘寶
 	 */
 	@Test
-	public void checkCoinBuy() {
+	public void checkBuyWithCoin() {
 		Role role = mockRole();
 		// 祕寶
 		TreasureInfo treasureInfo = mockTreasureInfo(role);
 		role.setTreasureInfo(treasureInfo);
 		//
-		ErrorType errorType = treasureService.checkCoinBuy(role, 0);
+		ErrorType errorType = treasureService.checkBuyWithCoin(role, 0);
 		System.out.println(errorType);
 		// 等級不足
 		assertEquals(ErrorType.LEVLE_NOT_ENOUGH, errorType);
 		//
 		role.setLevel(20);// 等級
-		errorType = treasureService.checkCoinBuy(role, -1);
+		errorType = treasureService.checkBuyWithCoin(role, -1);
 		System.out.println(errorType);
 		// 祕寶不存在
 		assertEquals(ErrorType.TREASURE_NOT_EXIST, errorType);
@@ -432,7 +430,7 @@ public class TreasureServiceImplTest extends TreasureTestSupporter {
 		// 祕寶
 		Treasure treasure = treasureInfo.getTreasures().get(0);
 		treasure.setBought(true);
-		errorType = treasureService.checkCoinBuy(role, 0);
+		errorType = treasureService.checkBuyWithCoin(role, 0);
 		System.out.println(errorType);
 		// 祕寶已購買
 		assertEquals(ErrorType.ALREADY_BUY, errorType);
@@ -440,7 +438,7 @@ public class TreasureServiceImplTest extends TreasureTestSupporter {
 		treasure.setBought(false);
 		String origId = treasure.getId();
 		treasure.setId("NO ITEM");
-		errorType = treasureService.checkCoinBuy(role, 0);
+		errorType = treasureService.checkBuyWithCoin(role, 0);
 		System.out.println(errorType);
 		// 道具不存在
 		assertEquals(ErrorType.ITEM_NOT_EXIST, errorType);
@@ -455,14 +453,14 @@ public class TreasureServiceImplTest extends TreasureTestSupporter {
 		role.setVipType(VipType._2);// vip
 		// 儲值幣重置歸0
 		accountService.resetCoin(false, role.getAccountId(), role, false, CoinType.DEBUG_RESET);
-		errorType = treasureService.checkCoinBuy(role, 0);
+		errorType = treasureService.checkBuyWithCoin(role, 0);
 		System.out.println(errorType);
 		// 儲值幣不足
 		assertEquals(ErrorType.COIN_NOT_ENOUGH, errorType);
 
 		// 給儲值幣
 		accountService.increaseCoin(false, role.getAccountId(), role, 10000, false, CoinType.DEBUG_INCREASE);
-		errorType = treasureService.checkCoinBuy(role, 0);
+		errorType = treasureService.checkBuyWithCoin(role, 0);
 		System.out.println(errorType);
 		// 沒有錯誤
 		assertEquals(ErrorType.NO_ERROR, errorType);

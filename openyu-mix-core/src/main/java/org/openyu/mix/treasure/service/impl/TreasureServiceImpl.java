@@ -920,12 +920,12 @@ public class TreasureServiceImpl extends AppServiceSupporter implements Treasure
 		switch (buyType) {
 		case GOLD: {
 			// 金幣購買
-			result = goldBuy(sendable, role, index);
+			result = doBuyWithGold(sendable, role, index);
 			break;
 		}
 		case COIN: {
 			// 儲值幣購買
-			result = coinBuy(sendable, role, index);
+			result = doBuyWithCoin(sendable, role, index);
 			break;
 		}
 		default: {
@@ -948,13 +948,13 @@ public class TreasureServiceImpl extends AppServiceSupporter implements Treasure
 	 * @param index
 	 * @return
 	 */
-	public BuyResult goldBuy(boolean sendable, Role role, int index) {
+	public BuyResult doBuyWithGold(boolean sendable, Role role, int index) {
 		BuyResult result = null;
 		Notice notice = null;// 已購買的祕寶訊息
 		//
 		ErrorType errorType = ErrorType.NO_ERROR;
 		// 檢查條件
-		errorType = checkGoldBuy(role, index);
+		errorType = checkBuyWithGold(role, index);
 		if (ErrorType.NO_ERROR.equals(errorType)) {
 			// 祕寶
 			TreasureInfo treasureInfo = role.getTreasureInfo();
@@ -992,8 +992,14 @@ public class TreasureServiceImpl extends AppServiceSupporter implements Treasure
 					errorType = ErrorType.CAN_NOT_INCREASE_ITEM;
 				}
 			} else {
-				errorType = ErrorType.GOLD_NOT_ENOUGH;
+				// 無法減少金幣
+				errorType = ErrorType.CAN_NOT_DECREASE_GOLD;
 			}
+		}
+
+		// debug
+		if (errorType != ErrorType.NO_ERROR) {
+			LOGGER.debug(errorType.toString());
 		}
 
 		// 發訊息
@@ -1017,7 +1023,7 @@ public class TreasureServiceImpl extends AppServiceSupporter implements Treasure
 	 * @param index
 	 * @return
 	 */
-	public ErrorType checkGoldBuy(Role role, int index) {
+	public ErrorType checkBuyWithGold(Role role, int index) {
 		ErrorType errorType = ErrorType.NO_ERROR;
 		//
 		// 角色不存在
@@ -1080,83 +1086,13 @@ public class TreasureServiceImpl extends AppServiceSupporter implements Treasure
 	}
 
 	/**
-	 * 儲值幣購買祕寶
-	 * 
-	 * @param sendable
-	 * @param role
-	 * @param index
-	 * @return
-	 */
-	public BuyResult coinBuy(boolean sendable, Role role, int index) {
-		BuyResult result = null;
-		Notice notice = null;// 已購買的祕寶訊息
-		//
-		ErrorType errorType = ErrorType.NO_ERROR;
-		// 檢查條件
-		errorType = checkCoinBuy(role, index);
-		if (ErrorType.NO_ERROR.equals(errorType)) {
-			// 祕寶
-			TreasureInfo treasureInfo = role.getTreasureInfo();
-			Treasure treasure = treasureInfo.getTreasures().get(index);
-			Item item = itemService.createItem(treasure.getId(), treasure.getAmount());
-
-			// 花費的儲值幣
-			int spendCoin = treasure.getAmount() * item.getCoin();
-			// 扣儲值幣
-			int decrease = accountService.decreaseCoin(sendable, role.getAccountId(), role, spendCoin,
-					CoinType.TREASURE_BUY);
-			// 成功
-			if (decrease != 0) {
-				// 增加多個道具
-				List<IncreaseItemResult> increaseResults = itemService.increaseItem(sendable, role, item);
-				// 成功
-				if (increaseResults.size() > 0) {
-					treasure.setBought(true);// 已購買
-					//
-					IncreaseItemResult increaseResult = increaseResults.get(0);
-					int tabIndex = increaseResult.getTabIndex();
-					int gridIndex = increaseResult.getGridIndex();
-					// 包包
-					BagInfo bagInfo = role.getBagInfo();
-					Item bagItem = bagInfo.getItem(tabIndex, gridIndex);// 放入包包後的道具
-					// 為了拿道具的uniqueId
-					item.setUniqueId(bagItem.getUniqueId());
-
-					// 加到已購買的祕寶,人氣榜
-					notice = addNotice(role, treasure, item);
-
-					// 結果
-					result = new BuyResultImpl(BuyType.COIN, index, treasure, item, spendCoin);
-				} else {
-					errorType = ErrorType.CAN_NOT_INCREASE_ITEM;
-				}
-			} else {
-				errorType = ErrorType.COIN_NOT_ENOUGH;
-			}
-		}
-
-		// 發訊息
-		if (sendable) {
-			sendBuy(errorType, role, result);
-			//
-			if (result != null) {
-				// 公告通知
-				sendNotice(notice);
-				// 成名
-				sendFamousBuy(role, result.getTreasure(), result.getItem());
-			}
-		}
-		return result;
-	}
-
-	/**
 	 * 檢查儲值幣購買祕寶
 	 * 
 	 * @param role
 	 * @param index
 	 * @return
 	 */
-	public ErrorType checkCoinBuy(Role role, int index) {
+	public ErrorType checkBuyWithCoin(Role role, int index) {
 		ErrorType errorType = ErrorType.NO_ERROR;
 		//
 		// 角色不存在
@@ -1222,6 +1158,85 @@ public class TreasureServiceImpl extends AppServiceSupporter implements Treasure
 		}
 		//
 		return errorType;
+	}
+
+	/**
+	 * 儲值幣購買祕寶
+	 * 
+	 * @param sendable
+	 * @param role
+	 * @param index
+	 * @return
+	 */
+	public BuyResult doBuyWithCoin(boolean sendable, Role role, int index) {
+		BuyResult result = null;
+		Notice notice = null;// 已購買的祕寶訊息
+		//
+		ErrorType errorType = ErrorType.NO_ERROR;
+		// 檢查條件
+		errorType = checkBuyWithCoin(role, index);
+		if (ErrorType.NO_ERROR.equals(errorType)) {
+			// 祕寶
+			TreasureInfo treasureInfo = role.getTreasureInfo();
+			Treasure treasure = treasureInfo.getTreasures().get(index);
+			Item item = itemService.createItem(treasure.getId(), treasure.getAmount());
+
+			// 花費的儲值幣
+			int spendCoin = treasure.getAmount() * item.getCoin();
+			// 扣儲值幣
+			int decrease = accountService.decreaseCoin(sendable, role.getAccountId(), role, spendCoin,
+					CoinType.TREASURE_BUY);
+			// 成功
+			if (decrease != 0) {
+				// 增加多個道具
+				List<IncreaseItemResult> increaseResults = itemService.increaseItem(sendable, role, item);
+				// 成功
+				if (increaseResults.size() > 0) {
+					treasure.setBought(true);// 已購買
+					//
+					IncreaseItemResult increaseResult = increaseResults.get(0);
+					int tabIndex = increaseResult.getTabIndex();
+					int gridIndex = increaseResult.getGridIndex();
+					// 包包
+					BagInfo bagInfo = role.getBagInfo();
+					Item bagItem = bagInfo.getItem(tabIndex, gridIndex);// 放入包包後的道具
+					// 為了拿道具的uniqueId
+					item.setUniqueId(bagItem.getUniqueId());
+
+					// 加到已購買的祕寶,人氣榜
+					notice = addNotice(role, treasure, item);
+
+					// 結果
+					result = new BuyResultImpl(BuyType.COIN, index, treasure, item, spendCoin);
+				} else {
+					errorType = ErrorType.CAN_NOT_INCREASE_ITEM;
+
+					// TODO 已扣儲值幣,但無法放入包包,待補償
+
+				}
+			} else {
+				// 無法減少儲值幣
+				errorType = ErrorType.CAN_NOT_DECREASE_COIN;
+			}
+		}
+
+		// debug
+		if (errorType != ErrorType.NO_ERROR) {
+			LOGGER.debug(errorType.toString());
+		}
+
+		// 發訊息
+		if (sendable) {
+			sendBuy(errorType, role, result);
+			//
+			if (result != null) {
+				// 公告通知
+				sendNotice(notice);
+				// 成名
+				sendFamousBuy(role, result.getTreasure(), result.getItem());
+			}
+		}
+		return result;
 	}
 
 	/**

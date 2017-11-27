@@ -48,5 +48,11 @@
 			additivity="false">
 			<Appender-Ref ref="Console" />
 		</Logger>
+		<Logger
+			name="org.openyu.mix.treasure.service.impl"
+			level="debug"
+			additivity="false">
+			<Appender-Ref ref="Console" />
+		</Logger>
 	</Loggers>
 </Configuration>

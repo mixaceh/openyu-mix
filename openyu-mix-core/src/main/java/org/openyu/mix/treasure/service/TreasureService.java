@@ -137,6 +137,16 @@ public interface TreasureService extends AppService {
 		CAN_NOT_DECREASE_ITEM(32),
 
 		/**
+		 * 無法減少金幣
+		 */
+		CAN_NOT_DECREASE_GOLD(33),
+
+		/**
+		 * 無法減少儲值幣
+		 */
+		CAN_NOT_DECREASE_COIN(34),
+
+		/**
 		 * 等級不足
 		 */
 		LEVLE_NOT_ENOUGH(51),
@@ -169,8 +179,7 @@ public interface TreasureService extends AppService {
 		}
 
 		public String toString() {
-			ToStringBuilder builder = new ToStringBuilder(this,
-					ToStringStyle.SIMPLE_STYLE);
+			ToStringBuilder builder = new ToStringBuilder(this, ToStringStyle.SIMPLE_STYLE);
 			builder.append("(" + value + ") " + super.toString());
 			return builder.toString();
 		}
@@ -389,6 +398,15 @@ public interface TreasureService extends AppService {
 	BuyResult buy(boolean sendable, Role role, int buyValue, int index);
 
 	/**
+	 * 檢查金幣購買秘寶
+	 * 
+	 * @param role
+	 * @param index
+	 * @return
+	 */
+	ErrorType checkBuyWithGold(Role role, int index);
+
+	/**
 	 * 金幣購買秘寶
 	 * 
 	 * @param sendable
@@ -396,16 +414,16 @@ public interface TreasureService extends AppService {
 	 * @param index
 	 * @return
 	 */
-	BuyResult goldBuy(boolean sendable, Role role, int index);
+	BuyResult doBuyWithGold(boolean sendable, Role role, int index);
 
 	/**
-	 * 檢查金幣購買秘寶
+	 * 檢查儲值幣購買秘寶
 	 * 
 	 * @param role
 	 * @param index
 	 * @return
 	 */
-	ErrorType checkGoldBuy(Role role, int index);
+	ErrorType checkBuyWithCoin(Role role, int index);
 
 	/**
 	 * 儲值幣購買秘寶
@@ -415,16 +433,7 @@ public interface TreasureService extends AppService {
 	 * @param index
 	 * @return
 	 */
-	BuyResult coinBuy(boolean sendable, Role role, int index);
-
-	/**
-	 * 檢查儲值幣購買秘寶
-	 * 
-	 * @param role
-	 * @param index
-	 * @return
-	 */
-	ErrorType checkCoinBuy(Role role, int index);
+	BuyResult doBuyWithCoin(boolean sendable, Role role, int index);
 
 	/**
 	 * 發送購買秘寶
