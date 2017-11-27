@@ -524,7 +524,7 @@ public interface WuxingService extends AppService {
 	 * 發送重置
 	 * 
 	 * @param role
-	 * @param trainInfo
+	 * @param wuxingInfo
 	 * @return
 	 */
 	Message sendReset(Role role, WuxingInfo wuxingInfo);
