@@ -143,8 +143,8 @@ public class DebugServiceImpl extends AppServiceSupporter implements DebugServic
 		// ---------------------------------------------------
 		// 查看角色資訊
 		// info
-		pos = 5;
-		if (text.length() > pos && buff.substring(0, pos).equals("info ")) {
+		pos = 2;
+		if (text.length() == pos && buff.substring(0, pos).equals("info")) {
 			//
 			Message message = messageService.createMessage(CoreModuleType.CHAT, CoreModuleType.ROLE,
 					CoreMessageType.ROLE_DEBUG_INFO_REQUEST);
@@ -153,7 +153,7 @@ public class DebugServiceImpl extends AppServiceSupporter implements DebugServic
 			messageService.addMessage(message);
 			return;
 		}
-
+		
 		// 祕技增減經驗
 		// exp 100
 		// 01234
