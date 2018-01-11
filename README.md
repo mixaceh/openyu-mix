@@ -2,18 +2,18 @@
 
 # Backend
 
-1.mix-core (Server)
+1.openyu-mix-core (Server)
 
 # Frontend
 
-1.mix-dashboard (營運管理)
+1.openyu-mix-dashboard (營運管理)
 
-2.mix-web (UI)
+2.openyu-mix-web (UI)
 
-3.mix-android (UI)
+3.openyu-mix-android (UI)
 
-4.mix-ios (UI)
+4.openyu-mix-ios (UI)
 
 # Planning
 
-1.mix-planning
+1.openyu-mix-planning
