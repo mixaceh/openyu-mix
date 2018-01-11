@@ -1,10 +1,10 @@
 # OpenYu Mysterious I X
 
-# Backend
+## Planning
 
-1.openyu-mix-core (Server)
+1.openyu-mix-planning
 
-# Frontend
+## Frontend
 
 1.openyu-mix-dashboard (營運管理)
 
@@ -14,6 +14,6 @@
 
 4.openyu-mix-ios (UI)
 
-# Planning
+## Backend
 
-1.openyu-mix-planning
+1.openyu-mix-core (Server)
