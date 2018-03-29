@@ -6,7 +6,7 @@
 
 ## Frontend
 
-1.openyu-mix-dashboard (營運管理)
+1.openyu-mix-dashboard (Operation)
 
 2.openyu-mix-web (UI)
 
