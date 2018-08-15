@@ -275,6 +275,10 @@ public class SasangServiceImpl extends AppServiceSupporter implements SasangServ
 		private static final long serialVersionUID = -4323504616451837011L;
 
 		/**
+		 * 錯誤類別
+		 */
+		private ErrorType errorType;
+		/**
 		 * 玩的類別
 		 */
 		private PlayType playType;
@@ -380,6 +384,14 @@ public class SasangServiceImpl extends AppServiceSupporter implements SasangServ
 			this(null, 0, 0, null, 0, 0L, new LinkedList<Item>(), 0);
 		}
 
+		public ErrorType getErrorType() {
+			return errorType;
+		}
+
+		public void setErrorType(ErrorType errorType) {
+			this.errorType = errorType;
+		}
+
 		public PlayType getPlayType() {
 			return playType;
 		}
@@ -480,16 +492,19 @@ public class SasangServiceImpl extends AppServiceSupporter implements SasangServ
 	 * 
 	 * @param sendable
 	 * @param role
-	 * @param playTypeValue
-	 *            玩的類別
+	 * @param playTypeValue 玩的類別
 	 * @see PlayType
 	 * @return
 	 */
 	public PlayResult play(boolean sendable, Role role, int playTypeValue) {
 		PlayResult result = null;
+		ErrorType errorType = ErrorType.NO_ERROR;
 		// 玩的類別
 		PlayType playType = EnumHelper.valueOf(PlayType.class, playTypeValue);
 		if (playType == null) {
+			errorType = ErrorType.PLAY_TYPE_NOT_EXIST;
+			result = new PlayResultImpl();
+			result.setErrorType(errorType);
 			return result;
 		}
 		//
@@ -499,7 +514,7 @@ public class SasangServiceImpl extends AppServiceSupporter implements SasangServ
 			result = goldPlay(sendable, role);
 			break;
 		}
-			// 用道具或儲值幣玩
+		// 用道具或儲值幣玩
 		case GALACTIC:
 		case GOLDEN:
 		case BLACK: {
@@ -507,9 +522,13 @@ public class SasangServiceImpl extends AppServiceSupporter implements SasangServ
 			break;
 		}
 		default: {
+			errorType = ErrorType.PLAY_TYPE_NOT_IMPLEMENT;
+			result = new PlayResultImpl();
+			result.setErrorType(errorType);
+			//
 			if (sendable) {
-				// 玩的類別不存在
-				sendPlay(ErrorType.PLAY_TYPE_NOT_EXIST, role, result);
+				// 無實作
+				sendPlay(errorType, role, result);
 			}
 			break;
 		}
@@ -559,9 +578,9 @@ public class SasangServiceImpl extends AppServiceSupporter implements SasangServ
 					sasangInfo.addDailyTimes(1);// 每日已玩的次數
 
 					// clone玩的結果
-					//Outcome cloneOutcome = clone(outcome);
-					
-					//#fix sasangMachine.play()內就有clone了 
+					// Outcome cloneOutcome = clone(outcome);
+
+					// #fix sasangMachine.play()內就有clone了
 					sasangInfo.setOutcome(outcome);// 最後的結果
 
 					// 結果,放獎勵
@@ -777,8 +796,7 @@ public class SasangServiceImpl extends AppServiceSupporter implements SasangServ
 	 * 檢查用道具或儲值幣玩
 	 * 
 	 * @param role
-	 * @param playTimes
-	 *            玩的次數
+	 * @param playTimes 玩的次數
 	 * @return
 	 */
 	public ErrorType checkItemCoinPlay(Role role, int playTimes) {
@@ -866,8 +884,7 @@ public class SasangServiceImpl extends AppServiceSupporter implements SasangServ
 	/**
 	 * 發送玩
 	 * 
-	 * @param errorType
-	 *            錯誤類別
+	 * @param errorType  錯誤類別
 	 * @param role
 	 * @param playResult
 	 * @return

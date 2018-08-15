@@ -180,6 +180,11 @@ public interface SasangService extends AppService {
 		PLAY_TYPE_NOT_EXIST(21),
 
 		/**
+		 * 玩的類別無實作
+		 */
+		PLAY_TYPE_NOT_IMPLEMENT(22),
+
+		/**
 		 * 超過重置時間
 		 */
 		OVER_RESET_TIME(28),
@@ -285,6 +290,11 @@ public interface SasangService extends AppService {
 	 * 玩的結果
 	 */
 	interface PlayResult extends AppResult {
+
+		ErrorType getErrorType();
+
+		void setErrorType(ErrorType errorType);
+
 		/**
 		 * 玩的類別
 		 * 

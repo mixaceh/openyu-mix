@@ -9,8 +9,8 @@ import com.sun.xml.bind.AnyTypeAdapter;
  * 檢查結果
  */
 @XmlJavaTypeAdapter(AnyTypeAdapter.class)
-public interface AppResult extends BaseBean
-{
+public interface AppResult extends BaseBean {
 
 	String KEY = AppResult.class.getName();
+
 }
