@@ -72,13 +72,13 @@ public interface SasangService extends AppService {
 		private final int value;
 
 		/**
-		 * 玩的次數
+		 * 次數
 		 */
-		private final int playTimes;
+		private final int times;
 
-		private PlayType(int value, int playTimes) {
+		private PlayType(int value, int times) {
 			this.value = value;
-			this.playTimes = playTimes;
+			this.times = times;
 		}
 
 		public int getValue() {
@@ -90,8 +90,8 @@ public interface SasangService extends AppService {
 		 * 
 		 * @return
 		 */
-		public int playTimes() {
-			return playTimes;
+		public int getTimes() {
+			return times;
 		}
 	}
 
@@ -373,8 +373,7 @@ public interface SasangService extends AppService {
 	 * 
 	 * @param sendable
 	 * @param role
-	 * @param playTypeValue
-	 *            玩的類別 @see PlayType
+	 * @param playTypeValue 玩的類別 @see PlayType
 	 * @return
 	 */
 	PlayResult play(boolean sendable, Role role, int playTypeValue);
@@ -411,8 +410,7 @@ public interface SasangService extends AppService {
 	 * 檢查用道具或儲值幣玩
 	 * 
 	 * @param role
-	 * @param playTimes
-	 *            玩的次數
+	 * @param playTimes 玩的次數
 	 * @return
 	 */
 	ErrorType checkItemCoinPlay(Role role, int playTimes);
@@ -420,8 +418,7 @@ public interface SasangService extends AppService {
 	/**
 	 * 發送玩四象
 	 * 
-	 * @param errorType
-	 *            錯誤類別
+	 * @param errorType  錯誤類別
 	 * @param role
 	 * @param playResult
 	 * @return

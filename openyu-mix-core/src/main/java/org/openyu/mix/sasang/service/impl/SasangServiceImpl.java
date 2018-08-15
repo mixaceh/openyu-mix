@@ -652,17 +652,17 @@ public class SasangServiceImpl extends AppServiceSupporter implements SasangServ
 	public PlayResult itemCoinPlay(boolean sendable, Role role, PlayType playType) {
 		PlayResult result = null;
 		SasangInfo sasangInfo = null;
-		int playTimes = playType.playTimes();// 玩的次數
+		int times = playType.getTimes();// 玩的次數
 		//
 		List<Notice> notices = new LinkedList<Notice>();// 已玩的通知
 		List<Prize> prizes = new LinkedList<Prize>();// 已玩的獎勵
 		// 檢查條件
-		ErrorType errorType = checkItemCoinPlay(role, playTimes);
+		ErrorType errorType = checkItemCoinPlay(role, times);
 		if (errorType == ErrorType.NO_ERROR) {
 			// 四象
 			sasangInfo = role.getSasangInfo();
 			// 先玩,為了檢查獎勵區空間是否足夠
-			List<Outcome> outcomes = sasangMachine.play(playTimes);
+			List<Outcome> outcomes = sasangMachine.play(times);
 			// 沒結果,xml可能沒設定,壞掉了
 			if (outcomes.size() == 0) {
 				errorType = ErrorType.OUTCOME_NOT_EXIST;
@@ -673,7 +673,7 @@ public class SasangServiceImpl extends AppServiceSupporter implements SasangServ
 			//
 			if (errorType == ErrorType.NO_ERROR) {
 				// 消耗道具或儲值幣
-				SpendResult spendResult = roleService.spendByItemCoin(sendable, role, playTimes,
+				SpendResult spendResult = roleService.spendByItemCoin(sendable, role, times,
 						sasangCollector.getPlayItem(), 1, sasangCollector.getPlayCoin(), CoinType.SASANG_PLAY,
 						vipCollector.getSasangCoinVipType());
 				//
