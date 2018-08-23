@@ -8,8 +8,8 @@ import java.util.Map;
 import org.openyu.mix.app.service.supporter.AppServiceSupporter;
 import org.openyu.mix.system.service.RelationRepository;
 import org.openyu.mix.system.vo.Relation;
-import org.openyu.commons.util.concurrent.MapCache;
-import org.openyu.commons.util.concurrent.impl.MapCacheImpl;
+import org.openyu.commons.util.concurrent.NullValueMap;
+import org.openyu.commons.util.concurrent.impl.NullValueMapImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,7 +25,7 @@ public class RelationRepositoryImpl extends AppServiceSupporter implements Relat
 	/**
 	 * 所有註冊的伺服器關連, connected=是否已連線
 	 */
-	protected MapCache<String, Relation> registerRelations = new MapCacheImpl<String, Relation>();
+	protected NullValueMap<String, Relation> registerRelations = new NullValueMapImpl<String, Relation>();
 
 	public RelationRepositoryImpl() {
 	}

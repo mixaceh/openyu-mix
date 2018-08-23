@@ -10,8 +10,8 @@ import org.slf4j.LoggerFactory;
 import org.openyu.mix.app.service.supporter.AppServiceSupporter;
 import org.openyu.mix.role.service.RoleRepository;
 import org.openyu.mix.role.vo.Role;
-import org.openyu.commons.util.concurrent.MapCache;
-import org.openyu.commons.util.concurrent.impl.MapCacheImpl;
+import org.openyu.commons.util.concurrent.NullValueMap;
+import org.openyu.commons.util.concurrent.impl.NullValueMapImpl;
 
 /**
  * 角色儲存庫, 存放所有本地/同步的角色在mem中
@@ -27,7 +27,7 @@ public class RoleRepositoryImpl extends AppServiceSupporter implements RoleRepos
 	 *
 	 * <roleId,role>
 	 */
-	private MapCache<String, Role> syncRoles = new MapCacheImpl<String, Role>();
+	private NullValueMap<String, Role> syncRoles = new NullValueMapImpl<String, Role>();
 
 	public RoleRepositoryImpl() {
 	}

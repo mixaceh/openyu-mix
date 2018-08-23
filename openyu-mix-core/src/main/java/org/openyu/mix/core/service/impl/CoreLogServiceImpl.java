@@ -17,8 +17,8 @@ import org.openyu.mix.role.vo.Role;
 import org.openyu.commons.dao.anno.LogTx;
 import org.openyu.commons.dao.inquiry.Inquiry;
 import org.openyu.commons.util.AssertHelper;
-import org.openyu.commons.util.concurrent.MapCache;
-import org.openyu.commons.util.concurrent.impl.MapCacheImpl;
+import org.openyu.commons.util.concurrent.NullValueMap;
+import org.openyu.commons.util.concurrent.impl.NullValueMapImpl;
 
 public class CoreLogServiceImpl extends AppLogServiceSupporter implements CoreLogService {
 
@@ -33,7 +33,7 @@ public class CoreLogServiceImpl extends AppLogServiceSupporter implements CoreLo
 	/**
 	 * mem,連線上放入CoreConnectLog,斷線時取出,改善效率
 	 */
-	private MapCache<String, CoreConnectLog> coreConnectLogs = new MapCacheImpl<String, CoreConnectLog>();
+	private NullValueMap<String, CoreConnectLog> coreConnectLogs = new NullValueMapImpl<String, CoreConnectLog>();
 
 	public CoreLogServiceImpl() {
 	}

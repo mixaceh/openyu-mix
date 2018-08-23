@@ -10,8 +10,8 @@ import org.slf4j.LoggerFactory;
 import org.openyu.mix.app.service.supporter.AppServiceSupporter;
 import org.openyu.mix.chat.service.ChatRepository;
 import org.openyu.mix.chat.vo.Chat;
-import org.openyu.commons.util.concurrent.MapCache;
-import org.openyu.commons.util.concurrent.impl.MapCacheImpl;
+import org.openyu.commons.util.concurrent.NullValueMap;
+import org.openyu.commons.util.concurrent.impl.NullValueMapImpl;
 
 /**
  * 聊天角色集合服務, 存放所有本地/同步的角色在mem中
@@ -27,7 +27,7 @@ public class ChatRepositoryImpl extends AppServiceSupporter implements ChatRepos
 	 * 
 	 * <chatId,chat>
 	 */
-	private MapCache<String, Chat> syncChats = new MapCacheImpl<String, Chat>();
+	private NullValueMap<String, Chat> syncChats = new NullValueMapImpl<String, Chat>();
 
 	public ChatRepositoryImpl() {
 	}
