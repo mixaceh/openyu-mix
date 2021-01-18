@@ -31,7 +31,7 @@ public interface ItemService extends AppService {
 	//
 	// ItemDecreaseLog 從包包,倉庫,郵件刪除,BAG,WAREHOUSE,MAIL
 	//
-	// ItenEnhanceLog 道具強化,USE_ENHANCE,CHANGE_ENHANCE
+	// ItemEnhanceLog 道具強化,USE_ENHANCE,CHANGE_ENHANCE
 	// --------------------------------------------------
 	/**
 	 * 操作類別
