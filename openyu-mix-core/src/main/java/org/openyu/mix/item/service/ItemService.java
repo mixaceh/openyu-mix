@@ -172,7 +172,7 @@ public interface ItemService extends AppService {
 		/**
 		 * 等級不足
 		 */
-		LEVLE_NOT_ENOUGH(51),
+		LEVEL_NOT_ENOUGH(51),
 
 		/**
 		 * 金幣不足
